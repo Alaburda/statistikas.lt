@@ -1,0 +1,16 @@
+{
+  "hash": "0bfdffbbf6d2402052f607c794a029fd",
+  "result": {
+    "markdown": "---\ntitle: \"Kada rinktis Kruskal-Wallis testą?\"\neditor: visual\n---\n\n\n# Kada taikyti Kruskal-Wallis testą?\n\nKruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.\n\n# Kaip atlikti Kruskal-Wallis testą?\n\nExcel net,uri paprasto [būdo](https://www.statology.org/kruskal-wallis-test-excel/) atlikti Kruskal-Wallis testo, su R tai galima atlikti viena eilute:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nkruskal.test(Sepal.Length ~ Species, data = iris)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\n\tKruskal-Wallis rank sum test\n\ndata:  Sepal.Length by Species\nKruskal-Wallis chi-squared = 96.937, df = 2, p-value < 2.2e-16\n```\n:::\n:::\n\n\n# Kaip raportuoti Kruskal-Wallis testą?\n\n::: {.callout-note icon=\"false\"}\nKruskal-Wallis testas nurodė, jog vilkdalgių rūšis pagal taurėlapių ilgį skyrėsi statistiškai reikšmingai (χ^2^ = 96,94, df = 2, p \\< 0,001).\n:::\n\n# Kaip vizualizuoti Kruskal-Wallis testą?\n\nStačiakampė diagrama yra pagrindinis pasirinkimas, bet jis ne visada gali būti tinkamas. Jeigu lyginome ranginį kintamąjį (pavyzdžiui, likert skalę), tuomet stačiakampė diagrama nebus informatyvi - turime viso labo 7 galimas reikšmes ir nelabai žinome, kaip jos pasiskirsto. Dėl to stačiakampę diagramą turime papildyti taškine diagrama.\n\nExcel neturi tokio funkcionalumo, tačiau tai galima atlikti su R:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(gghalves)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: package 'gghalves' was built under R version 4.2.3\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nLoading required package: ggplot2\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: package 'ggplot2' was built under R version 4.2.3\n```\n:::\n\n```{.r .cell-code}\nggplot(iris,\n       aes(x = Species, y = Sepal.Length)) +\n  geom_half_point(aes(color = Species), side = \"l\", size = 0.5) +\n  geom_half_boxplot(aes(fill = Species), side = \"r\") +\n  guides(color = \"none\", fill = \"none\") + \n  labs(title = \"Vilkdalgių taurėlapių ilgio pasiskirstymas pagal rūšį\", subtitle = \"Kairėje yra individualūs matavimai, dešinėje - stačiakampė diagrama.\")\n```\n\n::: {.cell-output-display}\n![](kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "kada-rinktis-kruskal-wallis_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hash": "9181d49d2c622bfcc0214f6b3d364a69",
+  "result": {
+    "markdown": "---\ntitle: \"Kaip patikrinti tolydžius duomenis?\"\ndraft: true\n---\n\n\nAtlikote tyrimą, duomenis surinkote ir dabar norite juos analizuoti - puiku! Kaip užtikrinti, jog surinkote kokybiškus duomenis ir jog taikote teisingą statistinį testą? Šiame straipsnyje apžvelgsime, kaip patikrinti tolydžių duomenų kokybę ir kaip juos galima analizuoti.\n\n# Kaip patikrinti, jog duomenys teisingi?\n\nKai duomenų kiekis yra mažas, perbėgti duomenis akimis yra paprasčiausia - keliskart didesnės reikšmės praktiškai visada iššoka ir kelia klausimų. Kai duomenų kiekis yra per didelis patikrinti tiesiog \"žiūrint\" į duomenis, aš tikrinu duomenų histogramą. Histograma yra labai patogus įrankis, nes jis iškart atskleidžia, ar nėra išskirčių, taip pat leidžia pasitvirtinti, ar duomenys yra pasiskirstę pagal mūsų išankstinius lūkesčius.\n\nHistogramą su R galima nubraižyti su `ggplot2` biblioteka:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: package 'ggplot2' was built under R version 4.2.3\n```\n:::\n\n```{.r .cell-code}\nggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.1) + labs(title = \"Nėra neįprastų reikšmių\", subtitle = \"Duomenų rinkinį skaidome pagal rūšis, nes rūšys savaime skiriasi savo žiedlapių dydžiu.\") + facet_wrap(~Species)\n```\n\n::: {.cell-output-display}\n![](kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n\n\nO viduje Excel yra Histogramos įrankis:\n\n![](images/image-2132477601.png)\n\nAntras būdas tikrinti, ar viskas gerai su duomenimis, yra patikrinti, ar nėra trūkstamų reikšmių ir kokios yra didžiausios bei mažiausios reikšmės.\n\n\nKą šiaip reikia tikrinti, jog nepersišautum kojos?\n\n* Normalumas\n* Ekstremalios reikšmės\n\n",
+    "supporting": [
+      "kaip-patikrinti-tolydzius-duomenis_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

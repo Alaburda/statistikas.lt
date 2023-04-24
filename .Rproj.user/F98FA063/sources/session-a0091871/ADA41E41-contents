@@ -1,0 +1,599 @@
+---
+title: "Išmokti statistiką per 3 valandas"
+subtitle: "Imčių lyginimas tarp 2 ir daugiau grupių"
+author: "Paulius Alaburda"
+format: 
+  revealjs:
+    width: 1600
+---
+
+## Ko išmoksime?
+
+-   Pasirinkti tinkamą statistinį testą
+-   Atlikti koreliaciją
+-   Palyginti 2 grupes tarpusavyje
+-   Palyginti 3+ grupes tarpusavyje
+-   Atlikti post-hoc testus
+
+## Ko neišmoksime?
+
+-   Programuoti su R
+-   Tiesinė bei logistinė regresija
+-   Dirbti su matavimais, kurie tarpusavyje yra priklausomi
+
+## Apie jus darau prielaidas
+
+-   Grubiai žinote, kas yra vidurkis, standartinis nuokrypis, variacija
+
+-   Esate bent kartą atlikę statistinį testą (su Excel, SPSS, GraphPad ir pan.)
+
+-   Žinote, kas yra histograma bei stačiakampė diagrama (ang. boxplot)
+
+## Kokių priemonių reikės?
+
+Dalyvauti mokymuose galima šiais būdais:
+
+-   Susikurti paskyrą [Posit Cloud](https://posit.cloud/) svetainėje - nereikia siųstis programinės įrangos!
+
+-   Parsisiųsti [RStudio](https://posit.co/download/rstudio-desktop/), jeigu norite naudotis R bei sekti [šį diegimo gidą](../kaip-pasirengti-rstudio/kaip-pasirengti-rstudio.qmd);
+
+-   Parsisiųsti [penguins](../penguins.xlsx) duomenų rinkinį.
+
+Taip pat dalį veiksmų galima atkartoti šiais būdais:
+
+-   Parsiųsti [XLMiner Analysis ToolPak](https://appsource.microsoft.com/en-us/product/office/wa104379190?tab=overview&exp=ubp8), jeigu norite naudotis Excel;
+-   [Handbook of Biological Statistics](http://www.biostathandbook.com/index.html) "How to do the test" skiltys (Excel, Web, R, SAS)
+
+## Penguins duomenų rinkinys
+
+Palmer stotyje surinkti matavimai apie pingvinus, duomenys taip pat prieinami `palmerpenguins` bibliotekoje.
+
+![](images/image-1573886618.png)
+
+## Kaip pasirengti Posit Cloud paskyrą?
+
+1.  Užsiregistruoti [čia](https://login.posit.cloud/register).
+2.  Posit pradiniame lange pasirinkti Posit Cloud:
+
+![](images/image-1832016710.png){width="338"}
+
+## Susikurti naują RStudio aplinką
+
+![](images/image-1067007752.png)
+
+Posit jums sukurs virtualią RStudio aplinką. Ši aplinka yra praktiškai tokia pati kaip parsisiuntus RStudio.
+
+# Kas yra tiesiniai modeliai?
+
+## Tiesiniai modeliai ranka
+
+::: columns
+::: {.column width="50%"}
+![Spektrofotometras](images/image-1204024637.png)
+:::
+
+::: {.column width="50%"}
+![Kalibracinė tiesė](images/image-1285293873.png)
+:::
+:::
+
+## Statistika universitete
+
+![](images/image-871015911.png){fig-align="center" width="604"}
+
+## Parametriniai statistiniai testai
+
+Dauguma parametrinių statistinių testų yra specifinės tiesinių modelių [versijos](https://lindeloev.github.io/tests-as-linear/).
+
+Tiesiniai modeliai turi formą $y = a*x + b$, kur **y** yra mūsų priklausomas kintamasis, o **x** - nepriklausomas kintamasis.
+
+. . .
+
+::: columns
+::: {.column width="40%"}
+Pavyzdžiui:
+
+```{r, echo = FALSE}
+
+library(dplyr)
+library(knitr)
+
+data.frame(Baterija = c("10%","20%","30%","70%","100%"), 
+           `Minutės` = c(0,10,20,60,90)) %>% 
+  knitr::kable()
+
+```
+:::
+
+::: {.column width="60%"}
+Remiantis lentele, tiesinis modelis galėtų atrodyti taip:
+
+y = 1\*x + 10
+:::
+:::
+
+## Bet realybė nėra tokia tvarkinga...
+
+Pavyzdžiui, grafike matome `penguins` duomenų rinkinio kūno masės ir pelekų ilgį. Panašu, jog priklausomybė yra tiesiška ir proporcinga -- kokia pora **a** ir **b** kintamųjų geriausiai apibūdintų ryšį?
+
+```{r, echo = FALSE}
+
+library(ggplot2)
+library(palmerpenguins)
+
+penguin_plot <- ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point()
+
+penguin_plot
+```
+
+## Kuri tiesė teisinga? Ar tai turėtų būti tiesė apskritai?
+
+```{r, echo = FALSE}
+#| fig-pos: 'c'
+
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.019, intercept = 120, color = "salmon", size = 1.5) + geom_smooth(method = "loess", se = FALSE, color = "magenta")
+```
+
+## OLS -- ordinary least squares (liet. mažiausių kvadratų modelis)
+
+::: columns
+::: {.column width="40%"}
+OLS yra tiesinis metodas, kuris nustato nežinomus parametrus tiesinės regresijos modelyje. Metodo tikslas yra sumažinti skirtumų tarp matavimų ir tiesės kvadratų sumą.
+
+**Kitaip tariant, metodas nustato, kuri tiesė turi mažiausią paklaidą santykiu su mūsų matavimais.**
+:::
+
+::: {.column width="60%"}
+![](images/pca.gif){width="460"}
+:::
+:::
+
+## OLS yra labai patogus modelis
+
+-   **Lengva apibendrinti** - nepaisant nepriklausomo kintamojo, ryšys tarp jo ir priklausomo kintamojo visada išlieka toks pats. Galime drąsiai teigti, jog "kiekvienas papildomas pingvino gramas yra susijęs su 0.01528 mm ilgesniu peleku".
+
+. . .
+
+-   **Lengva interpretuoti** - duomenys liko tuose pačiuose matavimo vienetuose. Logistinės regresijos modeliai bei bendriniai tiesiniai modeliai turi būti interpretuojami per šansų santykius bei procentinius pokyčius.
+
+. . .
+
+-   **Greitas** - sudėtingi Bajeso modeliai yra tinkamesni, bet gali trukti minutes (o dideli ir valandas!), kol bus apskaičiuoti.
+
+## OLS turi savo kainą
+
+::: columns
+::: {.column width="40%"}
+-   Tiesiniai modeliai taip pat apskaičiuoja paklaidą - ji turi būti vienoda visoje matavimo aibėje (heteroskedatiškumas)
+-   Tiesiniai modelių paklaida taip pat turi būti pasiskirsčiusi pagal normalųjį skirstinį
+-   Matavimai turi būti nepriklausomi vienas nuo kito
+:::
+
+::: {.column width="60%"}
+```{r, echo = FALSE}
+
+penguin_plot + geom_smooth(method = "lm", color = "magenta") + labs(title = "Ar tiesinis modelis yra tinkamas apibūdinti santykį tarp svorio pelekų ilgio?", subtitle = "Linija yra tiesinės regresijos tiesė, papilkinta zona yra tiesės paklaida") + theme_bw()
+```
+:::
+:::
+
+## Kada netaikyti tiesinių modelių?
+
+::: columns
+::: {.column width="50%"}
+-   Ar tiesė yra pakankamai geras būdas apibūdinti mano duomenis?
+
+-   Ar mano imtis yra iš populiacijos, kuri savaime pasiskirsčiusi pagal normalųjį skirstinį?
+
+    -   Likert (pavyzdžiui, 0-5) skalės
+
+    -   Ląstelių skaičius matymo lauke
+
+    -   Ląstelių kolonijos liuminescencija (0-100%)
+:::
+
+::: {.column width="50%"}
+```{r, echo = FALSE}
+
+library(dplyr)
+library(tidyr)
+
+anscombe_tidy <- anscombe %>%
+    mutate(observation = seq_len(n())) %>%
+    pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+    separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+    mutate(set = c("I", "II", "III", "IV")[set]) %>% 
+    pivot_wider(names_from = "variable", values_from = "value")
+
+ggplot(anscombe_tidy, aes(x, y)) +
+    geom_point() +
+    facet_wrap(~ set) +
+    geom_smooth(method = "lm", se = FALSE) + 
+    labs(title = "Anscombe’s kvartetas", subtitle = "Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses")
+
+```
+:::
+:::
+
+# Alternatyva tiesiniams modeliams
+
+## Neparametriniai testai yra tiesiog ranginiai modeliai
+
+::: columns
+::: {.column width="70%"}
+Grubiai, kiekvienas atitinkamas neparametrinis testas pirma ranguoja duomenis, o tada atlieka statistinį testą.
+
+```{r, echo = FALSE}
+
+library(dplyr)
+library(knitr)
+
+data.frame(Baterija = c("10%","20%","30%","70%","100%"), 
+           `Minutės` = c(0,10,20,60,90),
+           Rangas = 1:5) %>% 
+  knitr::kable()
+
+```
+:::
+
+::: {.column width="30%"}
+Pavyzdžiui, Spearman koreliacijos koeficientas yra identiškas tiesinės regresijos *a* koeficientui, jeigu suvienodiname priklausomo ir nepriklausomo kintamojo standartinius nuokrypius.
+
+```{r, echo = FALSE, warning = FALSE}
+
+a = cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+
+b = lm(rank(flipper_length_mm) ~ rank(body_mass_g), data = penguins)
+
+a$estimate
+b$coefficients
+
+```
+:::
+:::
+
+# Susipažinimas su RStudio Cloud
+
+Darbui su RStudio Cloud mums reikės šių paketų:
+
+```{r, eval = FALSE, echo = TRUE}
+
+install.packages(c("reaxl","ggplot2","dplyr","tidyr","patchwork","car","FSA"))
+
+```
+
+## RStudio aplinka
+
+![](images/image-1937977146.png)
+
+# Pagrindiniai statistiniai testai
+
+## Pearson koreliacijos koeficientas
+
+::: columns
+::: {.column width="70%"}
+### Kaip atlikti testą?
+
+```{r, echo = TRUE}
+
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "pearson")
+```
+
+Pearson koreliacijos koeficientas yra koeficientas a, jeigu y ir x turi vienodus standartinius nuokrypius. **"Pearson koreliacijos testas atskleidė, jog koreliacija tarp pelekų ilgio ir kūno masės buvo stipri (r = 0,87, 95% PI \[0,84-0,89\] t(340)=32,72, p \< 0,001)."**
+:::
+
+::: {.column width="30%"}
+### Kaip pateikti testą?
+
+```{r, echo = TRUE}
+
+library(ggplot2)
+
+ggplot(data = penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point() + geom_smooth(method = "lm")
+```
+:::
+:::
+
+## 
+
+## Kada koreliacija "stipri"?
+
+![Iliustracija iš Danielle Navarro knygos "Learning Statistics with R". Kuo koreliacija yra arčiau nulio, tau labiau mūsų duomenys panašūs į debesėlį. 1 ir -1 yra, atitinkamai, tobula teigiama bei neigiama koreliacija.](../posts/kaip-apskaiciuoti-koreliacija/images/image-1260747057.png){alt="Iliustracija iš Danielle Navarro knygos \"Learning Statistics with R\". Kuo koreliacija yra arčiau nulio, tau labiau mūsų duomenys panašūs į debesėlį. 1 ir -1 yra, atitinkamai, tobula teigiama bei neigiama koreliacija." fig-align="center" width="337"}
+
+## Spearman koreliacijos koeficienta
+
+```{r, echo = TRUE}
+
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+
+```
+
+Spearman rho galima interpretuoti kaip rangų pokytį ant y ašies su kiekvienu x rango pokyčiu. **"Atlikus Spearman ranginį koreliacijos testą, koreliacija tarp pelekų ilgio ir kūno masės buvo stipri (r = 0,840, p \< 0,001)."**
+
+## Stjudento t-testas (neporinis)
+
+::: columns
+::: {.column width="50%"}
+### Kaip atlikti?
+
+```{r, echo = TRUE}
+
+t.test(data = penguins, flipper_length_mm ~ sex)
+```
+
+"Atlikus Stjudento t-testą, vidutinis pelekų ilgio skirtumas tarp pingvinų lyčių buvo 7,14 mm, skirtumas buvo statistiškai reikšmingas (t(325,28) = 4,80, 95% PI \[4,21-10,06\], p \< 0,001)."
+:::
+
+::: {.column width="50%"}
+### Kaip vizualizuoti?
+
+```{r, echo = TRUE}
+
+ggplot(data = penguins, aes(x = sex, y = flipper_length_mm)) + geom_boxplot()
+```
+:::
+:::
+
+## Stjudento t-testas - diagnostika
+
+-   Stjudento t-testui duomenys turi būti pasiskirstę pagal normalųjį skirstinį
+
+-   Matavimai turi būti nepriklausomi vienas nuo kito
+
+-   Naudodami Welch t-testą galime ignoruoti skirtingų variacijų prielaidą
+
+```{r, echo = TRUE}
+
+ggplot(data = penguins, aes(x = flipper_length_mm)) + geom_histogram() + facet_grid(~sex)
+
+```
+
+## Mann-Whitney U
+
+```{r, echo = TRUE}
+
+wilcox.test(data = penguins, flipper_length_mm ~ sex)
+
+```
+
+"Atlikus Mann-Whitney U testą, pelekų ilgio skirtumas tarp lyčių buvo statistiškai reikšmingas (W = 9547, p \< 0,001)."
+
+## Poruotas Stjudento t-testas
+
+::: columns
+::: {.column width="50%"}
+### Kaip atlikti?
+
+```{r, echo = TRUE}
+
+t.test(penguins$bill_length_mm, penguins$bill_depth_mm, paired = TRUE)
+```
+:::
+
+::: {.column width="50%"}
+### Kaip pasitikrinti?
+
+```{r, echo = TRUE}
+
+ggplot(data = penguins, aes(x = bill_length_mm-bill_depth_mm)) + geom_histogram()
+```
+:::
+:::
+
+## Wilcoxon ranginis testas
+
+```{r, echo = TRUE}
+
+wilcox.test(penguins$bill_length_mm, penguins$bill_depth_mm, paired = TRUE)
+
+```
+
+## VIenpusė ANOVA
+
+::: columns
+::: {.column width="60%"}
+### Kaip atlikti?
+
+```{r, echo = TRUE}
+
+my.anova <- aov(data = penguins, body_mass_g ~ species)
+
+summary(my.anova)
+
+```
+
+Adelie rūšies pingvinai vidutiniškai svėrė 3,70 kg (SD = 0,46), Chinstrap svėrė 3,73 kg (SD = 0,38), Gentoo svėrė 5,08 kg (SD = 0,5). Skirtumas tarp rūšių vidurkių buvo statistiškai reikšmingas (F(2,339) = 343,6, p \< 0,001).
+:::
+
+::: {.column width="40%"}
+### Kaip vizualizuoti?
+
+```{r, echo = TRUE}
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + labs(x = "Rūšis", y = "Kūno masė, g")
+```
+:::
+:::
+
+## Kas yra residuals?
+
+Residuals yra skirtumai tarp tiesinio modelio prognozuojamos reikšmės ir realios reikšmės.
+
+::: columns
+::: {.column width="40%"}
+```{r}
+
+penguins %>% 
+  filter(!is.na(body_mass_g)) %>% 
+  transmute(body_mass_g,
+            predicted = predict(my.anova),
+            residuals = residuals(my.anova)) %>% 
+  head() %>% 
+  knitr::kable()
+
+```
+:::
+
+::: {.column width="40%"}
+```{r}
+
+penguin_plot
+```
+:::
+:::
+
+## ANOVA diagnostika - heteroskedatiškumas
+
+ANOVA homoskedatiškumo prielaidą tikriname taip:
+
+```{r, echo = TRUE}
+
+library(car)
+
+leveneTest(my.anova)
+
+```
+
+Levene testas rodo, jog mes sulaužėme homogeniškos variacijos (homoskedatiškumo) prielaidą ir tokiu būdu mūsų paklaidos nebėra [tikslios](https://stats.stackexchange.com/questions/22800/what-are-the-dangers-of-violating-the-homoscedasticity-assumption-for-linear-reg).
+
+## ANOVA diagnostika - residuals su Shapiro-Wilk testu
+
+```{r, echo = TRUE}
+
+shapiro.test(residuals(my.anova))
+```
+
+## ANOVA diagnostika - residuals grafiškai
+
+::: columns
+::: {.column width="60%"}
+```{r, echo = TRUE}
+
+library(patchwork)
+
+p1 <- ggplot() + aes(sample = residuals(my.anova)) + stat_qq() + stat_qq_line(color = "red")
+
+p2 <- ggplot() + aes(x = residuals(my.anova)) + geom_density()
+
+p1 + p2
+```
+:::
+
+::: {.column width="40%"}
+QQ grafikas didžiąja dalimi atitinka tiesę, bet nukrypsta ties labai mažomis ir labai didelėmis reikšmėmis. Histograma taip pat rodo, jog "uodegos" turi daugiau reikšmių negu idealiai norėtume.
+:::
+:::
+
+## Post-hoc testai - Tukey HSD
+
+Tukey HSD (Honestly Significant Difference) yra standartinis būdas patikrinti porinius skirtumus tarp grupių.
+
+```{r, echo = TRUE}
+
+TukeyHSD(my.anova)
+
+
+```
+
+## Kruskal-Wallis testas
+
+::: columns
+::: {.column width="40%"}
+### Kaip atlikti?
+
+```{r, echo = TRUE}
+
+kruskal.test(data = penguins, body_mass_g ~ species)
+
+```
+
+Adelie rūšies pingvinai vidutiniškai svėrė 3,70 kg (SD = 0,46), Chinstrap svėrė 3,73 kg (SD = 0,38), Gentoo svėrė 5,08 kg (SD = 0,5). Skirtumas tarp rūšių buvo statistiškai reikšmingas (χ^2^(2) = 217,6, p \< 0,001).
+:::
+
+::: {.column width="60%"}
+### Kaip vizualizuoti?
+
+```{r, echo = TRUE}
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + geom_jitter(alpha = 0.3) + labs(x = "Rūšis", y = "Kūno masė, g")
+```
+:::
+:::
+
+## Post-hoc Dunn testas
+
+```{r, echo = TRUE}
+
+library(FSA)
+
+dunnTest(body_mass_g ~ species, data=penguins, method="bh")
+
+```
+
+## Dvipusė ANOVA
+
+::: columns
+::: {.column width="40%"}
+### Kaip atlikti
+
+```{r, echo = TRUE}
+
+my.anova.2 <- aov(data = penguins, body_mass_g ~ species + sex + species:sex)
+
+summary(my.anova.2)
+
+```
+:::
+
+::: {.column width="60%"}
+### Kaip vizualizuoti
+
+```{r, echo = TRUE}
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = sex)) + geom_boxplot() + labs(x = "Rūšis", y = "Kūno masė, g", fill = "Lytis")
+```
+:::
+:::
+
+## Dvipusės ANOVA interpretacija
+
+::: columns
+::: {.column width="60%"}
+### Kintamųjų įtaka
+
+```{r, echo = TRUE}
+
+library(lsr)
+
+etaSquared(my.anova.2)
+
+```
+
+ANOVA modelis paaiškina 84,63% pingvinų svorio variacijos. Pingvinų rūšis buvo pagrindinis veiksnys lemiantis pingvinų svorį ir paaiškino 66,62% variacijos. Lytis turėjo mažesnę įtaką variacijai ir paaiškino tik 17,23% variacijos. Sąveika tarp rūšies ir lyties turėjo itin mažą įtaką (0,77%).
+:::
+
+::: {.column width="40%"}
+### Vidutinis svoris grupėje
+
+```{r, echo = TRUE}
+
+library(effects)
+
+eff <- effect( term = "species*sex", mod = my.anova.2 )
+summary(eff)
+```
+:::
+:::
+
+## Dvipusės ANOVA Tukey's HSD
+
+```{r, echo = TRUE}
+
+TukeyHSD(my.anova.2)
+
+```
+
+# Apibendrinimas
+
+## Ką reikia žinoti?
+
+-   Naudokitės grafikais prieš atlikdami bet kokį statistinį testą
+
+-   Statistinio testo pasirinkimą lemia ne tik surinkti duomenys, bet ir tyrimo dizainas bei mūsų žinios apie tyrimo temą

@@ -1,0 +1,33 @@
+"0",""
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(tidyr)"
+"0",""
+"0","anscombe_tidy <- anscombe %>%"
+"0","    mutate(observation = seq_len(n())) %>%"
+"0","    pivot_longer(names_to = ""key"", values_to = ""value"", -observation) %>%"
+"0","    separate(key, c(""variable"", ""set""), 1, convert = TRUE) %>%"
+"0","    mutate(set = c(""I"", ""II"", ""III"", ""IV"")[set]) %>% "
+"0","    pivot_wider(names_from = ""variable"", values_from = ""value"")"
+"0",""
+"0","ggplot(anscombe_tidy, aes(x, y)) +"
+"0","    geom_point() +"
+"0","    facet_wrap(~ set) +"
+"0","    geom_smooth(method = ""lm"", se = FALSE) + "
+"0","    labs(title = ""Anscombe’s kvartetas"", subtitle = ""Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses"")"
+"2","Error in ggplot(anscombe_tidy, aes(x, y)) : 
+  could not find function ""ggplot""
+"

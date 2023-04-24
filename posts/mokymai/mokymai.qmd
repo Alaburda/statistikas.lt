@@ -1,0 +1,12 @@
+Kokius mokymus nori surengti?
+
+1. Turiu tolydžius duomenis - kas dabar?
+
+* Kaip patikrinti, jog viskas gerai? Trūkstamos reikšmės, ekstremalios reikšmės, skirstinys
+* Ar atlikti normalumo testą? NE
+* Darom Stjudento t-testą - kas dabar?
+* Darom ANOVA - kas dabar?
+* Radau skirtumą - kas dabar?
+* Kaip raportuoti?
+
+2. 

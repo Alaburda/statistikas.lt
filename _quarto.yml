@@ -1,0 +1,28 @@
+project:
+  type: website
+
+website:
+  title: "statistikas.lt"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/
+      - icon: twitter
+        href: https://twitter.com
+format:
+  html:
+    theme:
+      - html/statistikas.scss
+    toc: false
+    code-link: true
+    code-fold: true
+    code-summary: "Rodyti kodą"
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true
+    highlight-style: monokai
+
+
+

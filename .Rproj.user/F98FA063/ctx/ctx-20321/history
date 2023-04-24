@@ -1,0 +1,337 @@
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+stuff <- data.frame(lytis = c(rep("mot",5),rep("vyr",5)),
+rukyti = c(rep("taip",2),rep("ne",3),rep("taip",2),rep("ne",3)))
+stuf
+stuff
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",2),rep("Ne",3),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",1),rep("Ne",4),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",8),rep("Vyras",8)),
+rukyti = c(rep("Taip",1),rep("Ne",7),rep("Taip",5),rep("Ne",3)))
+chisq.test(table(stuff))
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių")
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 15) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 150) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.1) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+iris %>% writexl::write_xlsx("iris.xlsx")
+library(tidyverse)
+iris %>% writexl::write_xlsx("iris.xlsx")
+install.packages("writexl")
+iris %>% writexl::write_xlsx("iris.xlsx")
+names(iris)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(broom)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+??Anova
+library(car)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(shiny); runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+names(iris)
+iris %>% count(Species)
+t.test(data = iris, Sepal.Length ~ Species, subset = c("setosa","versicolor"))
+?t.test
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+rs <- t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+plot(rs)
+rs
+install.packages("performance")
+install.packages("easystats")
+install.packages("easystats")
+install.packages("easystats")
+library(performance)
+check_model(rs)
+library(ggplot2)
+qplot(sample = iris) +
+stat_qq_line(colour = "dodgerblue") +
+labs(x = "Theoretical distribution",
+y = "Sample distribution",
+title = "QQ Plot for Residual Error")
+ggplot(iris, aes(sample = Sepal.Length))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line()
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species)
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "`iris` duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "*iris* duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau vidurinės ")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra ")
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra taškai, tuo geriau.")
+p1 + p2
+library(patchwork)
+tmp_data <- data.frame(sample_norm = rnorm(100))
+p1 <- ggplot(tmp_data, aes(sample = sample_norm)) + stat_qq() + stat_qq_line(color = "red")
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(fun = dnorm, args = list(mean = mean(tmp_data$sample_norm), sd = sd(tmp_data$sample_norm)))
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm,
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes = ..density..) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes(y = ..density..)) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+install.packages("patchwork")
+library(patchwork)
+install.packages("rlang")
+library(broom)
+library(car)
+library(dplyr)
+library(ggplot2)
+my.anova <- aov(data = iris, Sepal.Length ~ Species)
+#my.anova <- iris %>%
+#  lm(data = ., Sepal.Length ~ Species) %>%
+#  Anova(type = 3)
+TukeyHSD(my.anova)
+?wilcox.test
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + geom_point() + geom_smooth(method = "lm")
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + geom_point() + geom_smooth(method = "lm")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, fill = Species)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Atsižvelgdami į rūšį gauname teisingą tendenciją")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Atsižvelgdami į rūšį gauname teisingą tendenciją")
+iris %>%
+group_by(Species) %>%
+summarise(stuff = cor(.data$Sepal.Length, .data$Sepal.Width))
+library(tidyverse)
+iris %>%
+group_by(Species) %>%
+summarise(stuff = cor(.data$Sepal.Length, .data$Sepal.Width))
+install.packages(c("ggplot2","dplyr","readxl"))
+kruskal.test(data = iris, Sepal.Length ~ Sepal.Width)
+kruskal.test(data = iris, Sepal.Length ~ Species)
+library(palmerpenguins)
+data(palmerpenguins)
+data(penguins)
+View(penguins)
+source("~/.active-rstudio-document", echo=TRUE)
+# Test differences between these two datasets
+x = sample(weird_data, 50)
+y = rnorm(50)
+# Wilcoxon / Mann-Whitney U
+wilcox = wilcox.test(x, y)
+wilcox
+x
+y
+t.test(y, x)
+?t.test
+lm(y, x)
+lm(y ~ x)
+lm(y ~ x) %>% summary()
+library(dplyr)
+lm(y ~ x) %>% summary()
+I(rep(c('x', 'y'), each=50))
+rep(c('x', 'y'), each=50)
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point()
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point()
+names(penguins)
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + geom_point()
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point()
+lm(data = penguins, flipper_length_mm + body_mass_g)
+lm(data = penguins, flipper_length_mm ~ body_mass_g)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73)
+penguin_plot <- ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point()
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "green")
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "green", size = 3)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.012, intercept = 139.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.016, intercept = 130.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.018, intercept = 130.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0151, intercept = 130.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0151, intercept = 136.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0150, intercept = 138.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0149, intercept = 138.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0148, intercept = 138.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.0146, intercept = 138.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 138.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.014, intercept = 138.73, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.014, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.01528, intercept = 137, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.01528, intercept = 137, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.01528, intercept = 128, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.01528, intercept = 140, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.018, intercept = 120, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.02, intercept = 120, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.016, intercept = 136.73, color = "salmon", size = 1.5) + geom_abline(slope = 0.019, intercept = 120, color = "green", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.019, intercept = 120, color = "salmon", size = 1.5)
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.019, intercept = 120, color = "salmon", size = 1.5) + geom_smooth(method = "loess", se = FALSE, color = "grey")
+penguin_plot + geom_abline(slope = 0.01528, intercept = 136.73, color = "navyblue", size = 1.5) + geom_abline(slope = 0.019, intercept = 120, color = "salmon", size = 1.5) + geom_smooth(method = "loess", se = FALSE, color = "magenta")
+penguin_plot + geom_smooth(method = "lm", se = FALSE, color = "magenta")
+penguin_plot + geom_smooth(method = "lm", color = "magenta")
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(key, value, -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(variable, value)
+library(dplyr)
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(key, value, -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(variable, value)
+library(tidyr)
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(key, value, -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(variable, value)
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(key, value, -observation)
+anscombe %>%
+mutate(observation = seq_len(n()))
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = key, values_to = value, -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(variable, value)
+ggplot(anscombe_tidy, aes(x, y)) +
+geom_point() +
+facet_wrap(~ set) +
+geom_smooth(method = "lm", se = FALSE) +
+labs(title = "Anscombe’s kvartetas", subtitle = "Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses")
+anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = key, values_to = value, -observation)
+anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation)
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(variable, value)
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set])
+anscombe_tidy
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set])
+ggplot(anscombe_tidy, aes(x, y)) +
+geom_point() +
+facet_wrap(~ set) +
+geom_smooth(method = "lm", se = FALSE) +
+labs(title = "Anscombe’s kvartetas", subtitle = "Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses")
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set])
+ggplot(anscombe_tidy, aes(x, y)) +
+geom_point() +
+facet_wrap(~ set) +
+geom_smooth(method = "lm", se = FALSE) +
+labs(title = "Anscombe’s kvartetas", subtitle = "Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses")
+anscombe_tidy
+anscombe_tidy <- anscombe %>%
+mutate(observation = seq_len(n())) %>%
+pivot_longer(names_to = "key", values_to = "value", -observation) %>%
+separate(key, c("variable", "set"), 1, convert = TRUE) %>%
+mutate(set = c("I", "II", "III", "IV")[set]) %>%
+pivot_wider(names_from = "variable", values_from = "value")
+ggplot(anscombe_tidy, aes(x, y)) +
+geom_point() +
+facet_wrap(~ set) +
+geom_smooth(method = "lm", se = FALSE) +
+labs(title = "Anscombe’s kvartetas", subtitle = "Visi 4 grafikai turi vienodus vidurkius, variaciją bei tiesinės regresijos tieses")
+data.frame(Baterija = c("10%","20%","30%","70%","100%"),
+`Minutės` = c(0,10,20,60,90),
+Rangas = 1:5) %>%
+knitr::kable()
+y = c(rnorm(15), exp(rnorm(15)), runif(20, min = -3, max = 0))  # Almost zero mean, not normal
+x = rnorm_fixed(50, mu = 0, sd = 1)  # Used in correlation where this is on x-axis
+data.frame(Baterija = c("10%","20%","30%","70%","100%"),
+`Minutės` = c(0,10,20,60,90),
+Rangas = 1:5) %>%
+knitr::kable()
+y = c(rnorm(15), exp(rnorm(15)), runif(20, min = -3, max = 0))  # Almost zero mean, not normal
+x = rnorm(50, mu = 0, sd = 1)  # Used in correlation where this is on x-axis
+x = rnorm(50, 0, 1)  # Used in correlation where this is on x-axis
+a = cor.test(y, x, method = "spearman") # Built-in
+b = lm(rank(y) ~ 1 + rank(x)) # Equivalent linear model
+a
+b
+a = cor.test(y, x, method = "spearman") # Built-in
+b = lm(rank(y) ~ 1 + rank(x)) # Equivalent linear model
+a$estimate
+a = cor.test(y, x, method = "spearman") # Built-in
+b = lm(rank(y) ~ 1 + rank(x)) # Equivalent linear model
+a$estimate
+b$coefficients
+writexl::write_xlsx(penguins, "penguins.xlsx")
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "pearson")
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "pearson")
+a = cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "pearson")
+b = lm(rank(flipper_length_mm) ~ rank(body_mass_g), data = penguins)
+a$estimate, b$coefficients
+a = cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "pearson")
+b = lm(rank(flipper_length_mm) ~ rank(body_mass_g), data = penguins)
+a$estimate
+b$coefficients
+a = cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+b = lm(rank(flipper_length_mm) ~ rank(body_mass_g), data = penguins)
+a$estimate
+b$coefficients
+names(penguins)
+wilcox.test(data = penguins, flipper_length_mm ~ sex)
+204.5060-197.3636

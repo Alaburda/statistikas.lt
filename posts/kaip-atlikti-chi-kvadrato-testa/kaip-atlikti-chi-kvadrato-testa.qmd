@@ -1,0 +1,39 @@
+---
+title: "Kaip atlikti Chi-kvadrato testą?"
+---
+
+Chi-kvadrato testas naudojamas nustatyti, ar yra statistiškai reikšminga asociacija tarp dviejų kategorinių kintamųjų. Testas labai dažnai taikomas medicinoje, sociologijoje bei psichologijoje, todėl jį visada verta išmanyti! Šiame straipsnyje aprašysiu, kaip atlikti Chi-kvadrato testą su R.
+
+# Kada rinktis Chi-kvadrato testą?
+
+Jeigu duomenų rinkinyje turime 2 stulpelius ir jų turinys yra kategorijos, Chi-kvadrato testą galime pasirinkti. Pavyzdžiui, toks duomenų rinkinys būtų visiškai tinkamas:
+
+```{r}
+
+stuff <- data.frame(lytis = c(rep("Moteris",8),rep("Vyras",8)),
+           rukyti = c(rep("Taip",1),rep("Ne",7),rep("Taip",5),rep("Ne",3)))
+
+
+```
+
+Kategorijų kiekis taip pat neribotas: gali būti 2, gali būti ir 3, 4 arba daugiau.
+
+# Kaip atlikti Chi-kvadrato testą?
+
+```{r}
+
+chisq.test(table(stuff))
+
+```
+
+
+# Kaip raportuoti Chi-kvadrato testą?
+
+Aš dažniausiai naudoju tokį šabloną:
+
+"Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (Chi = 2.4, lls = 1, p = 0,121)."
+
+# Kada rinktis 
+
+
+

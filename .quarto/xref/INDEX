@@ -1,0 +1,53 @@
+{
+  "index.qmd": {
+    "index.html": "cb285477"
+  },
+  "about.qmd": {
+    "about.html": "cb05a9c4"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "96058d29"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "973191ee"
+  },
+  "posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.qmd": {
+    "kaip-koduoti-duomenis.html": "2a604871"
+  },
+  "posts/kada-rinktis-anova/kada-rinktis-anova.qmd": {
+    "kada-rinktis-anova.html": "c12bf1cb"
+  },
+  "posts/kada-rinktis-anova/kas-yra-split-mouth-design.qmd": {
+    "kas-yra-split-mouth-design.html": "8f49c1a7"
+  },
+  "posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.qmd": {
+    "kaip-atlikti-chi-kvadrato-testa.html": "3178fc98"
+  },
+  "posts/kada-rinktis-t-testa/kada-rinktis-t-testa.qmd": {
+    "kada-rinktis-t-testa.html": "7a838893"
+  },
+  "404.qmd": {
+    "404.html": "9cc2063b"
+  },
+  "posts/dazniausios-duomenu-vizualizacijos-klaidos/dazniausios-duomenu-vizualizacijos-klaidos.qmd": {
+    "dazniausios-duomenu-vizualizacijos-klaidos.html": "f5aafbe5"
+  },
+  "posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.qmd": {
+    "kaip-patikrinti-tolydzius-duomenis.html": "0f675fe5"
+  },
+  "posts/mokymai/mokymai.qmd": {
+    "mokymai.html": "c4992c84"
+  },
+  "posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.qmd": {
+    "kaip-apskaiciuoti-koreliacija.html": "52e53e30"
+  },
+  "posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.qmd": {
+    "kada-rinktis-kruskal-wallis.html": "a7763e71"
+  },
+  "posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.qmd": {
+    "kada-rinktis-mann-whitney.html": "705c9df6"
+  },
+  "presentations/statistika.qmd": {
+    "statistika.html": "75b8a685"
+  }
+}

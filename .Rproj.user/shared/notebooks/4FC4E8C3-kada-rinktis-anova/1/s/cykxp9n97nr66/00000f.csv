@@ -1,0 +1,9 @@
+"0","ggplot(my.anova.residuals, aes(sample = sample_norm)) + stat_qq() + stat_qq_line(color = ""red"")
+"
+"1","[1m[33mError[39m in `fortify()`:[22m
+[38;5;250m[33m![38;5;250m `data` must be a [34m<data.frame>[38;5;250m, or an object coercible by `fortify()`, not a double vector.[39m
+Backtrace:
+[90m 1. [39mggplot2::ggplot(my.anova.residuals, aes(sample = sample_norm))
+[90m 2. [39mggplot2:::ggplot.default(my.anova.residuals, aes(sample = sample_norm))
+[90m 4. [39m[1m[94mggplot2:::fortify.default([39m[22mdata, ...[1m[94m)[39m[22m
+"

@@ -1,0 +1,43 @@
+---
+title: "Kada rinktis Kruskal-Wallis testą?"
+editor: visual
+---
+
+# Kada taikyti Kruskal-Wallis testą?
+
+Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.
+
+# Kaip atlikti Kruskal-Wallis testą?
+
+Excel net,uri paprasto [būdo](https://www.statology.org/kruskal-wallis-test-excel/) atlikti Kruskal-Wallis testo, su R tai galima atlikti viena eilute:
+
+```{r}
+
+kruskal.test(Sepal.Length ~ Species, data = iris)
+
+```
+
+# Kaip raportuoti Kruskal-Wallis testą?
+
+::: {.callout-note icon="false"}
+Kruskal-Wallis testas nurodė, jog vilkdalgių rūšis pagal taurėlapių ilgį skyrėsi statistiškai reikšmingai (χ^2^ = 96,94, df = 2, p \< 0,001).
+:::
+
+# Kaip vizualizuoti Kruskal-Wallis testą?
+
+Stačiakampė diagrama yra pagrindinis pasirinkimas, bet jis ne visada gali būti tinkamas. Jeigu lyginome ranginį kintamąjį (pavyzdžiui, likert skalę), tuomet stačiakampė diagrama nebus informatyvi - turime viso labo 7 galimas reikšmes ir nelabai žinome, kaip jos pasiskirsto. Dėl to stačiakampę diagramą turime papildyti taškine diagrama.
+
+Excel neturi tokio funkcionalumo, tačiau tai galima atlikti su R:
+
+```{r}
+
+library(gghalves)
+
+ggplot(iris,
+       aes(x = Species, y = Sepal.Length)) +
+  geom_half_point(aes(color = Species), side = "l", size = 0.5) +
+  geom_half_boxplot(aes(fill = Species), side = "r") +
+  guides(color = "none", fill = "none") + 
+  labs(title = "Vilkdalgių taurėlapių ilgio pasiskirstymas pagal rūšį", subtitle = "Kairėje yra individualūs matavimai, dešinėje - stačiakampė diagrama.")
+
+```

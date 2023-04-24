@@ -1,0 +1,8 @@
+"0",""
+"0","library(ggplot2)"
+"2","Warning: package ‘ggplot2’ was built under R version 4.2.3"
+"0","library(palmerpenguins)"
+"0",""
+"0","penguin_plot <- ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point()"
+"0",""
+"0","penguin_plot"

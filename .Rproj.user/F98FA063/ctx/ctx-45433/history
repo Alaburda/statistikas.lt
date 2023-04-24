@@ -1,0 +1,196 @@
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+stuff <- data.frame(lytis = c(rep("mot",5),rep("vyr",5)),
+rukyti = c(rep("taip",2),rep("ne",3),rep("taip",2),rep("ne",3)))
+stuf
+stuff
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",2),rep("Ne",3),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",1),rep("Ne",4),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",8),rep("Vyras",8)),
+rukyti = c(rep("Taip",1),rep("Ne",7),rep("Taip",5),rep("Ne",3)))
+chisq.test(table(stuff))
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių")
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 15) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 150) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.1) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+iris %>% writexl::write_xlsx("iris.xlsx")
+library(tidyverse)
+iris %>% writexl::write_xlsx("iris.xlsx")
+install.packages("writexl")
+iris %>% writexl::write_xlsx("iris.xlsx")
+names(iris)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(broom)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+??Anova
+library(car)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(shiny); runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+names(iris)
+iris %>% count(Species)
+t.test(data = iris, Sepal.Length ~ Species, subset = c("setosa","versicolor"))
+?t.test
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+rs <- t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+plot(rs)
+rs
+install.packages("performance")
+install.packages("easystats")
+install.packages("easystats")
+install.packages("easystats")
+library(performance)
+check_model(rs)
+library(ggplot2)
+qplot(sample = iris) +
+stat_qq_line(colour = "dodgerblue") +
+labs(x = "Theoretical distribution",
+y = "Sample distribution",
+title = "QQ Plot for Residual Error")
+ggplot(iris, aes(sample = Sepal.Length))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line()
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species)
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "`iris` duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "*iris* duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau vidurinės ")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra ")
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra taškai, tuo geriau.")
+p1 + p2
+library(patchwork)
+tmp_data <- data.frame(sample_norm = rnorm(100))
+p1 <- ggplot(tmp_data, aes(sample = sample_norm)) + stat_qq() + stat_qq_line(color = "red")
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(fun = dnorm, args = list(mean = mean(tmp_data$sample_norm), sd = sd(tmp_data$sample_norm)))
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm,
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes = ..density..) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes(y = ..density..)) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+install.packages("patchwork")
+library(patchwork)
+install.packages("rlang")
+library(broom)
+library(car)
+library(dplyr)
+library(ggplot2)
+my.anova <- aov(data = iris, Sepal.Length ~ Species)
+#my.anova <- iris %>%
+#  lm(data = ., Sepal.Length ~ Species) %>%
+#  Anova(type = 3)
+TukeyHSD(my.anova)
+?wilcox.test
+wilcox.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+library(datasets)
+datasets::anscombe
+?cor
+cor(iris$Sepal.Length, iris$Sepal.Width)
+cor(iris$Sepal.Length, iris$Sepal.Width, method = "pearson")
+stuff <- cor(iris$Sepal.Length, iris$Sepal.Width, method = "pearson")
+library(broom)
+tidy(stuff)
+stuff <- cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "pearson")
+stuff
+my.lm <- lm(data = iris, Sepal.Length ~ Sepal.Width)
+summary(my.lm)
+my.lm <- lm(data = iris, Sepal.Length ~ 0 + Sepal.Width)
+summary(my.lm)
+stuff <- cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+stuff
+perfect_line <- data.frame(y = 1:100, x = 1:100)
+ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+library(ggplot2)
+ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line()
+pos_line + neg_line
+pos_line + neg_line
+cor.test(iris$Sepal.Length, iris$Sepal.Width)
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line()
+pos_line + neg_line
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line()
+pos_line / neg_line
+pos_line / neg_line
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line()
+pos_line / neg_line
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line()
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line()
+pos_line / neg_line
+library(ggplot2)
+library(patchwork)
+perfect_line <- data.frame(y = 1:10, x = 1:10)
+pos_line <- ggplot(perfect_line, aes(x = x, y = y)) + geom_line() + labs(title = "Tobula teigiama koreliacija")
+neg_line <- ggplot(perfect_line, aes(x = x, y = -1*y)) + geom_line() + labs(title = "Tobula neigiama koreliacija")
+pos_line / neg_line

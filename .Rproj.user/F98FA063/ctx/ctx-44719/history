@@ -1,0 +1,244 @@
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+install.packages("dplyr")
+stuff <- data.frame(lytis = c(rep("mot",5),rep("vyr",5)),
+rukyti = c(rep("taip",2),rep("ne",3),rep("taip",2),rep("ne",3)))
+stuf
+stuff
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",2),rep("Ne",3),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",5),rep("Vyras",5)),
+rukyti = c(rep("Taip",1),rep("Ne",4),rep("Taip",2),rep("Ne",3)))
+chisq.test(table(stuff))
+stuff <- data.frame(lytis = c(rep("Moteris",8),rep("Vyras",8)),
+rukyti = c(rep("Taip",1),rep("Ne",7),rep("Taip",5),rep("Ne",3)))
+chisq.test(table(stuff))
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių")
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram() + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 15) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 150) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.2) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram(binwidth = 0.1) + labs(title = "Nėra neįprastų reikšmių") + facet_wrap(~Species)
+iris %>% writexl::write_xlsx("iris.xlsx")
+library(tidyverse)
+iris %>% writexl::write_xlsx("iris.xlsx")
+install.packages("writexl")
+iris %>% writexl::write_xlsx("iris.xlsx")
+names(iris)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(broom)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+??Anova
+library(car)
+iris %>%
+lm(data = ., Sepal.Length ~ Species) %>%
+Anova(type = 3) %>%
+tidy()
+library(shiny); runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+runApp('anova_shiny.R')
+names(iris)
+iris %>% count(Species)
+t.test(data = iris, Sepal.Length ~ Species, subset = c("setosa","versicolor"))
+?t.test
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+rs <- t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+plot(rs)
+rs
+install.packages("performance")
+install.packages("easystats")
+install.packages("easystats")
+install.packages("easystats")
+library(performance)
+check_model(rs)
+library(ggplot2)
+qplot(sample = iris) +
+stat_qq_line(colour = "dodgerblue") +
+labs(x = "Theoretical distribution",
+y = "Sample distribution",
+title = "QQ Plot for Residual Error")
+ggplot(iris, aes(sample = Sepal.Length))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line()
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species)
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "`iris` duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "*iris* duomenų rinkinys")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line() + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau vidurinės ")
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra ")
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+ggplot(iris, aes(sample = Sepal.Length)) + stat_qq() + stat_qq_line(color = "red") + facet_wrap(~Species) + labs(title = "3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas", subtitle = "iris duomenų rinkinys; kuo arčiau linijos centre yra taškai, tuo geriau.")
+p1 + p2
+library(patchwork)
+tmp_data <- data.frame(sample_norm = rnorm(100))
+p1 <- ggplot(tmp_data, aes(sample = sample_norm)) + stat_qq() + stat_qq_line(color = "red")
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(fun = dnorm, args = list(mean = mean(tmp_data$sample_norm), sd = sd(tmp_data$sample_norm)))
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm,
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram() + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes = ..density..) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p2 <- ggplot(tmp_data, aes(x = sample_norm)) + geom_histogram(aes(y = ..density..)) + stat_function(
+fun = dnorm, color = "red",
+args = with(tmp_data, c(mean = mean(sample_norm), sd = sd(sample_norm)))
+)
+p1 + p2
+t.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c("setosa","versicolor"))
+install.packages("patchwork")
+library(patchwork)
+install.packages("rlang")
+library(broom)
+library(car)
+library(dplyr)
+library(ggplot2)
+my.anova <- aov(data = iris, Sepal.Length ~ Species)
+#my.anova <- iris %>%
+#  lm(data = ., Sepal.Length ~ Species) %>%
+#  Anova(type = 3)
+TukeyHSD(my.anova)
+?wilcox.test
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + geom_point() + geom_smooth(method = "lm")
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + geom_point() + geom_smooth(method = "lm")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, fill = Species)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Atsižvelgdami į rūšį gauname teisingą tendenciją")
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Atsižvelgdami į rūšį gauname teisingą tendenciją")
+iris %>%
+group_by(Species) %>%
+summarise(stuff = cor(.data$Sepal.Length, .data$Sepal.Width))
+library(tidyverse)
+iris %>%
+group_by(Species) %>%
+summarise(stuff = cor(.data$Sepal.Length, .data$Sepal.Width))
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+library(ggplot2)
+library(palmerpenguins)
+penguin_plot <- ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + geom_point()
+penguin_plot
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+cor.test(penguins$flipper_length_mm, penguins$body_mass_g, method = "spearman")
+wilcox.test(data = penguins, flipper_length_mm ~ sex)
+library(broom)
+library(car)
+library(dplyr)
+library(ggplot2)
+my.anova <- aov(data = iris, Sepal.Length ~ Species)
+#my.anova <- iris %>%
+#  lm(data = ., Sepal.Length ~ Species) %>%
+#  Anova(type = 3)
+my.anova
+my.anova %>% summary()
+my.anova <- aov(data = penguins, flipper_length_mm ~ sex)
+summary(my.anova)
+my.anova <- aov(data = penguins, flipper_length_mm ~ species)
+summary(my.anova)
+summary(my.anova)
+penguins %>% group_by(species) %>% summarise(mean(flipper_length_mm), sd(flipper_length_mm))
+penguins %>% group_by(species) %>% summarise(mean(flipper_length_mm, na.rm = TRUE), sd(flipper_length_mm, na.rm = TRUE))
+my.anova <- aov(data = penguins, body_mass_g ~ species)
+summary(my.anova)
+penguins %>% group_by(species) %>% summarise(mean(body_mass_g, na.rm = TRUE), sd(body_mass_g, na.rm = TRUE))
+penguins %>% group_by(species) %>% summarise(mean(body_mass_g, na.rm = TRUE), sd(body_mass_g/1000, na.rm = TRUE))
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot()
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + labs(x = "Rūšis", y = "Kūno masė, g")
+leveneTest(my.anova)
+residuals(my.anova)
+ggplot(residuals(my.anova)) + geom_histogram()
+ggplot(residuals(my.anova), aes(x = .)) + geom_histogram()
+ggplot(aes(x = residuals(my.anova))) + geom_histogram()
+ggplot() + aes(x = residuals(my.anova)) + geom_histogram()
+ggplot() + aes(x = residuals(my.anova)) + stat_qq() + stat_qq_line(color = "red")
+ggplot(data.frame(res = residuals(my.anova)), aes(x = res)) + stat_qq() + stat_qq_line(color = "red")
+ggplot() + aes(sample = residuals(my.anova)) + stat_qq() + stat_qq_line(color = "red")
+library(patchwork)
+p1 <- ggplot() + aes(sample = residuals(my.anova)) + stat_qq() + stat_qq_line(color = "red")
+p2 <- ggplot() + aes(x = residuals(my.anova)) + geom_histogram()
+p1 + p2
+library(patchwork)
+p1 <- ggplot() + aes(sample = residuals(my.anova)) + stat_qq() + stat_qq_line(color = "red")
+p2 <- ggplot() + aes(x = residuals(my.anova)) + geom_histogram()
+p1 + p2
+shapiro.test(residuals(my.anova))
+TukeyHSD(my.anova)
+kruskal.test(data = penguins, body_mass_g ~ species)
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + geom_point() + labs(x = "Rūšis", y = "Kūno masė, g")
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + geom_jitter() + labs(x = "Rūšis", y = "Kūno masė, g")
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + geom_jitter(alpha = 0.2) + labs(x = "Rūšis", y = "Kūno masė, g")
+ggplot(penguins, aes(x = species, y = body_mass_g)) + geom_boxplot() + geom_jitter(alpha = 0.3) + labs(x = "Rūšis", y = "Kūno masė, g")
+aov(data = penguins, body_mass_g ~ species + sex)
+my.anova.2 <- aov(data = penguins, body_mass_g ~ species + sex)
+summary(my.anova.2)
+my.anova.2 <- aov(data = penguins, body_mass_g ~ species + sex + species:sex)
+summary(my.anova.2)
+TukeyHSD(my.anova.2)
+my.anova.2 <- aov(data = penguins, body_mass_g ~ species + sex)
+TukeyHSD(my.anova.2)
+library(effects)
+install.packages("effects")
+effect( term = "species*sex", mod = my.anova.2)
+library(effects)
+effect( term = "species*sex", mod = my.anova.2)
+my.anova.2 <- aov(data = penguins, body_mass_g ~ species + sex + species:sex)
+effect( term = "species*sex", mod = my.anova.2)
+effect( term = "species*sex", mod = my.anova.2) %>% summary()
+etaSquared
+?etaSquared
+??etaSquared
+library(lsr)
+install.packages("lsr")
+library(lsr)
+etaSquared(my.anova.2)
+leveneTest
+?leveneTest
+summary(my.anova.2)
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = sex)) + geom_boxplot() + geom_jitter(alpha = 0.3) + labs(x = "Rūšis", y = "Kūno masė, g")
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = sex)) + geom_boxplot() + labs(x = "Rūšis", y = "Kūno masė, g", fill = "Lytis")
+library(lsr)
+etaSquared(my.anova.2)
+etaSquared(my.anova.2)
+0.666179534+0.172304745
+0.666179534+0.172304745+0.007788532
+library(effects)
+eff <- effect( term = "drug*therapy", mod = model.3 )
+eff
+library(effects)
+eff <- effect( term = "species*sex", mod = my.anova.2 )
+eff
+ggplot(penguins, aes(x = body_mass_g)) + geom_histogram()

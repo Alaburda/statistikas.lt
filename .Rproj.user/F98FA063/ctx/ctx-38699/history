@@ -1,0 +1,45 @@
+names(iris)
+ggplot2::ggplot(iris, aes(x = species, y = Sepal.Length)) + geom_histogram()
+library(ggplot2)
+ggplot(iris, aes(x = species, y = Sepal.Length)) + geom_histogram()
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_histogram()
+ggplot(iris, aes(x = Sepal.Length)) + geom_histogram()
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_boxplot()
+names(iris)
+iris %>%
+ggplot(aes(x = Species, y = Sepal.Length)) + geom_boxplot() +
+labs(title = "Niekas nenori tokių ašių pavadinimų") +
+labs(x = iris_labels$Species,
+y = iris_labels$Sepal.Length)
+iris %>% count(Species)
+library(dplyr)
+iris %>% count(Species)
+library(palmerpenguins)
+install.packages("palmerpenguins")
+library(palmerpenguins)
+penguins
+penguins %>% count(species)
+penguins %>%
+mutate(species = case_when(Species == "Adelie" ~ "Adelės",
+Species == "Chinstrap" ~ "Antarktinis",
+Species == "Gentoo" ~ "Papuasinis"
+))
+penguins %>%
+mutate(species = case_match(species,
+"Adelie" ~ "Adelės",
+"Chinstrap" ~ "Antarktinis",
+"Gentoo" ~ "Papuasinis"
+)) %>%
+head()
+library(dplyr\)
+library(dplyr)
+penguins %>%
+mutate(species = case_match(species,
+"Adelie" ~ "Adelės",
+"Chinstrap" ~ "Antarktinis",
+"Gentoo" ~ "Papuasinis"
+)) %>%
+head()
+dplyr::case_match
+install.packages("dplyr")
+install.packages("dplyr")

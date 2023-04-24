@@ -1,0 +1,1 @@
+{"height":408.5290482076638,"width":661.0,"size_behavior":0,"conditions":[[0,"\u001B[38;5;250m`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\u001B[39m"],[1,"Warning: \u001B[38;5;250mRemoved 2 rows containing non-finite values (`stat_bin()`).\u001B[39m"]]}

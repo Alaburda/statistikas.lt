@@ -1,0 +1,14 @@
+{
+  "hash": "9c8ae35c24d3cfdc21a9ce3c423b2c5b",
+  "result": {
+    "markdown": "---\ntitle: \"Kada rinktis Mann-Whitney testą?\"\neditor: visual\n---\n\n\nO ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.\n\n# Kaip atlikti Wilcoxon testą?\n\n\n::: {.cell}\n\n```{.r .cell-code}\nwilcox.test(data = iris, Sepal.Length ~ Species, subset = Species %in% c(\"setosa\",\"versicolor\"))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\n\tWilcoxon rank sum test with continuity correction\n\ndata:  Sepal.Length by Species\nW = 168.5, p-value = 8.346e-14\nalternative hypothesis: true location shift is not equal to 0\n```\n:::\n:::\n\n\n# Kaip pateikti Wilcoxon testą?\n\nWilcoxon testas yra neparametrinis ir jis nepateikia pasikliautinųjų intervalų. Dėl to daug informacijos pateikti negalime:\n\nAtlikus Wilcoxon dviejų imčių testą, buvo pastebėtas statistiškai reikšmingas skirtumas tarp setosa ir versicolor vilkdalgių taurėlapių ilgio (V = , p \\< 0,001).\n\nGrafiškai dažniausiai galime išsisukti su **stačiakampe diagrama**. Kadangi šiuo atveju lyginame imtis, kurios gali būti pasiskirsčiusios labai įvairiai, yra sveika pritaikyti kokį nors būdą, jog matytųsi individualūs matavimai grafike. Tai galima daryti su pusine stačiakampe diagrama, spiečiaus diagrama arba jų dviejų kombinacija.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

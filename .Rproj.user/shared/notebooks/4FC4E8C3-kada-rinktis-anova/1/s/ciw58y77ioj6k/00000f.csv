@@ -1,0 +1,34 @@
+"0",""
+"0","library(broom)"
+"0","library(car)"
+"2","Loading required package: carData
+"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following object is masked from ‘package:car’:
+
+    recode
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(ggplot2)"
+"0",""
+"0","my.anova <- aov(data = iris, Sepal.Length ~ Species)"
+"0",""
+"0","#my.anova <- iris %>% "
+"0","#  lm(data = ., Sepal.Length ~ Species) %>% "
+"0","#  Anova(type = 3)"
+"0",""
+"0",""
