@@ -590,6 +590,49 @@ TukeyHSD(my.anova.2)
 
 ```
 
+## O gal tiesiog tiesinis modelis?
+
+::: columns
+::: {.column width="60%"}
+### Kaip atlikti?
+
+```{r, echo = TRUE}
+
+my.lm.3 <- lm(data = penguins, body_mass_g ~ species*sex)
+
+summary(my.lm.3)
+
+```
+
+"Tiesinės regresijos modelis, kur rūšis ir lytis buvo nepriklausomi kintamieji, paaiškina 85,24% kūno svorio variacijos (p \< 0,001). Vidutinis Adelie rūšies patelė vidutiniškai svėrė 3,4 kg. Chinstrap rūšies pingvinai svėrė 158 gramais daugiau, skirtumas buvo statistiškai reikšmingas (SE = 64,24, t = 2,47, p = 0,01). Gentoo rūšies pingvinai buvo 1,3 kg sunkesni (SE = 54,42, t = 24,09, p \< 0,001). Vidutiniškai patinai tarp visų rūšių buvo sunkesni 674 gramais negu patelės (SE = 51,21, t = 13,17, p \< 0,001)."
+:::
+
+::: {.column width="40%"}
+### Kaip vizualizuoti?
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = sex)) + geom_boxplot() + labs(x = "Rūšis", y = "Kūno masė, g")
+```
+:::
+:::
+
+## Diagnostiniai įrankiai taip pat veikia!
+
+```{r, eval = FALSE, echo = TRUE}
+
+leveneTest(my.lm.3)
+
+shapiro.test(residuals(my.lm.3))
+
+p1 <- ggplot() + aes(sample = residuals(my.lm.3)) + stat_qq() + stat_qq_line(color = "red")
+
+p2 <- ggplot() + aes(x = residuals(my.lm.3)) + geom_density()
+
+p1 + p2
+
+```
+
 # Apibendrinimas
 
 ## Ką reikia žinoti?
