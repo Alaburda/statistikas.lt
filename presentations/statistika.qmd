@@ -2,6 +2,7 @@
 title: "Išmokti statistiką per 3 valandas"
 subtitle: "Imčių lyginimas tarp 2 ir daugiau grupių"
 author: "Paulius Alaburda"
+institute: "Statistikas, info@statistikas.lt"
 format: 
   revealjs:
     width: 1600
