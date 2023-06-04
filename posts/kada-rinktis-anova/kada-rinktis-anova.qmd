@@ -5,6 +5,7 @@ toc: true
 execute:
   warning: false
   message: false
+image: images/boxplot_example.png
 ---
 
 # Kaip rinktis ANOVA?
@@ -120,3 +121,16 @@ shapiro.test(my.anova.residuals$residuals)
 :::
 
 Deja, atitikmens Excel atveju nėra!
+
+
+# Kaip pavaizduoti ANOVA rezultatą?
+
+Tinkamiausias būdas vizualizuoti ANOVA rezultatą yra su stačiakampe diagrama:
+
+```{r}
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_boxplot()
+
+```
+
+

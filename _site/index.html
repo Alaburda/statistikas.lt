@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>statistikas.lt -</title>
+<title>Statistikas -</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -35,7 +35,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
@@ -63,20 +62,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-blog-post-listings .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-blog-post-listings'] = new List('listing-blog-post-listings', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -102,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">statistikas.lt</span>
+    <span class="navbar-title">Statistikas</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -112,17 +111,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="./about.html">
- <span class="menu-text">About</span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
-</i> 
- <span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
-</i> 
- <span class="menu-text"></span></a>
+ <span class="menu-text">Apie</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -153,310 +142,202 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </section>
 
-    <section class="services-section" id="services">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h2 class="anchored">Paslaugos</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="service-card">
-              <h3 class="anchored">Statistinės analizės</h3>
-              <p>Analizės pateikiamos Word formatu su grafikais, lentelėmis ir metodu aprašymu.</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="service-card">
-              <h3 class="anchored">Imties dydis</h3>
-              <p>Prieš tyrimą galime pateikti mažiausią reikalingą tiriamųjų skaičių, jog užsitikrintumėte pakankamai tikslius tyrimo rezultatus.</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="service-card">
-              <h3 class="anchored">Mokymai ir konsultacijos</h3>
-              <p>Mokymai grupėms ir individualios konsultacijos apie R, SPSS, Excel ir Power BI. Programos gali būti priderintos pagal poreikį.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<div class="content-block">
+  <section id="interactive-programming-without-compromise" class="hero-banner">
+  <h2>Paslaugos</h2>
+  </section>
 
- <section class="about-section" id="about">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h2 class="anchored">Kas yra Statistikas?</h2>
-        <p>Sveiki! Aš esu Paulius, su statistika dirbu nuo 2015 m. Pradėjau dirbti su SPSS, bet dabar visą savo darbą atlieku su R. Esu publikavęs ne vieną mokslinį straipsnį, todėl žinau, kokie yra pagrindiniai tyrėjų rūpesčiai rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes. Tikiuosi, jog galėsiu padėti!</p>
-        <a href="mailto:info@statistikas.lt" class="btn btn-primary">Susisiekti</a>
-      </div>
-    </div>
+  <div class="grid gap-4" style="padding-bottom: 60px">
+    <div class="feature g-col-12 g-col-sm-6 g-col-md-4">
+    <p><img src="images/icons/file-word-solid.svg" width="50" height="50" class="img-fluid"></p>
+    <h3>Statistinės analizės</h3>
+    <p>Analizės pateikiamos Word formatu su grafikais, lentelėmis ir metodų aprašymu.</p>
   </div>
-</section> 
 
+  <div class="feature g-col-12 g-col-sm-6 g-col-md-4">
+    <p><img src="images/icons/chart-simple-solid.svg" width="50" height="50" class="img-fluid"></p>
+    <h3>Imties dydis</h3>
+    <p>Gausite kelis galimus mažiausios imties scenarijus ir paaiškinimą, kaip imtis buvo apskaičiuota.</p>
+  </div>
 
-
-
-
-
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1681592329892" data-listing-reading-time-sort="2.31">
-<div class="thumbnail">
-<a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html">
-<div class="thumbnail-image">
-
+  <div class="feature g-col-12 g-col-sm-6 g-col-md-4">
+    <p><img src="images/icons/chalkboard-user-solid.svg" width="50" height="50" class="img-fluid"></p>
+    <h3>Konsultacijos</h3>
+    <p>Kai norite atlikti analizę pats, galime gyvai konsultuoti ir padėti!</p>
+  </div>
 </div>
-</a><p><a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html"></a></p>
+
+
+
+<div class="content-block">
+  <section id="blog-post-title" class="hero-banner">
+  <h2>Straipsniai ir įrašai apie statistiką</h2>
+  </section>
+
+<div id="listing-blog-post-listings" class="quarto-listing quarto-listing-container-grid">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
 </div>
-<div class="body">
-<a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html">
-<h3 class="no-anchor listing-title">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1685909012197" data-listing-reading-time-sort="2.41">
+<a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/kada-rinktis-anova/images/boxplot_example.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Kada rinktis ANOVA?
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
+</h5>
+<div class="card-text listing-description">
 ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui…
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1678741797626" data-listing-reading-time-sort="0.005">
-<div class="thumbnail">
-<a href="./posts/kada-rinktis-anova/kas-yra-split-mouth-design.html">
-<div class="thumbnail-image">
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
 
 </div>
-</a><p><a href="./posts/kada-rinktis-anova/kas-yra-split-mouth-design.html"></a></p>
 </div>
-<div class="body">
-<a href="./posts/kada-rinktis-anova/kas-yra-split-mouth-design.html">
-<h3 class="no-anchor listing-title">
-</h3>
-<div class="listing-subtitle">
-
 </div>
-<div class="listing-description">
-https://twitter.com/PhDemetri/status/1635340091664244742
 </div>
 </a>
 </div>
-<div class="metadata">
-<a href="./posts/kada-rinktis-anova/kas-yra-split-mouth-design.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1681422569328" data-listing-reading-time-sort="1.065">
-<div class="thumbnail">
-<a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1685909385762" data-listing-reading-time-sort="1.065">
+<a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Kada rinktis Kruskal-Wallis testą?
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
+</h5>
+<div class="card-text listing-description">
 Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal…
 </div>
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
+
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-<div class="metadata">
-<a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html"> </a>
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1681680268574" data-listing-reading-time-sort="0.6">
+<a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-img-bg" style="height: 150px;">
+&nbsp;
 </div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1681680268574" data-listing-reading-time-sort="0.6">
-<div class="thumbnail">
-<a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">
-<h3 class="no-anchor listing-title">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Kada rinktis Mann-Whitney testą?
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
+</h5>
+<div class="card-text listing-description">
 O ne, surinkome duomenis, kurie nepasiskirsto…
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1682153056802" data-listing-reading-time-sort="4.455">
-<div class="thumbnail">
-<p><a href="./posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html"> <img src="./posts/kada-rinktis-t-testa/images/image-1458940830.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html">
-<h3 class="no-anchor listing-title">
-Kaip naudoti Stjudento t-testą?
-</h3>
-<div class="listing-subtitle">
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
 
 </div>
-<div class="listing-description">
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1682194692993" data-listing-reading-time-sort="4.455">
+<a href="./posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/kada-rinktis-t-testa/images/image-1458940830.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Kaip naudoti Stjudento t-testą?
+</h5>
+<div class="card-text listing-description">
 Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus, todėl Stjudento t-testas yra vienas dažniausių taikomų statistinių testų. Jeigu atliekate…
 </div>
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
+
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-<div class="metadata">
-<a href="./posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1682114719341" data-listing-reading-time-sort="3.535">
-<div class="thumbnail">
-<p><a href="./posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.html"> <img src="./posts/kaip-apskaiciuoti-koreliacija/images/image-1260747057.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1684094427328" data-listing-reading-time-sort="1.685">
+<a href="./posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/kaip-apskaiciuoti-koreliacija/images/image-1260747057.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Kaip atlikti koreliaciją?
-</h3>
-<div class="listing-subtitle">
+</h5>
+<div class="card-text listing-description">
+Pearson’o koreliacijos koeficientą labai nesudėtinga paaiškinti: įsivaizduokime tiesę, kurią nubrėžtume su funkcija y = f(x):
+</div>
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
 
 </div>
-<div class="listing-description">
-Koreliacijos yra aprašomosios statistikos būdas apibūdinti santykį tarp dviejų…
+</div>
+</div>
 </div>
 </a>
 </div>
-<div class="metadata">
-<a href="./posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.html"> </a>
+<div class="g-col-1" data-index="5" data-listing-file-modified-sort="1679865685670" data-listing-reading-time-sort="0.605">
+<a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-img-bg" style="height: 150px;">
+&nbsp;
 </div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1679865685670" data-listing-reading-time-sort="0.605">
-<div class="thumbnail">
-<a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html">
-<h3 class="no-anchor listing-title">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Kaip atlikti Chi-kvadrato testą?
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
+</h5>
+<div class="card-text listing-description">
 Chi-kvadrato testas naudojamas nustatyti, ar yra statistiškai reikšminga asociacija tarp dviejų kategorinių…
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1680469683402" data-listing-reading-time-sort="0.22">
-<div class="thumbnail">
-<a href="./posts/mokymai/mokymai.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/mokymai/mokymai.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/mokymai/mokymai.html">
-<h3 class="no-anchor listing-title">
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-Kokius mokymus nori surengti?
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/mokymai/mokymai.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="news,code,analysis" data-listing-date-sort="1678572000000" data-listing-file-modified-sort="1678609522486" data-listing-reading-time-sort="0.05">
-<div class="thumbnail">
-<p><a href="./posts/post-with-code/index.html"> <img src="./posts/post-with-code/image.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/post-with-code/index.html">
-<h3 class="no-anchor listing-title">
-Post With Code
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-This is a post with executable code.
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/post-with-code/index.html">
-<div class="listing-date">
-Mar 12, 2023
-</div>
+<div class="card-attribution card-text-small start">
 <div class="listing-author">
-Harlow Malloc
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="news" data-listing-date-sort="1678312800000" data-listing-file-modified-sort="1678609462506" data-listing-reading-time-sort="0.16">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html"> <img src="./posts/welcome/thumbnail.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/welcome/index.html">
-<h3 class="no-anchor listing-title">
-Welcome To My Blog
-</h3>
-<div class="listing-subtitle">
 
 </div>
-<div class="listing-description">
-This is the first post in a Quarto blog. Welcome!
+</div>
+</div>
 </div>
 </a>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html">
-<div class="listing-date">
-Mar 9, 2023
-</div>
-<div class="listing-author">
-Tristan O’Malley
-</div>
-</a>
-</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+
+ <section class="about-section" id="about">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2>Kas yra Statistikas?</h2>
+        <p>Sveiki! 👋 Aš esu Paulius, su statistika dirbu nuo 2015 m. Turiu penkerius metus darbo patirties su moksliniais tyrimais, todėl gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes. Tikiuosi, jog galėsiu jums padėti!</p>
+        <a href="mailto:info@statistikas.lt" class="btn btn-primary">Susisiekti</a>
+        <a href="./about.html" class="btn btn-primary">Apie Statistiką</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+</div></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -477,13 +358,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const clipboard = new window.ClipboardJS('.code-copy-button', {
     target: function(trigger) {
       return trigger.previousElementSibling;

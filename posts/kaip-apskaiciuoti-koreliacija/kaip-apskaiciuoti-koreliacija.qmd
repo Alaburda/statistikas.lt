@@ -2,11 +2,15 @@
 title: "Kaip atlikti koreliaciją?"
 editor: visual
 reference-location: document
-warning: false
-title-block-banner: red
 ---
 
-Koreliacijos yra aprašomosios statistikos būdas apibūdinti santykį tarp dviejų kintamųjų. Koreliacijos yra 3 rūšių: Pearson, Spearman ir Kendall. Kendall ir Spearman tarpusavyje metodiškai veikia taip pat, todėl padengsime tik Pearson ir Spearman koreliacijas.
+```{r}
+
+
+
+
+
+```
 
 # Pearson koreliacijos koeficientas
 
@@ -16,8 +20,6 @@ Pearson'o koreliacijos koeficientą labai nesudėtinga paaiškinti: įsivaizduok
 
 library(ggplot2)
 library(patchwork)
-library(knitr)
-library(dplyr)
 
 perfect_line <- data.frame(y = 1:10, x = 1:10)
 
@@ -50,20 +52,20 @@ cor.test(iris$Sepal.Length, iris$Sepal.Width)
 
 ```
 
-Koreliacijos koeficientas yra -0.118. Statistinio testo rezultatai šiuo atveju nėra visiškai sąžiningi, nes tai yra tiesinės regresijos rezultatai. Juos laisvai galima raportuoti, bet tai parodo, jog tikriausiai norime tiesiog atlikti tiesinę regresiją.
+Statistinio testo rezultatai šiuo atveju nėra visiškai sąžiningi, nes tai yra tiesinės regresijos rezultatai. Juos laisvai galima raportuoti, bet tai parodo, jog tikriausiai norime tiesiog atlikti tiesinę regresiją.
 
 ## Excel
 
-Excel grąžina tik patį koreliacijos koeficientą, bet su XLMiner Toolpak galima lyginti kelis stulpelius vienu metu! Šiuo atveju lygindami stulpelius gavome stiprų teigiamą koreliacijos koeficientą 0,926.
+Excel grąžina tik patį koreliacijos koeficientą, bet su XLMiner Toolpak galima lyginti kelis stulpelius vienu metu!
 
 ![](images/Recording%202023-04-20%20232338.gif)
 :::
 
 # Spearman koreliacijos koeficientas
 
-Pearson'o koreliacijos pagrindinis trūkumas - jis tinkamas tiesiniams ryšiams. Kitaip tariant, koreliacijos koeficientas nusako, kaip gerai mūsų dviejų kintamųjų matavimai nugula aplinkui tobulą tiesę (r = 1.0). Nemažai koreliacijų mūsų aplinkoje nėra tiesiškos, pavyzdžiui, truputis pastangų rengiantis egzaminui turės didelę įtaką pažymiui (tarkim, nuo 4 iki 7), bet papildomos pastangos padidins pažymį tik truputį (nuo 7 iki 8), Pearson'o koreliacijos koeficientas nepateiks teisingo įverčio. Tokiu atveju turime naudoti Spearman'o koreliaciją.
+Pearson'o koreliacijos pagrindinis trūkumas - jis tinkamas tiesiniams ryšiams. Kitaip tariant, koreliacijos koeficientas nusako, kaip gerai mūsų dviejų kintamųjų matavimai nugula aplinkui tobulą tiesę (r = 1.0). Tais atvejais, kai ryšys nėra tiesiškas, pavyzdžiui, truputis pastangų rengiantis egzaminui turės didelę įtaką pažymiui (tarkim, nuo 4 iki 7), bet papildomos pastangos padidins pažymį tik truputį (nuo 7 iki 8), Pearson'o koreliacijos koeficientas nepateiks teisingo įverčio. Tokiu atveju turime naudoti Spearman'o koreliaciją.
 
-Spearman koreliacija yra labai analogiška Wilcoxon dviejų imčių testui arba Kruskal-Wallis testui. Pirma, mūsų duomenų rinkinys yra paverčiamas į rangines reikšmes, o tada - skaičiuojamas gautų rangų koreliacijos koeficientas. Excel negali apskaičiuoti rangų koreliacijos, todėl turime pasikliauti R:
+Naudodami koreliacijas tikriausiai vengiame gudrių statistinių modelių, todėl šiuo atveju Spearman koreliacija yra labai analogiška Wilcoxon dviejų imčių testui arba Kruskal-Wallis testui. Pirma, mūsų duomenų rinkinys yra paverčiamas į rangines reikšmes, o tada - skaičiuojamas gautų rangų koreliacijos koeficientas.
 
 ```{r}
 
@@ -73,52 +75,4 @@ cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
 
 # Kaip raportuoti koreliaciją?
 
-Literatūroje galima rasti, jog koreliacijas galima grubiai skirstyti į silpnas, vidutines ir stiprias. Toks skirstymas priklauso nuo tyrimų krypties. Pavyzdžiui, sociologijoje bei psichologijoje 0,4 koreliacija jau būtų gana įspūdinga, nors dažnai literatūroje tai bus laikome vidutiniškai stipria koreliacija. Nepaisant konteksto, bendras skirstymas atrodo taip:
-
--   0-0,19 - labai silpna koreliacija
-
--   0,2-0,39 - silpna koreliacija
-
--   0,4-0,59 - vidutinė koreliacija
-
--   0,6-0,79 - stipri koreliacija
-
--   0,8-1 - labai stipri koreliacija
-
-Pavyzdžiui, aukščiau esantį Spearman testą galėtume apibūdinti taip:
-
-::: {.callout-tip appearance="simple" icon="false"}
-Ranginė koreliacija tarp taurėlapių pločio ir taurėlapių ilgio buvo neigiama ir labai silpna (r = -0,167, S = 656283, p = 0.04).
-:::
-
-Grafiškai koreliacijas labai rekomenduoju pateikti, nes tai yra geriausias būdas įvertinti, ar teisingai buvo pasirinktas Spearman arba Pearson koreliacijos testas:
-
-```{r}
-
-
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Kuri yra neteisinga - pašnekėkime apie Simpsono paradoksą")
-
-```
-
-# Simpsono paradoksas
-
-Koreliacijoms grafinis atvaizdavimas yra kritiškai svarbus. Aukščiau buvęs grafikas rodo taurėlapio pločio ir ilgio santykį. Įprastai taurėlapiai turi standartinę formą, kuri smarkiai nekinta priklausomai nuo dydžio. Dėl to tikėtumėmės, jog koreliacija bus stipri. Antra, grafike aukščiau galima įžvelgti subgrupes. Tai leidžia įtarti, jog susiduriame su [Simpsono paradoksu](https://en.wikipedia.org/wiki/Simpson%27s_paradox), kuomet skirtingo mąsto grupės sudėjus kartu gali invertuoti koreliaciją. Jeigu pridėtume rūšies parametrą nuspalvinti savo taškus, tai ir pamatytume:
-
-```{r}
-
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point() + geom_smooth(method = "lm") + labs(title = "Koreliacija tarp taurėlapių pločio ir ilgio", subtitle = "Atsižvelgdami į rūšį gauname teisingą tendenciją")
-
-```
-
-Apskaičiuoti subgrupių koeficientus galime keliais būdais: arba su R naudoti `group_by()` funkciją, arba atlikti 3 koreliacijas filtruojant duomenis ranka. Taip atrodo kodas, jeigu norime apskaičiuoti koreliaciją subgrupėms:
-
-```{r}
-
-iris %>% 
-  group_by(Species) %>% 
-  summarise(stuff = cor(.data$Sepal.Length, .data$Sepal.Width)) %>% 
-  knitr::kable()
-
-```
-
-Smulki korekcija apvertė ženklą ir padarė, jog koreliacija iš silpnos taptų vidutinė! Jeigu atlikdami kitus testus galime išsiversti be grafikų, koreliacijų pateikimas įgija prasmę, jeigu pateikiame koreliacijas ir tekste, ir grafiškai.
+# 

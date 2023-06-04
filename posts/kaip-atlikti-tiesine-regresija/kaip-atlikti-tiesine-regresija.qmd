@@ -1,0 +1,31 @@
+---
+title: "Kaip atlikti tiesinę regresiją?"
+editor: visual
+---
+
+# Trumpai
+
+Naudokite tiesinę regresiją arba koreliaciją, kai norite sužinoti sąsają tarp dviejų tolydžių kintamųjų[^1]: tai gali būti arba sąsajos stiprumas (r^2^), arba absoliutus priklausomo kintamojo pokytis didėjant nepriklausomam kintamajam.
+
+[^1]: Taip, tiesinė regresija gali priimti bet kokio tipo duomenis kaip priklausomą ir nepriklausomą kintamąjį 😜
+
+# Kada rinktis tiesinę regresiją?
+
+Tiesinę regresiją reikėtų rinktis, kai turime 2 tolydžius kintamuosius: suvartotą maisto kiekį, svorį, vaistų dozę, kraujospūdį, oro temperatūrą. Atlikdami tiesinę regresiją sužinome 3 dalykus: dviejų kintamųjų sąsają, šios sąsajos dydį ir tiesę, kuri geriausiai apibūdina dviejų kintamųjų sąsają. Tiesė mums padeda prognozuoti, kokios būtų priklausomo kintamojo reikšmės, jeigu pamatuojame nepriklausomą kintamąjį.
+
+Taip pat tiesinė regresija gali būti tinkamas įrankis, jeigu norite apibūdinti absoliutų vidutinį pokytį arba įvertinti, kaip gerai paaiškina.
+
+# Kaip atlikti ir interpretuoti tiesinę regresiją?
+
+::: panel-tabset
+## R
+
+```{r}
+
+my.lm <- lm(data = iris, Sepal.Length ~ Sepal.Width)
+
+summary(my.lm)
+```
+
+## Excel
+:::

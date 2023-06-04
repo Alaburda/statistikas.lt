@@ -1,2 +1,0 @@
-weird_data = c(rnorm(10000), exp(rnorm(10000)), runif(10000, min=-3, max=-2))
-hist(weird_data, breaks=200, xlim=c(-4, 10))

@@ -1,6 +1,7 @@
 ---
 title: "Kada rinktis Kruskal-Wallis testą?"
 editor: visual
+image: images/halfeye_boxplot_sample.png
 ---
 
 # Kada taikyti Kruskal-Wallis testą?

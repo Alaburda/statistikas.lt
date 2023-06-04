@@ -24,7 +24,7 @@ Attaching package: ‘dplyr’
 
 "
 "0","library(ggplot2)"
-"0",""
+"2","Warning: package ‘ggplot2’ was built under R version 4.2.3"
 "0","my.anova <- aov(data = iris, Sepal.Length ~ Species)"
 "0",""
 "0","#my.anova <- iris %>% "

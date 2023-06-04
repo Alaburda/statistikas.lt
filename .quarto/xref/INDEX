@@ -49,5 +49,14 @@
   },
   "presentations/statistika.qmd": {
     "statistika.html": "75b8a685"
+  },
+  "posts/kaip-atlikti-literaturos-apzvalga/kaip-atlikti-literaturos-apzvalga.qmd": {
+    "kaip-atlikti-literaturos-apzvalga.html": "593922b3"
+  },
+  "posts/kaip-atlikti-tiesine-regresija/kaip-atlikti-tiesine-regresija.qmd": {
+    "kaip-atlikti-tiesine-regresija.html": "e2bc219b"
+  },
+  "posts/kaip-pasirengti-rstudio/kaip-pasirengti-rstudio.qmd": {
+    "kaip-pasirengti-rstudio.html": "c36083c0"
   }
 }

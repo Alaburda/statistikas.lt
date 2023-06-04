@@ -3,12 +3,14 @@
     "listing": "/index.html",
     "items": [
       "/posts/kada-rinktis-anova/kada-rinktis-anova.html",
-      "/posts/kada-rinktis-anova/kas-yra-split-mouth-design.html",
       "/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html",
       "/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html",
       "/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html",
       "/posts/kaip-apskaiciuoti-koreliacija/kaip-apskaiciuoti-koreliacija.html",
       "/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html",
+      "/posts/kaip-atlikti-literaturos-apzvalga/kaip-atlikti-literaturos-apzvalga.html",
+      "/posts/kaip-atlikti-tiesine-regresija/kaip-atlikti-tiesine-regresija.html",
+      "/posts/kaip-pasirengti-rstudio/kaip-pasirengti-rstudio.html",
       "/posts/mokymai/mokymai.html",
       "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"

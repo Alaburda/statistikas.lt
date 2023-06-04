@@ -115,11 +115,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script><style>
-    .quarto-title-block .quarto-title-banner {
-      background: red;
-    }
-    </style>
+}</script>
 </head>
 <body class="nav-fixed">
 
@@ -174,12 +170,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><p>Koreliacijos yra aprašomosios statistikos būdas apibūdinti santykį tarp dviejų kintamųjų. Koreliacijos yra 3 rūšių: Pearson, Spearman ir Kendall. Kendall ir Spearman tarpusavyje metodiškai veikia taip pat, todėl padengsime tik Pearson ir Spearman koreliacijas.</p>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="cell">
+
+</div>
 <section id="pearson-koreliacijos-koeficientas" class="level1 page-columns page-full"><h1>Pearson koreliacijos koeficientas</h1>
 <p>Pearson’o koreliacijos koeficientą labai nesudėtinga paaiškinti: įsivaizduokime tiesę, kurią nubrėžtume su funkcija y = f(x):</p>
 <div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'patchwork' was built under R version 4.2.3</code></pre>
+</div>
 <div class="cell-output-display">
-<p><img src="kaip-apskaiciuoti-koreliacija_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<p><img src="kaip-apskaiciuoti-koreliacija_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Nelendant į matematines detales, kuo arčiau mūsų matavimai yra arčiau šios linijos, tuo koreliacijos koeficientas bus didesnis. Priešingai, jeigu taškai yra arčiau linijos, kuomet y reikšmės mažėja didėjant x reikšmėms, tuo koreliacijos koeficientas bus mažesnis. Koreliacijos koeficientas 1,0 ir -1,0 yra šios linijos.</p>
@@ -199,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>R <code><a href="https://rdrr.io/r/stats/cor.html">cor()</a></code> funkcija leidžia lyginti kelis stulpelis iškart, o cor.test() taip pat pateikia statistinio testo rezultatus.</p>
 <div class="cell">
-<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -214,20 +218,24 @@ sample estimates:
 -0.1175698 </code></pre>
 </div>
 </div>
-<p>Koreliacijos koeficientas yra -0.118. Statistinio testo rezultatai šiuo atveju nėra visiškai sąžiningi, nes tai yra tiesinės regresijos rezultatai. Juos laisvai galima raportuoti, bet tai parodo, jog tikriausiai norime tiesiog atlikti tiesinę regresiją.</p>
+<p>Statistinio testo rezultatai šiuo atveju nėra visiškai sąžiningi, nes tai yra tiesinės regresijos rezultatai. Juos laisvai galima raportuoti, bet tai parodo, jog tikriausiai norime tiesiog atlikti tiesinę regresiją.</p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p>Excel grąžina tik patį koreliacijos koeficientą, bet su XLMiner Toolpak galima lyginti kelis stulpelius vienu metu! Šiuo atveju lygindami stulpelius gavome stiprų teigiamą koreliacijos koeficientą 0,926.</p>
+<p>Excel grąžina tik patį koreliacijos koeficientą, bet su XLMiner Toolpak galima lyginti kelis stulpelius vienu metu!</p>
 <p><img src="images/Recording 2023-04-20 232338.gif" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </section><section id="spearman-koreliacijos-koeficientas" class="level1"><h1>Spearman koreliacijos koeficientas</h1>
-<p>Pearson’o koreliacijos pagrindinis trūkumas - jis tinkamas tiesiniams ryšiams. Kitaip tariant, koreliacijos koeficientas nusako, kaip gerai mūsų dviejų kintamųjų matavimai nugula aplinkui tobulą tiesę (r = 1.0). Nemažai koreliacijų mūsų aplinkoje nėra tiesiškos, pavyzdžiui, truputis pastangų rengiantis egzaminui turės didelę įtaką pažymiui (tarkim, nuo 4 iki 7), bet papildomos pastangos padidins pažymį tik truputį (nuo 7 iki 8), Pearson’o koreliacijos koeficientas nepateiks teisingo įverčio. Tokiu atveju turime naudoti Spearman’o koreliaciją.</p>
-<p>Spearman koreliacija yra labai analogiška Wilcoxon dviejų imčių testui arba Kruskal-Wallis testui. Pirma, mūsų duomenų rinkinys yra paverčiamas į rangines reikšmes, o tada - skaičiuojamas gautų rangų koreliacijos koeficientas. Excel negali apskaičiuoti rangų koreliacijos, todėl turime pasikliauti R:</p>
+<p>Pearson’o koreliacijos pagrindinis trūkumas - jis tinkamas tiesiniams ryšiams. Kitaip tariant, koreliacijos koeficientas nusako, kaip gerai mūsų dviejų kintamųjų matavimai nugula aplinkui tobulą tiesę (r = 1.0). Tais atvejais, kai ryšys nėra tiesiškas, pavyzdžiui, truputis pastangų rengiantis egzaminui turės didelę įtaką pažymiui (tarkim, nuo 4 iki 7), bet papildomos pastangos padidins pažymį tik truputį (nuo 7 iki 8), Pearson’o koreliacijos koeficientas nepateiks teisingo įverčio. Tokiu atveju turime naudoti Spearman’o koreliaciją.</p>
+<p>Naudodami koreliacijas tikriausiai vengiame gudrių statistinių modelių, todėl šiuo atveju Spearman koreliacija yra labai analogiška Wilcoxon dviejų imčių testui arba Kruskal-Wallis testui. Pirma, mūsų duomenų rinkinys yra paverčiamas į rangines reikšmes, o tada - skaičiuojamas gautų rangų koreliacijos koeficientas.</p>
 <div class="cell">
-<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>, method <span class="op">=</span> <span class="st">"spearman"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>, method <span class="op">=</span> <span class="st">"spearman"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(iris$Sepal.Length, iris$Sepal.Width, method =
+"spearman"): Cannot compute exact p-value with ties</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
 <pre><code>
     Spearman's rank correlation rho
 
@@ -240,73 +248,7 @@ sample estimates:
 </div>
 </div>
 </section><section id="kaip-raportuoti-koreliaciją" class="level1"><h1>Kaip raportuoti koreliaciją?</h1>
-<p>Literatūroje galima rasti, jog koreliacijas galima grubiai skirstyti į silpnas, vidutines ir stiprias. Toks skirstymas priklauso nuo tyrimų krypties. Pavyzdžiui, sociologijoje bei psichologijoje 0,4 koreliacija jau būtų gana įspūdinga, nors dažnai literatūroje tai bus laikome vidutiniškai stipria koreliacija. Nepaisant konteksto, bendras skirstymas atrodo taip:</p>
-<ul>
-<li><p>0-0,19 - labai silpna koreliacija</p></li>
-<li><p>0,2-0,39 - silpna koreliacija</p></li>
-<li><p>0,4-0,59 - vidutinė koreliacija</p></li>
-<li><p>0,6-0,79 - stipri koreliacija</p></li>
-<li><p>0,8-1 - labai stipri koreliacija</p></li>
-</ul>
-<p>Pavyzdžiui, aukščiau esantį Spearman testą galėtume apibūdinti taip:</p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Ranginė koreliacija tarp taurėlapių pločio ir taurėlapių ilgio buvo neigiama ir labai silpna (r = -0,167, S = 656283, p = 0.04).</p>
-</div>
-</div>
-<p>Grafiškai koreliacijas labai rekomenduoju pateikti, nes tai yra geriausias būdas įvertinti, ar teisingai buvo pasirinktas Spearman arba Pearson koreliacijos testas:</p>
-<div class="cell">
-<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Koreliacija tarp taurėlapių pločio ir ilgio"</span>, subtitle <span class="op">=</span> <span class="st">"Kuri yra neteisinga - pašnekėkime apie Simpsono paradoksą"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="kaip-apskaiciuoti-koreliacija_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</section><section id="simpsono-paradoksas" class="level1"><h1>Simpsono paradoksas</h1>
-<p>Koreliacijoms grafinis atvaizdavimas yra kritiškai svarbus. Aukščiau buvęs grafikas rodo taurėlapio pločio ir ilgio santykį. Įprastai taurėlapiai turi standartinę formą, kuri smarkiai nekinta priklausomai nuo dydžio. Dėl to tikėtumėmės, jog koreliacija bus stipri. Antra, grafike aukščiau galima įžvelgti subgrupes. Jeigu pridėti rūšies parametrą nuspalvinti savo taškus, tai ir pamatytume:</p>
-<div class="cell">
-<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Koreliacija tarp taurėlapių pločio ir ilgio"</span>, subtitle <span class="op">=</span> <span class="st">"Atsižvelgdami į rūšį gauname teisingą tendenciją"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="kaip-apskaiciuoti-koreliacija_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Apskaičiuoti subgrupių koeficientus galime keliais būdais: arba su R naudoti <code>group_by()</code> funkciją, arba atlikti 3 koreliacijas filtruojant duomenis ranka. Taip atrodo kodas, jeigu norime apskaičiuoti koreliaciją subgrupėms:</p>
-<div class="cell">
-<details><summary>Rodyti kodą</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>stuff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<table class="table table-sm table-striped">
-<thead><tr class="header">
-<th style="text-align: left;">Species</th>
-<th style="text-align: right;">stuff</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">setosa</td>
-<td style="text-align: right;">0.7425467</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">versicolor</td>
-<td style="text-align: right;">0.5259107</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">virginica</td>
-<td style="text-align: right;">0.4572278</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Smulki korekcija apvertė ženklą ir padarė, jog koreliacija iš silpnos taptų vidutinė!</p>
+</section><section id="section" class="level1"><h1></h1>
 
 
 </section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>

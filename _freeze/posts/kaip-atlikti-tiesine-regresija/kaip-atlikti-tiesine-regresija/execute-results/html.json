@@ -1,0 +1,14 @@
+{
+  "hash": "73876a083ff419705d1ba792dbaa85c9",
+  "result": {
+    "markdown": "---\ntitle: \"Kaip atlikti tiesinę regresiją?\"\neditor: visual\n---\n\n\n# Trumpai\n\nNaudokite tiesinę regresiją arba koreliaciją, kai norite sužinoti sąsają tarp dviejų tolydžių kintamųjų[^1]: tai gali būti arba sąsajos stiprumas (r^2^), arba absoliutus priklausomo kintamojo pokytis didėjant nepriklausomam kintamajam.\n\n[^1]: Taip, tiesinė regresija gali priimti bet kokio tipo duomenis kaip priklausomą ir nepriklausomą kintamąjį 😜\n\n# Kada rinktis tiesinę regresiją?\n\nTiesinę regresiją reikėtų rinktis, kai turime 2 tolydžius kintamuosius: suvartotą maisto kiekį, svorį, vaistų dozę, kraujospūdį, oro temperatūrą. Atlikdami tiesinę regresiją sužinome 3 dalykus: dviejų kintamųjų sąsają, šios sąsajos dydį ir tiesę, kuri geriausiai apibūdina dviejų kintamųjų sąsają. Tiesė mums padeda prognozuoti, kokios būtų priklausomo kintamojo reikšmės, jeigu pamatuojame nepriklausomą kintamąjį.\n\nTaip pat tiesinė regresija gali būti tinkamas įrankis, jeigu norite apibūdinti absoliutų vidutinį pokytį arba įvertinti, kaip gerai paaiškina.\n\n# Kaip atlikti ir interpretuoti tiesinę regresiją?\n\n::: panel-tabset\n## R\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmy.lm <- lm(data = iris, Sepal.Length ~ Sepal.Width)\n\nsummary(my.lm)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\nCall:\nlm(formula = Sepal.Length ~ Sepal.Width, data = iris)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-1.5561 -0.6333 -0.1120  0.5579  2.2226 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)   6.5262     0.4789   13.63   <2e-16 ***\nSepal.Width  -0.2234     0.1551   -1.44    0.152    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.8251 on 148 degrees of freedom\nMultiple R-squared:  0.01382,\tAdjusted R-squared:  0.007159 \nF-statistic: 2.074 on 1 and 148 DF,  p-value: 0.1519\n```\n:::\n:::\n\n\n## Excel\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
