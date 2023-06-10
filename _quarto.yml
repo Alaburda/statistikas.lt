@@ -3,11 +3,25 @@ project:
 
 website:
   title: "Statistikas"
+  description: "Patikimos statistinės analizės"
+  favicon: favicon.png
+  image: card_image.png
   navbar:
     right:
       - about.qmd
+  twitter-card:
+    image: card_image.png
+    creator: "@p_alab"
+    card-style: summary_large_image
+  site-url: https://statistikas.lt
+  google-analytics: "G-DT3Y3KGPJQ"
 format:
   html:
+    author: "Paulius Alaburda"
+    twitter-card:
+      creator: "@p_alab"
+      image: "https://statistikas.lt/card_image.png"
+      card-style: summary_large_image
     theme:
       - html/statistikas.scss
     toc: false
@@ -19,6 +33,9 @@ format:
     reference-location: margin
     footnotes-hover: true
     highlight-style: monokai
+    include-in-header:
+      file: html/messenger.js
+
 
 
 
