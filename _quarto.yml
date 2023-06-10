@@ -34,7 +34,7 @@ format:
     footnotes-hover: true
     highlight-style: monokai
     include-in-header:
-      file: html/messenger.js
+      file: html/messenger.html
 
 
 
