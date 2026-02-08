@@ -425,11 +425,20 @@ font-style: inherit;">|&gt;</span></span>
 background-color: null;
 font-style: inherit;">adjust_y_axis_title</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Taurėlapio ilgis (cm)"</span>)</span></code></pre></div>
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_size</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -502,11 +511,20 @@ background-color: null;
 font-style: inherit;">|&gt;</span></span>
 <span id="cb5-9">  <span class="fu" style="color: #4758AB;
 background-color: null;
+font-style: inherit;">adjust_size</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
 font-style: inherit;">remove_legend</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
