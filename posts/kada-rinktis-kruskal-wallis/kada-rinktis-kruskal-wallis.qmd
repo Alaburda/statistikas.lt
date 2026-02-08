@@ -1,0 +1,62 @@
+---
+title: "Kada rinktis Kruskal-Wallis testą?"
+description: "Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti."
+date: "2023-06-04"
+categories: [statistika, neparametriniai-testai, R]
+image: "images/halfeye_boxplot_sample.png"
+editor: visual
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+# Kada taikyti Kruskal-Wallis testą?
+
+Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.
+
+::: {.callout-tip}
+## Kada rinktis Kruskal-Wallis?
+- Kai ANOVA prielaidos nėra patenkinamos
+- Kai duomenys yra ranginiai
+- Kai imtys yra mažos ir sunku patikrinti normalumą
+:::
+
+# Kaip atlikti Kruskal-Wallis testą?
+
+```{r}
+library(ggplot2)
+
+# Naudojame iris duomenis
+kruskal.test(Sepal.Length ~ Species, data = iris)
+```
+
+# Kaip raportuoti Kruskal-Wallis testą?
+
+Štai šablonas, kurį galite naudoti:
+
+> "Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p < 0.001)."
+
+# Post-hoc testai
+
+Jei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:
+
+```{r}
+pairwise.wilcox.test(iris$Sepal.Length, iris$Species, p.adjust.method = "BH")
+```
+
+# Kaip vizualizuoti Kruskal-Wallis testą?
+
+```{r}
+#| fig-height: 5
+
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot() +
+  labs(
+    title = "Taurėlapių ilgio palyginimas tarp rūšių",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```

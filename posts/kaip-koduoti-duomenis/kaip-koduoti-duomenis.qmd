@@ -1,0 +1,106 @@
+---
+title: "Kaip koduoti duomenis?"
+description: "Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius."
+date: "2023-02-15"
+categories: [duomenų-paruošimas, R, pradedantiesiems]
+editor: visual
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.
+
+# Kintamųjų tipai
+
+Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:
+
+| Tipas | Aprašymas | Pavyzdžiai |
+|-------|-----------|------------|
+| **Kategorinis** | Grupės, kurios neturi tvarkos | Lytis, spalva, miestas |
+| **Ranginis** | Grupės su tvarka | Išsilavinimas, Likert skalė |
+| **Tolydus** | Skaičiai su prasme | Amžius, svoris, ūgis |
+
+# Kategorinių kintamųjų kodavimas
+
+R kalboje kategoriniai kintamieji turėtų būti `factor` tipo:
+
+```{r}
+library(dplyr)
+
+duomenys <- data.frame(
+  lytis = c("V", "M", "V", "M", "V"),
+  amzius = c(25, 32, 45, 28, 51)
+)
+
+# Paverčiame į faktorių
+duomenys$lytis <- factor(duomenys$lytis, 
+                          levels = c("V", "M"),
+                          labels = c("Vyras", "Moteris"))
+
+str(duomenys)
+```
+
+# Ranginių kintamųjų kodavimas
+
+Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:
+
+```{r}
+issilavinimas <- c("Vidurinis", "Aukštasis", "Pagrindinis", "Aukštasis", "Vidurinis")
+
+issilavinimas_factor <- factor(
+  issilavinimas,
+  levels = c("Pagrindinis", "Vidurinis", "Aukštasis"),
+  ordered = TRUE
+)
+
+issilavinimas_factor
+```
+
+::: {.callout-tip}
+## Patarimas
+Naudokite `ordered = TRUE` ranginiams kintamiesiems - tai leis R teisingai interpretuoti kintamojo prigimtį!
+:::
+
+# Dummy kodavimas
+
+Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:
+
+```{r}
+# model.matrix automatiškai sukuria dummy kintamuosius
+model.matrix(~ lytis, data = duomenys)
+```
+
+# Dažnos klaidos
+
+::: {.callout-warning}
+## Ko vengti?
+1. **Nekoduoti tekstinių kintamųjų** - R juos traktuos kaip `character`, ne `factor`
+2. **Neteisingai nurodyti lygius** - tai gali pakeisti bazinę kategoriją regresijoje
+3. **Naudoti skaičius kategoriniams kintamiesiems** - tai gali sukelti klaidų interpretacijoje
+:::
+
+# Praktinis pavyzdys
+
+```{r}
+library(ggplot2)
+
+# Sukuriame duomenis su teisingai koduotais kintamaisiais
+apklausa <- data.frame(
+  amzius = sample(18:65, 100, replace = TRUE),
+  pasitenkinimas = factor(
+    sample(1:5, 100, replace = TRUE),
+    levels = 1:5,
+    labels = c("Labai nepatenkintas", "Nepatenkintas", "Neutralus", 
+               "Patenkintas", "Labai patenkintas"),
+    ordered = TRUE
+  )
+)
+
+ggplot(apklausa, aes(x = pasitenkinimas)) +
+  geom_bar(fill = "#4F46E5") +
+  labs(title = "Pasitenkinimo pasiskirstymas", x = "", y = "Skaičius") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```

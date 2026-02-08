@@ -1,0 +1,51 @@
+---
+title: "Apie"
+image: images/paulius.jpg
+about:
+  template: trestles
+  image-width: 20em
+  image-shape: rounded
+  links:
+    - icon: envelope
+      text: El. paštas
+      href: mailto:info@statistikas.lt
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/paulius-alaburda/
+    - icon: github
+      text: GitHub
+      href: https://github.com/Alaburda
+---
+
+## Sveiki! 👋 
+
+Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.
+
+Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes.
+
+## Mano patirtis
+
+- **Statistinė analizė** – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas
+- **Duomenų vizualizacija** – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms
+- **Moksliniai tyrimai** – klinikiniųtyrimų statistika, meta-analizės, sisteminės apžvalgos
+- **Konsultavimas** – pagalba planuojant tyrimus, interpretuojant rezultatus
+
+## Įrankiai
+
+- **R** – pagrindinis įrankis statistinei analizei ir vizualizacijai
+- **Python** – duomenų apdorojimas ir mašininis mokymasis
+- **SPSS** – klasikinis statistikos įrankis
+- **Excel** – greiti skaičiavimai ir duomenų paruošimas
+
+## Kodėl rinktis mane?
+
+1. **Patirtis** – daugiau nei 200 sėkmingai įgyvendintų projektų
+2. **Aiškumas** – rezultatus pateikiu suprantamai, ne tik skaičiais
+3. **Lankstumas** – prisitaikau prie jūsų poreikių ir terminų
+4. **Konfidencialumas** – jūsų duomenys yra saugūs
+
+---
+
+### Susisiekite
+
+Turite klausimų? Rašykite el. paštu [info@statistikas.lt](mailto:info@statistikas.lt) arba susisiekite per [LinkedIn](https://www.linkedin.com/in/paulius-alaburda/).

@@ -1,0 +1,81 @@
+---
+title: "Kada rinktis Mann-Whitney testą?"
+description: "O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Sužinokite, kada ir kaip taikyti Mann-Whitney testą."
+date: "2023-04-17"
+categories: [statistika, neparametriniai-testai, R]
+editor: visual
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.
+
+# Kada taikyti Mann-Whitney testą?
+
+Mann-Whitney testą reikėtų rinktis šiais atvejais:
+
+- **Duomenys nepasiskirsto pagal normalųjį skirstinį** - tai dažniausia priežastis
+- **Turime ranginius duomenis** - pvz., Likert skalę
+- **Turime mažas imtis** - kai n < 30 ir sunku patikrinti normalumą
+
+::: {.callout-note}
+## Svarbu
+Mann-Whitney testas lygina ranginius vidurkius, ne aritmetinius vidurkius!
+:::
+
+# Kaip atlikti Wilcoxon testą?
+
+```{r}
+library(ggplot2)
+
+# Naudojame iris duomenis
+wilcox.test(
+  Sepal.Length ~ Species, 
+  data = iris, 
+  subset = Species %in% c("setosa", "versicolor")
+)
+```
+
+# Kaip interpretuoti rezultatus?
+
+Mann-Whitney testo rezultate svarbu:
+
+1. **W statistika** - testo statistika
+2. **p reikšmė** - jei < 0.05, skirtumas yra statistiškai reikšmingas
+
+# Kaip raportuoti Mann-Whitney testą?
+
+Štai šablonas, kurį galite naudoti:
+
+> "Atlikus Mann-Whitney U testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis nei versicolor rūšies (U = 23.5, p < 0.001)."
+
+# Porinių imčių Wilcoxon testas
+
+Jei turime priklausomas (porines) imtis, naudojame `paired = TRUE` parametrą:
+
+```{r}
+# Pavyzdys su poriniais duomenimis
+prieš <- c(120, 125, 130, 135, 140)
+po <- c(115, 118, 125, 128, 132)
+
+wilcox.test(prieš, po, paired = TRUE)
+```
+
+# Vizualizacija
+
+```{r}
+iris_subset <- iris[iris$Species %in% c("setosa", "versicolor"), ]
+
+ggplot(iris_subset, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot() +
+  labs(
+    title = "Taurėlapių ilgio palyginimas",
+    subtitle = "Mann-Whitney testas",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```

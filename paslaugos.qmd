@@ -1,0 +1,125 @@
+---
+title: "Paslaugos"
+subtitle: "Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui"
+toc: true
+toc-location: left
+page-layout: article
+---
+
+## Statistinės analizės
+
+Atlieku pilną duomenų analizę nuo A iki Z. Gausite detalią ataskaitą su visais rezultatais, grafikais ir lentelėmis, paruoštą įtraukti į jūsų darbą.
+
+### Ką gausite:
+
+- **Aprašomąją statistiką** – vidurkiai, standartiniai nuokrypiai, pasiskirstymas
+- **Hipotezių tikrinimą** – t-testai, ANOVA, chi-kvadrato testai ir kt.
+- **Regresinę analizę** – tiesinė, logistinė, daugiamatis modeliavimas
+- **Vizualizacijas** – profesionalūs grafikai, tinkami publikacijoms
+- **Interpretaciją** – ne tik skaičiai, bet ir ką jie reiškia
+
+### Formatas:
+
+Analizės pateikiamos **Word formatu** su:
+
+- Metodų aprašymu (tinka kopijuoti į jūsų darbą)
+- Lentelėmis APA formatu
+- Grafikais aukšta raiška
+- Rezultatų interpretacija
+
+---
+
+## Imties dydžio skaičiavimai
+
+Planuojate tyrimą? Padėsiu apskaičiuoti, kiek tiriamųjų reikia, kad gautumėte statistiškai reikšmingus rezultatus.
+
+### Kaip tai veikia:
+
+1. Aptariame jūsų tyrimo dizainą ir tikslus
+2. Nustatomė laukiamą efekto dydį
+3. Pasirenkame statistinį testą
+4. Apskaičiuojame optimalų imties dydį
+
+### Ką gausite:
+
+- Kelis galimus scenarijus (80%, 90% galia)
+- Paaiškinimą, kaip imtis buvo apskaičiuota
+- Rekomendacijas, ką daryti, jei imtis per didelė
+
+---
+
+## Konsultacijos
+
+Norite analizę atlikti patys, bet reikia pagalbos? Galime susitikti gyvai arba nuotoliniu būdu.
+
+### Konsultacijų tipai:
+
+- **Vienkartinė konsultacija** – atsakysiu į konkrečius klausimus
+- **Reguliarios konsultacijos** – palydėsiu per visą projektą
+- **Kodo peržiūra** – patikrinsiu jūsų R/Python kodą
+
+### Kaip tai vyksta:
+
+1. Susisiekiate ir aprašote problemą
+2. Sutariame laiką (Zoom, Google Meet arba gyvai)
+3. Konsultacijos metu sprendžiame jūsų klausimus
+4. Jei reikia – gaunu papildomų užduočių
+
+---
+
+## Duomenų paruošimas
+
+Netvarkinga duomenų lentelė? Padėsiu ją sutvarkyti ir paruošti analizei.
+
+### Pagalba su:
+
+- Excel lentelių valymu ir struktūrizavimu
+- Trūkstamų reikšmių tvarkymu
+- Duomenų transformacijomis
+- Kelių šaltinių sujungimu
+- Kodavimu ir rekodavimu
+
+---
+
+## Mokymai
+
+Norite išmokti statistiką patys? Siūlau individualius arba grupinius mokymus.
+
+### Temos:
+
+- **Statistikos pagrindai** – ką reiškia p-reikšmė, pasikliautiniai intervalai
+- **R pradmenys** – nuo nulio iki pirmos analizės
+- **Duomenų vizualizacija** – ggplot2 ir profesionalūs grafikai
+- **Specifiniai metodai** – regresinė analizė, survival analizė ir kt.
+
+### Formatai:
+
+- Individualūs mokymai (1:1)
+- Grupiniai mokymai (iki 10 žmonių)
+- Online arba gyvai
+
+---
+
+## Kainos
+
+| Paslauga | Kaina nuo |
+|----------|-----------|
+| Paprasta statistinė analizė | 100 € |
+| Sudėtinga analizė | 300 € |
+| Imties dydžio skaičiavimas | 50 € |
+| Konsultacija (1 val.) | 50 € |
+| Duomenų paruošimas | 50 € |
+| Individualūs mokymai (1 val.) | 60 € |
+
+*Tikslią kainą galėsiu pasakyti po nemokamos pirminės konsultacijos, susipažinęs su jūsų projektu.*
+
+---
+
+## Susisiekite
+
+Turite klausimų? [Susisiekite su manimi](kontaktai.qmd) arba rašykite tiesiogiai: [info@statistikas.lt](mailto:info@statistikas.lt)
+
+::: {.callout-tip}
+## Nemokama konsultacija
+Pirminė konsultacija (iki 30 min.) yra nemokama. Aptarsime jūsų projektą ir rasime geriausią sprendimą.
+:::

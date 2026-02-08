@@ -1,0 +1,127 @@
+---
+title: "Kada rinktis ANOVA?"
+description: "ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą."
+date: "2023-04-15"
+author: "Paulius Alaburda"
+categories: [statistika, ANOVA, R]
+image: "images/boxplot_example.png"
+editor: source
+toc: true
+execute:
+  warning: false
+  message: false
+---
+
+# Kaip rinktis ANOVA?
+
+## Kada rinktis ANOVA?
+
+ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.
+
+## Vienpusė ANOVA
+
+Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.
+
+```{r}
+library(broom)
+library(car)
+library(dplyr)
+library(ggplot2)
+
+my.anova <- aov(data = iris, Sepal.Length ~ Species)
+summary(my.anova)
+```
+
+::: {.callout-note}
+## Šaltiniai
+[Non-normal data: Is ANOVA still a valid option?](https://pubmed.ncbi.nlm.nih.gov/29048317/)
+:::
+
+# Dvipusė ANOVA
+
+Dvipusė ANOVA naudojama, kai norime įvertinti dviejų nepriklausomų kintamųjų poveikį priklausomam kintamajam.
+
+# Post-hoc testai
+
+Jeigu mūsų ANOVA rezultatas buvo statistiškai reikšmingas, vis dar nežinome, kuri pora grupių tarpusavyje turėtų statistiškai reikšmingą skirtumą. Tam turime atlikti post-hoc testą, t.y. testą, kuris parenka 2 subgrupes ir konkrečiai jas palygina.
+
+Nėra vieno standarto, kaip būtinai reikia atlikti post-hoc testą, bet dažniausias pasirinkimas yra Tukey HSD (Honestly Significant Difference) testas. Su R tai galima atlikti naudojantis `TukeyHSD` funkcija:
+
+```{r}
+TukeyHSD(my.anova)
+```
+
+Post-hoc testas nurodo, jog skirtumai buvo tarp visų 3 rūšių tarpusavyje, didžiausias skirtumas buvo tarp virginica ir setosa (vidutiniškai 1,58, 95% PI [1,34-1,83], p < 0,001).
+
+# 3 vienpusės ANOVA poskoniai
+
+Kai mūsų duomenų rinkinys yra subalansuotas, visi ANOVA tipai duos tokį patį rezultatą. Kai duomenų rinkinys yra nesubalansuotas (viena grupė turi daugiau matavimų negu kitos), rezultatai gali skirtis.
+
+# Ar ANOVA buvo tinkamas testas?
+
+Stjudento t-testo tinkamumą praktiniais sumetimais galime numatyti iš anksto, nors teisingas būdas tikrinti būtų toks kaip ir ANOVA atveju. ANOVA turi tris reikalavimus:
+
+-   **Likutinių verčių (paklaidų) pasiskirstymas turi būti pagal Normalųjį skirstinį**. Mažai kas tai tikrina iš tikrųjų ir dažniausiai naudoja histogramas (ok), QQ grafikus (gerai) arba Shapiro-Wilk testą (blogai!)
+-   **Homogeniška variacija** tarp grupių
+-   **Nepriklausomi stebėjimai**
+
+## Homogeniška variacija
+
+Homogenišką variaciją galima patikrinti su **Levene testu**, **Brown-Forsythe testu** arba **Bartlett testu**, mes panaudosime Levene testą:
+
+```{r}
+leveneTest(my.anova)
+```
+
+## Pasiskirstymas pagal normalųjį skirstinį
+
+Prieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.
+
+```{r}
+my.anova.residuals <- data.frame(residuals = residuals(object = my.anova))
+```
+
+::: panel-tabset
+## Histograma
+
+```{r}
+ggplot(my.anova.residuals, aes(sample = residuals)) + 
+  stat_qq() + 
+  stat_qq_line(color = "red")
+```
+
+## QQ grafikas
+
+```{r}
+ggplot(my.anova.residuals, aes(x = residuals)) + 
+  geom_histogram(aes(y = ..density..)) + 
+  stat_function(
+    fun = dnorm, color = "red",
+    args = with(my.anova.residuals, c(mean = mean(residuals), sd = sd(residuals)))
+  )
+```
+
+## Shapiro-Wilk testas
+
+```{r}
+shapiro.test(my.anova.residuals$residuals)
+```
+:::
+
+::: {.callout-warning}
+## Dėmesio
+Shapiro-Wilk testas yra pernelyg jautrus dideliems duomenų rinkiniams. Geriau naudoti vizualinius metodus!
+:::
+
+# Kaip pavaizduoti ANOVA rezultatą?
+
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot() +
+  labs(
+    title = "Taurėlapių ilgio palyginimas tarp 3 vilkdalgių rūšių",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal()
+```

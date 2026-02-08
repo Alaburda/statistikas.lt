@@ -1,0 +1,222 @@
+/* Additional CSS for animations and JavaScript interactions */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Navbar scroll effect */
+.navbar.scrolled {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero chart animation */
+.chart-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 2s ease forwards;
+}
+
+.chart-area {
+  opacity: 0;
+  animation: fadeIn 1s ease 1s forwards;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Form message animations */
+.form-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+}
+
+.form-message--success {
+  background: #dcfce7;
+  border: 1px solid #22c55e;
+}
+
+.form-message--error {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading spinner */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Trust logos section */
+.trust-section {
+  padding: 2.5rem 0;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.trust-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.trust-logo {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Placeholder for missing images */
+.image-placeholder {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  aspect-ratio: 4/5;
+  border-radius: 1rem;
+}
+
+/* Mobile menu overlay */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: #1f2937;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    padding: 4rem 1.5rem;
+    transition: right 0.3s ease;
+    z-index: 1050;
+  }
+  
+  .navbar-collapse.show {
+    right: 0;
+  }
+}
+
+/* Button hover animations */
+.btn-primary-custom,
+.btn-outline-custom,
+.btn-white {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-custom::after,
+.btn-outline-custom::after,
+.btn-white::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-primary-custom:hover::after,
+.btn-outline-custom:hover::after,
+.btn-white:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Card hover effects */
+.service-card,
+.testimonial-card,
+.blog-card {
+  position: relative;
+}
+
+.service-card::before,
+.testimonial-card::before,
+.blog-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.service-card:hover::before,
+.testimonial-card:hover::before,
+.blog-card:hover::before {
+  opacity: 1;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}

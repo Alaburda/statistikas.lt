@@ -1,0 +1,71 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Statistikas.lt"
+  description: "Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui"
+  site-url: https://statistikas.lt
+  favicon: images/favicon.svg
+  
+  # Google Analytics
+  google-analytics: "G-DT3Y3KGPJQ"
+  
+  # Open Graph / Twitter
+  twitter-card:
+    creator: "@p_alab"
+    card-style: summary_large_image
+    image: "images/logo.svg"
+  
+  open-graph:
+    image: "images/card_image.png"
+    
+  navbar:
+    background: dark
+    logo: images/logo.svg
+    logo-alt: "Statistikas.lt"
+    title: false
+    left:
+      - text: "Pradžia"
+        href: index.qmd
+      - text: "Paslaugos"
+        href: paslaugos.qmd
+      - text: "Straipsniai"
+        href: straipsniai.qmd
+      - text: "Apie"
+        href: about.qmd
+    right:
+      - text: "Susisiekti"
+        href: kontaktai.qmd
+      - icon: linkedin
+        href: https://www.linkedin.com/in/paulius-alaburda/
+        aria-label: LinkedIn
+        
+  page-footer:
+    background: dark
+    left: |
+      © 2024 Statistikas.lt. Visos teisės saugomos.
+    center: |
+      [Paslaugos](paslaugos.qmd) · [Straipsniai](straipsniai.qmd) · [Apie](about.qmd)
+    right: |
+      Sukurta su ❤️ ir [Quarto](https://quarto.org)
+
+format:
+  html:
+    theme: 
+      light: [flatly, theme/custom.scss]
+    css: theme/styles.css
+    include-after-body: 
+      - text: |
+          <script src="theme/main.js"></script>
+    toc: false
+    page-layout: full
+    grid:
+      sidebar-width: 0px
+      body-width: 1200px
+      margin-width: 0px
+
+execute:
+  freeze: auto
+  warning: false
+  message: false

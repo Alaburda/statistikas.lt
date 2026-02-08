@@ -1,0 +1,17 @@
+{
+  "hash": "d7e0fa7b15db08d286360806d25186d7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Kaip atlikti Chi-kvadrato testą?\"\ndescription: \"Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.\"\ndate: \"2023-05-20\"\ncategories: [statistika, kategoriniai-duomenys, R]\neditor: visual\nexecute:\n  warning: false\n  message: false\ntoc: true\n---\n\n\n\n\nChi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.\n\n# Kada taikyti Chi-kvadrato testą?\n\nChi-kvadrato testą renkamės, kai:\n\n- **Abu kintamieji yra kategoriniai** (pvz., lytis ir rūkymo statusas)\n- **Norime patikrinti, ar kintamieji yra susiję**\n- **Turime pakankamai didelę imtį** (visi laukiami dažniai > 5)\n\nKategorijų kiekis taip pat neribotas: gali būti 2, gali būti ir 3, 4 arba daugiau.\n\n::: {.callout-warning}\n## Dėmesio\nJei laukiami dažniai yra < 5, reikėtų naudoti Fisher's exact testą!\n:::\n\n# Kaip atlikti Chi-kvadrato testą?\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Sukuriame pavyzdinius duomenis\nstuff <- data.frame(\n  lytis = sample(c(\"Vyras\", \"Moteris\"), 100, replace = TRUE),\n  ruko = sample(c(\"Taip\", \"Ne\"), 100, replace = TRUE)\n)\n\n# Atliekame testą\nchisq.test(table(stuff$lytis, stuff$ruko))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\n\tPearson's Chi-squared test with Yates' continuity correction\n\ndata:  table(stuff$lytis, stuff$ruko)\nX-squared = 1.4452, df = 1, p-value = 0.2293\n```\n\n\n:::\n:::\n\n\n\n\n# Kaip interpretuoti rezultatus?\n\nChi-kvadrato testo rezultate svarbu:\n\n1. **X-squared** - testo statistika\n2. **df** - laisvės laipsniai\n3. **p-value** - jei < 0.05, ryšys yra statistiškai reikšmingas\n\n# Kaip raportuoti Chi-kvadrato testą?\n\nAš dažniausiai naudoju tokį šabloną:\n\n> \"Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121).\"\n\n# Fisher's exact testas\n\nKai laukiami dažniai yra maži (< 5), naudojame Fisher's exact testą:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Sukuriame mažą lentelę\nmaza_lentele <- matrix(c(3, 2, 1, 4), nrow = 2)\nfisher.test(maza_lentele)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\n\tFisher's Exact Test for Count Data\n\ndata:  maza_lentele\np-value = 0.5238\nalternative hypothesis: true odds ratio is not equal to 1\n95 percent confidence interval:\n   0.218046 390.562917\nsample estimates:\nodds ratio \n  4.918388 \n```\n\n\n:::\n:::\n\n\n\n\n# Vizualizacija\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n\nggplot(stuff, aes(x = lytis, fill = ruko)) +\n  geom_bar(position = \"fill\") +\n  labs(\n    title = \"Rūkymo pasiskirstymas pagal lytį\",\n    x = \"Lytis\",\n    y = \"Proporcija\",\n    fill = \"Rūko?\"\n  ) +\n  scale_y_continuous(labels = scales::percent) +\n  theme_minimal()\n```\n\n::: {.cell-output-display}\n![](kaip-atlikti-chi-kvadrato-testa_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "kaip-atlikti-chi-kvadrato-testa_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

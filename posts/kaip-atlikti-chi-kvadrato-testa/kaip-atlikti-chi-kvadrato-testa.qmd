@@ -1,0 +1,82 @@
+---
+title: "Kaip atlikti Chi-kvadrato testą?"
+description: "Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti."
+date: "2023-05-20"
+categories: [statistika, kategoriniai-duomenys, R]
+editor: visual
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+Chi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.
+
+# Kada taikyti Chi-kvadrato testą?
+
+Chi-kvadrato testą renkamės, kai:
+
+- **Abu kintamieji yra kategoriniai** (pvz., lytis ir rūkymo statusas)
+- **Norime patikrinti, ar kintamieji yra susiję**
+- **Turime pakankamai didelę imtį** (visi laukiami dažniai > 5)
+
+Kategorijų kiekis taip pat neribotas: gali būti 2, gali būti ir 3, 4 arba daugiau.
+
+::: {.callout-warning}
+## Dėmesio
+Jei laukiami dažniai yra < 5, reikėtų naudoti Fisher's exact testą!
+:::
+
+# Kaip atlikti Chi-kvadrato testą?
+
+```{r}
+# Sukuriame pavyzdinius duomenis
+stuff <- data.frame(
+  lytis = sample(c("Vyras", "Moteris"), 100, replace = TRUE),
+  ruko = sample(c("Taip", "Ne"), 100, replace = TRUE)
+)
+
+# Atliekame testą
+chisq.test(table(stuff$lytis, stuff$ruko))
+```
+
+# Kaip interpretuoti rezultatus?
+
+Chi-kvadrato testo rezultate svarbu:
+
+1. **X-squared** - testo statistika
+2. **df** - laisvės laipsniai
+3. **p-value** - jei < 0.05, ryšys yra statistiškai reikšmingas
+
+# Kaip raportuoti Chi-kvadrato testą?
+
+Aš dažniausiai naudoju tokį šabloną:
+
+> "Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121)."
+
+# Fisher's exact testas
+
+Kai laukiami dažniai yra maži (< 5), naudojame Fisher's exact testą:
+
+```{r}
+# Sukuriame mažą lentelę
+maza_lentele <- matrix(c(3, 2, 1, 4), nrow = 2)
+fisher.test(maza_lentele)
+```
+
+# Vizualizacija
+
+```{r}
+library(ggplot2)
+
+ggplot(stuff, aes(x = lytis, fill = ruko)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Rūkymo pasiskirstymas pagal lytį",
+    x = "Lytis",
+    y = "Proporcija",
+    fill = "Rūko?"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal()
+```

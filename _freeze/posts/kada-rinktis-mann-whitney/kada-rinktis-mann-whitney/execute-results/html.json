@@ -1,0 +1,17 @@
+{
+  "hash": "7cd824ea5f058450f1dba8bf1f0cce47",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Kada rinktis Mann-Whitney testą?\"\ndescription: \"O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Sužinokite, kada ir kaip taikyti Mann-Whitney testą.\"\ndate: \"2023-04-17\"\ncategories: [statistika, neparametriniai-testai, R]\neditor: visual\nexecute:\n  warning: false\n  message: false\ntoc: true\n---\n\n\n\n\nO ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.\n\n# Kada taikyti Mann-Whitney testą?\n\nMann-Whitney testą reikėtų rinktis šiais atvejais:\n\n- **Duomenys nepasiskirsto pagal normalųjį skirstinį** - tai dažniausia priežastis\n- **Turime ranginius duomenis** - pvz., Likert skalę\n- **Turime mažas imtis** - kai n < 30 ir sunku patikrinti normalumą\n\n::: {.callout-note}\n## Svarbu\nMann-Whitney testas lygina ranginius vidurkius, ne aritmetinius vidurkius!\n:::\n\n# Kaip atlikti Wilcoxon testą?\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n\n# Naudojame iris duomenis\nwilcox.test(\n  Sepal.Length ~ Species, \n  data = iris, \n  subset = Species %in% c(\"setosa\", \"versicolor\")\n)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\n\tWilcoxon rank sum test with continuity correction\n\ndata:  Sepal.Length by Species\nW = 168.5, p-value = 8.346e-14\nalternative hypothesis: true location shift is not equal to 0\n```\n\n\n:::\n:::\n\n\n\n\n# Kaip interpretuoti rezultatus?\n\nMann-Whitney testo rezultate svarbu:\n\n1. **W statistika** - testo statistika\n2. **p reikšmė** - jei < 0.05, skirtumas yra statistiškai reikšmingas\n\n# Kaip raportuoti Mann-Whitney testą?\n\nŠtai šablonas, kurį galite naudoti:\n\n> \"Atlikus Mann-Whitney U testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis nei versicolor rūšies (U = 23.5, p < 0.001).\"\n\n# Porinių imčių Wilcoxon testas\n\nJei turime priklausomas (porines) imtis, naudojame `paired = TRUE` parametrą:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Pavyzdys su poriniais duomenimis\nprieš <- c(120, 125, 130, 135, 140)\npo <- c(115, 118, 125, 128, 132)\n\nwilcox.test(prieš, po, paired = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\n\tWilcoxon signed rank test with continuity correction\n\ndata:  prieš and po\nV = 15, p-value = 0.05676\nalternative hypothesis: true location shift is not equal to 0\n```\n\n\n:::\n:::\n\n\n\n\n# Vizualizacija\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\niris_subset <- iris[iris$Species %in% c(\"setosa\", \"versicolor\"), ]\n\nggplot(iris_subset, aes(x = Species, y = Sepal.Length, fill = Species)) +\n  geom_boxplot() +\n  labs(\n    title = \"Taurėlapių ilgio palyginimas\",\n    subtitle = \"Mann-Whitney testas\",\n    x = \"Rūšis\",\n    y = \"Taurėlapio ilgis (cm)\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")\n```\n\n::: {.cell-output-display}\n![](kada-rinktis-mann-whitney_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "kada-rinktis-mann-whitney_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

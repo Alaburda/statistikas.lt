@@ -1,0 +1,471 @@
+---
+pagetitle: "Statistikas.lt | Profesionalios statistikos paslaugos"
+toc: false
+page-layout: custom
+section-divs: false
+css: theme/styles.css
+include-after-body: 
+  text: |
+    <script src="theme/main.js"></script>
+---
+
+::: {.hero-section}
+::: {.container}
+::: {.row .align-items-center}
+::: {.col-lg-6}
+[Patikima statistikos pagalba]{.hero-badge}
+
+# [Statistinė analizė,]{.hero-title}[kuria galite pasitikėti]{.text-gradient} {.hero-title}
+
+Padedama suprasti duomenis ir priimti pagrįstus sprendimus. Nuo mokslinių tyrimų iki verslo analitikos – profesionali pagalba kiekviename žingsnyje.
+
+::: {.d-flex .gap-3 .flex-wrap .mb-4}
+[Gauti nemokamą konsultaciją →](kontaktai.qmd){.btn-primary-custom}
+[Sužinoti daugiau](#paslaugos){.btn-outline-custom}
+:::
+
+```{=html}
+<div class="hero-stats">
+  <div class="hero-stat">
+    <span class="stat-number">10+</span>
+    <span class="stat-label">metų patirtis</span>
+  </div>
+  <div class="hero-stat">
+    <span class="stat-number">200+</span>
+    <span class="stat-label">sėkmingų projektų</span>
+  </div>
+  <div class="hero-stat">
+    <span class="stat-number">98%</span>
+    <span class="stat-label">patenkintų klientų</span>
+  </div>
+</div>
+```
+
+:::
+
+::: {.col-lg-6 .d-none .d-lg-block}
+```{=html}
+<div class="hero-chart">
+  <svg viewBox="0 0 400 300" style="width: 100%; height: auto; background: white; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); padding: 1.5rem;">
+    <!-- Grid lines -->
+    <line x1="50" y1="250" x2="380" y2="250" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="50" y1="200" x2="380" y2="200" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="50" y1="150" x2="380" y2="150" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="50" y1="100" x2="380" y2="100" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="50" y1="50" x2="380" y2="50" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="5,5"/>
+    
+    <!-- Area chart -->
+    <defs>
+      <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:0.3"/>
+        <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:0"/>
+      </linearGradient>
+    </defs>
+    <path class="chart-area" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70 L340,250 L50,250 Z" fill="url(#areaGradient)"/>
+    <path class="chart-line" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Data points -->
+    <circle cx="50" cy="220" r="6" fill="#4F46E5"/>
+    <circle cx="130" cy="180" r="6" fill="#4F46E5"/>
+    <circle cx="200" cy="140" r="6" fill="#4F46E5"/>
+    <circle cx="270" cy="100" r="6" fill="#4F46E5"/>
+    <circle cx="340" cy="70" r="6" fill="#4F46E5"/>
+  </svg>
+</div>
+```
+:::
+
+:::
+:::
+:::
+
+<!-- Trust Section -->
+::: {.trust-section}
+::: {.container}
+[Pasitiki mokslo ir verslo atstovai]{.trust-text}
+
+::: {.trust-logos}
+[🏛️ Universitetai]{.trust-logo}
+[🏥 Medicinos įstaigos]{.trust-logo}
+[📈 Verslo įmonės]{.trust-logo}
+[🔬 Mokslo institutai]{.trust-logo}
+:::
+:::
+:::
+
+<!-- Services Section -->
+::: {#paslaugos .section}
+::: {.container}
+::: {.section-header}
+[Paslaugos]{.section-badge}
+
+## Kaip galiu padėti? {.section-title}
+
+Siūlau platų spektrą statistikos paslaugų, pritaikytų jūsų poreikiams
+:::
+
+::: {.services-grid}
+::: {.service-card .service-card-featured}
+[📊]{.service-icon}
+
+### Statistinės analizės {.service-title}
+
+Pilnas duomenų analizės paketas su detaliu metodų aprašymu, grafikais ir lentelėmis. Analizės pateikiamos Word formatu, paruoštos įtraukti į jūsų darbą.
+
+- Aprašomoji statistika
+- Hipotezių tikrinimas
+- Regresinė analizė
+- Daugiamatis modeliavimas
+
+[Sužinoti daugiau →](paslaugos.qmd){.service-link}
+:::
+
+::: {.service-card}
+[⏱️]{.service-icon}
+
+### Imties dydžio skaičiavimai {.service-title}
+
+Padėsiu apskaičiuoti optimalų tiriamųjų skaičių jūsų tyrimui, kad rezultatai būtų statistiškai reikšmingi ir patikimi.
+
+[Sužinoti daugiau →](paslaugos.qmd){.service-link}
+:::
+
+::: {.service-card}
+[👥]{.service-icon}
+
+### Konsultacijos {.service-title}
+
+Kai norite analizę atlikti patys, galime susitikti gyvai ar nuotoliniu būdu ir aptarti jūsų klausimus bei padėti išspręsti problemas.
+
+[Sužinoti daugiau →](paslaugos.qmd){.service-link}
+:::
+
+::: {.service-card}
+[📋]{.service-icon}
+
+### Duomenų paruošimas {.service-title}
+
+Padėsiu sutvarkyti ir paruošti duomenis analizei – nuo Excel lentelių iki sudėtingų duomenų bazių.
+
+[Sužinoti daugiau →](paslaugos.qmd){.service-link}
+:::
+
+::: {.service-card}
+[🎓]{.service-icon}
+
+### Mokymai {.service-title}
+
+Individualūs arba grupiniai statistikos mokymai, pritaikyti jūsų srities poreikiams ir įgūdžių lygiui.
+
+[Sužinoti daugiau →](paslaugos.qmd){.service-link}
+:::
+:::
+:::
+:::
+
+<!-- About Section -->
+::: {#apie .section .section-dark}
+::: {.container}
+::: {.about-grid}
+::: {.about-image-container}
+```{=html}
+<div class="about-avatar">👨‍💻</div>
+```
+
+::: {.about-experience-badge}
+[10+]{.exp-number}
+[metų patirtis]{.exp-text}
+:::
+:::
+
+::: {.about-content}
+[Apie mane]{.section-badge}
+
+## Sveiki! 👋 Aš esu Paulius {.section-title}
+
+Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais, todėl gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes.
+
+Mano tikslas – padėti jums suprasti savo duomenis ir priimti pagrįstus sprendimus. Nesvarbu, ar ruošiate disertaciją, ar analizuojate verslo rodiklius – esu čia, kad padėčiau.
+
+::: {.about-skills}
+::: {.skill-item}
+[📊]{.skill-icon}
+[Statistinė analizė]{.skill-title}
+[R, SPSS, Python]{.skill-subtitle}
+:::
+
+::: {.skill-item}
+[🎓]{.skill-icon}
+[Akademiniai tyrimai]{.skill-title}
+[Publikacijos, disertacijos]{.skill-subtitle}
+:::
+
+::: {.skill-item}
+[💼]{.skill-icon}
+[Verslo analitika]{.skill-title}
+[Sprendimų priėmimas]{.skill-subtitle}
+:::
+
+::: {.skill-item}
+[🏥]{.skill-icon}
+[Medicinos statistika]{.skill-title}
+[Klinikiniai tyrimai]{.skill-subtitle}
+:::
+:::
+
+[Susisiekime →](kontaktai.qmd){.btn-primary-custom}
+:::
+:::
+:::
+:::
+
+<!-- Process Section -->
+::: {#procesas .section}
+::: {.container}
+::: {.section-header}
+[Procesas]{.section-badge}
+
+## Kaip vyksta bendradarbiavimas? {.section-title}
+
+Paprastas ir aiškus darbo procesas, kuris užtikrina kokybiškus rezultatus
+:::
+
+::: {.process-timeline}
+```{=html}
+<div class="process-step">
+  <span class="step-number">01</span>
+  <div class="step-content">
+    <h3 class="step-title">Nemokama konsultacija</h3>
+    <p>Susipažįstame su jūsų projektu, aptariame tikslus ir nustatome, kokios analizės reikia. Ši konsultacija yra nemokama.</p>
+  </div>
+</div>
+
+<div class="process-step">
+  <span class="step-number">02</span>
+  <div class="step-content">
+    <h3 class="step-title">Pasiūlymas ir sutartis</h3>
+    <p>Paruošiu detalų pasiūlymą su kaina ir terminais. Jei viskas tinka, sudarome sutartį.</p>
+  </div>
+</div>
+
+<div class="process-step">
+  <span class="step-number">03</span>
+  <div class="step-content">
+    <h3 class="step-title">Duomenų analizė</h3>
+    <p>Atlieku analizę, reguliariai informuodamas apie progresą. Jei iškyla klausimų – sprendžiame kartu.</p>
+  </div>
+</div>
+
+<div class="process-step">
+  <span class="step-number">04</span>
+  <div class="step-content">
+    <h3 class="step-title">Rezultatai ir palaikymas</h3>
+    <p>Gausite detalią ataskaitą su visais rezultatais. Jei reikės – paaiškinsiu, padėsiu interpretuoti ar papildysiu.</p>
+  </div>
+</div>
+```
+:::
+:::
+:::
+
+<!-- Latest Posts Section -->
+::: {#straipsniai .section .section-dark}
+::: {.container}
+::: {.section-header}
+[Naujausi straipsniai]{.section-badge}
+
+## Statistikos patarimai ir įžvalgos {.section-title}
+:::
+
+::: {#blog-listing}
+:::
+:::
+:::
+
+<!-- Testimonials Section -->
+::: {#atsiliepimai .section}
+::: {.container}
+::: {.section-header}
+[Atsiliepimai]{.section-badge}
+
+## Ką sako klientai? {.section-title}
+:::
+
+::: {.testimonials-grid}
+::: {.testimonial-card}
+[⭐⭐⭐⭐⭐]{.testimonial-rating}
+
+"Paulius padėjo su disertacijos statistine dalimi. Viskas buvo paaiškinta suprantamai, o rezultatai pateikti kokybiškai. Labai rekomenduoju!"
+
+::: {.testimonial-author}
+[👩‍🔬]{.author-avatar}
+[Dr. Indrė K.]{.author-name}
+[Biomedicinos mokslai]{.author-role}
+:::
+:::
+
+::: {.testimonial-card}
+[⭐⭐⭐⭐⭐]{.testimonial-rating}
+
+"Greitas ir profesionalus darbas. Gavome ne tik analizę, bet ir vertingų įžvalgų, kaip tobulinti tyrimą. Tikrai verta investicija."
+
+::: {.testimonial-author}
+[👨‍⚕️]{.author-avatar}
+[Prof. Tomas R.]{.author-name}
+[Medicinos fakultetas]{.author-role}
+:::
+:::
+
+::: {.testimonial-card}
+[⭐⭐⭐⭐⭐]{.testimonial-rating}
+
+"Konsultacija padėjo suprasti, kokią statistiką taikyti mūsų verslo duomenims. Dabar galime priimti geresnius sprendimus."
+
+::: {.testimonial-author}
+[👩‍💼]{.author-avatar}
+[Laura S.]{.author-name}
+[Marketingo vadovė]{.author-role}
+:::
+:::
+:::
+:::
+:::
+
+<!-- FAQ Section -->
+::: {#duk .section .section-dark}
+::: {.container}
+::: {.section-header}
+[D.U.K.]{.section-badge}
+
+## Dažniausiai užduodami klausimai {.section-title}
+:::
+
+::: {.faq-list}
+```{=html}
+<details class="faq-item">
+  <summary>Kiek kainuoja statistinė analizė?</summary>
+  <div class="faq-answer">
+    <p>Kaina priklauso nuo projekto sudėtingumo ir apimties. Paprastos analizės prasideda nuo 100€, sudėtingesni projektai – nuo 300€. Tiksią kainą galėsiu pasakyti po nemokamos konsultacijos, susipažinęs su jūsų duomenimis ir tikslais.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Per kiek laiko gausite rezultatus?</summary>
+  <div class="faq-answer">
+    <p>Standartinis terminas yra 5-10 darbo dienų, priklausomai nuo projekto sudėtingumo. Jei skubate – galime aptarti greitesnį variantą už papildomą mokestį.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Ar galite padėti su R arba SPSS?</summary>
+  <div class="faq-answer">
+    <p>Taip! Dirbu su R, SPSS, Python ir Excel. Galiu atlikti analizę bet kuria iš šių programų arba padėti jums išmokti jomis naudotis.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Ar dirbate su studentais?</summary>
+  <div class="faq-answer">
+    <p>Taip, dirbu su bakalauro, magistro ir doktorantūros studentais. Studentams taikau specialias kainas. Galiu padėti su baigiamųjų darbų statistine dalimi.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Kaip saugomi mano duomenys?</summary>
+  <div class="faq-answer">
+    <p>Jūsų duomenų konfidencialumas yra prioritetas. Visi duomenys saugomi šifruotoje aplinkoje, o pabaigus projektą – ištrinami. Jei reikia, galime pasirašyti konfidencialumo sutartį (NDA).</p>
+  </div>
+</details>
+```
+:::
+:::
+:::
+
+<!-- Contact Section -->
+::: {#kontaktai .section}
+::: {.container}
+::: {.contact-grid}
+::: {.contact-info}
+[Kontaktai]{.section-badge}
+
+## Susisiekime! {.section-title}
+
+Turite klausimų ar norite aptarti projektą? Parašykite man – atsakysiu per 24 valandas.
+
+```{=html}
+<a href="mailto:info@statistikas.lt" class="contact-method">
+  <div class="method-icon">✉️</div>
+  <div>
+    <span class="method-label">El. paštas</span>
+    <span class="method-value">info@statistikas.lt</span>
+  </div>
+</a>
+
+<a href="https://www.linkedin.com/in/paulius-alaburda/" target="_blank" class="contact-method">
+  <div class="method-icon">💼</div>
+  <div>
+    <span class="method-label">LinkedIn</span>
+    <span class="method-value">Paulius Alaburda</span>
+  </div>
+</a>
+
+<div class="contact-guarantee">
+  <div class="guarantee-icon">✅</div>
+  <div>
+    <div class="guarantee-title">Nemokama pirminė konsultacija</div>
+    <div class="guarantee-text">Aptarsime jūsų projektą ir rasime geriausią sprendimą</div>
+  </div>
+</div>
+```
+:::
+
+::: {.contact-form}
+```{=html}
+<form action="https://formspree.io/f/your-form-id" method="POST">
+  <div class="form-group">
+    <label for="name" class="form-label">Vardas</label>
+    <input type="text" id="name" name="name" class="form-input" placeholder="Jūsų vardas" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="email" class="form-label">El. paštas</label>
+    <input type="email" id="email" name="email" class="form-input" placeholder="jusu@email.lt" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="subject" class="form-label">Tema</label>
+    <select id="subject" name="subject" class="form-input">
+      <option value="">Pasirinkite temą...</option>
+      <option value="analizes">Statistinė analizė</option>
+      <option value="imtis">Imties dydžio skaičiavimas</option>
+      <option value="konsultacija">Konsultacija</option>
+      <option value="mokymai">Mokymai</option>
+      <option value="kita">Kita</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="message" class="form-label">Žinutė</label>
+    <textarea id="message" name="message" class="form-input" placeholder="Aprašykite savo projektą ar užduokite klausimą..." rows="5" required></textarea>
+  </div>
+  
+  <button type="submit" class="btn-primary-custom" style="width: 100%; justify-content: center;">
+    Siųsti žinutę ✉️
+  </button>
+</form>
+```
+:::
+:::
+:::
+:::
+
+<!-- CTA Section -->
+::: {.cta-section}
+::: {.container}
+## Pasiruošę pradėti? {.cta-title}
+
+Susisiekite dabar ir gaukite nemokamą pirminę konsultaciją. Kartu rasime geriausią sprendimą jūsų projektui.
+
+[Rašyti el. laišką ✉️](mailto:info@statistikas.lt){.btn-white}
+:::
+:::

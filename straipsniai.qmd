@@ -1,0 +1,21 @@
+---
+title: "Straipsniai"
+subtitle: "Patarimai, vadovai ir įžvalgos apie statistiką"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  grid-columns: 3
+  categories: true
+  feed: true
+  image-height: 200px
+  fields: [image, title, description, date, categories]
+page-layout: full
+---
+
+Šiame puslapyje rasite straipsnius apie statistikos metodus, patarimus ir praktines įžvalgas. Straipsniai skirti tiek pradedantiesiems, tiek patyrusiems tyrėjams.
+
+::: {.callout-note}
+## Turite klausimą?
+Jei nerandate atsakymo į savo klausimą, [susisiekite su manimi](kontaktai.qmd) – galbūt tai bus naujo straipsnio tema!
+:::

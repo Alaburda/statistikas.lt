@@ -1,0 +1,78 @@
+---
+title: "Kaip patikrinti tolydžius duomenis?"
+description: "Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti."
+date: "2023-03-10"
+categories: [duomenų-paruošimas, R, pradedantiesiems]
+editor: visual
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+Prieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.
+
+# Trūkstamos reikšmės
+
+Pirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:
+
+```{r}
+library(dplyr)
+
+# Kiek trūkstamų reikšmių kiekviename stulpelyje?
+colSums(is.na(iris))
+```
+
+::: {.callout-tip}
+## Ką daryti su trūkstamomis reikšmėmis?
+- **Pašalinti** - jei jų nedaug ir jos atsitiktinės
+- **Imputuoti** - pakeisti vidurkiu, mediana arba naudoti sudėtingesnius metodus
+- **Analizuoti atskirai** - patikrinti, ar trūkstamos reikšmės nėra sisteminės
+:::
+
+# Ekstremalios reikšmės (outliers)
+
+Ekstremalias reikšmes galima aptikti vizualiai:
+
+```{r}
+library(ggplot2)
+
+ggplot(iris, aes(y = Sepal.Length)) +
+  geom_boxplot() +
+  labs(title = "Taurėlapių ilgio boxplot")
+```
+
+Arba skaičiavimu:
+
+```{r}
+# Ekstremalios reikšmės pagal IQR metodą
+Q1 <- quantile(iris$Sepal.Length, 0.25)
+Q3 <- quantile(iris$Sepal.Length, 0.75)
+IQR <- Q3 - Q1
+
+lower_bound <- Q1 - 1.5 * IQR
+upper_bound <- Q3 + 1.5 * IQR
+
+outliers <- iris$Sepal.Length[iris$Sepal.Length < lower_bound | iris$Sepal.Length > upper_bound]
+cat("Ekstremalios reikšmės:", outliers)
+```
+
+# Skirstinys
+
+Normalumo tikrinimas yra svarbus daugumai parametrinių testų:
+
+```{r}
+ggplot(iris, aes(x = Sepal.Length)) +
+  geom_histogram(aes(y = ..density..), bins = 20, fill = "#4F46E5", alpha = 0.7) +
+  geom_density(color = "red", linewidth = 1) +
+  labs(title = "Taurėlapių ilgio histograma su tankio kreive")
+```
+
+# Santrauka
+
+| Žingsnis | Ką tikrinti | R funkcija |
+|----------|-------------|------------|
+| 1 | Trūkstamos reikšmės | `is.na()`, `summary()` |
+| 2 | Ekstremalios reikšmės | `boxplot()`, IQR metodas |
+| 3 | Skirstinys | `hist()`, `qqnorm()` |
+| 4 | Variacija | `var()`, `sd()` |

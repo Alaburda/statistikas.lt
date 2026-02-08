@@ -1,0 +1,17 @@
+{
+  "hash": "8048a485f7e758336e22471c85de3cb6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Kaip patikrinti tolydžius duomenis?\"\ndescription: \"Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.\"\ndate: \"2023-03-10\"\ncategories: [duomenų-paruošimas, R, pradedantiesiems]\neditor: visual\nexecute:\n  warning: false\n  message: false\ntoc: true\n---\n\n\n\n\nPrieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.\n\n# Trūkstamos reikšmės\n\nPirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\n\n# Kiek trūkstamų reikšmių kiekviename stulpelyje?\ncolSums(is.na(iris))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nSepal.Length  Sepal.Width Petal.Length  Petal.Width      Species \n           0            0            0            0            0 \n```\n\n\n:::\n:::\n\n\n\n\n::: {.callout-tip}\n## Ką daryti su trūkstamomis reikšmėmis?\n- **Pašalinti** - jei jų nedaug ir jos atsitiktinės\n- **Imputuoti** - pakeisti vidurkiu, mediana arba naudoti sudėtingesnius metodus\n- **Analizuoti atskirai** - patikrinti, ar trūkstamos reikšmės nėra sisteminės\n:::\n\n# Ekstremalios reikšmės (outliers)\n\nEkstremalias reikšmes galima aptikti vizualiai:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n\nggplot(iris, aes(y = Sepal.Length)) +\n  geom_boxplot() +\n  labs(title = \"Taurėlapių ilgio boxplot\")\n```\n\n::: {.cell-output-display}\n![](kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n\n\nArba skaičiavimu:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Ekstremalios reikšmės pagal IQR metodą\nQ1 <- quantile(iris$Sepal.Length, 0.25)\nQ3 <- quantile(iris$Sepal.Length, 0.75)\nIQR <- Q3 - Q1\n\nlower_bound <- Q1 - 1.5 * IQR\nupper_bound <- Q3 + 1.5 * IQR\n\noutliers <- iris$Sepal.Length[iris$Sepal.Length < lower_bound | iris$Sepal.Length > upper_bound]\ncat(\"Ekstremalios reikšmės:\", outliers)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nEkstremalios reikšmės: \n```\n\n\n:::\n:::\n\n\n\n\n# Skirstinys\n\nNormalumo tikrinimas yra svarbus daugumai parametrinių testų:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(iris, aes(x = Sepal.Length)) +\n  geom_histogram(aes(y = ..density..), bins = 20, fill = \"#4F46E5\", alpha = 0.7) +\n  geom_density(color = \"red\", linewidth = 1) +\n  labs(title = \"Taurėlapių ilgio histograma su tankio kreive\")\n```\n\n::: {.cell-output-display}\n![](kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n\n\n# Santrauka\n\n| Žingsnis | Ką tikrinti | R funkcija |\n|----------|-------------|------------|\n| 1 | Trūkstamos reikšmės | `is.na()`, `summary()` |\n| 2 | Ekstremalios reikšmės | `boxplot()`, IQR metodas |\n| 3 | Skirstinys | `hist()`, `qqnorm()` |\n| 4 | Variacija | `var()`, `sd()` |\n",
+    "supporting": [
+      "kaip-patikrinti-tolydzius-duomenis_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

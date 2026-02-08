@@ -1,0 +1,1838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Statistikas.lt</title>
+<link>https://statistikas.lt/straipsniai.html</link>
+<atom:link href="https://statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
+<description>Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui</description>
+<generator>quarto-1.5.52</generator>
+<lastBuildDate>Sat, 03 Jun 2023 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>Kada rinktis Kruskal-Wallis testą?</title>
+  <link>https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kada-taikyti-kruskal-wallis-testą" class="level1">
+<h1>Kada taikyti Kruskal-Wallis testą?</h1>
+<p>Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kada rinktis Kruskal-Wallis?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Kai ANOVA prielaidos nėra patenkinamos</li>
+<li>Kai duomenys yra ranginiai</li>
+<li>Kai imtys yra mažos ir sunku patikrinti normalumą</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="kaip-atlikti-kruskal-wallis-testą" class="level1">
+<h1>Kaip atlikti Kruskal-Wallis testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Naudojame iris duomenis</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kruskal.test</span>(Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  Sepal.Length by Species
+Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-raportuoti-kruskal-wallis-testą" class="level1">
+<h1>Kaip raportuoti Kruskal-Wallis testą?</h1>
+<p>Štai šablonas, kurį galite naudoti:</p>
+<blockquote class="blockquote">
+<p>“Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p &lt; 0.001).”</p>
+</blockquote>
+</section>
+<section id="post-hoc-testai" class="level1">
+<h1>Post-hoc testai</h1>
+<p>Jei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pairwise.wilcox.test</span>(iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length, iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p.adjust.method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"BH"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+
+data:  iris$Sepal.Length and iris$Species 
+
+           setosa  versicolor
+versicolor 1.3e-13 -         
+virginica  &lt; 2e-16 5.9e-07   
+
+P value adjustment method: BH </code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-vizualizuoti-kruskal-wallis-testą" class="level1">
+<h1>Kaip vizualizuoti Kruskal-Wallis testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb5-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgio palyginimas tarp rūšių"</span>,</span>
+<span id="cb5-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb5-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb5-7">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>neparametriniai-testai</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</guid>
+  <pubDate>Sat, 03 Jun 2023 21:00:00 GMT</pubDate>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Kaip atlikti Chi-kvadrato testą?</title>
+  <link>https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Chi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.</p>
+<section id="kada-taikyti-chi-kvadrato-testą" class="level1">
+<h1>Kada taikyti Chi-kvadrato testą?</h1>
+<p>Chi-kvadrato testą renkamės, kai:</p>
+<ul>
+<li><strong>Abu kintamieji yra kategoriniai</strong> (pvz., lytis ir rūkymo statusas)</li>
+<li><strong>Norime patikrinti, ar kintamieji yra susiję</strong></li>
+<li><strong>Turime pakankamai didelę imtį</strong> (visi laukiami dažniai &gt; 5)</li>
+</ul>
+<p>Kategorijų kiekis taip pat neribotas: gali būti 2, gali būti ir 3, 4 arba daugiau.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dėmesio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Jei laukiami dažniai yra &lt; 5, reikėtų naudoti Fisher’s exact testą!</p>
+</div>
+</div>
+</section>
+<section id="kaip-atlikti-chi-kvadrato-testą" class="level1">
+<h1>Kaip atlikti Chi-kvadrato testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Sukuriame pavyzdinius duomenis</span></span>
+<span id="cb1-2">stuff <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb1-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lytis =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vyras"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Moteris"</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>),</span>
+<span id="cb1-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ruko =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taip"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ne"</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb1-5">)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Atliekame testą</span></span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">chisq.test</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(stuff<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lytis, stuff<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ruko))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  table(stuff$lytis, stuff$ruko)
+X-squared = 1.4452, df = 1, p-value = 0.2293</code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-interpretuoti-rezultatus" class="level1">
+<h1>Kaip interpretuoti rezultatus?</h1>
+<p>Chi-kvadrato testo rezultate svarbu:</p>
+<ol type="1">
+<li><strong>X-squared</strong> - testo statistika</li>
+<li><strong>df</strong> - laisvės laipsniai</li>
+<li><strong>p-value</strong> - jei &lt; 0.05, ryšys yra statistiškai reikšmingas</li>
+</ol>
+</section>
+<section id="kaip-raportuoti-chi-kvadrato-testą" class="level1">
+<h1>Kaip raportuoti Chi-kvadrato testą?</h1>
+<p>Aš dažniausiai naudoju tokį šabloną:</p>
+<blockquote class="blockquote">
+<p>“Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121).”</p>
+</blockquote>
+</section>
+<section id="fishers-exact-testas" class="level1">
+<h1>Fisher’s exact testas</h1>
+<p>Kai laukiami dažniai yra maži (&lt; 5), naudojame Fisher’s exact testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Sukuriame mažą lentelę</span></span>
+<span id="cb3-2">maza_lentele <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(maza_lentele)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fisher's Exact Test for Count Data
+
+data:  maza_lentele
+p-value = 0.5238
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+   0.218046 390.562917
+sample estimates:
+odds ratio 
+  4.918388 </code></pre>
+</div>
+</div>
+</section>
+<section id="vizualizacija" class="level1">
+<h1>Vizualizacija</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(stuff, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> lytis, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> ruko)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fill"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb5-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūkymo pasiskirstymas pagal lytį"</span>,</span>
+<span id="cb5-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lytis"</span>,</span>
+<span id="cb5-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Proporcija"</span>,</span>
+<span id="cb5-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūko?"</span></span>
+<span id="cb5-10">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> scales<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span>percent) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>kategoriniai-duomenys</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</guid>
+  <pubDate>Fri, 19 May 2023 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Kaip naudoti Stjudento t-testą?</title>
+  <link>https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus, todėl Stjudento t-testas yra vienas dažniausių taikomų statistinių testų. Jeigu atliekate tyrimus, tikėtina, jog susidursite su duomenimis, kur t-testas bus tinkamas. Dėl to svarbu suprasti, kada taikyti testą, kaip jį interpretuoti bei kaip jį pateikti publikacijoje.</p>
+<section id="kam-skirtas-t-testas" class="level1">
+<h1>Kam skirtas t-testas?</h1>
+<p>T-testas yra skirtas palyginti dviejų imčių vidurkius. Tai gali būti:</p>
+<ul>
+<li><strong>Nepriklausomos imtys</strong>: pavyzdžiui, vyrai ir moterys</li>
+<li><strong>Priklausomos (porinės) imtys</strong>: pavyzdžiui, matavimai prieš ir po gydymo tam pačiam pacientui</li>
+</ul>
+</section>
+<section id="kada-rinktis-t-testą" class="level1">
+<h1>Kada rinktis t-testą?</h1>
+<p>T-testą galima atlikti su tolydžiu kintamuoju, kurį galima padalinti į dvi grupes. Tolydų kintamąjį toliau vadinsime priklausomu kintamuoju, o savo grupių kintamąjį - nepriklausomu kintamuoju.</p>
+<p>Pirma, priklausomas kintamasis turi būti tolydus, t.y. jis turi gebėti įgyti daug skirtingų reikšmių. Tinkami priklausomi kintamieji:</p>
+<ul>
+<li><strong>Matavimai, kurie gali įgyti be galo didelį kiekį reikšmių</strong>: ūgis, svoris, amžius ir pan.</li>
+<li><strong>Sudėtiniai skaičiai</strong>, pavyzdžiui, ląstelių skaičius matymo lauke, euzinofilų skaičius kraujyje ir pan.</li>
+<li><strong>Ranginiai klausimai</strong> (iš dalies) - t-testas yra pakankamai atsparus nuokrypiams nuo normalumo.</li>
+</ul>
+<p>Antra, priklausomas kintamasis, padalintas į 2 grupes, turi turėti panašią variaciją (t.y. standartinį nuokrypį) ir turi būti pasiskirstęs pagal normalųjį skirstinį.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Patarimas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>R naudoja Welch t-testą, kuriam nesvarbi skirtinga variacija. Todėl variacijos testavimas dirbant su R nėra būtinas!</p>
+</div>
+</div>
+<section id="normalumo-tikrinimas" class="level2">
+<h2 class="anchored" data-anchor-id="normalumo-tikrinimas">Normalumo tikrinimas</h2>
+<p>Normalumą galima patikrinti vizualiai su QQ grafiku:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Excel</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sample =</span> Sepal.Length)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_qq</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb1-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_qq_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb1-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>Species) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"3 vilkdalgių rūšių taurėlapių ilgio QQ grafikas"</span>, </span>
+<span id="cb1-8">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"iris duomenų rinkinys; kuo arčiau linijos centre yra taškai, tuo geriau."</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<p>QQ grafikas Excel’e sukuriamas šiek tiek kitaip - reikia naudoti specialų įrankį arba rankiniu būdu skaičiuoti teorines kvantiles.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="kaip-atlikti-t-testą" class="level1">
+<h1>Kaip atlikti t-testą?</h1>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Excel</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t.test</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris, Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subset =</span> Species <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"setosa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"versicolor"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  Sepal.Length by Species
+t = -10.521, df = 86.538, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group setosa and group versicolor is not equal to 0
+95 percent confidence interval:
+ -1.1057074 -0.7542926
+sample estimates:
+    mean in group setosa mean in group versicolor 
+                   5.006                    5.936 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
+<p>Excel’e t-testą galima atlikti naudojant <code>T.TEST</code> funkciją arba Data Analysis ToolPak.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="kaip-interpretuoti-t-testą" class="level1">
+<h1>Kaip interpretuoti t-testą?</h1>
+<p>T-testo rezultate svarbiausios reikšmės:</p>
+<ol type="1">
+<li><strong>t reikšmė</strong> - kuo toliau nuo 0, tuo didesnis skirtumas</li>
+<li><strong>p reikšmė</strong> - jei &lt; 0.05, skirtumas yra statistiškai reikšmingas</li>
+<li><strong>Pasikliautinasis intervalas</strong> - parodo skirtumų intervalą</li>
+</ol>
+</section>
+<section id="kaip-raportuoti-t-testą" class="level1">
+<h1>Kaip raportuoti t-testą?</h1>
+<p>Štai šablonas, kurį galite naudoti:</p>
+<blockquote class="blockquote">
+<p>“Atlikus nepriklausomų imčių t-testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis (M = 5.01, SD = 0.35) nei versicolor rūšies (M = 5.94, SD = 0.52); t(86.54) = -10.52, p &lt; 0.001.”</p>
+</blockquote>
+</section>
+<section id="jeigu-negaliu-taikyti-t-testo" class="level1">
+<h1>Jeigu negaliu taikyti t-testo?</h1>
+<p>Jeigu Stjudento t-testas nėra tinkamas, tokiu atveju reikėtų taikyti Mann-Whitney U testą. Aprašą apie testą galima rasti <a href="../../posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">čia</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>t-testas</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</guid>
+  <pubDate>Fri, 21 Apr 2023 21:00:00 GMT</pubDate>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-t-testa/images/image-1458940830.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Kada rinktis Mann-Whitney testą?</title>
+  <link>https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.</p>
+<section id="kada-taikyti-mann-whitney-testą" class="level1">
+<h1>Kada taikyti Mann-Whitney testą?</h1>
+<p>Mann-Whitney testą reikėtų rinktis šiais atvejais:</p>
+<ul>
+<li><strong>Duomenys nepasiskirsto pagal normalųjį skirstinį</strong> - tai dažniausia priežastis</li>
+<li><strong>Turime ranginius duomenis</strong> - pvz., Likert skalę</li>
+<li><strong>Turime mažas imtis</strong> - kai n &lt; 30 ir sunku patikrinti normalumą</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Svarbu
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Mann-Whitney testas lygina ranginius vidurkius, ne aritmetinius vidurkius!</p>
+</div>
+</div>
+</section>
+<section id="kaip-atlikti-wilcoxon-testą" class="level1">
+<h1>Kaip atlikti Wilcoxon testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Naudojame iris duomenis</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wilcox.test</span>(</span>
+<span id="cb1-5">  Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species, </span>
+<span id="cb1-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris, </span>
+<span id="cb1-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subset =</span> Species <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"setosa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"versicolor"</span>)</span>
+<span id="cb1-8">)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  Sepal.Length by Species
+W = 168.5, p-value = 8.346e-14
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-interpretuoti-rezultatus" class="level1">
+<h1>Kaip interpretuoti rezultatus?</h1>
+<p>Mann-Whitney testo rezultate svarbu:</p>
+<ol type="1">
+<li><strong>W statistika</strong> - testo statistika</li>
+<li><strong>p reikšmė</strong> - jei &lt; 0.05, skirtumas yra statistiškai reikšmingas</li>
+</ol>
+</section>
+<section id="kaip-raportuoti-mann-whitney-testą" class="level1">
+<h1>Kaip raportuoti Mann-Whitney testą?</h1>
+<p>Štai šablonas, kurį galite naudoti:</p>
+<blockquote class="blockquote">
+<p>“Atlikus Mann-Whitney U testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis nei versicolor rūšies (U = 23.5, p &lt; 0.001).”</p>
+</blockquote>
+</section>
+<section id="porinių-imčių-wilcoxon-testas" class="level1">
+<h1>Porinių imčių Wilcoxon testas</h1>
+<p>Jei turime priklausomas (porines) imtis, naudojame <code>paired = TRUE</code> parametrą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Pavyzdys su poriniais duomenimis</span></span>
+<span id="cb3-2">prieš <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">125</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">130</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">135</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>)</span>
+<span id="cb3-3">po <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">118</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">125</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">132</span>)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wilcox.test</span>(prieš, po, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">paired =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  prieš and po
+V = 15, p-value = 0.05676
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+</section>
+<section id="vizualizacija" class="level1">
+<h1>Vizualizacija</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">iris_subset <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> iris[iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Species <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"setosa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"versicolor"</span>), ]</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris_subset, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb5-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgio palyginimas"</span>,</span>
+<span id="cb5-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Mann-Whitney testas"</span>,</span>
+<span id="cb5-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb5-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb5-10">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>neparametriniai-testai</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</guid>
+  <pubDate>Sun, 16 Apr 2023 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Kada rinktis ANOVA?</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kaip-rinktis-anova" class="level1">
+<h1>Kaip rinktis ANOVA?</h1>
+<section id="kada-rinktis-anova" class="level2">
+<h2 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h2>
+<p>ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.</p>
+</section>
+<section id="vienpusė-anova" class="level2">
+<h2 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h2>
+<p>Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(broom)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(car)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">my.anova <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aov</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris, Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species)</span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(my.anova)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+Species       2  63.21  31.606   119.3 &lt;2e-16 ***
+Residuals   147  38.96   0.265                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Šaltiniai
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://pubmed.ncbi.nlm.nih.gov/29048317/">Non-normal data: Is ANOVA still a valid option?</a></p>
+</div>
+</div>
+</section>
+</section>
+<section id="dvipusė-anova" class="level1">
+<h1>Dvipusė ANOVA</h1>
+<p>Dvipusė ANOVA naudojama, kai norime įvertinti dviejų nepriklausomų kintamųjų poveikį priklausomam kintamajam.</p>
+</section>
+<section id="post-hoc-testai" class="level1">
+<h1>Post-hoc testai</h1>
+<p>Jeigu mūsų ANOVA rezultatas buvo statistiškai reikšmingas, vis dar nežinome, kuri pora grupių tarpusavyje turėtų statistiškai reikšmingą skirtumą. Tam turime atlikti post-hoc testą, t.y. testą, kuris parenka 2 subgrupes ir konkrečiai jas palygina.</p>
+<p>Nėra vieno standarto, kaip būtinai reikia atlikti post-hoc testą, bet dažniausias pasirinkimas yra Tukey HSD (Honestly Significant Difference) testas. Su R tai galima atlikti naudojantis <code>TukeyHSD</code> funkcija:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">TukeyHSD</span>(my.anova)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = Sepal.Length ~ Species, data = iris)
+
+$Species
+                      diff       lwr       upr p adj
+versicolor-setosa    0.930 0.6862273 1.1737727     0
+virginica-setosa     1.582 1.3382273 1.8257727     0
+virginica-versicolor 0.652 0.4082273 0.8957727     0</code></pre>
+</div>
+</div>
+<p>Post-hoc testas nurodo, jog skirtumai buvo tarp visų 3 rūšių tarpusavyje, didžiausias skirtumas buvo tarp virginica ir setosa (vidutiniškai 1,58, 95% PI [1,34-1,83], p &lt; 0,001).</p>
+</section>
+<section id="vienpusės-anova-poskoniai" class="level1">
+<h1>3 vienpusės ANOVA poskoniai</h1>
+<p>Kai mūsų duomenų rinkinys yra subalansuotas, visi ANOVA tipai duos tokį patį rezultatą. Kai duomenų rinkinys yra nesubalansuotas (viena grupė turi daugiau matavimų negu kitos), rezultatai gali skirtis.</p>
+</section>
+<section id="ar-anova-buvo-tinkamas-testas" class="level1">
+<h1>Ar ANOVA buvo tinkamas testas?</h1>
+<p>Stjudento t-testo tinkamumą praktiniais sumetimais galime numatyti iš anksto, nors teisingas būdas tikrinti būtų toks kaip ir ANOVA atveju. ANOVA turi tris reikalavimus:</p>
+<ul>
+<li><strong>Likutinių verčių (paklaidų) pasiskirstymas turi būti pagal Normalųjį skirstinį</strong>. Mažai kas tai tikrina iš tikrųjų ir dažniausiai naudoja histogramas (ok), QQ grafikus (gerai) arba Shapiro-Wilk testą (blogai!)</li>
+<li><strong>Homogeniška variacija</strong> tarp grupių</li>
+<li><strong>Nepriklausomi stebėjimai</strong></li>
+</ul>
+<section id="homogeniška-variacija" class="level2">
+<h2 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h2>
+<p>Homogenišką variaciją galima patikrinti su <strong>Levene testu</strong>, <strong>Brown-Forsythe testu</strong> arba <strong>Bartlett testu</strong>, mes panaudosime Levene testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">leveneTest</span>(my.anova)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Levene's Test for Homogeneity of Variance (center = median)
+       Df F value   Pr(&gt;F)   
+group   2  6.3527 0.002259 **
+      147                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level2">
+<h2 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h2>
+<p>Prieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">my.anova.residuals <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">residuals =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">residuals</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">object =</span> my.anova))</span></code></pre></div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">Histograma</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">QQ grafikas</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Shapiro-Wilk testas</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(my.anova.residuals, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sample =</span> residuals)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb8-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_qq</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb8-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_qq_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(my.anova.residuals, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> residuals)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb9-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_histogram</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> ..density..)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb9-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_function</span>(</span>
+<span id="cb9-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fun =</span> dnorm, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>,</span>
+<span id="cb9-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">args =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span>(my.anova.residuals, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(residuals), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sd</span>(residuals)))</span>
+<span id="cb9-6">  )</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shapiro.test</span>(my.anova.residuals<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>residuals)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  my.anova.residuals$residuals
+W = 0.9879, p-value = 0.2189</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dėmesio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Shapiro-Wilk testas yra pernelyg jautrus dideliems duomenų rinkiniams. Geriau naudoti vizualinius metodus!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="kaip-pavaizduoti-anova-rezultatą" class="level1">
+<h1>Kaip pavaizduoti ANOVA rezultatą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb12-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgio palyginimas tarp 3 vilkdalgių rūšių"</span>,</span>
+<span id="cb12-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb12-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb12-7">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>ANOVA</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</guid>
+  <pubDate>Fri, 14 Apr 2023 21:00:00 GMT</pubDate>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Kaip patikrinti tolydžius duomenis?</title>
+  <link>https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Prieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.</p>
+<section id="trūkstamos-reikšmės" class="level1">
+<h1>Trūkstamos reikšmės</h1>
+<p>Pirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Kiek trūkstamų reikšmių kiekviename stulpelyje?</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colSums</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(iris))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
+           0            0            0            0            0 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ką daryti su trūkstamomis reikšmėmis?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Pašalinti</strong> - jei jų nedaug ir jos atsitiktinės</li>
+<li><strong>Imputuoti</strong> - pakeisti vidurkiu, mediana arba naudoti sudėtingesnius metodus</li>
+<li><strong>Analizuoti atskirai</strong> - patikrinti, ar trūkstamos reikšmės nėra sisteminės</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="ekstremalios-reikšmės-outliers" class="level1">
+<h1>Ekstremalios reikšmės (outliers)</h1>
+<p>Ekstremalias reikšmes galima aptikti vizualiai:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgio boxplot"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Arba skaičiavimu:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ekstremalios reikšmės pagal IQR metodą</span></span>
+<span id="cb4-2">Q1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quantile</span>(iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span>)</span>
+<span id="cb4-3">Q3 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quantile</span>(iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>)</span>
+<span id="cb4-4">IQR <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Q3 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> Q1</span>
+<span id="cb4-5"></span>
+<span id="cb4-6">lower_bound <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Q1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> IQR</span>
+<span id="cb4-7">upper_bound <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Q3 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> IQR</span>
+<span id="cb4-8"></span>
+<span id="cb4-9">outliers <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length[iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> lower_bound <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> iris<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> upper_bound]</span>
+<span id="cb4-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cat</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ekstremalios reikšmės:"</span>, outliers)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ekstremalios reikšmės: </code></pre>
+</div>
+</div>
+</section>
+<section id="skirstinys" class="level1">
+<h1>Skirstinys</h1>
+<p>Normalumo tikrinimas yra svarbus daugumai parametrinių testų:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Sepal.Length)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_histogram</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> ..density..), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bins =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_density</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="santrauka" class="level1">
+<h1>Santrauka</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Žingsnis</th>
+<th>Ką tikrinti</th>
+<th>R funkcija</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Trūkstamos reikšmės</td>
+<td><code>is.na()</code>, <code>summary()</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Ekstremalios reikšmės</td>
+<td><code>boxplot()</code>, IQR metodas</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Skirstinys</td>
+<td><code>hist()</code>, <code>qqnorm()</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Variacija</td>
+<td><code>var()</code>, <code>sd()</code></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+ ]]></description>
+  <category>duomenų-paruošimas</category>
+  <category>R</category>
+  <category>pradedantiesiems</category>
+  <guid>https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</guid>
+  <pubDate>Thu, 09 Mar 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Kaip koduoti duomenis?</title>
+  <link>https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.</p>
+<section id="kintamųjų-tipai" class="level1">
+<h1>Kintamųjų tipai</h1>
+<p>Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 36%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipas</th>
+<th>Aprašymas</th>
+<th>Pavyzdžiai</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Kategorinis</strong></td>
+<td>Grupės, kurios neturi tvarkos</td>
+<td>Lytis, spalva, miestas</td>
+</tr>
+<tr class="even">
+<td><strong>Ranginis</strong></td>
+<td>Grupės su tvarka</td>
+<td>Išsilavinimas, Likert skalė</td>
+</tr>
+<tr class="odd">
+<td><strong>Tolydus</strong></td>
+<td>Skaičiai su prasme</td>
+<td>Amžius, svoris, ūgis</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kategorinių-kintamųjų-kodavimas" class="level1">
+<h1>Kategorinių kintamųjų kodavimas</h1>
+<p>R kalboje kategoriniai kintamieji turėtų būti <code>factor</code> tipo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">duomenys <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb1-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lytis =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"V"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"M"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"V"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"M"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"V"</span>),</span>
+<span id="cb1-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">amzius =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span>)</span>
+<span id="cb1-6">)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Paverčiame į faktorių</span></span>
+<span id="cb1-9">duomenys<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lytis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(duomenys<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lytis, </span>
+<span id="cb1-10">                          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"V"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"M"</span>),</span>
+<span id="cb1-11">                          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vyras"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Moteris"</span>))</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str</span>(duomenys)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   5 obs. of  2 variables:
+ $ lytis : Factor w/ 2 levels "Vyras","Moteris": 1 2 1 2 1
+ $ amzius: num  25 32 45 28 51</code></pre>
+</div>
+</div>
+</section>
+<section id="ranginių-kintamųjų-kodavimas" class="level1">
+<h1>Ranginių kintamųjų kodavimas</h1>
+<p>Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">issilavinimas <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vidurinis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Aukštasis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pagrindinis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Aukštasis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vidurinis"</span>)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">issilavinimas_factor <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(</span>
+<span id="cb3-4">  issilavinimas,</span>
+<span id="cb3-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pagrindinis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vidurinis"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Aukštasis"</span>),</span>
+<span id="cb3-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ordered =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb3-7">)</span>
+<span id="cb3-8"></span>
+<span id="cb3-9">issilavinimas_factor</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Vidurinis   Aukštasis   Pagrindinis Aukštasis   Vidurinis  
+Levels: Pagrindinis &lt; Vidurinis &lt; Aukštasis</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Patarimas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Naudokite <code>ordered = TRUE</code> ranginiams kintamiesiems - tai leis R teisingai interpretuoti kintamojo prigimtį!</p>
+</div>
+</div>
+</section>
+<section id="dummy-kodavimas" class="level1">
+<h1>Dummy kodavimas</h1>
+<p>Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model.matrix automatiškai sukuria dummy kintamuosius</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">model.matrix</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> lytis, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> duomenys)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) lytisMoteris
+1           1            0
+2           1            1
+3           1            0
+4           1            1
+5           1            0
+attr(,"assign")
+[1] 0 1
+attr(,"contrasts")
+attr(,"contrasts")$lytis
+[1] "contr.treatment"</code></pre>
+</div>
+</div>
+</section>
+<section id="dažnos-klaidos" class="level1">
+<h1>Dažnos klaidos</h1>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ko vengti?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Nekoduoti tekstinių kintamųjų</strong> - R juos traktuos kaip <code>character</code>, ne <code>factor</code></li>
+<li><strong>Neteisingai nurodyti lygius</strong> - tai gali pakeisti bazinę kategoriją regresijoje</li>
+<li><strong>Naudoti skaičius kategoriniams kintamiesiems</strong> - tai gali sukelti klaidų interpretacijoje</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="praktinis-pavyzdys" class="level1">
+<h1>Praktinis pavyzdys</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb7-2"></span>
+<span id="cb7-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Sukuriame duomenis su teisingai koduotais kintamaisiais</span></span>
+<span id="cb7-4">apklausa <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb7-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">amzius =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">65</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>),</span>
+<span id="cb7-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pasitenkinimas =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(</span>
+<span id="cb7-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>),</span>
+<span id="cb7-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb7-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Labai nepatenkintas"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nepatenkintas"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Neutralus"</span>, </span>
+<span id="cb7-10">               <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Patenkintas"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Labai patenkintas"</span>),</span>
+<span id="cb7-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ordered =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb7-12">  )</span>
+<span id="cb7-13">)</span>
+<span id="cb7-14"></span>
+<span id="cb7-15"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(apklausa, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> pasitenkinimas)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pasitenkinimo pasiskirstymas"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Skaičius"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>duomenų-paruošimas</category>
+  <category>R</category>
+  <category>pradedantiesiems</category>
+  <guid>https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</guid>
+  <pubDate>Tue, 14 Feb 2023 22:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
