@@ -35,6 +35,146 @@
     "text": "Kada taikyti Kruskal-Wallis testą?\nKruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.\n\n\n\n\n\n\nKada rinktis Kruskal-Wallis?\n\n\n\n\nKai ANOVA prielaidos nėra patenkinamos\nKai duomenys yra ranginiai\nKai imtys yra mažos ir sunku patikrinti normalumą\n\n\n\n\n\nKaip atlikti Kruskal-Wallis testą?\n\nlibrary(ggplot2)\n\n# Naudojame iris duomenis\nkruskal.test(Sepal.Length ~ Species, data = iris)\n\n\n    Kruskal-Wallis rank sum test\n\ndata:  Sepal.Length by Species\nKruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16\n\n\n\n\nKaip raportuoti Kruskal-Wallis testą?\nŠtai šablonas, kurį galite naudoti:\n\n“Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p &lt; 0.001).”\n\n\n\nPost-hoc testai\nJei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:\n\npairwise.wilcox.test(iris$Sepal.Length, iris$Species, p.adjust.method = \"BH\")\n\n\n    Pairwise comparisons using Wilcoxon rank sum test with continuity correction \n\ndata:  iris$Sepal.Length and iris$Species \n\n           setosa  versicolor\nversicolor 1.3e-13 -         \nvirginica  &lt; 2e-16 5.9e-07   \n\nP value adjustment method: BH \n\n\n\n\nKaip vizualizuoti Kruskal-Wallis testą?\n\nggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +\n  geom_boxplot() +\n  labs(\n    title = \"Taurėlapių ilgio palyginimas tarp rūšių\",\n    x = \"Rūšis\",\n    y = \"Taurėlapio ilgis (cm)\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
   },
   {
+    "objectID": "paslaugos.html",
+    "href": "paslaugos.html",
+    "title": "Paslaugos",
+    "section": "",
+    "text": "Atlieku pilną duomenų analizę nuo A iki Z. Gausite detalią ataskaitą su visais rezultatais, grafikais ir lentelėmis, paruoštą įtraukti į jūsų darbą.\n\n\n\nAprašomąją statistiką – vidurkiai, standartiniai nuokrypiai, pasiskirstymas\nHipotezių tikrinimą – t-testai, ANOVA, chi-kvadrato testai ir kt.\nRegresinę analizę – tiesinė, logistinė, daugiamatis modeliavimas\nVizualizacijas – profesionalūs grafikai, tinkami publikacijoms\nInterpretaciją – ne tik skaičiai, bet ir ką jie reiškia\n\n\n\n\nAnalizės pateikiamos Word formatu su:\n\nMetodų aprašymu (tinka kopijuoti į jūsų darbą)\nLentelėmis APA formatu\nGrafikais aukšta raiška\nRezultatų interpretacija"
+  },
+  {
+    "objectID": "paslaugos.html#statistinės-analizės",
+    "href": "paslaugos.html#statistinės-analizės",
+    "title": "Paslaugos",
+    "section": "",
+    "text": "Atlieku pilną duomenų analizę nuo A iki Z. Gausite detalią ataskaitą su visais rezultatais, grafikais ir lentelėmis, paruoštą įtraukti į jūsų darbą.\n\n\n\nAprašomąją statistiką – vidurkiai, standartiniai nuokrypiai, pasiskirstymas\nHipotezių tikrinimą – t-testai, ANOVA, chi-kvadrato testai ir kt.\nRegresinę analizę – tiesinė, logistinė, daugiamatis modeliavimas\nVizualizacijas – profesionalūs grafikai, tinkami publikacijoms\nInterpretaciją – ne tik skaičiai, bet ir ką jie reiškia\n\n\n\n\nAnalizės pateikiamos Word formatu su:\n\nMetodų aprašymu (tinka kopijuoti į jūsų darbą)\nLentelėmis APA formatu\nGrafikais aukšta raiška\nRezultatų interpretacija"
+  },
+  {
+    "objectID": "paslaugos.html#imties-dydžio-skaičiavimai",
+    "href": "paslaugos.html#imties-dydžio-skaičiavimai",
+    "title": "Paslaugos",
+    "section": "Imties dydžio skaičiavimai",
+    "text": "Imties dydžio skaičiavimai\nPlanuojate tyrimą? Padėsiu apskaičiuoti, kiek tiriamųjų reikia, kad gautumėte statistiškai reikšmingus rezultatus.\n\nKaip tai veikia:\n\nAptariame jūsų tyrimo dizainą ir tikslus\nNustatomė laukiamą efekto dydį\nPasirenkame statistinį testą\nApskaičiuojame optimalų imties dydį\n\n\n\nKą gausite:\n\nKelis galimus scenarijus (80%, 90% galia)\nPaaiškinimą, kaip imtis buvo apskaičiuota\nRekomendacijas, ką daryti, jei imtis per didelė"
+  },
+  {
+    "objectID": "paslaugos.html#konsultacijos",
+    "href": "paslaugos.html#konsultacijos",
+    "title": "Paslaugos",
+    "section": "Konsultacijos",
+    "text": "Konsultacijos\nNorite analizę atlikti patys, bet reikia pagalbos? Galime susitikti gyvai arba nuotoliniu būdu.\n\nKonsultacijų tipai:\n\nVienkartinė konsultacija – atsakysiu į konkrečius klausimus\nReguliarios konsultacijos – palydėsiu per visą projektą\nKodo peržiūra – patikrinsiu jūsų R/Python kodą\n\n\n\nKaip tai vyksta:\n\nSusisiekiate ir aprašote problemą\nSutariame laiką (Zoom, Google Meet arba gyvai)\nKonsultacijos metu sprendžiame jūsų klausimus\nJei reikia – gaunu papildomų užduočių"
+  },
+  {
+    "objectID": "paslaugos.html#duomenų-paruošimas",
+    "href": "paslaugos.html#duomenų-paruošimas",
+    "title": "Paslaugos",
+    "section": "Duomenų paruošimas",
+    "text": "Duomenų paruošimas\nNetvarkinga duomenų lentelė? Padėsiu ją sutvarkyti ir paruošti analizei.\n\nPagalba su:\n\nExcel lentelių valymu ir struktūrizavimu\nTrūkstamų reikšmių tvarkymu\nDuomenų transformacijomis\nKelių šaltinių sujungimu\nKodavimu ir rekodavimu"
+  },
+  {
+    "objectID": "paslaugos.html#mokymai",
+    "href": "paslaugos.html#mokymai",
+    "title": "Paslaugos",
+    "section": "Mokymai",
+    "text": "Mokymai\nNorite išmokti statistiką patys? Siūlau individualius arba grupinius mokymus.\n\nTemos:\n\nStatistikos pagrindai – ką reiškia p-reikšmė, pasikliautiniai intervalai\nR pradmenys – nuo nulio iki pirmos analizės\nDuomenų vizualizacija – ggplot2 ir profesionalūs grafikai\nSpecifiniai metodai – regresinė analizė, survival analizė ir kt.\n\n\n\nFormatai:\n\nIndividualūs mokymai (1:1)\nGrupiniai mokymai (iki 10 žmonių)\nOnline arba gyvai"
+  },
+  {
+    "objectID": "paslaugos.html#kainos",
+    "href": "paslaugos.html#kainos",
+    "title": "Paslaugos",
+    "section": "Kainos",
+    "text": "Kainos\n\n\n\nPaslauga\nKaina nuo\n\n\n\n\nPaprasta statistinė analizė\n100 €\n\n\nSudėtinga analizė\n300 €\n\n\nImties dydžio skaičiavimas\n50 €\n\n\nKonsultacija (1 val.)\n50 €\n\n\nDuomenų paruošimas\n50 €\n\n\nIndividualūs mokymai (1 val.)\n60 €\n\n\n\nTikslią kainą galėsiu pasakyti po nemokamos pirminės konsultacijos, susipažinęs su jūsų projektu."
+  },
+  {
+    "objectID": "paslaugos.html#susisiekite",
+    "href": "paslaugos.html#susisiekite",
+    "title": "Paslaugos",
+    "section": "Susisiekite",
+    "text": "Susisiekite\nTurite klausimų? Susisiekite su manimi arba rašykite tiesiogiai: info@statistikas.lt\n\n\n\n\n\n\nNemokama konsultacija\n\n\n\nPirminė konsultacija (iki 30 min.) yra nemokama. Aptarsime jūsų projektą ir rasime geriausią sprendimą."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Apie",
+    "section": "",
+    "text": "Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.\nSu statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes."
+  },
+  {
+    "objectID": "about.html#sveiki",
+    "href": "about.html#sveiki",
+    "title": "Apie",
+    "section": "",
+    "text": "Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.\nSu statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes."
+  },
+  {
+    "objectID": "about.html#mano-patirtis",
+    "href": "about.html#mano-patirtis",
+    "title": "Apie",
+    "section": "Mano patirtis",
+    "text": "Mano patirtis\n\nStatistinė analizė – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas\nDuomenų vizualizacija – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms\nMoksliniai tyrimai – klinikiniųtyrimų statistika, meta-analizės, sisteminės apžvalgos\nKonsultavimas – pagalba planuojant tyrimus, interpretuojant rezultatus"
+  },
+  {
+    "objectID": "about.html#įrankiai",
+    "href": "about.html#įrankiai",
+    "title": "Apie",
+    "section": "Įrankiai",
+    "text": "Įrankiai\n\nR – pagrindinis įrankis statistinei analizei ir vizualizacijai\nPython – duomenų apdorojimas ir mašininis mokymasis\nSPSS – klasikinis statistikos įrankis\nExcel – greiti skaičiavimai ir duomenų paruošimas"
+  },
+  {
+    "objectID": "about.html#kodėl-rinktis-mane",
+    "href": "about.html#kodėl-rinktis-mane",
+    "title": "Apie",
+    "section": "Kodėl rinktis mane?",
+    "text": "Kodėl rinktis mane?\n\nPatirtis – daugiau nei 200 sėkmingai įgyvendintų projektų\nAiškumas – rezultatus pateikiu suprantamai, ne tik skaičiais\nLankstumas – prisitaikau prie jūsų poreikių ir terminų\nKonfidencialumas – jūsų duomenys yra saugūs\n\n\n\nSusisiekite\nTurite klausimų? Rašykite el. paštu info@statistikas.lt arba susisiekite per LinkedIn."
+  },
+  {
+    "objectID": "kontaktai.html",
+    "href": "kontaktai.html",
+    "title": "Susisiekite",
+    "section": "",
+    "text": "Nesvarbu, ar turite klausimą apie statistikos metodus, ar jums reikia pagalbos su duomenų analize – susisiekite ir aptarsime, kaip galiu padėti."
+  },
+  {
+    "objectID": "kontaktai.html#aš-mielu-noru-padėsiu",
+    "href": "kontaktai.html#aš-mielu-noru-padėsiu",
+    "title": "Susisiekite",
+    "section": "",
+    "text": "Nesvarbu, ar turite klausimą apie statistikos metodus, ar jums reikia pagalbos su duomenų analize – susisiekite ir aptarsime, kaip galiu padėti."
+  },
+  {
+    "objectID": "posts/kada-rinktis-anova/kada-rinktis-anova.html",
+    "href": "posts/kada-rinktis-anova/kada-rinktis-anova.html",
+    "title": "Kada rinktis ANOVA?",
+    "section": "",
+    "text": "ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.\n\n\n\nVienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.\n\nlibrary(broom)\nlibrary(car)\nlibrary(dplyr)\nlibrary(ggplot2)\n\nmy.anova &lt;- aov(data = iris, Sepal.Length ~ Species)\nsummary(my.anova)\n\n             Df Sum Sq Mean Sq F value Pr(&gt;F)    \nSpecies       2  63.21  31.606   119.3 &lt;2e-16 ***\nResiduals   147  38.96   0.265                   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\n\n\n\nŠaltiniai\n\n\n\nNon-normal data: Is ANOVA still a valid option?"
+  },
+  {
+    "objectID": "posts/kada-rinktis-anova/kada-rinktis-anova.html#kada-rinktis-anova",
+    "href": "posts/kada-rinktis-anova/kada-rinktis-anova.html#kada-rinktis-anova",
+    "title": "Kada rinktis ANOVA?",
+    "section": "",
+    "text": "ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas."
+  },
+  {
+    "objectID": "posts/kada-rinktis-anova/kada-rinktis-anova.html#vienpusė-anova",
+    "href": "posts/kada-rinktis-anova/kada-rinktis-anova.html#vienpusė-anova",
+    "title": "Kada rinktis ANOVA?",
+    "section": "",
+    "text": "Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.\n\nlibrary(broom)\nlibrary(car)\nlibrary(dplyr)\nlibrary(ggplot2)\n\nmy.anova &lt;- aov(data = iris, Sepal.Length ~ Species)\nsummary(my.anova)\n\n             Df Sum Sq Mean Sq F value Pr(&gt;F)    \nSpecies       2  63.21  31.606   119.3 &lt;2e-16 ***\nResiduals   147  38.96   0.265                   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\n\n\n\nŠaltiniai\n\n\n\nNon-normal data: Is ANOVA still a valid option?"
+  },
+  {
+    "objectID": "posts/kada-rinktis-anova/kada-rinktis-anova.html#homogeniška-variacija",
+    "href": "posts/kada-rinktis-anova/kada-rinktis-anova.html#homogeniška-variacija",
+    "title": "Kada rinktis ANOVA?",
+    "section": "Homogeniška variacija",
+    "text": "Homogeniška variacija\nHomogenišką variaciją galima patikrinti su Levene testu, Brown-Forsythe testu arba Bartlett testu, mes panaudosime Levene testą:\n\nleveneTest(my.anova)\n\nLevene's Test for Homogeneity of Variance (center = median)\n       Df F value   Pr(&gt;F)   \ngroup   2  6.3527 0.002259 **\n      147                    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "posts/kada-rinktis-anova/kada-rinktis-anova.html#pasiskirstymas-pagal-normalųjį-skirstinį",
+    "href": "posts/kada-rinktis-anova/kada-rinktis-anova.html#pasiskirstymas-pagal-normalųjį-skirstinį",
+    "title": "Kada rinktis ANOVA?",
+    "section": "Pasiskirstymas pagal normalųjį skirstinį",
+    "text": "Pasiskirstymas pagal normalųjį skirstinį\nPrieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.\n\nmy.anova.residuals &lt;- data.frame(residuals = residuals(object = my.anova))\n\n\nHistogramaQQ grafikasShapiro-Wilk testas\n\n\n\nggplot(my.anova.residuals, aes(sample = residuals)) + \n  stat_qq() + \n  stat_qq_line(color = \"red\")\n\n\n\n\n\n\n\n\n\n\n\nggplot(my.anova.residuals, aes(x = residuals)) + \n  geom_histogram(aes(y = ..density..)) + \n  stat_function(\n    fun = dnorm, color = \"red\",\n    args = with(my.anova.residuals, c(mean = mean(residuals), sd = sd(residuals)))\n  )\n\n\n\n\n\n\n\n\n\n\n\nshapiro.test(my.anova.residuals$residuals)\n\n\n    Shapiro-Wilk normality test\n\ndata:  my.anova.residuals$residuals\nW = 0.9879, p-value = 0.2189\n\n\n\n\n\n\n\n\n\n\n\nDėmesio\n\n\n\nShapiro-Wilk testas yra pernelyg jautrus dideliems duomenų rinkiniams. Geriau naudoti vizualinius metodus!"
+  },
+  {
     "objectID": "posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html",
     "href": "posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html",
     "title": "Kada rinktis Mann-Whitney testą?",

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2023-03-10">
+<meta name="description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
 
-<title>Straipsniai – Statistikas.lt</title>
+<title>Kaip patikrinti tolydžius duomenis? – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,35 +103,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-description','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DT3Y3KGPJQ"></script>
 
 <script type="text/javascript">
@@ -108,44 +113,15 @@ gtag('js', new Date());
 gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="theme/styles.css">
-<link rel="alternate" type="application/rss+xml" title="Statistikas.lt" href="straipsniai.xml" data-external="1"><meta property="og:title" content="Straipsniai – Statistikas.lt">
-<meta property="og:description" content="Patarimai, vadovai ir įžvalgos apie statistiką">
-<meta property="og:image" content="https://statistikas.lt/images/card_image.png">
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="Kaip patikrinti tolydžius duomenis? – Statistikas.lt">
+<meta property="og:description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
+<meta property="og:image" content="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/images/card_image.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Straipsniai – Statistikas.lt">
-<meta name="twitter:description" content="Patarimai, vadovai ir įžvalgos apie statistiką">
-<meta name="twitter:image" content="https://statistikas.lt/images/card_image.png">
+<meta name="twitter:title" content="Kaip patikrinti tolydžius duomenis? – Statistikas.lt">
+<meta name="twitter:description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/images/logo.svg">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -157,8 +133,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -168,25 +144,25 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Pradžia</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./paslaugos.html"> 
+    <a class="nav-link" href="../../paslaugos.html"> 
 <span class="menu-text">Paslaugos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./straipsniai.html" aria-current="page"> 
+    <a class="nav-link" href="../../straipsniai.html"> 
 <span class="menu-text">Straipsniai</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Apie</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./kontaktai.html"> 
+    <a class="nav-link" href="../../kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
   </li>  
   <li class="nav-item compact">
@@ -206,21 +182,46 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="ANOVA">ANOVA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(7)</span></div><div class="category" data-category="duomenų-paruošimas">duomenų-paruošimas <span class="quarto-category-count">(2)</span></div><div class="category" data-category="kategoriniai-duomenys">kategoriniai-duomenys <span class="quarto-category-count">(1)</span></div><div class="category" data-category="neparametriniai-testai">neparametriniai-testai <span class="quarto-category-count">(2)</span></div><div class="category" data-category="pradedantiesiems">pradedantiesiems <span class="quarto-category-count">(2)</span></div><div class="category" data-category="statistika">statistika <span class="quarto-category-count">(5)</span></div><div class="category" data-category="t-testas">t-testas <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#trūkstamos-reikšmės" id="toc-trūkstamos-reikšmės" class="nav-link active" data-scroll-target="#trūkstamos-reikšmės">Trūkstamos reikšmės</a></li>
+  <li><a href="#ekstremalios-reikšmės-outliers" id="toc-ekstremalios-reikšmės-outliers" class="nav-link" data-scroll-target="#ekstremalios-reikšmės-outliers">Ekstremalios reikšmės (outliers)</a></li>
+  <li><a href="#skirstinys" id="toc-skirstinys" class="nav-link" data-scroll-target="#skirstinys">Skirstinys</a></li>
+  <li><a href="#santrauka" id="toc-santrauka" class="nav-link" data-scroll-target="#santrauka">Santrauka</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Straipsniai</h1>
-<p class="subtitle lead">Patarimai, vadovai ir įžvalgos apie statistiką</p>
-</div>
+<h1 class="title">Kaip patikrinti tolydžius duomenis?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">duomenų-paruošimas</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">pradedantiesiems</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 10, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -230,254 +231,127 @@ window.Quarto = {
 </header>
 
 
-<p>Šiame puslapyje rasite straipsnius apie statistikos metodus, patarimus ir praktines įžvalgas. Straipsniai skirti tiek pradedantiesiems, tiek patyrusiems tyrėjams.</p>
-<div class="callout callout-style-default callout-note callout-titled">
+<p>Prieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.</p>
+<section id="trūkstamos-reikšmės" class="level1">
+<h1>Trūkstamos reikšmės</h1>
+<p>Pirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Kiek trūkstamų reikšmių kiekviename stulpelyje?</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(iris))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
+           0            0            0            0            0 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Turite klausimą?
+Ką daryti su trūkstamomis reikšmėmis?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Jei nerandate atsakymo į savo klausimą, <a href="./kontaktai.html">susisiekite su manimi</a> – galbūt tai bus naujo straipsnio tema!</p>
+<ul>
+<li><strong>Pašalinti</strong> - jei jų nedaug ir jos atsitiktinės</li>
+<li><strong>Imputuoti</strong> - pakeisti vidurkiu, mediana arba naudoti sudėtingesnius metodus</li>
+<li><strong>Analizuoti atskirai</strong> - patikrinti, ar trūkstamos reikšmės nėra sisteminės</li>
+</ul>
 </div>
 </div>
+</section>
+<section id="ekstremalios-reikšmės-outliers" class="level1">
+<h1>Ekstremalios reikšmės (outliers)</h1>
+<p>Ekstremalias reikšmes galima aptikti vizualiai:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">y =</span> Sepal.Length)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Taurėlapių ilgio boxplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Arba skaičiavimu:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ekstremalios reikšmės pagal IQR metodą</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(iris<span class="sc">$</span>Sepal.Length, <span class="fl">0.25</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(iris<span class="sc">$</span>Sepal.Length, <span class="fl">0.75</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>IQR <span class="ot">&lt;-</span> Q3 <span class="sc">-</span> Q1</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> Q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> iris<span class="sc">$</span>Sepal.Length[iris<span class="sc">$</span>Sepal.Length <span class="sc">&lt;</span> lower_bound <span class="sc">|</span> iris<span class="sc">$</span>Sepal.Length <span class="sc">&gt;</span> upper_bound]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Ekstremalios reikšmės:"</span>, outliers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ekstremalios reikšmės: </code></pre>
+</div>
+</div>
+</section>
+<section id="skirstinys" class="level1">
+<h1>Skirstinys</h1>
+<p>Normalumo tikrinimas yra svarbus daugumai parametrinių testų:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"#4F46E5"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Taurėlapių ilgio histograma su tankio kreive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="santrauka" class="level1">
+<h1>Santrauka</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Žingsnis</th>
+<th>Ką tikrinti</th>
+<th>R funkcija</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Trūkstamos reikšmės</td>
+<td><code>is.na()</code>, <code>summary()</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Ekstremalios reikšmės</td>
+<td><code>boxplot()</code>, IQR metodas</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Skirstinys</td>
+<td><code>hist()</code>, <code>qqnorm()</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Variacija</td>
+<td><code>var()</code>, <code>sd()</code></td>
+</tr>
+</tbody>
+</table>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="statistika,neparametriniai-testai,R" data-listing-date-sort="1685826000000" data-listing-file-modified-sort="1769447297337" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="185">
-<a href="./posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" class="thumbnail-image card-img" style="height: 200px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kada rinktis Kruskal-Wallis testą?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('statistika'); return false;">
-statistika
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('neparametriniai-testai'); return false;">
-neparametriniai-testai
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jun 4, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="statistika,kategoriniai-duomenys,R" data-listing-date-sort="1684530000000" data-listing-file-modified-sort="1769446465321" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="230">
-<a href="./posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\kaip-atlikti-chi-kvadrato-testa\kaip-atlikti-chi-kvadrato-testa_files\figure-html\unnamed-chunk-3-1.png" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kaip atlikti Chi-kvadrato testą?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('statistika'); return false;">
-statistika
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('kategoriniai-duomenys'); return false;">
-kategoriniai-duomenys
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-May 20, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="statistika,t-testas,R" data-listing-date-sort="1682110800000" data-listing-file-modified-sort="1769446464834" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="396">
-<a href="./posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/kada-rinktis-t-testa/images/image-1458940830.png" class="thumbnail-image card-img" style="height: 200px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kaip naudoti Stjudento t-testą?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('statistika'); return false;">
-statistika
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('t-testas'); return false;">
-t-testas
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus. Sužinokite, kaip ir kada taikyti Stjudento t-testą.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 22, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="statistika,neparametriniai-testai,R" data-listing-date-sort="1681678800000" data-listing-file-modified-sort="1769446465255" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
-<a href="./posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\kada-rinktis-mann-whitney\kada-rinktis-mann-whitney_files\figure-html\unnamed-chunk-3-1.png" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kada rinktis Mann-Whitney testą?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('statistika'); return false;">
-statistika
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('neparametriniai-testai'); return false;">
-neparametriniai-testai
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Sužinokite, kada ir kaip taikyti Mann-Whitney testą.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 17, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="statistika,ANOVA,R" data-listing-date-sort="1681506000000" data-listing-file-modified-sort="1769446464974" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
-<a href="./posts/kada-rinktis-anova/kada-rinktis-anova.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/kada-rinktis-anova/images/boxplot_example.png" class="thumbnail-image card-img" style="height: 200px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kada rinktis ANOVA?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('statistika'); return false;">
-statistika
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ANOVA'); return false;">
-ANOVA
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 15, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="duomenų-paruošimas,R,pradedantiesiems" data-listing-date-sort="1678399200000" data-listing-file-modified-sort="1769446507564" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="198">
-<a href="./posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\kaip-patikrinti-tolydzius-duomenis\kaip-patikrinti-tolydzius-duomenis_files\figure-html\unnamed-chunk-2-1.png" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kaip patikrinti tolydžius duomenis?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('duomenų-paruošimas'); return false;">
-duomenų-paruošimas
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('pradedantiesiems'); return false;">
-pradedantiesiems
-</div>
-</div>
-<div class="card-text listing-description">
-Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Mar 10, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="duomenų-paruošimas,R,pradedantiesiems" data-listing-date-sort="1676412000000" data-listing-file-modified-sort="1769446507640" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="359">
-<a href="./posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="posts\kaip-koduoti-duomenis\kaip-koduoti-duomenis_files\figure-html\unnamed-chunk-4-1.png" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Kaip koduoti duomenis?
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('duomenų-paruošimas'); return false;">
-duomenų-paruošimas
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('pradedantiesiems'); return false;">
-pradedantiesiems
-</div>
-</div>
-<div class="card-text listing-description">
-Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Feb 15, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -905,7 +779,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>© 2024 Statistikas.lt. Visos teisės saugomos.</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>
+<p><a href="paslaugos.qmd">Paslaugos</a> · <a href="straipsniai.qmd">Straipsniai</a> · <a href="about.qmd">Apie</a></p>
 </div>
     <div class="nav-footer-right">
 <p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>

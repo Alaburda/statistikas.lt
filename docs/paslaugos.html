@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-03-10">
-<meta name="description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
 
-<title>Kaip patikrinti tolydžius duomenis? – Statistikas.lt</title>
+<title>Paslaugos – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,60 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../images/favicon.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,27 +78,27 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </script>
 
 
-<link rel="stylesheet" href="../../theme/styles.css">
-<meta property="og:title" content="Kaip patikrinti tolydžius duomenis? – Statistikas.lt">
-<meta property="og:description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
-<meta property="og:image" content="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/images/card_image.png">
+<link rel="stylesheet" href="theme/styles.css">
+<meta property="og:title" content="Paslaugos – Statistikas.lt">
+<meta property="og:description" content="Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui">
+<meta property="og:image" content="https://statistikas.lt/images/card_image.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Kaip patikrinti tolydžius duomenis? – Statistikas.lt">
-<meta name="twitter:description" content="Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.">
-<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/images/card_image.png">
+<meta name="twitter:title" content="Paslaugos – Statistikas.lt">
+<meta name="twitter:description" content="Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui">
+<meta name="twitter:image" content="https://statistikas.lt/images/logo.svg">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -144,25 +108,25 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Pradžia</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../paslaugos.html"> 
+    <a class="nav-link active" href="./paslaugos.html" aria-current="page"> 
 <span class="menu-text">Paslaugos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../straipsniai.html"> 
+    <a class="nav-link" href="./straipsniai.html"> 
 <span class="menu-text">Straipsniai</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">Apie</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../kontaktai.html"> 
+    <a class="nav-link" href="./kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
   </li>  
   <li class="nav-item compact">
@@ -178,50 +142,60 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#trūkstamos-reikšmės" id="toc-trūkstamos-reikšmės" class="nav-link active" data-scroll-target="#trūkstamos-reikšmės">Trūkstamos reikšmės</a></li>
-  <li><a href="#ekstremalios-reikšmės-outliers" id="toc-ekstremalios-reikšmės-outliers" class="nav-link" data-scroll-target="#ekstremalios-reikšmės-outliers">Ekstremalios reikšmės (outliers)</a></li>
-  <li><a href="#skirstinys" id="toc-skirstinys" class="nav-link" data-scroll-target="#skirstinys">Skirstinys</a></li>
-  <li><a href="#santrauka" id="toc-santrauka" class="nav-link" data-scroll-target="#santrauka">Santrauka</a></li>
+  <li><a href="#statistinės-analizės" id="toc-statistinės-analizės" class="nav-link active" data-scroll-target="#statistinės-analizės">Statistinės analizės</a>
+  <ul class="collapse">
+  <li><a href="#ką-gausite" id="toc-ką-gausite" class="nav-link" data-scroll-target="#ką-gausite">Ką gausite:</a></li>
+  <li><a href="#formatas" id="toc-formatas" class="nav-link" data-scroll-target="#formatas">Formatas:</a></li>
+  </ul></li>
+  <li><a href="#imties-dydžio-skaičiavimai" id="toc-imties-dydžio-skaičiavimai" class="nav-link" data-scroll-target="#imties-dydžio-skaičiavimai">Imties dydžio skaičiavimai</a>
+  <ul class="collapse">
+  <li><a href="#kaip-tai-veikia" id="toc-kaip-tai-veikia" class="nav-link" data-scroll-target="#kaip-tai-veikia">Kaip tai veikia:</a></li>
+  <li><a href="#ką-gausite-1" id="toc-ką-gausite-1" class="nav-link" data-scroll-target="#ką-gausite-1">Ką gausite:</a></li>
+  </ul></li>
+  <li><a href="#konsultacijos" id="toc-konsultacijos" class="nav-link" data-scroll-target="#konsultacijos">Konsultacijos</a>
+  <ul class="collapse">
+  <li><a href="#konsultacijų-tipai" id="toc-konsultacijų-tipai" class="nav-link" data-scroll-target="#konsultacijų-tipai">Konsultacijų tipai:</a></li>
+  <li><a href="#kaip-tai-vyksta" id="toc-kaip-tai-vyksta" class="nav-link" data-scroll-target="#kaip-tai-vyksta">Kaip tai vyksta:</a></li>
+  </ul></li>
+  <li><a href="#duomenų-paruošimas" id="toc-duomenų-paruošimas" class="nav-link" data-scroll-target="#duomenų-paruošimas">Duomenų paruošimas</a>
+  <ul class="collapse">
+  <li><a href="#pagalba-su" id="toc-pagalba-su" class="nav-link" data-scroll-target="#pagalba-su">Pagalba su:</a></li>
+  </ul></li>
+  <li><a href="#mokymai" id="toc-mokymai" class="nav-link" data-scroll-target="#mokymai">Mokymai</a>
+  <ul class="collapse">
+  <li><a href="#temos" id="toc-temos" class="nav-link" data-scroll-target="#temos">Temos:</a></li>
+  <li><a href="#formatai" id="toc-formatai" class="nav-link" data-scroll-target="#formatai">Formatai:</a></li>
+  </ul></li>
+  <li><a href="#kainos" id="toc-kainos" class="nav-link" data-scroll-target="#kainos">Kainos</a></li>
+  <li><a href="#susisiekite" id="toc-susisiekite" class="nav-link" data-scroll-target="#susisiekite">Susisiekite</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Kaip patikrinti tolydžius duomenis?</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">duomenų-paruošimas</div>
-    <div class="quarto-category">R</div>
-    <div class="quarto-category">pradedantiesiems</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti.
-  </div>
+<h1 class="title">Paslaugos</h1>
+<p class="subtitle lead">Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui</p>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
+
+<div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 10, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -231,122 +205,167 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<p>Prieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.</p>
-<section id="trūkstamos-reikšmės" class="level1">
-<h1>Trūkstamos reikšmės</h1>
-<p>Pirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Kiek trūkstamų reikšmių kiekviename stulpelyje?</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(iris))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
-           0            0            0            0            0 </code></pre>
-</div>
-</div>
+<section id="statistinės-analizės" class="level2">
+<h2 class="anchored" data-anchor-id="statistinės-analizės">Statistinės analizės</h2>
+<p>Atlieku pilną duomenų analizę nuo A iki Z. Gausite detalią ataskaitą su visais rezultatais, grafikais ir lentelėmis, paruoštą įtraukti į jūsų darbą.</p>
+<section id="ką-gausite" class="level3">
+<h3 class="anchored" data-anchor-id="ką-gausite">Ką gausite:</h3>
+<ul>
+<li><strong>Aprašomąją statistiką</strong> – vidurkiai, standartiniai nuokrypiai, pasiskirstymas</li>
+<li><strong>Hipotezių tikrinimą</strong> – t-testai, ANOVA, chi-kvadrato testai ir kt.</li>
+<li><strong>Regresinę analizę</strong> – tiesinė, logistinė, daugiamatis modeliavimas</li>
+<li><strong>Vizualizacijas</strong> – profesionalūs grafikai, tinkami publikacijoms</li>
+<li><strong>Interpretaciją</strong> – ne tik skaičiai, bet ir ką jie reiškia</li>
+</ul>
+</section>
+<section id="formatas" class="level3">
+<h3 class="anchored" data-anchor-id="formatas">Formatas:</h3>
+<p>Analizės pateikiamos <strong>Word formatu</strong> su:</p>
+<ul>
+<li>Metodų aprašymu (tinka kopijuoti į jūsų darbą)</li>
+<li>Lentelėmis APA formatu</li>
+<li>Grafikais aukšta raiška</li>
+<li>Rezultatų interpretacija</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="imties-dydžio-skaičiavimai" class="level2">
+<h2 class="anchored" data-anchor-id="imties-dydžio-skaičiavimai">Imties dydžio skaičiavimai</h2>
+<p>Planuojate tyrimą? Padėsiu apskaičiuoti, kiek tiriamųjų reikia, kad gautumėte statistiškai reikšmingus rezultatus.</p>
+<section id="kaip-tai-veikia" class="level3">
+<h3 class="anchored" data-anchor-id="kaip-tai-veikia">Kaip tai veikia:</h3>
+<ol type="1">
+<li>Aptariame jūsų tyrimo dizainą ir tikslus</li>
+<li>Nustatomė laukiamą efekto dydį</li>
+<li>Pasirenkame statistinį testą</li>
+<li>Apskaičiuojame optimalų imties dydį</li>
+</ol>
+</section>
+<section id="ką-gausite-1" class="level3">
+<h3 class="anchored" data-anchor-id="ką-gausite-1">Ką gausite:</h3>
+<ul>
+<li>Kelis galimus scenarijus (80%, 90% galia)</li>
+<li>Paaiškinimą, kaip imtis buvo apskaičiuota</li>
+<li>Rekomendacijas, ką daryti, jei imtis per didelė</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="konsultacijos" class="level2">
+<h2 class="anchored" data-anchor-id="konsultacijos">Konsultacijos</h2>
+<p>Norite analizę atlikti patys, bet reikia pagalbos? Galime susitikti gyvai arba nuotoliniu būdu.</p>
+<section id="konsultacijų-tipai" class="level3">
+<h3 class="anchored" data-anchor-id="konsultacijų-tipai">Konsultacijų tipai:</h3>
+<ul>
+<li><strong>Vienkartinė konsultacija</strong> – atsakysiu į konkrečius klausimus</li>
+<li><strong>Reguliarios konsultacijos</strong> – palydėsiu per visą projektą</li>
+<li><strong>Kodo peržiūra</strong> – patikrinsiu jūsų R/Python kodą</li>
+</ul>
+</section>
+<section id="kaip-tai-vyksta" class="level3">
+<h3 class="anchored" data-anchor-id="kaip-tai-vyksta">Kaip tai vyksta:</h3>
+<ol type="1">
+<li>Susisiekiate ir aprašote problemą</li>
+<li>Sutariame laiką (Zoom, Google Meet arba gyvai)</li>
+<li>Konsultacijos metu sprendžiame jūsų klausimus</li>
+<li>Jei reikia – gaunu papildomų užduočių</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="duomenų-paruošimas" class="level2">
+<h2 class="anchored" data-anchor-id="duomenų-paruošimas">Duomenų paruošimas</h2>
+<p>Netvarkinga duomenų lentelė? Padėsiu ją sutvarkyti ir paruošti analizei.</p>
+<section id="pagalba-su" class="level3">
+<h3 class="anchored" data-anchor-id="pagalba-su">Pagalba su:</h3>
+<ul>
+<li>Excel lentelių valymu ir struktūrizavimu</li>
+<li>Trūkstamų reikšmių tvarkymu</li>
+<li>Duomenų transformacijomis</li>
+<li>Kelių šaltinių sujungimu</li>
+<li>Kodavimu ir rekodavimu</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="mokymai" class="level2">
+<h2 class="anchored" data-anchor-id="mokymai">Mokymai</h2>
+<p>Norite išmokti statistiką patys? Siūlau individualius arba grupinius mokymus.</p>
+<section id="temos" class="level3">
+<h3 class="anchored" data-anchor-id="temos">Temos:</h3>
+<ul>
+<li><strong>Statistikos pagrindai</strong> – ką reiškia p-reikšmė, pasikliautiniai intervalai</li>
+<li><strong>R pradmenys</strong> – nuo nulio iki pirmos analizės</li>
+<li><strong>Duomenų vizualizacija</strong> – ggplot2 ir profesionalūs grafikai</li>
+<li><strong>Specifiniai metodai</strong> – regresinė analizė, survival analizė ir kt.</li>
+</ul>
+</section>
+<section id="formatai" class="level3">
+<h3 class="anchored" data-anchor-id="formatai">Formatai:</h3>
+<ul>
+<li>Individualūs mokymai (1:1)</li>
+<li>Grupiniai mokymai (iki 10 žmonių)</li>
+<li>Online arba gyvai</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="kainos" class="level2">
+<h2 class="anchored" data-anchor-id="kainos">Kainos</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Paslauga</th>
+<th>Kaina nuo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Paprasta statistinė analizė</td>
+<td>100 €</td>
+</tr>
+<tr class="even">
+<td>Sudėtinga analizė</td>
+<td>300 €</td>
+</tr>
+<tr class="odd">
+<td>Imties dydžio skaičiavimas</td>
+<td>50 €</td>
+</tr>
+<tr class="even">
+<td>Konsultacija (1 val.)</td>
+<td>50 €</td>
+</tr>
+<tr class="odd">
+<td>Duomenų paruošimas</td>
+<td>50 €</td>
+</tr>
+<tr class="even">
+<td>Individualūs mokymai (1 val.)</td>
+<td>60 €</td>
+</tr>
+</tbody>
+</table>
+<p><em>Tikslią kainą galėsiu pasakyti po nemokamos pirminės konsultacijos, susipažinęs su jūsų projektu.</em></p>
+<hr>
+</section>
+<section id="susisiekite" class="level2">
+<h2 class="anchored" data-anchor-id="susisiekite">Susisiekite</h2>
+<p>Turite klausimų? <a href="./kontaktai.html">Susisiekite su manimi</a> arba rašykite tiesiogiai: <a href="mailto:info@statistikas.lt">info@statistikas.lt</a></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Ką daryti su trūkstamomis reikšmėmis?
+Nemokama konsultacija
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li><strong>Pašalinti</strong> - jei jų nedaug ir jos atsitiktinės</li>
-<li><strong>Imputuoti</strong> - pakeisti vidurkiu, mediana arba naudoti sudėtingesnius metodus</li>
-<li><strong>Analizuoti atskirai</strong> - patikrinti, ar trūkstamos reikšmės nėra sisteminės</li>
-</ul>
+<p>Pirminė konsultacija (iki 30 min.) yra nemokama. Aptarsime jūsų projektą ir rasime geriausią sprendimą.</p>
 </div>
 </div>
-</section>
-<section id="ekstremalios-reikšmės-outliers" class="level1">
-<h1>Ekstremalios reikšmės (outliers)</h1>
-<p>Ekstremalias reikšmes galima aptikti vizualiai:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">y =</span> Sepal.Length)) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Taurėlapių ilgio boxplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Arba skaičiavimu:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ekstremalios reikšmės pagal IQR metodą</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(iris<span class="sc">$</span>Sepal.Length, <span class="fl">0.25</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(iris<span class="sc">$</span>Sepal.Length, <span class="fl">0.75</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>IQR <span class="ot">&lt;-</span> Q3 <span class="sc">-</span> Q1</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> Q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> iris<span class="sc">$</span>Sepal.Length[iris<span class="sc">$</span>Sepal.Length <span class="sc">&lt;</span> lower_bound <span class="sc">|</span> iris<span class="sc">$</span>Sepal.Length <span class="sc">&gt;</span> upper_bound]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Ekstremalios reikšmės:"</span>, outliers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ekstremalios reikšmės: </code></pre>
-</div>
-</div>
-</section>
-<section id="skirstinys" class="level1">
-<h1>Skirstinys</h1>
-<p>Normalumo tikrinimas yra svarbus daugumai parametrinių testų:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length)) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"#4F46E5"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Taurėlapių ilgio histograma su tankio kreive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="santrauka" class="level1">
-<h1>Santrauka</h1>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Žingsnis</th>
-<th>Ką tikrinti</th>
-<th>R funkcija</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Trūkstamos reikšmės</td>
-<td><code>is.na()</code>, <code>summary()</code></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Ekstremalios reikšmės</td>
-<td><code>boxplot()</code>, IQR metodas</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Skirstinys</td>
-<td><code>hist()</code>, <code>qqnorm()</code></td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Variacija</td>
-<td><code>var()</code>, <code>sd()</code></td>
-</tr>
-</tbody>
-</table>
 
 
 </section>
@@ -779,7 +798,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>© 2024 Statistikas.lt. Visos teisės saugomos.</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="paslaugos.qmd">Paslaugos</a> · <a href="straipsniai.qmd">Straipsniai</a> · <a href="about.qmd">Apie</a></p>
+<p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>
 </div>
     <div class="nav-footer-right">
 <p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2023-06-04">
+<meta name="description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
 
-<title>Susisiekite – Statistikas.lt</title>
+<title>Kada rinktis Kruskal-Wallis testą? – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,27 +114,27 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </script>
 
 
-<link rel="stylesheet" href="theme/styles.css">
-<meta property="og:title" content="Susisiekite – Statistikas.lt">
-<meta property="og:description" content="Aptarkime jūsų projektą">
-<meta property="og:image" content="https://statistikas.lt/images/card_image.png">
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="Kada rinktis Kruskal-Wallis testą? – Statistikas.lt">
+<meta property="og:description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
+<meta property="og:image" content="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Susisiekite – Statistikas.lt">
-<meta name="twitter:description" content="Aptarkime jūsų projektą">
-<meta name="twitter:image" content="https://statistikas.lt/images/card_image.png">
+<meta name="twitter:title" content="Kada rinktis Kruskal-Wallis testą? – Statistikas.lt">
+<meta name="twitter:description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -108,25 +144,25 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Pradžia</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./paslaugos.html"> 
+    <a class="nav-link" href="../../paslaugos.html"> 
 <span class="menu-text">Paslaugos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./straipsniai.html"> 
+    <a class="nav-link" href="../../straipsniai.html"> 
 <span class="menu-text">Straipsniai</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Apie</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./kontaktai.html" aria-current="page"> 
+    <a class="nav-link" href="../../kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
   </li>  
   <li class="nav-item compact">
@@ -142,24 +178,51 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#kada-taikyti-kruskal-wallis-testą" id="toc-kada-taikyti-kruskal-wallis-testą" class="nav-link active" data-scroll-target="#kada-taikyti-kruskal-wallis-testą">Kada taikyti Kruskal-Wallis testą?</a></li>
+  <li><a href="#kaip-atlikti-kruskal-wallis-testą" id="toc-kaip-atlikti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-atlikti-kruskal-wallis-testą">Kaip atlikti Kruskal-Wallis testą?</a></li>
+  <li><a href="#kaip-raportuoti-kruskal-wallis-testą" id="toc-kaip-raportuoti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-raportuoti-kruskal-wallis-testą">Kaip raportuoti Kruskal-Wallis testą?</a></li>
+  <li><a href="#post-hoc-testai" id="toc-post-hoc-testai" class="nav-link" data-scroll-target="#post-hoc-testai">Post-hoc testai</a></li>
+  <li><a href="#kaip-vizualizuoti-kruskal-wallis-testą" id="toc-kaip-vizualizuoti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-vizualizuoti-kruskal-wallis-testą">Kaip vizualizuoti Kruskal-Wallis testą?</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Susisiekite</h1>
-<p class="subtitle lead">Aptarkime jūsų projektą</p>
+<h1 class="title">Kada rinktis Kruskal-Wallis testą?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistika</div>
+    <div class="quarto-category">neparametriniai-testai</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 4, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -169,76 +232,92 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<section id="aš-mielu-noru-padėsiu" class="level2 contact-intro">
-<h2 class="anchored" data-anchor-id="aš-mielu-noru-padėsiu">Aš mielu noru padėsiu! 👋</h2>
-<p>Nesvarbu, ar turite klausimą apie statistikos metodus, ar jums reikia pagalbos su duomenų analize – susisiekite ir aptarsime, kaip galiu padėti.</p>
-</section>
-<div class="grid gap-4">
-<section id="parašykite-žinutę" class="level3 g-col-12 g-col-md-7">
-<h3 class="anchored" data-anchor-id="parašykite-žinutę">Parašykite žinutę</h3>
-<form action="https://formspree.io/f/xpzgodgn" method="POST" class="contact-form">
-<div class="form-group">
-<pre><code>&lt;label for="name"&gt;Vardas *&lt;/label&gt;
-&lt;input type="text" id="name" name="name" required placeholder="Jūsų vardas"&gt;</code></pre>
+<section id="kada-taikyti-kruskal-wallis-testą" class="level1">
+<h1>Kada taikyti Kruskal-Wallis testą?</h1>
+<p>Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="form-group">
-<pre><code>&lt;label for="email"&gt;El. paštas *&lt;/label&gt;
-&lt;input type="email" id="email" name="email" required placeholder="jusu@pastas.lt"&gt;</code></pre>
+<div class="callout-title-container flex-fill">
+Kada rinktis Kruskal-Wallis?
 </div>
-<div class="form-group">
-<pre><code>&lt;label for="subject"&gt;Tema&lt;/label&gt;
-&lt;select id="subject" name="subject"&gt;
-  &lt;option value=""&gt;Pasirinkite temą...&lt;/option&gt;
-  &lt;option value="konsultacija"&gt;Konsultacija&lt;/option&gt;
-  &lt;option value="duomenu-analize"&gt;Duomenų analizė&lt;/option&gt;
-  &lt;option value="mokymasi"&gt;Mokymai&lt;/option&gt;
-  &lt;option value="kita"&gt;Kita&lt;/option&gt;
-&lt;/select&gt;</code></pre>
 </div>
-<div class="form-group">
-<pre><code>&lt;label for="message"&gt;Žinutė *&lt;/label&gt;
-&lt;textarea id="message" name="message" rows="6" required placeholder="Aprašykite savo projektą ar klausimą..."&gt;&lt;/textarea&gt;</code></pre>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Kai ANOVA prielaidos nėra patenkinamos</li>
+<li>Kai duomenys yra ranginiai</li>
+<li>Kai imtys yra mažos ir sunku patikrinti normalumą</li>
+</ul>
 </div>
-<button type="submit" class="submit-btn">
-<span>Siųsti žinutę</span> <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path> </svg>
-</button>
-</form>
-</section>
-<div class="g-col-12 g-col-md-5">
-<section id="kiti-kontaktai" class="level3">
-<h3 class="anchored" data-anchor-id="kiti-kontaktai">Kiti kontaktai</h3>
-<section id="el.-paštas" class="level4 contact-card">
-<h4 class="anchored" data-anchor-id="el.-paštas">📧 El. paštas</h4>
-<p><a href="mailto:paulius.alaburda@gmail.com">paulius.alaburda@gmail.com</a></p>
-</section>
-<section id="linkedin" class="level4 contact-card">
-<h4 class="anchored" data-anchor-id="linkedin">💼 LinkedIn</h4>
-<p><a href="https://www.linkedin.com/in/alaburda/">Paulius Alaburda</a></p>
-</section>
-<section id="github" class="level4 contact-card">
-<h4 class="anchored" data-anchor-id="github">🐙 GitHub</h4>
-<p><a href="https://github.com/Alaburda">Alaburda</a></p>
-</section>
-</section>
-<section id="dažni-klausimai" class="level3">
-<h3 class="anchored" data-anchor-id="dažni-klausimai">Dažni klausimai</h3>
-<div class="faq-item">
-<p><strong>Kiek kainuoja konsultacija?</strong></p>
-<p>Vienos valandos konsultacija kainuoja nuo 50€. Tikslesnę kainą nustatome aptarę jūsų projekto apimtį.</p>
-</div>
-<div class="faq-item">
-<p><strong>Ar dirbate su visomis statistikos programomis?</strong></p>
-<p>Taip! Dirbu su R, Python, SPSS, Stata ir kitomis programomis. Taip pat galiu padėti pasirinkti tinkamiausią įrankį jūsų projektui.</p>
-</div>
-<div class="faq-item">
-<p><strong>Kiek laiko trunka projektas?</strong></p>
-<p>Priklauso nuo projekto sudėtingumo. Paprasta analizė gali būti atlikta per 1-2 dienas, sudėtingesni projektai – per 1-2 savaites.</p>
 </div>
 </section>
+<section id="kaip-atlikti-kruskal-wallis-testą" class="level1">
+<h1>Kaip atlikti Kruskal-Wallis testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Naudojame iris duomenis</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(Sepal.Length <span class="sc">~</span> Species, <span class="at">data =</span> iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  Sepal.Length by Species
+Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-raportuoti-kruskal-wallis-testą" class="level1">
+<h1>Kaip raportuoti Kruskal-Wallis testą?</h1>
+<p>Štai šablonas, kurį galite naudoti:</p>
+<blockquote class="blockquote">
+<p>“Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p &lt; 0.001).”</p>
+</blockquote>
+</section>
+<section id="post-hoc-testai" class="level1">
+<h1>Post-hoc testai</h1>
+<p>Jei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Species, <span class="at">p.adjust.method =</span> <span class="st">"BH"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+
+data:  iris$Sepal.Length and iris$Species 
+
+           setosa  versicolor
+versicolor 1.3e-13 -         
+virginica  &lt; 2e-16 5.9e-07   
+
+P value adjustment method: BH </code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-vizualizuoti-kruskal-wallis-testą" class="level1">
+<h1>Kaip vizualizuoti Kruskal-Wallis testą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Sepal.Length, <span class="at">fill =</span> Species)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Taurėlapių ilgio palyginimas tarp rūšių"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Rūšis"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -668,7 +747,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>© 2024 Statistikas.lt. Visos teisės saugomos.</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>
+<p><a href="paslaugos.qmd">Paslaugos</a> · <a href="straipsniai.qmd">Straipsniai</a> · <a href="about.qmd">Apie</a></p>
 </div>
     <div class="nav-footer-right">
 <p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>

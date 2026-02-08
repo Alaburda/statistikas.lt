@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-02-15">
-<meta name="description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
+<meta name="dcterms.date" content="2023-05-20">
+<meta name="description" content="Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.">
 
-<title>Kaip koduoti duomenis? – Statistikas.lt</title>
+<title>Kaip atlikti Chi-kvadrato testą? – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../images/favicon.png" rel="icon" type="image/png">
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,13 +115,13 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="../../theme/styles.css">
-<meta property="og:title" content="Kaip koduoti duomenis? – Statistikas.lt">
-<meta property="og:description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
-<meta property="og:image" content="https://statistikas.lt/posts/kaip-koduoti-duomenis/images/card_image.png">
+<meta property="og:title" content="Kaip atlikti Chi-kvadrato testą? – Statistikas.lt">
+<meta property="og:description" content="Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.">
+<meta property="og:image" content="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/images/card_image.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Kaip koduoti duomenis? – Statistikas.lt">
-<meta name="twitter:description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
-<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-koduoti-duomenis/images/card_image.png">
+<meta name="twitter:title" content="Kaip atlikti Chi-kvadrato testą? – Statistikas.lt">
+<meta name="twitter:description" content="Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/images/logo.svg">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -186,12 +186,12 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#kintamųjų-tipai" id="toc-kintamųjų-tipai" class="nav-link active" data-scroll-target="#kintamųjų-tipai">Kintamųjų tipai</a></li>
-  <li><a href="#kategorinių-kintamųjų-kodavimas" id="toc-kategorinių-kintamųjų-kodavimas" class="nav-link" data-scroll-target="#kategorinių-kintamųjų-kodavimas">Kategorinių kintamųjų kodavimas</a></li>
-  <li><a href="#ranginių-kintamųjų-kodavimas" id="toc-ranginių-kintamųjų-kodavimas" class="nav-link" data-scroll-target="#ranginių-kintamųjų-kodavimas">Ranginių kintamųjų kodavimas</a></li>
-  <li><a href="#dummy-kodavimas" id="toc-dummy-kodavimas" class="nav-link" data-scroll-target="#dummy-kodavimas">Dummy kodavimas</a></li>
-  <li><a href="#dažnos-klaidos" id="toc-dažnos-klaidos" class="nav-link" data-scroll-target="#dažnos-klaidos">Dažnos klaidos</a></li>
-  <li><a href="#praktinis-pavyzdys" id="toc-praktinis-pavyzdys" class="nav-link" data-scroll-target="#praktinis-pavyzdys">Praktinis pavyzdys</a></li>
+  <li><a href="#kada-taikyti-chi-kvadrato-testą" id="toc-kada-taikyti-chi-kvadrato-testą" class="nav-link active" data-scroll-target="#kada-taikyti-chi-kvadrato-testą">Kada taikyti Chi-kvadrato testą?</a></li>
+  <li><a href="#kaip-atlikti-chi-kvadrato-testą" id="toc-kaip-atlikti-chi-kvadrato-testą" class="nav-link" data-scroll-target="#kaip-atlikti-chi-kvadrato-testą">Kaip atlikti Chi-kvadrato testą?</a></li>
+  <li><a href="#kaip-interpretuoti-rezultatus" id="toc-kaip-interpretuoti-rezultatus" class="nav-link" data-scroll-target="#kaip-interpretuoti-rezultatus">Kaip interpretuoti rezultatus?</a></li>
+  <li><a href="#kaip-raportuoti-chi-kvadrato-testą" id="toc-kaip-raportuoti-chi-kvadrato-testą" class="nav-link" data-scroll-target="#kaip-raportuoti-chi-kvadrato-testą">Kaip raportuoti Chi-kvadrato testą?</a></li>
+  <li><a href="#fishers-exact-testas" id="toc-fishers-exact-testas" class="nav-link" data-scroll-target="#fishers-exact-testas">Fisher’s exact testas</a></li>
+  <li><a href="#vizualizacija" id="toc-vizualizacija" class="nav-link" data-scroll-target="#vizualizacija">Vizualizacija</a></li>
   </ul>
 </nav>
     </div>
@@ -200,17 +200,17 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Kaip koduoti duomenis?</h1>
+<h1 class="title">Kaip atlikti Chi-kvadrato testą?</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">duomenų-paruošimas</div>
+    <div class="quarto-category">statistika</div>
+    <div class="quarto-category">kategoriniai-duomenys</div>
     <div class="quarto-category">R</div>
-    <div class="quarto-category">pradedantiesiems</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.
+    Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti.
   </div>
 </div>
 
@@ -221,7 +221,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 15, 2023</p>
+      <p class="date">May 20, 2023</p>
     </div>
   </div>
   
@@ -233,165 +233,107 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<p>Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.</p>
-<section id="kintamųjų-tipai" class="level1">
-<h1>Kintamųjų tipai</h1>
-<p>Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 36%">
-<col style="width: 40%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Tipas</th>
-<th>Aprašymas</th>
-<th>Pavyzdžiai</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Kategorinis</strong></td>
-<td>Grupės, kurios neturi tvarkos</td>
-<td>Lytis, spalva, miestas</td>
-</tr>
-<tr class="even">
-<td><strong>Ranginis</strong></td>
-<td>Grupės su tvarka</td>
-<td>Išsilavinimas, Likert skalė</td>
-</tr>
-<tr class="odd">
-<td><strong>Tolydus</strong></td>
-<td>Skaičiai su prasme</td>
-<td>Amžius, svoris, ūgis</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="kategorinių-kintamųjų-kodavimas" class="level1">
-<h1>Kategorinių kintamųjų kodavimas</h1>
-<p>R kalboje kategoriniai kintamieji turėtų būti <code>factor</code> tipo:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>duomenys <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lytis =</span> <span class="fu">c</span>(<span class="st">"V"</span>, <span class="st">"M"</span>, <span class="st">"V"</span>, <span class="st">"M"</span>, <span class="st">"V"</span>),</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">amzius =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">45</span>, <span class="dv">28</span>, <span class="dv">51</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Paverčiame į faktorių</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>duomenys<span class="sc">$</span>lytis <span class="ot">&lt;-</span> <span class="fu">factor</span>(duomenys<span class="sc">$</span>lytis, </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"V"</span>, <span class="st">"M"</span>),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Vyras"</span>, <span class="st">"Moteris"</span>))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(duomenys)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   5 obs. of  2 variables:
- $ lytis : Factor w/ 2 levels "Vyras","Moteris": 1 2 1 2 1
- $ amzius: num  25 32 45 28 51</code></pre>
-</div>
-</div>
-</section>
-<section id="ranginių-kintamųjų-kodavimas" class="level1">
-<h1>Ranginių kintamųjų kodavimas</h1>
-<p>Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>issilavinimas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Vidurinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Pagrindinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Vidurinis"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>issilavinimas_factor <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  issilavinimas,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Pagrindinis"</span>, <span class="st">"Vidurinis"</span>, <span class="st">"Aukštasis"</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>issilavinimas_factor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] Vidurinis   Aukštasis   Pagrindinis Aukštasis   Vidurinis  
-Levels: Pagrindinis &lt; Vidurinis &lt; Aukštasis</code></pre>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Patarimas
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Naudokite <code>ordered = TRUE</code> ranginiams kintamiesiems - tai leis R teisingai interpretuoti kintamojo prigimtį!</p>
-</div>
-</div>
-</section>
-<section id="dummy-kodavimas" class="level1">
-<h1>Dummy kodavimas</h1>
-<p>Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model.matrix automatiškai sukuria dummy kintamuosius</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> lytis, <span class="at">data =</span> duomenys)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  (Intercept) lytisMoteris
-1           1            0
-2           1            1
-3           1            0
-4           1            1
-5           1            0
-attr(,"assign")
-[1] 0 1
-attr(,"contrasts")
-attr(,"contrasts")$lytis
-[1] "contr.treatment"</code></pre>
-</div>
-</div>
-</section>
-<section id="dažnos-klaidos" class="level1">
-<h1>Dažnos klaidos</h1>
+<p>Chi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.</p>
+<section id="kada-taikyti-chi-kvadrato-testą" class="level1">
+<h1>Kada taikyti Chi-kvadrato testą?</h1>
+<p>Chi-kvadrato testą renkamės, kai:</p>
+<ul>
+<li><strong>Abu kintamieji yra kategoriniai</strong> (pvz., lytis ir rūkymo statusas)</li>
+<li><strong>Norime patikrinti, ar kintamieji yra susiję</strong></li>
+<li><strong>Turime pakankamai didelę imtį</strong> (visi laukiami dažniai &gt; 5)</li>
+</ul>
+<p>Kategorijų kiekis taip pat neribotas: gali būti 2, gali būti ir 3, 4 arba daugiau.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Ko vengti?
+Dėmesio
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ol type="1">
-<li><strong>Nekoduoti tekstinių kintamųjų</strong> - R juos traktuos kaip <code>character</code>, ne <code>factor</code></li>
-<li><strong>Neteisingai nurodyti lygius</strong> - tai gali pakeisti bazinę kategoriją regresijoje</li>
-<li><strong>Naudoti skaičius kategoriniams kintamiesiems</strong> - tai gali sukelti klaidų interpretacijoje</li>
-</ol>
+<p>Jei laukiami dažniai yra &lt; 5, reikėtų naudoti Fisher’s exact testą!</p>
 </div>
 </div>
 </section>
-<section id="praktinis-pavyzdys" class="level1">
-<h1>Praktinis pavyzdys</h1>
+<section id="kaip-atlikti-chi-kvadrato-testą" class="level1">
+<h1>Kaip atlikti Chi-kvadrato testą?</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame duomenis su teisingai koduotais kintamaisiais</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>apklausa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">amzius =</span> <span class="fu">sample</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pasitenkinimas =</span> <span class="fu">factor</span>(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Labai nepatenkintas"</span>, <span class="st">"Nepatenkintas"</span>, <span class="st">"Neutralus"</span>, </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Patenkintas"</span>, <span class="st">"Labai patenkintas"</span>),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(apklausa, <span class="fu">aes</span>(<span class="at">x =</span> pasitenkinimas)) <span class="sc">+</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"#4F46E5"</span>) <span class="sc">+</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pasitenkinimo pasiskirstymas"</span>, <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Skaičius"</span>) <span class="sc">+</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame pavyzdinius duomenis</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>stuff <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lytis =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Vyras"</span>, <span class="st">"Moteris"</span>), <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ruko =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Taip"</span>, <span class="st">"Ne"</span>), <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Atliekame testą</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="fu">table</span>(stuff<span class="sc">$</span>lytis, stuff<span class="sc">$</span>ruko))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  table(stuff$lytis, stuff$ruko)
+X-squared = 1.4452, df = 1, p-value = 0.2293</code></pre>
+</div>
+</div>
+</section>
+<section id="kaip-interpretuoti-rezultatus" class="level1">
+<h1>Kaip interpretuoti rezultatus?</h1>
+<p>Chi-kvadrato testo rezultate svarbu:</p>
+<ol type="1">
+<li><strong>X-squared</strong> - testo statistika</li>
+<li><strong>df</strong> - laisvės laipsniai</li>
+<li><strong>p-value</strong> - jei &lt; 0.05, ryšys yra statistiškai reikšmingas</li>
+</ol>
+</section>
+<section id="kaip-raportuoti-chi-kvadrato-testą" class="level1">
+<h1>Kaip raportuoti Chi-kvadrato testą?</h1>
+<p>Aš dažniausiai naudoju tokį šabloną:</p>
+<blockquote class="blockquote">
+<p>“Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121).”</p>
+</blockquote>
+</section>
+<section id="fishers-exact-testas" class="level1">
+<h1>Fisher’s exact testas</h1>
+<p>Kai laukiami dažniai yra maži (&lt; 5), naudojame Fisher’s exact testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame mažą lentelę</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>maza_lentele <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(maza_lentele)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fisher's Exact Test for Count Data
+
+data:  maza_lentele
+p-value = 0.5238
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+   0.218046 390.562917
+sample estimates:
+odds ratio 
+  4.918388 </code></pre>
+</div>
+</div>
+</section>
+<section id="vizualizacija" class="level1">
+<h1>Vizualizacija</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(stuff, <span class="fu">aes</span>(<span class="at">x =</span> lytis, <span class="at">fill =</span> ruko)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Rūkymo pasiskirstymas pagal lytį"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Lytis"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proporcija"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Rūko?"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="kaip-koduoti-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="kaip-atlikti-chi-kvadrato-testa_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

@@ -6,10 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-06-04">
-<meta name="description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
+<meta name="author" content="Paulius Alaburda">
+<meta name="dcterms.date" content="2023-04-15">
+<meta name="description" content="ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą.">
 
-<title>Kada rinktis Kruskal-Wallis testą? – Statistikas.lt</title>
+<title>Kada rinktis ANOVA? – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../images/favicon.png" rel="icon" type="image/png">
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,13 +116,13 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="../../theme/styles.css">
-<meta property="og:title" content="Kada rinktis Kruskal-Wallis testą? – Statistikas.lt">
-<meta property="og:description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
-<meta property="og:image" content="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png">
+<meta property="og:title" content="Kada rinktis ANOVA? – Statistikas.lt">
+<meta property="og:description" content="ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą.">
+<meta property="og:image" content="https://statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Kada rinktis Kruskal-Wallis testą? – Statistikas.lt">
-<meta name="twitter:description" content="Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.">
-<meta name="twitter:image" content="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png">
+<meta name="twitter:title" content="Kada rinktis ANOVA? – Statistikas.lt">
+<meta name="twitter:description" content="ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -186,11 +187,20 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#kada-taikyti-kruskal-wallis-testą" id="toc-kada-taikyti-kruskal-wallis-testą" class="nav-link active" data-scroll-target="#kada-taikyti-kruskal-wallis-testą">Kada taikyti Kruskal-Wallis testą?</a></li>
-  <li><a href="#kaip-atlikti-kruskal-wallis-testą" id="toc-kaip-atlikti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-atlikti-kruskal-wallis-testą">Kaip atlikti Kruskal-Wallis testą?</a></li>
-  <li><a href="#kaip-raportuoti-kruskal-wallis-testą" id="toc-kaip-raportuoti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-raportuoti-kruskal-wallis-testą">Kaip raportuoti Kruskal-Wallis testą?</a></li>
+  <li><a href="#kaip-rinktis-anova" id="toc-kaip-rinktis-anova" class="nav-link active" data-scroll-target="#kaip-rinktis-anova">Kaip rinktis ANOVA?</a>
+  <ul class="collapse">
+  <li><a href="#kada-rinktis-anova" id="toc-kada-rinktis-anova" class="nav-link" data-scroll-target="#kada-rinktis-anova">Kada rinktis ANOVA?</a></li>
+  <li><a href="#vienpusė-anova" id="toc-vienpusė-anova" class="nav-link" data-scroll-target="#vienpusė-anova">Vienpusė ANOVA</a></li>
+  </ul></li>
+  <li><a href="#dvipusė-anova" id="toc-dvipusė-anova" class="nav-link" data-scroll-target="#dvipusė-anova">Dvipusė ANOVA</a></li>
   <li><a href="#post-hoc-testai" id="toc-post-hoc-testai" class="nav-link" data-scroll-target="#post-hoc-testai">Post-hoc testai</a></li>
-  <li><a href="#kaip-vizualizuoti-kruskal-wallis-testą" id="toc-kaip-vizualizuoti-kruskal-wallis-testą" class="nav-link" data-scroll-target="#kaip-vizualizuoti-kruskal-wallis-testą">Kaip vizualizuoti Kruskal-Wallis testą?</a></li>
+  <li><a href="#vienpusės-anova-poskoniai" id="toc-vienpusės-anova-poskoniai" class="nav-link" data-scroll-target="#vienpusės-anova-poskoniai">3 vienpusės ANOVA poskoniai</a></li>
+  <li><a href="#ar-anova-buvo-tinkamas-testas" id="toc-ar-anova-buvo-tinkamas-testas" class="nav-link" data-scroll-target="#ar-anova-buvo-tinkamas-testas">Ar ANOVA buvo tinkamas testas?</a>
+  <ul class="collapse">
+  <li><a href="#homogeniška-variacija" id="toc-homogeniška-variacija" class="nav-link" data-scroll-target="#homogeniška-variacija">Homogeniška variacija</a></li>
+  <li><a href="#pasiskirstymas-pagal-normalųjį-skirstinį" id="toc-pasiskirstymas-pagal-normalųjį-skirstinį" class="nav-link" data-scroll-target="#pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</a></li>
+  </ul></li>
+  <li><a href="#kaip-pavaizduoti-anova-rezultatą" id="toc-kaip-pavaizduoti-anova-rezultatą" class="nav-link" data-scroll-target="#kaip-pavaizduoti-anova-rezultatą">Kaip pavaizduoti ANOVA rezultatą?</a></li>
   </ul>
 </nav>
     </div>
@@ -199,28 +209,34 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Kada rinktis Kruskal-Wallis testą?</h1>
+<h1 class="title">Kada rinktis ANOVA?</h1>
   <div class="quarto-categories">
     <div class="quarto-category">statistika</div>
-    <div class="quarto-category">neparametriniai-testai</div>
+    <div class="quarto-category">ANOVA</div>
     <div class="quarto-category">R</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti.
+    ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų. Sužinokite, kaip atlikti ir interpretuoti ANOVA testą.
   </div>
 </div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulius Alaburda </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 4, 2023</p>
+      <p class="date">April 15, 2023</p>
     </div>
   </div>
   
@@ -232,85 +248,182 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<section id="kada-taikyti-kruskal-wallis-testą" class="level1">
-<h1>Kada taikyti Kruskal-Wallis testą?</h1>
-<p>Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
+<section id="kaip-rinktis-anova" class="level1">
+<h1>Kaip rinktis ANOVA?</h1>
+<section id="kada-rinktis-anova" class="level2">
+<h2 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h2>
+<p>ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.</p>
+</section>
+<section id="vienpusė-anova" class="level2">
+<h2 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h2>
+<p>Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>my.anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(<span class="at">data =</span> iris, Sepal.Length <span class="sc">~</span> Species)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(my.anova)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+Species       2  63.21  31.606   119.3 &lt;2e-16 ***
+Residuals   147  38.96   0.265                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Kada rinktis Kruskal-Wallis?
+Šaltiniai
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li>Kai ANOVA prielaidos nėra patenkinamos</li>
-<li>Kai duomenys yra ranginiai</li>
-<li>Kai imtys yra mažos ir sunku patikrinti normalumą</li>
-</ul>
+<p><a href="https://pubmed.ncbi.nlm.nih.gov/29048317/">Non-normal data: Is ANOVA still a valid option?</a></p>
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-kruskal-wallis-testą" class="level1">
-<h1>Kaip atlikti Kruskal-Wallis testą?</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Naudojame iris duomenis</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(Sepal.Length <span class="sc">~</span> Species, <span class="at">data =</span> iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Kruskal-Wallis rank sum test
-
-data:  Sepal.Length by Species
-Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</code></pre>
-</div>
-</div>
 </section>
-<section id="kaip-raportuoti-kruskal-wallis-testą" class="level1">
-<h1>Kaip raportuoti Kruskal-Wallis testą?</h1>
-<p>Štai šablonas, kurį galite naudoti:</p>
-<blockquote class="blockquote">
-<p>“Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p &lt; 0.001).”</p>
-</blockquote>
+<section id="dvipusė-anova" class="level1">
+<h1>Dvipusė ANOVA</h1>
+<p>Dvipusė ANOVA naudojama, kai norime įvertinti dviejų nepriklausomų kintamųjų poveikį priklausomam kintamajam.</p>
 </section>
 <section id="post-hoc-testai" class="level1">
 <h1>Post-hoc testai</h1>
-<p>Jei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:</p>
+<p>Jeigu mūsų ANOVA rezultatas buvo statistiškai reikšmingas, vis dar nežinome, kuri pora grupių tarpusavyje turėtų statistiškai reikšmingą skirtumą. Tam turime atlikti post-hoc testą, t.y. testą, kuris parenka 2 subgrupes ir konkrečiai jas palygina.</p>
+<p>Nėra vieno standarto, kaip būtinai reikia atlikti post-hoc testą, bet dažniausias pasirinkimas yra Tukey HSD (Honestly Significant Difference) testas. Su R tai galima atlikti naudojantis <code>TukeyHSD</code> funkcija:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Species, <span class="at">p.adjust.method =</span> <span class="st">"BH"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(my.anova)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-    Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
 
-data:  iris$Sepal.Length and iris$Species 
+Fit: aov(formula = Sepal.Length ~ Species, data = iris)
 
-           setosa  versicolor
-versicolor 1.3e-13 -         
-virginica  &lt; 2e-16 5.9e-07   
-
-P value adjustment method: BH </code></pre>
+$Species
+                      diff       lwr       upr p adj
+versicolor-setosa    0.930 0.6862273 1.1737727     0
+virginica-setosa     1.582 1.3382273 1.8257727     0
+virginica-versicolor 0.652 0.4082273 0.8957727     0</code></pre>
+</div>
+</div>
+<p>Post-hoc testas nurodo, jog skirtumai buvo tarp visų 3 rūšių tarpusavyje, didžiausias skirtumas buvo tarp virginica ir setosa (vidutiniškai 1,58, 95% PI [1,34-1,83], p &lt; 0,001).</p>
+</section>
+<section id="vienpusės-anova-poskoniai" class="level1">
+<h1>3 vienpusės ANOVA poskoniai</h1>
+<p>Kai mūsų duomenų rinkinys yra subalansuotas, visi ANOVA tipai duos tokį patį rezultatą. Kai duomenų rinkinys yra nesubalansuotas (viena grupė turi daugiau matavimų negu kitos), rezultatai gali skirtis.</p>
+</section>
+<section id="ar-anova-buvo-tinkamas-testas" class="level1">
+<h1>Ar ANOVA buvo tinkamas testas?</h1>
+<p>Stjudento t-testo tinkamumą praktiniais sumetimais galime numatyti iš anksto, nors teisingas būdas tikrinti būtų toks kaip ir ANOVA atveju. ANOVA turi tris reikalavimus:</p>
+<ul>
+<li><strong>Likutinių verčių (paklaidų) pasiskirstymas turi būti pagal Normalųjį skirstinį</strong>. Mažai kas tai tikrina iš tikrųjų ir dažniausiai naudoja histogramas (ok), QQ grafikus (gerai) arba Shapiro-Wilk testą (blogai!)</li>
+<li><strong>Homogeniška variacija</strong> tarp grupių</li>
+<li><strong>Nepriklausomi stebėjimai</strong></li>
+</ul>
+<section id="homogeniška-variacija" class="level2">
+<h2 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h2>
+<p>Homogenišką variaciją galima patikrinti su <strong>Levene testu</strong>, <strong>Brown-Forsythe testu</strong> arba <strong>Bartlett testu</strong>, mes panaudosime Levene testą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(my.anova)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Levene's Test for Homogeneity of Variance (center = median)
+       Df F value   Pr(&gt;F)   
+group   2  6.3527 0.002259 **
+      147                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-vizualizuoti-kruskal-wallis-testą" class="level1">
-<h1>Kaip vizualizuoti Kruskal-Wallis testą?</h1>
+<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level2">
+<h2 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h2>
+<p>Prieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Sepal.Length, <span class="at">fill =</span> Species)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Taurėlapių ilgio palyginimas tarp rūšių"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Rūšis"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Taurėlapio ilgis (cm)"</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>my.anova.residuals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">residuals =</span> <span class="fu">residuals</span>(<span class="at">object =</span> my.anova))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Histograma</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">QQ grafikas</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Shapiro-Wilk testas</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(my.anova.residuals, <span class="fu">aes</span>(<span class="at">sample =</span> residuals)) <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>(<span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="kada-rinktis-anova_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(my.anova.residuals, <span class="fu">aes</span>(<span class="at">x =</span> residuals)) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..)) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> dnorm, <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">args =</span> <span class="fu">with</span>(my.anova.residuals, <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(residuals), <span class="at">sd =</span> <span class="fu">sd</span>(residuals)))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kada-rinktis-anova_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(my.anova.residuals<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  my.anova.residuals$residuals
+W = 0.9879, p-value = 0.2189</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dėmesio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Shapiro-Wilk testas yra pernelyg jautrus dideliems duomenų rinkiniams. Geriau naudoti vizualinius metodus!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="kaip-pavaizduoti-anova-rezultatą" class="level1">
+<h1>Kaip pavaizduoti ANOVA rezultatą?</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Sepal.Length, <span class="at">fill =</span> Species)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Taurėlapių ilgio palyginimas tarp 3 vilkdalgių rūšių"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Rūšis"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2023-02-15">
+<meta name="description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
 
-<title>Apie – Statistikas.lt</title>
+<title>Kaip koduoti duomenis? – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,14 +114,14 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </script>
 
 
-<link rel="stylesheet" href="theme/styles.css">
-<meta property="og:title" content="Apie – Statistikas.lt">
-<meta property="og:description" content="Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui">
-<meta property="og:image" content="https://statistikas.lt/images/paulius.jpg">
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="Kaip koduoti duomenis? – Statistikas.lt">
+<meta property="og:description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
+<meta property="og:image" content="https://statistikas.lt/posts/kaip-koduoti-duomenis/images/card_image.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Apie – Statistikas.lt">
-<meta name="twitter:description" content="Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui">
-<meta name="twitter:image" content="https://statistikas.lt/images/paulius.jpg">
+<meta name="twitter:title" content="Kaip koduoti duomenis? – Statistikas.lt">
+<meta name="twitter:description" content="Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-koduoti-duomenis/images/logo.svg">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -96,8 +133,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -107,25 +144,25 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Pradžia</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./paslaugos.html"> 
+    <a class="nav-link" href="../../paslaugos.html"> 
 <span class="menu-text">Paslaugos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./straipsniai.html"> 
+    <a class="nav-link" href="../../straipsniai.html"> 
 <span class="menu-text">Straipsniai</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Apie</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./kontaktai.html"> 
+    <a class="nav-link" href="../../kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
   </li>  
   <li class="nav-item compact">
@@ -144,77 +181,226 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#kintamųjų-tipai" id="toc-kintamųjų-tipai" class="nav-link active" data-scroll-target="#kintamųjų-tipai">Kintamųjų tipai</a></li>
+  <li><a href="#kategorinių-kintamųjų-kodavimas" id="toc-kategorinių-kintamųjų-kodavimas" class="nav-link" data-scroll-target="#kategorinių-kintamųjų-kodavimas">Kategorinių kintamųjų kodavimas</a></li>
+  <li><a href="#ranginių-kintamųjų-kodavimas" id="toc-ranginių-kintamųjų-kodavimas" class="nav-link" data-scroll-target="#ranginių-kintamųjų-kodavimas">Ranginių kintamųjų kodavimas</a></li>
+  <li><a href="#dummy-kodavimas" id="toc-dummy-kodavimas" class="nav-link" data-scroll-target="#dummy-kodavimas">Dummy kodavimas</a></li>
+  <li><a href="#dažnos-klaidos" id="toc-dažnos-klaidos" class="nav-link" data-scroll-target="#dažnos-klaidos">Dažnos klaidos</a></li>
+  <li><a href="#praktinis-pavyzdys" id="toc-praktinis-pavyzdys" class="nav-link" data-scroll-target="#praktinis-pavyzdys">Praktinis pavyzdys</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-trestles column-page">
-  <div class="about-entity">
-    <img src="images/paulius.jpg" class="about-image
-  rounded " style="width: 20em;">
+<main class="content column-page-left" id="quarto-document-content">
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Apie</h1>
-</div>
-<div class="quarto-title-meta column-page">
+<h1 class="title">Kaip koduoti duomenis?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">duomenų-paruošimas</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">pradedantiesiems</div>
   </div>
+  </div>
+
+<div>
+  <div class="description">
+    Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 15, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="mailto:info@statistikas.lt" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">El. paštas</span>
-  </a>
-  <a href="https://www.linkedin.com/in/paulius-alaburda/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/Alaburda" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
+
+
+<p>Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.</p>
+<section id="kintamųjų-tipai" class="level1">
+<h1>Kintamųjų tipai</h1>
+<p>Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 36%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipas</th>
+<th>Aprašymas</th>
+<th>Pavyzdžiai</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Kategorinis</strong></td>
+<td>Grupės, kurios neturi tvarkos</td>
+<td>Lytis, spalva, miestas</td>
+</tr>
+<tr class="even">
+<td><strong>Ranginis</strong></td>
+<td>Grupės su tvarka</td>
+<td>Išsilavinimas, Likert skalė</td>
+</tr>
+<tr class="odd">
+<td><strong>Tolydus</strong></td>
+<td>Skaičiai su prasme</td>
+<td>Amžius, svoris, ūgis</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kategorinių-kintamųjų-kodavimas" class="level1">
+<h1>Kategorinių kintamųjų kodavimas</h1>
+<p>R kalboje kategoriniai kintamieji turėtų būti <code>factor</code> tipo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>duomenys <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lytis =</span> <span class="fu">c</span>(<span class="st">"V"</span>, <span class="st">"M"</span>, <span class="st">"V"</span>, <span class="st">"M"</span>, <span class="st">"V"</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">amzius =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">45</span>, <span class="dv">28</span>, <span class="dv">51</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Paverčiame į faktorių</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>duomenys<span class="sc">$</span>lytis <span class="ot">&lt;-</span> <span class="fu">factor</span>(duomenys<span class="sc">$</span>lytis, </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"V"</span>, <span class="st">"M"</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Vyras"</span>, <span class="st">"Moteris"</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(duomenys)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   5 obs. of  2 variables:
+ $ lytis : Factor w/ 2 levels "Vyras","Moteris": 1 2 1 2 1
+ $ amzius: num  25 32 45 28 51</code></pre>
 </div>
-  </div>
-  <div class="about-contents"><main class="content column-page" id="quarto-document-content">
-<section id="sveiki" class="level2">
-<h2 data-anchor-id="sveiki">Sveiki! 👋</h2>
-<p>Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.</p>
-<p>Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes.</p>
+</div>
 </section>
-<section id="mano-patirtis" class="level2">
-<h2 data-anchor-id="mano-patirtis">Mano patirtis</h2>
-<ul>
-<li><strong>Statistinė analizė</strong> – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas</li>
-<li><strong>Duomenų vizualizacija</strong> – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms</li>
-<li><strong>Moksliniai tyrimai</strong> – klinikiniųtyrimų statistika, meta-analizės, sisteminės apžvalgos</li>
-<li><strong>Konsultavimas</strong> – pagalba planuojant tyrimus, interpretuojant rezultatus</li>
-</ul>
+<section id="ranginių-kintamųjų-kodavimas" class="level1">
+<h1>Ranginių kintamųjų kodavimas</h1>
+<p>Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>issilavinimas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Vidurinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Pagrindinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Vidurinis"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>issilavinimas_factor <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  issilavinimas,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Pagrindinis"</span>, <span class="st">"Vidurinis"</span>, <span class="st">"Aukštasis"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>issilavinimas_factor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Vidurinis   Aukštasis   Pagrindinis Aukštasis   Vidurinis  
+Levels: Pagrindinis &lt; Vidurinis &lt; Aukštasis</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Patarimas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Naudokite <code>ordered = TRUE</code> ranginiams kintamiesiems - tai leis R teisingai interpretuoti kintamojo prigimtį!</p>
+</div>
+</div>
 </section>
-<section id="įrankiai" class="level2">
-<h2 data-anchor-id="įrankiai">Įrankiai</h2>
-<ul>
-<li><strong>R</strong> – pagrindinis įrankis statistinei analizei ir vizualizacijai</li>
-<li><strong>Python</strong> – duomenų apdorojimas ir mašininis mokymasis</li>
-<li><strong>SPSS</strong> – klasikinis statistikos įrankis</li>
-<li><strong>Excel</strong> – greiti skaičiavimai ir duomenų paruošimas</li>
-</ul>
+<section id="dummy-kodavimas" class="level1">
+<h1>Dummy kodavimas</h1>
+<p>Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model.matrix automatiškai sukuria dummy kintamuosius</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> lytis, <span class="at">data =</span> duomenys)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) lytisMoteris
+1           1            0
+2           1            1
+3           1            0
+4           1            1
+5           1            0
+attr(,"assign")
+[1] 0 1
+attr(,"contrasts")
+attr(,"contrasts")$lytis
+[1] "contr.treatment"</code></pre>
+</div>
+</div>
 </section>
-<section id="kodėl-rinktis-mane" class="level2">
-<h2 data-anchor-id="kodėl-rinktis-mane">Kodėl rinktis mane?</h2>
+<section id="dažnos-klaidos" class="level1">
+<h1>Dažnos klaidos</h1>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ko vengti?
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ol type="1">
-<li><strong>Patirtis</strong> – daugiau nei 200 sėkmingai įgyvendintų projektų</li>
-<li><strong>Aiškumas</strong> – rezultatus pateikiu suprantamai, ne tik skaičiais</li>
-<li><strong>Lankstumas</strong> – prisitaikau prie jūsų poreikių ir terminų</li>
-<li><strong>Konfidencialumas</strong> – jūsų duomenys yra saugūs</li>
+<li><strong>Nekoduoti tekstinių kintamųjų</strong> - R juos traktuos kaip <code>character</code>, ne <code>factor</code></li>
+<li><strong>Neteisingai nurodyti lygius</strong> - tai gali pakeisti bazinę kategoriją regresijoje</li>
+<li><strong>Naudoti skaičius kategoriniams kintamiesiems</strong> - tai gali sukelti klaidų interpretacijoje</li>
 </ol>
-<hr>
-<section id="susisiekite" class="level3">
-<h3 data-anchor-id="susisiekite">Susisiekite</h3>
-<p>Turite klausimų? Rašykite el. paštu <a href="mailto:info@statistikas.lt">info@statistikas.lt</a> arba susisiekite per <a href="https://www.linkedin.com/in/paulius-alaburda/">LinkedIn</a>.</p>
-
-
-</section>
-</section>
-</main></div>
 </div>
- <!-- /main -->
+</div>
+</section>
+<section id="praktinis-pavyzdys" class="level1">
+<h1>Praktinis pavyzdys</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame duomenis su teisingai koduotais kintamaisiais</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>apklausa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">amzius =</span> <span class="fu">sample</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pasitenkinimas =</span> <span class="fu">factor</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Labai nepatenkintas"</span>, <span class="st">"Nepatenkintas"</span>, <span class="st">"Neutralus"</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Patenkintas"</span>, <span class="st">"Labai patenkintas"</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(apklausa, <span class="fu">aes</span>(<span class="at">x =</span> pasitenkinimas)) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"#4F46E5"</span>) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pasitenkinimo pasiskirstymas"</span>, <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Skaičius"</span>) <span class="sc">+</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kaip-koduoti-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -235,6 +421,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -635,7 +828,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>© 2024 Statistikas.lt. Visos teisės saugomos.</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>
+<p><a href="paslaugos.qmd">Paslaugos</a> · <a href="straipsniai.qmd">Straipsniai</a> · <a href="about.qmd">Apie</a></p>
 </div>
     <div class="nav-footer-right">
 <p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>
