@@ -97,8 +97,80 @@ Padedama suprasti duomenis ir priimti pagrįstus sprendimus. Nuo mokslinių tyri
 :::
 :::
 
+<!-- Audience Section -->
+::: {#kam-skirta .section}
+::: {.container}
+::: {.section-header}
+[Kam skirta?]{.section-badge}
+
+## Dirbu su studentais, mokslininkais ir verslu {.section-title}
+
+Nesvarbu, ar rašote bakalauro darbą, ar vadovaujate tyrėjų komandai – pritaikysiu paslaugas jūsų poreikiams
+:::
+
+::: {.audience-grid}
+```{=html}
+<div class="audience-card">
+  <div class="audience-icon">🎓</div>
+  <h3 class="audience-title">Bakalauro studentai</h3>
+  <p class="audience-description">Pagalba su baigiamojo darbo statistine dalimi – nuo duomenų paruošimo iki rezultatų interpretavimo. Studentams taikau specialias kainas.</p>
+  <ul class="audience-list">
+    <li>Klausimyno duomenų analizė</li>
+    <li>Aprašomoji statistika</li>
+    <li>Baziniai statistiniai testai</li>
+  </ul>
+</div>
+
+<div class="audience-card">
+  <div class="audience-icon">📚</div>
+  <h3 class="audience-title">Magistrantai</h3>
+  <p class="audience-description">Sudėtingesnė analizė magistro darbams – regresiniai modeliai, faktorinė analizė, mediacija ir kiti metodai.</p>
+  <ul class="audience-list">
+    <li>Regresinė analizė</li>
+    <li>Faktorinė analizė</li>
+    <li>Mediacija ir moderacija</li>
+  </ul>
+</div>
+
+<div class="audience-card audience-card-highlight">
+  <div class="audience-icon">🔬</div>
+  <h3 class="audience-title">Doktorantai ir mokslininkai</h3>
+  <p class="audience-description">Pažangi statistinė analizė moksliniams tyrimams ir publikacijoms tarptautiniuose žurnaluose.</p>
+  <ul class="audience-list">
+    <li>Daugiamačiai modeliai</li>
+    <li>Imties dydžio skaičiavimai</li>
+    <li>Publikacijų rengimas</li>
+  </ul>
+</div>
+
+<div class="audience-card">
+  <div class="audience-icon">🏛️</div>
+  <h3 class="audience-title">Institucijos</h3>
+  <p class="audience-description">Statistikos paslaugos universitetams, ligoninėms, mokslo institutams ir kitoms organizacijoms.</p>
+  <ul class="audience-list">
+    <li>Klinikiniai tyrimai</li>
+    <li>Apklausų analizė</li>
+    <li>Mokymai komandai</li>
+  </ul>
+</div>
+
+<div class="audience-card">
+  <div class="audience-icon">💼</div>
+  <h3 class="audience-title">Verslas</h3>
+  <p class="audience-description">Duomenimis grįsti sprendimai jūsų verslui – nuo klientų analizės iki veiklos efektyvumo vertinimo.</p>
+  <ul class="audience-list">
+    <li>Verslo analitika</li>
+    <li>Prognozavimas</li>
+    <li>A/B testavimas</li>
+  </ul>
+</div>
+```
+:::
+:::
+:::
+
 <!-- Services Section -->
-::: {#paslaugos .section}
+::: {#paslaugos .section .section-dark}
 ::: {.container}
 ::: {.section-header}
 [Paslaugos]{.section-badge}

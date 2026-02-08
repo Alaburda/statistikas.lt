@@ -255,6 +255,103 @@ body {
   background: $gray-50;
 }
 
+// ============================================
+// Audience cards
+// ============================================
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.audience-card {
+  background: white;
+  border: 1px solid $gray-200;
+  border-radius: $border-radius-xl;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba($primary, 0.3);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+}
+
+.audience-card-highlight {
+  background: linear-gradient(135deg, $primary 0%, $accent-dark 100%);
+  border: none;
+  color: white;
+  
+  .audience-title {
+    color: white;
+  }
+  
+  .audience-description {
+    color: rgba(white, 0.9);
+  }
+  
+  .audience-icon {
+    background: rgba(white, 0.2);
+  }
+  
+  .audience-list li {
+    color: rgba(white, 0.9);
+    
+    &::before {
+      color: rgba(white, 0.8);
+    }
+  }
+}
+
+.audience-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba($accent, 0.1);
+  border-radius: $border-radius-lg;
+  margin-bottom: 1.25rem;
+  font-size: 1.75rem;
+}
+
+.audience-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $gray-900;
+  margin-bottom: 0.75rem;
+}
+
+.audience-description {
+  color: $gray-600;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.audience-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: $gray-600;
+    
+    &::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: $accent;
+      font-weight: 700;
+    }
+  }
+}
+
 .section-header {
   text-align: center;
   max-width: 700px;
