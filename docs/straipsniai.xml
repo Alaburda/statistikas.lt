@@ -10,7 +10,749 @@
 <atom:link href="https://alaburda.github.io/statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
 <description>Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui</description>
 <generator>quarto-1.5.52</generator>
-<lastBuildDate>Sat, 03 Jun 2023 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 07 Feb 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Kaip sukurti boxplot su R? 4 būdai</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kas-yra-stačiakampė-diagrama-boxplot" class="level1">
+<h1>Kas yra stačiakampė diagrama (boxplot)?</h1>
+<p>Stačiakampė diagrama, arba <em>boxplot</em>, yra vienas iš dažniausiai naudojamų grafikų moksliniuose darbuose. Ji parodo duomenų pasiskirstymą kompaktiškai: medianą, kvartiles, ekstremumus ir galimus išskirtis (<em>outliers</em>). Boxplot ypač naudingas, kai norime palyginti kelis pogrupius.</p>
+<p>Šiame straipsnyje parodysiu <strong>4 skirtingus būdus</strong>, kaip sukurti boxplot su R:</p>
+<ol type="1">
+<li><strong>Base R</strong> – be jokių papildomų paketų</li>
+<li><strong>ggplot2</strong> – populiariausias vizualizacijos paketas</li>
+<li><strong>tidyplots</strong> – naujas paketas, skirtas mokslinėms publikacijoms</li>
+<li><strong>ggpubr</strong> – ggplot2 plėtinys su statistiniais palyginimais</li>
+</ol>
+<p>Visiems pavyzdžiams naudosime <code>iris</code> duomenų rinkinį, kuris yra įtrauktas į R.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/preview-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="base-r" class="level1">
+<h1>1. Base R</h1>
+<p>Paprasčiausias būdas – naudoti <code>boxplot()</code> funkciją, kuri yra įtraukta į base R. Nereikia jokių papildomų paketų:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boxplot</span>(Sepal.Length <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species,</span>
+<span id="cb1-2">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris,</span>
+<span id="cb1-3">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgis pagal rūšį"</span>,</span>
+<span id="cb1-4">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb1-5">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span>,</span>
+<span id="cb1-6">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kada naudoti base R?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Base R boxplot yra greičiausias būdas peržiūrėti duomenis eksploracijoje. Tačiau jei ruošiate grafiką publikacijai, rekomenduoju naudoti <code>ggplot2</code> arba <code>tidyplots</code>.</p>
+</div>
+</div>
+<p><strong>Privalumai:</strong></p>
+<ul>
+<li>Nereikia papildomų paketų</li>
+<li>Greita ir paprasta</li>
+<li>Tinka eksploracijai</li>
+</ul>
+<p><strong>Trūkumai:</strong></p>
+<ul>
+<li>Ribotos pritaikymo galimybės</li>
+<li>Sudėtinga keisti stilių</li>
+<li>Netinka publikacijoms</li>
+</ul>
+</section>
+<section id="ggplot2" class="level1">
+<h1>2. ggplot2</h1>
+<p><code>ggplot2</code> yra populiariausias R vizualizacijos paketas. Jis leidžia kurti gražius ir profesionalius grafikus naudojant „gramatikos” principą – grafikas kuriamas sluoksnis po sluoksnio:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">outlier.shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb2-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgis pagal vilkdalgių rūšį"</span>,</span>
+<span id="cb2-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb2-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb2-10">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Galime pridėti ir duomenų taškus, kad matytume kiekvieno stebėjimo reikšmę:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">outlier.shape =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_jitter</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> Species), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb3-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Boxplot su atskirais duomenų taškais"</span>,</span>
+<span id="cb3-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb3-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span></span>
+<span id="cb3-10">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Patarimas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Kai pridedate taškus su <code>geom_jitter()</code>, nustatykite <code>outlier.shape = NA</code> <code>geom_boxplot()</code> viduje, kad outlieriai nebūtų pavaizduoti du kartus.</p>
+</div>
+</div>
+<p><strong>Privalumai:</strong></p>
+<ul>
+<li>Labai lankstus ir galingas</li>
+<li>Platus bendruomenės palaikymas</li>
+<li>Galima pridėti daugybę sluoksnių</li>
+</ul>
+<p><strong>Trūkumai:</strong></p>
+<ul>
+<li>Reikia daugiau kodo nei base R</li>
+<li>Pradedantiesiems gali būti sudėtinga sintaksė</li>
+</ul>
+</section>
+<section id="tidyplots" class="level1">
+<h1>3. tidyplots</h1>
+<p><a href="https://jbengler.github.io/tidyplots/"><code>tidyplots</code></a> yra naujas paketas, sukurtas specialiai mokslinėms publikacijoms. Jo sintaksė yra labai intuityvi – naudojamas <em>pipe</em> operatorius <code>|&gt;</code>, o funkcijos pradedamos nuo <code>add_</code>, <code>adjust_</code>, <code>remove_</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyplots)</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">iris <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidyplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> Species) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_data_points_beeswarm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_colors</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">new_colors =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapių ilgis pagal rūšį"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_x_axis_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_y_axis_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>tidyplots</code> taip pat leidžia labai paprastai kontroliuoti grafiko dydį, kas yra ypač naudinga rengiant publikacijas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">iris <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidyplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> Species) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_data_points_beeswarm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_colors</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">new_colors =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Minimalus stilius"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_x_axis_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">adjust_y_axis_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ilgis (cm)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">remove_legend</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kodėl verta išbandyti tidyplots?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>tidyplots</code> yra ypač naudingas, kai reikia greitai sukurti publikacijai tinkamą grafiką su pastovia ir tvarkinga sintakse. Jei jau naudojate <code>|&gt;</code> operatorių su <code>dplyr</code>, <code>tidyplots</code> sintaksė bus labai pažįstama.</p>
+</div>
+</div>
+<p><strong>Privalumai:</strong></p>
+<ul>
+<li>Intuityvi, konvejerinė (pipe-based) sintaksė</li>
+<li>Automatinis dydžio valdymas publikacijoms</li>
+<li>Lengva derinti su statistiniais testais</li>
+</ul>
+<p><strong>Trūkumai:</strong></p>
+<ul>
+<li>Naujesnis paketas, mažiau išteklių internete</li>
+<li>Mažiau pritaikymo galimybių nei <code>ggplot2</code></li>
+</ul>
+</section>
+<section id="ggpubr" class="level1">
+<h1>4. ggpubr</h1>
+<p><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a> yra <code>ggplot2</code> plėtinys, kuris supaprastina grafikų kūrimą ir prideda galimybę tiesiogiai grafikuose rodyti statistinius palyginimus:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggpubr)</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggboxplot</span>(iris,</span>
+<span id="cb6-4">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species"</span>,</span>
+<span id="cb6-5">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sepal.Length"</span>,</span>
+<span id="cb6-6">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species"</span>,</span>
+<span id="cb6-7">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">palette =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f97316"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#22c55e"</span>),</span>
+<span id="cb6-8">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"jitter"</span>,</span>
+<span id="cb6-9">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Boxplot su statistiniais palyginimais"</span>,</span>
+<span id="cb6-10">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rūšis"</span>,</span>
+<span id="cb6-11">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taurėlapio ilgis (cm)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_compare_means</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"anova"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label.y =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_compare_means</span>(</span>
+<span id="cb6-14">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">comparisons =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"setosa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"versicolor"</span>),</span>
+<span id="cb6-15">                       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"versicolor"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"virginica"</span>),</span>
+<span id="cb6-16">                       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"setosa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"virginica"</span>)),</span>
+<span id="cb6-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"t.test"</span>,</span>
+<span id="cb6-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"p.signif"</span></span>
+<span id="cb6-19">  )</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Statistiniai palyginimai grafike
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>ggpubr</code> leidžia tiesiogiai grafike pridėti p-reikšmes tarp grupių naudojant <code>stat_compare_means()</code>. Tai labai patogu rengiant straipsnius, kur reikia vizualiai parodyti statistinius skirtumus.</p>
+</div>
+</div>
+<p><strong>Privalumai:</strong></p>
+<ul>
+<li>Paprasta sintaksė</li>
+<li>Integruoti statistiniai palyginimai</li>
+<li>Lengva pridėti p-reikšmes į grafiką</li>
+</ul>
+<p><strong>Trūkumai:</strong></p>
+<ul>
+<li>Mažiau lankstus nei grynas <code>ggplot2</code></li>
+<li>Ribotesnis stilių pasirinkimas</li>
+</ul>
+</section>
+<section id="palyginimas" class="level1">
+<h1>Palyginimas</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Savybė</th>
+<th>Base R</th>
+<th>ggplot2</th>
+<th>tidyplots</th>
+<th>ggpubr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Sudėtingumas</strong></td>
+<td>Žemas</td>
+<td>Vidutinis</td>
+<td>Žemas</td>
+<td>Žemas</td>
+</tr>
+<tr class="even">
+<td><strong>Lankstumas</strong></td>
+<td>Ribotas</td>
+<td>Labai didelis</td>
+<td>Vidutinis</td>
+<td>Vidutinis</td>
+</tr>
+<tr class="odd">
+<td><strong>Publikacijoms</strong></td>
+<td>❌</td>
+<td>✅</td>
+<td>✅✅</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td><strong>Statistiniai testai</strong></td>
+<td>❌</td>
+<td>Su papildomais paketais</td>
+<td>✅</td>
+<td>✅✅</td>
+</tr>
+<tr class="odd">
+<td><strong>Mokymosi kreivė</strong></td>
+<td>Lengva</td>
+<td>Vidutinė</td>
+<td>Lengva</td>
+<td>Lengva</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="išvados" class="level1">
+<h1>Išvados</h1>
+<ul>
+<li><strong>Eksploracijai</strong> – naudokite <strong>base R</strong> <code>boxplot()</code>, jei norite greitai peržiūrėti duomenis.</li>
+<li><strong>Publikacijoms</strong> – naudokite <strong>ggplot2</strong> arba <strong>tidyplots</strong>, jei norite pilnai kontroliuoti grafiko išvaizdą.</li>
+<li><strong>Su statistiniais palyginimais</strong> – naudokite <strong>ggpubr</strong>, jei norite grafike rodyti p-reikšmes.</li>
+<li><strong>Moksliniams straipsniams</strong> – <strong>tidyplots</strong> yra puikus pasirinkimas dėl automatinio dydžio valdymo ir paprastos sintaksės.</li>
+</ul>
+<p>Nepriklausomai nuo to, kurį būdą pasirinksite, svarbiausia, kad boxplot būtų aiškus, informatyvus ir tinkamai pavaizduotų jūsų duomenis. 🎯</p>
+
+
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <category>vizualizacija</category>
+  <category>ggplot2</category>
+  <category>tidyplots</category>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html</guid>
+  <pubDate>Sat, 07 Feb 2026 22:00:00 GMT</pubDate>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/preview-plot-1.png" medium="image" type="image/png" height="103" width="144"/>
+</item>
 <item>
   <title>Kada rinktis Kruskal-Wallis testą?</title>
   <link>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</link>
@@ -174,7 +916,7 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
   <category>R</category>
   <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</guid>
   <pubDate>Sat, 03 Jun 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" medium="image" type="image/png" height="103" width="144"/>
 </item>
 <item>
   <title>Kaip atlikti Chi-kvadrato testą?</title>
@@ -604,7 +1346,7 @@ sample estimates:
   <category>R</category>
   <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</guid>
   <pubDate>Fri, 21 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/images/image-1458940830.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" medium="image" type="image/png" height="103" width="144"/>
 </item>
 <item>
   <title>Kada rinktis Mann-Whitney testą?</title>
@@ -1165,7 +1907,7 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
   <category>R</category>
   <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</guid>
   <pubDate>Fri, 14 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" medium="image" type="image/png" height="103" width="144"/>
 </item>
 <item>
   <title>Kaip patikrinti tolydžius duomenis?</title>

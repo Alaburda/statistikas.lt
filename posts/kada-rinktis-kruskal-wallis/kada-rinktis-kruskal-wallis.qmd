@@ -3,7 +3,7 @@ title: "Kada rinktis Kruskal-Wallis testą?"
 description: "Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Sužinokite, kada ir kaip jį taikyti."
 date: "2023-06-04"
 categories: [statistika, neparametriniai-testai, R]
-image: "images/halfeye_boxplot_sample.png"
+image: kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png
 editor: visual
 execute:
   warning: false

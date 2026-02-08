@@ -1,0 +1,248 @@
+---
+title: "Kaip sukurti boxplot su R? 4 būdai"
+description: "Stačiakampė diagrama (boxplot) yra vienas populiariausių būdų vizualizuoti duomenų pasiskirstymą. Šiame straipsnyje parodysiu, kaip sukurti boxplot naudojant base R, ggplot2, tidyplots ir ggpubr paketus."
+date: "2026-02-08"
+author: "Paulius Alaburda"
+categories: [R, vizualizacija, ggplot2, tidyplots]
+image: kaip-sukurti-boxplot-r_files/figure-html/preview-plot-1.png
+editor: source
+toc: true
+execute:
+  warning: false
+  message: false
+---
+
+# Kas yra stačiakampė diagrama (boxplot)?
+
+Stačiakampė diagrama, arba *boxplot*, yra vienas iš dažniausiai naudojamų grafikų moksliniuose darbuose. Ji parodo duomenų pasiskirstymą kompaktiškai: medianą, kvartiles, ekstremumus ir galimus išskirtis (*outliers*). Boxplot ypač naudingas, kai norime palyginti kelis pogrupius.
+
+Šiame straipsnyje parodysiu **4 skirtingus būdus**, kaip sukurti boxplot su R:
+
+1. **Base R** – be jokių papildomų paketų
+2. **ggplot2** – populiariausias vizualizacijos paketas
+3. **tidyplots** – naujas paketas, skirtas mokslinėms publikacijoms
+4. **ggpubr** – ggplot2 plėtinys su statistiniais palyginimais
+
+Visiems pavyzdžiams naudosime `iris` duomenų rinkinį, kuris yra įtrauktas į R.
+
+```{r}
+#| label: preview-plot
+#| echo: false
+#| fig-height: 5
+
+library(ggplot2)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot(alpha = 0.8) +
+  scale_fill_manual(values = c("#4F46E5", "#f97316", "#22c55e")) +
+  labs(
+    title = "Taurėlapių ilgis pagal vilkdalgių rūšį",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none",
+        plot.title = element_text(face = "bold"))
+```
+
+# 1. Base R
+
+Paprasčiausias būdas – naudoti `boxplot()` funkciją, kuri yra įtraukta į base R. Nereikia jokių papildomų paketų:
+
+```{r}
+#| fig-height: 5
+
+boxplot(Sepal.Length ~ Species,
+        data = iris,
+        main = "Taurėlapių ilgis pagal rūšį",
+        xlab = "Rūšis",
+        ylab = "Taurėlapio ilgis (cm)",
+        col = c("#4F46E5", "#f97316", "#22c55e"))
+```
+
+::: {.callout-tip}
+## Kada naudoti base R?
+Base R boxplot yra greičiausias būdas peržiūrėti duomenis eksploracijoje. Tačiau jei ruošiate grafiką publikacijai, rekomenduoju naudoti `ggplot2` arba `tidyplots`.
+:::
+
+**Privalumai:**
+
+- Nereikia papildomų paketų
+- Greita ir paprasta
+- Tinka eksploracijai
+
+**Trūkumai:**
+
+- Ribotos pritaikymo galimybės
+- Sudėtinga keisti stilių
+- Netinka publikacijoms
+
+# 2. ggplot2
+
+`ggplot2` yra populiariausias R vizualizacijos paketas. Jis leidžia kurti gražius ir profesionalius grafikus naudojant „gramatikos" principą – grafikas kuriamas sluoksnis po sluoksnio:
+
+```{r}
+#| fig-height: 5
+
+library(ggplot2)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot(alpha = 0.8, outlier.shape = 21) +
+  scale_fill_manual(values = c("#4F46E5", "#f97316", "#22c55e")) +
+  labs(
+    title = "Taurėlapių ilgis pagal vilkdalgių rūšį",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none")
+```
+
+Galime pridėti ir duomenų taškus, kad matytume kiekvieno stebėjimo reikšmę:
+
+```{r}
+#| fig-height: 5
+
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(aes(color = Species), width = 0.2, alpha = 0.5, size = 1.5) +
+  scale_fill_manual(values = c("#4F46E5", "#f97316", "#22c55e")) +
+  scale_color_manual(values = c("#4F46E5", "#f97316", "#22c55e")) +
+  labs(
+    title = "Boxplot su atskirais duomenų taškais",
+    x = "Rūšis",
+    y = "Taurėlapio ilgis (cm)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none")
+```
+
+::: {.callout-note}
+## Patarimas
+Kai pridedate taškus su `geom_jitter()`, nustatykite `outlier.shape = NA` `geom_boxplot()` viduje, kad outlieriai nebūtų pavaizduoti du kartus.
+:::
+
+**Privalumai:**
+
+- Labai lankstus ir galingas
+- Platus bendruomenės palaikymas
+- Galima pridėti daugybę sluoksnių
+
+**Trūkumai:**
+
+- Reikia daugiau kodo nei base R
+- Pradedantiesiems gali būti sudėtinga sintaksė
+
+# 3. tidyplots
+
+[`tidyplots`](https://jbengler.github.io/tidyplots/) yra naujas paketas, sukurtas specialiai mokslinėms publikacijoms. Jo sintaksė yra labai intuityvi – naudojamas *pipe* operatorius `|>`, o funkcijos pradedamos nuo `add_`, `adjust_`, `remove_`:
+
+```{r}
+#| fig-height: 5
+
+library(tidyplots)
+
+iris |>
+  tidyplot(x = Species, y = Sepal.Length, color = Species) |>
+  add_boxplot() |>
+  add_data_points_beeswarm(alpha = 0.4) |>
+  adjust_colors(new_colors = c("#4F46E5", "#f97316", "#22c55e")) |>
+  adjust_title("Taurėlapių ilgis pagal rūšį") |>
+  adjust_x_axis_title("Rūšis") |>
+  adjust_y_axis_title("Taurėlapio ilgis (cm)")
+```
+
+`tidyplots` taip pat leidžia labai paprastai kontroliuoti grafiko dydį, kas yra ypač naudinga rengiant publikacijas:
+
+```{r}
+#| fig-height: 5
+
+iris |>
+  tidyplot(x = Species, y = Sepal.Length, color = Species) |>
+  add_boxplot() |>
+  add_data_points_beeswarm(alpha = 0.4) |>
+  adjust_colors(new_colors = c("#4F46E5", "#f97316", "#22c55e")) |>
+  adjust_title("Minimalus stilius") |>
+  adjust_x_axis_title("Rūšis") |>
+  adjust_y_axis_title("Ilgis (cm)") |>
+  remove_legend()
+```
+
+::: {.callout-tip}
+## Kodėl verta išbandyti tidyplots?
+`tidyplots` yra ypač naudingas, kai reikia greitai sukurti publikacijai tinkamą grafiką su pastovia ir tvarkinga sintakse. Jei jau naudojate `|>` operatorių su `dplyr`, `tidyplots` sintaksė bus labai pažįstama.
+:::
+
+**Privalumai:**
+
+- Intuityvi, konvejerinė (pipe-based) sintaksė
+- Automatinis dydžio valdymas publikacijoms
+- Lengva derinti su statistiniais testais
+
+**Trūkumai:**
+
+- Naujesnis paketas, mažiau išteklių internete
+- Mažiau pritaikymo galimybių nei `ggplot2`
+
+# 4. ggpubr
+
+[`ggpubr`](https://rpkgs.datanovia.com/ggpubr/) yra `ggplot2` plėtinys, kuris supaprastina grafikų kūrimą ir prideda galimybę tiesiogiai grafikuose rodyti statistinius palyginimus:
+
+```{r}
+#| fig-height: 5
+
+library(ggpubr)
+
+ggboxplot(iris,
+          x = "Species",
+          y = "Sepal.Length",
+          fill = "Species",
+          palette = c("#4F46E5", "#f97316", "#22c55e"),
+          add = "jitter",
+          title = "Boxplot su statistiniais palyginimais",
+          xlab = "Rūšis",
+          ylab = "Taurėlapio ilgis (cm)") +
+  stat_compare_means(method = "anova", label.y = 8.5) +
+  stat_compare_means(
+    comparisons = list(c("setosa", "versicolor"),
+                       c("versicolor", "virginica"),
+                       c("setosa", "virginica")),
+    method = "t.test",
+    label = "p.signif"
+  )
+```
+
+::: {.callout-note}
+## Statistiniai palyginimai grafike
+`ggpubr` leidžia tiesiogiai grafike pridėti p-reikšmes tarp grupių naudojant `stat_compare_means()`. Tai labai patogu rengiant straipsnius, kur reikia vizualiai parodyti statistinius skirtumus.
+:::
+
+**Privalumai:**
+
+- Paprasta sintaksė
+- Integruoti statistiniai palyginimai
+- Lengva pridėti p-reikšmes į grafiką
+
+**Trūkumai:**
+
+- Mažiau lankstus nei grynas `ggplot2`
+- Ribotesnis stilių pasirinkimas
+
+# Palyginimas
+
+| Savybė | Base R | ggplot2 | tidyplots | ggpubr |
+|---|---|---|---|---|
+| **Sudėtingumas** | Žemas | Vidutinis | Žemas | Žemas |
+| **Lankstumas** | Ribotas | Labai didelis | Vidutinis | Vidutinis |
+| **Publikacijoms** | ❌ | ✅ | ✅✅ | ✅ |
+| **Statistiniai testai** | ❌ | Su papildomais paketais | ✅ | ✅✅ |
+| **Mokymosi kreivė** | Lengva | Vidutinė | Lengva | Lengva |
+
+# Išvados
+
+- **Eksploracijai** – naudokite **base R** `boxplot()`, jei norite greitai peržiūrėti duomenis.
+- **Publikacijoms** – naudokite **ggplot2** arba **tidyplots**, jei norite pilnai kontroliuoti grafiko išvaizdą.
+- **Su statistiniais palyginimais** – naudokite **ggpubr**, jei norite grafike rodyti p-reikšmes.
+- **Moksliniams straipsniams** – **tidyplots** yra puikus pasirinkimas dėl automatinio dydžio valdymo ir paprastos sintaksės.
+
+Nepriklausomai nuo to, kurį būdą pasirinksite, svarbiausia, kad boxplot būtų aiškus, informatyvus ir tinkamai pavaizduotų jūsų duomenis. 🎯

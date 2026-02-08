@@ -4,7 +4,7 @@ description: "ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kateg
 date: "2023-04-15"
 author: "Paulius Alaburda"
 categories: [statistika, ANOVA, R]
-image: "images/boxplot_example.png"
+image: kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png
 editor: source
 toc: true
 execute:
