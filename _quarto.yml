@@ -7,7 +7,7 @@ project:
 website:
   title: "Statistikas.lt"
   description: "Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui"
-  site-url: https://statistikas.lt
+  site-url: https://alaburda.github.io/statistikas.lt
   favicon: images/favicon.svg
   
   # Google Analytics
@@ -46,7 +46,7 @@ website:
   page-footer:
     background: dark
     left: |
-      © 2024 Statistikas.lt. Visos teisės saugomos.
+      © 2025 Statistikas.lt. Visos teisės saugomos.
     center: |
       [Paslaugos](paslaugos.qmd) · [Straipsniai](straipsniai.qmd) · [Apie](about.qmd)
     right: |

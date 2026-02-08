@@ -80,10 +80,10 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="theme/styles.css">
 <meta property="og:title" content="Statistikas.lt | Profesionalios statistikos paslaugos">
-<meta property="og:image" content="https://statistikas.lt/images/card_image.png">
+<meta property="og:image" content="https://alaburda.github.io/statistikas.lt/images/card_image.png">
 <meta property="og:site_name" content="Statistikas.lt">
 <meta name="twitter:title" content="Statistikas.lt | Profesionalios statistikos paslaugos">
-<meta name="twitter:image" content="https://statistikas.lt/images/logo.svg">
+<meta name="twitter:image" content="https://alaburda.github.io/statistikas.lt/images/logo.svg">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -160,15 +160,15 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </div>
 <div class="hero-stats">
   <div class="hero-stat">
-    <span class="stat-number">10+</span>
+    <span class="stat-number" data-target="10" data-suffix="+">10+</span>
     <span class="stat-label">metų patirtis</span>
   </div>
   <div class="hero-stat">
-    <span class="stat-number">200+</span>
+    <span class="stat-number" data-target="200" data-suffix="+">200+</span>
     <span class="stat-label">sėkmingų projektų</span>
   </div>
   <div class="hero-stat">
-    <span class="stat-number">98%</span>
+    <span class="stat-number" data-target="98" data-suffix="%">98%</span>
     <span class="stat-label">patenkintų klientų</span>
   </div>
 </div>
@@ -186,19 +186,23 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
     <!-- Area chart -->
     <defs>
       <lineargradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:0.3"></stop>
+        <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.3"></stop>
         <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:0"></stop>
+      </lineargradient>
+      <lineargradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#4F46E5"></stop>
+        <stop offset="100%" style="stop-color:#f97316"></stop>
       </lineargradient>
     </defs>
     <path class="chart-area" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70 L340,250 L50,250 Z" fill="url(#areaGradient)"></path>
-    <path class="chart-line" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"></path>
+    <path class="chart-line" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70" fill="none" stroke="url(#lineGradient)" stroke-width="3" stroke-linecap="round"></path>
     
     <!-- Data points -->
     <circle cx="50" cy="220" r="6" fill="#4F46E5"></circle>
-    <circle cx="130" cy="180" r="6" fill="#4F46E5"></circle>
-    <circle cx="200" cy="140" r="6" fill="#4F46E5"></circle>
-    <circle cx="270" cy="100" r="6" fill="#4F46E5"></circle>
-    <circle cx="340" cy="70" r="6" fill="#4F46E5"></circle>
+    <circle cx="130" cy="180" r="6" fill="#6d5ce7"></circle>
+    <circle cx="200" cy="140" r="6" fill="#a855f7"></circle>
+    <circle cx="270" cy="100" r="6" fill="#e67e22"></circle>
+    <circle cx="340" cy="70" r="6" fill="#f97316"></circle>
   </svg>
 </div>
 </div>
@@ -601,7 +605,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/statistikas\.lt");
+      var filterRegex = new RegExp("https:\/\/alaburda\.github\.io\/statistikas\.lt");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -933,7 +937,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2024 Statistikas.lt. Visos teisės saugomos.</p>
+<p>© 2025 Statistikas.lt. Visos teisės saugomos.</p>
 </div>   
     <div class="nav-footer-center">
 <p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>

@@ -6,14 +6,14 @@
       version="2.0">
 <channel>
 <title>Statistikas.lt</title>
-<link>https://statistikas.lt/straipsniai.html</link>
-<atom:link href="https://statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
+<link>https://alaburda.github.io/statistikas.lt/straipsniai.html</link>
+<atom:link href="https://alaburda.github.io/statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
 <description>Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui</description>
 <generator>quarto-1.5.52</generator>
 <lastBuildDate>Sat, 03 Jun 2023 21:00:00 GMT</lastBuildDate>
 <item>
   <title>Kada rinktis Kruskal-Wallis testą?</title>
-  <link>https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</link>
   <description><![CDATA[ 
 
 
@@ -159,7 +159,7 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -172,13 +172,13 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
   <category>statistika</category>
   <category>neparametriniai-testai</category>
   <category>R</category>
-  <guid>https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</guid>
   <pubDate>Sat, 03 Jun 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/images/halfeye_boxplot_sample.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip atlikti Chi-kvadrato testą?</title>
-  <link>https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</link>
   <description><![CDATA[ 
 
 
@@ -404,7 +404,7 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -417,12 +417,12 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
   <category>statistika</category>
   <category>kategoriniai-duomenys</category>
   <category>R</category>
-  <guid>https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</guid>
   <pubDate>Fri, 19 May 2023 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Kaip naudoti Stjudento t-testą?</title>
-  <link>https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</link>
   <description><![CDATA[ 
 
 
@@ -517,7 +517,7 @@ font-style: inherit;">"iris duomenų rinkinys; kuo arčiau linijos centre yra ta
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -602,13 +602,13 @@ sample estimates:
   <category>statistika</category>
   <category>t-testas</category>
   <category>R</category>
-  <guid>https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</guid>
   <pubDate>Fri, 21 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-t-testa/images/image-1458940830.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/images/image-1458940830.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kada rinktis Mann-Whitney testą?</title>
-  <link>https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</link>
   <description><![CDATA[ 
 
 
@@ -824,7 +824,7 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -837,13 +837,13 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
   <category>statistika</category>
   <category>neparametriniai-testai</category>
   <category>R</category>
-  <guid>https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</guid>
   <pubDate>Sun, 16 Apr 2023 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Kada rinktis ANOVA?</title>
   <dc:creator>Paulius Alaburda</dc:creator>
-  <link>https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</link>
   <description><![CDATA[ 
 
 
@@ -1008,7 +1008,7 @@ font-style: inherit;">"red"</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1063,7 +1063,7 @@ font-style: inherit;">sd</span>(residuals)))</span>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1150,7 +1150,7 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1163,13 +1163,13 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
   <category>statistika</category>
   <category>ANOVA</category>
   <category>R</category>
-  <guid>https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</guid>
   <pubDate>Fri, 14 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png" medium="image" type="image/png"/>
+  <media:content url="https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/images/boxplot_example.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip patikrinti tolydžius duomenis?</title>
-  <link>https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</link>
   <description><![CDATA[ 
 
 
@@ -1247,7 +1247,7 @@ font-style: inherit;">"Taurėlapių ilgio boxplot"</span>)</span></code></pre></
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1382,7 +1382,7 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1429,12 +1429,12 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
   <category>duomenų-paruošimas</category>
   <category>R</category>
   <category>pradedantiesiems</category>
-  <guid>https://statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</guid>
   <pubDate>Thu, 09 Mar 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Kaip koduoti duomenis?</title>
-  <link>https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</link>
+  <link>https://alaburda.github.io/statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</link>
   <description><![CDATA[ 
 
 
@@ -1818,7 +1818,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://alaburda.github.io/statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1831,7 +1831,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
   <category>duomenų-paruošimas</category>
   <category>R</category>
   <category>pradedantiesiems</category>
-  <guid>https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</guid>
+  <guid>https://alaburda.github.io/statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</guid>
   <pubDate>Tue, 14 Feb 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>

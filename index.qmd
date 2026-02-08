@@ -27,15 +27,15 @@ Padedama suprasti duomenis ir priimti pagrįstus sprendimus. Nuo mokslinių tyri
 ```{=html}
 <div class="hero-stats">
   <div class="hero-stat">
-    <span class="stat-number">10+</span>
+    <span class="stat-number" data-target="10" data-suffix="+">10+</span>
     <span class="stat-label">metų patirtis</span>
   </div>
   <div class="hero-stat">
-    <span class="stat-number">200+</span>
+    <span class="stat-number" data-target="200" data-suffix="+">200+</span>
     <span class="stat-label">sėkmingų projektų</span>
   </div>
   <div class="hero-stat">
-    <span class="stat-number">98%</span>
+    <span class="stat-number" data-target="98" data-suffix="%">98%</span>
     <span class="stat-label">patenkintų klientų</span>
   </div>
 </div>
@@ -57,19 +57,23 @@ Padedama suprasti duomenis ir priimti pagrįstus sprendimus. Nuo mokslinių tyri
     <!-- Area chart -->
     <defs>
       <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:0.3"/>
+        <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.3"/>
         <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#4F46E5"/>
+        <stop offset="100%" style="stop-color:#f97316"/>
       </linearGradient>
     </defs>
     <path class="chart-area" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70 L340,250 L50,250 Z" fill="url(#areaGradient)"/>
-    <path class="chart-line" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"/>
+    <path class="chart-line" d="M50,220 Q100,200 130,180 T200,140 T270,100 T340,70" fill="none" stroke="url(#lineGradient)" stroke-width="3" stroke-linecap="round"/>
     
     <!-- Data points -->
     <circle cx="50" cy="220" r="6" fill="#4F46E5"/>
-    <circle cx="130" cy="180" r="6" fill="#4F46E5"/>
-    <circle cx="200" cy="140" r="6" fill="#4F46E5"/>
-    <circle cx="270" cy="100" r="6" fill="#4F46E5"/>
-    <circle cx="340" cy="70" r="6" fill="#4F46E5"/>
+    <circle cx="130" cy="180" r="6" fill="#6d5ce7"/>
+    <circle cx="200" cy="140" r="6" fill="#a855f7"/>
+    <circle cx="270" cy="100" r="6" fill="#e67e22"/>
+    <circle cx="340" cy="70" r="6" fill="#f97316"/>
   </svg>
 </div>
 ```
