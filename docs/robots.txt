@@ -1,1 +1,1 @@
-Sitemap: https://alaburda.github.io/statistikas.lt/sitemap.xml
+Sitemap: https://statistikas.lt/sitemap.xml

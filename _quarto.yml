@@ -3,13 +3,14 @@ project:
   output-dir: docs
   resources:
     - .nojekyll
+    - CNAME
 
 lang: lt
 
 website:
   title: "Statistikas.lt"
   description: "Statistikos ir duomenų analizės konsultacijos įmonėms ir tyrėjams: konsultacijos, projektai ir nuolatinė partnerystė."
-  site-url: https://alaburda.github.io/statistikas.lt
+  site-url: https://statistikas.lt
   favicon: images/favicon.svg
   search: false
   
