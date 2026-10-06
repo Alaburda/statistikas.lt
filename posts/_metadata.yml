@@ -1,0 +1,2 @@
+# Applies to every blog post: hooks the narrow reading column in theme/custom.scss
+body-classes: post

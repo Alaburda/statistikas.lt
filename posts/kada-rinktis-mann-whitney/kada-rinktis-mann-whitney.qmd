@@ -2,6 +2,7 @@
 title: "Kada rinktis Mann-Whitney testą?"
 description: "O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Sužinokite, kada ir kaip taikyti Mann-Whitney testą."
 date: "2023-04-17"
+author: "Paulius Alaburda"
 categories: [statistika, neparametriniai-testai, R]
 editor: visual
 execute:

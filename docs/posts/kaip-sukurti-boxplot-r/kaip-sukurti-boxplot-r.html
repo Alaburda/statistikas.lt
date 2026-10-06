@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="lt" xml:lang="lt"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.52">
@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paulius Alaburda">
-<meta name="dcterms.date" content="2026-02-08">
 <meta name="description" content="Stačiakampė diagrama (boxplot) yra vienas populiariausių būdų vizualizuoti duomenų pasiskirstymą. Šiame straipsnyje parodysiu, kaip sukurti boxplot naudojant base R, ggplot2, tidyplots ir ggpubr paketus.">
 
 <title>Kaip sukurti boxplot su R? 4 būdai – Statistikas.lt</title>
@@ -62,12 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
 <link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -78,29 +73,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Nėra rezultatų",
+    "search-matching-documents-text": "atitinkančių dokumentų",
+    "search-copy-link-title": "Kopijuoti nuorodą į paiešką",
+    "search-hide-matches-text": "Slėpti kitus atitikimus",
+    "search-more-match-text": "daugiau atitikimų šiame dokumente",
+    "search-more-matches-text": "daugiau atitikimų šiame dokumente",
+    "search-clear-button-title": "Išvalyti",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
+    "search-detached-cancel-button-title": "Atšaukti",
+    "search-submit-button-title": "Pateikti",
     "search-label": "Search"
   }
 }</script>
@@ -131,7 +114,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:image-width" content="1344">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed post">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -139,19 +122,17 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <img src="../../images/mark.svg" alt="Statistikas.lt" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Statistikas.lt</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Rodyti/Slėpti navigaciją" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
-<span class="menu-text">Pradžia</span></a>
-  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../paslaugos.html"> 
 <span class="menu-text">Paslaugos</span></a>
@@ -166,14 +147,14 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/pauliusalaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/paulius-alaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
-</i> 
-<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -188,7 +169,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Šiame tinklalapyje</h2>
    
   <ul>
   <li><a href="#kas-yra-stačiakampė-diagrama-boxplot" id="toc-kas-yra-stačiakampė-diagrama-boxplot" class="nav-link active" data-scroll-target="#kas-yra-stačiakampė-diagrama-boxplot">Kas yra stačiakampė diagrama (boxplot)?</a></li>
@@ -225,16 +206,16 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <div class="quarto-title-meta column-page-left">
 
     <div>
-    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Autorius</div>
     <div class="quarto-title-meta-contents">
              <p>Paulius Alaburda </p>
           </div>
   </div>
     
     <div>
-    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-heading">Paskelbta</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 8, 2026</p>
+      <p class="date">2026 m. vasario 8 d.</p>
     </div>
   </div>
   
@@ -276,7 +257,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Taurėlapių ilgis pagal rūšį"</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Rūšis"</span>,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Taurėlapio ilgis (cm)"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#4F46E5"</span>, <span class="st">"#f97316"</span>, <span class="st">"#22c55e"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#4F46E5"</span>, <span class="st">"#f97316"</span>, <span class="st">"#22c55e"</span>))</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -326,7 +307,7 @@ Kada naudoti base R?
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Taurėlapio ilgis (cm)"</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -348,7 +329,7 @@ Kada naudoti base R?
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Taurėlapio ilgis (cm)"</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -396,7 +377,7 @@ Patarimas
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_title</span>(<span class="st">"Taurėlapių ilgis pagal rūšį"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_x_axis_title</span>(<span class="st">"Rūšis"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_y_axis_title</span>(<span class="st">"Taurėlapio ilgis (cm)"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_size</span>(<span class="at">height =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_size</span>(<span class="at">height =</span> <span class="dv">50</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -416,7 +397,7 @@ Patarimas
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_x_axis_title</span>(<span class="st">"Rūšis"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_y_axis_title</span>(<span class="st">"Ilgis (cm)"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_size</span>(<span class="at">height =</span> <span class="dv">50</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -472,7 +453,7 @@ Kodėl verta išbandyti tidyplots?
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">c</span>(<span class="st">"setosa"</span>, <span class="st">"virginica"</span>)),</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"t.test"</span>,</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"p.signif"</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -614,12 +595,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Nukopijuota!");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Nukopijuota!");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -995,14 +976,36 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2025 Statistikas.lt. Visos teisės saugomos.</p>
+<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="paslaugos.qmd">Paslaugos</a> · <a href="straipsniai.qmd">Straipsniai</a> · <a href="about.qmd">Apie</a></p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html">
+<p>Paslaugos</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html">
+<p>Straipsniai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+<p>Apie</p>
+</a>
+  </li>  
+</ul>
+    </div>
     <div class="nav-footer-right">
-<p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:info@statistikas.lt">
+<p>info@statistikas.lt</p>
+</a>
+  </li>  
+</ul>
+    </div>
   </div>
 </footer>
 <script src="theme/main.js"></script>

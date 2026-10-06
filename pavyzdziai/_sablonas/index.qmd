@@ -1,0 +1,28 @@
+---
+# Šablonas naujam pavyzdžiui. Aplankai, prasidedantys "_", nėra publikuojami.
+# Nukopijuokite visą aplanką į pavyzdziai/<trumpas-pavadinimas>/ ir užpildykite.
+title: "Trumpas pavadinimas: ką išsprendėme"
+description: "Vienas sakinys: kas buvo klientas (anonimiškai) ir ką gavo."
+date: 2026-10-05
+image: cover.png                # ataskaitos puslapio, grafiko ar aplikacijos ekrano nuotrauka
+categories: [Projektas]         # Konsultacija / Projektas / Partnerystė
+---
+
+## Klausimas
+
+Kas buvo klientas (pvz., „e. prekybos įmonė, ~20 darbuotojų") ir ką jam reikėjo sužinoti ar nuspręsti.
+
+## Ką padariau
+
+Trumpai, be žargono: duomenys, metodas, svarbiausi sprendimai.
+
+## Ką gavo klientas
+
+- Pvz., 12 psl. PDF ataskaita su santrauka vadovybei
+- R kodas / Quarto failas, kurį galima paleisti iš naujo
+- 1 val. rezultatų pristatymas komandai
+
+## Apimtis
+
+- **Trukmė:** pvz., 2 savaitės
+- **Paslauga:** Projektas, fiksuota kaina

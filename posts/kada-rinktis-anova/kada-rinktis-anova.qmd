@@ -85,20 +85,20 @@ my.anova.residuals <- data.frame(residuals = residuals(object = my.anova))
 ## Histograma
 
 ```{r}
-ggplot(my.anova.residuals, aes(sample = residuals)) + 
-  stat_qq() + 
-  stat_qq_line(color = "red")
+ggplot(my.anova.residuals, aes(x = residuals)) +
+  geom_histogram(aes(y = after_stat(density))) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = with(my.anova.residuals, c(mean = mean(residuals), sd = sd(residuals)))
+  )
 ```
 
 ## QQ grafikas
 
 ```{r}
-ggplot(my.anova.residuals, aes(x = residuals)) + 
-  geom_histogram(aes(y = ..density..)) + 
-  stat_function(
-    fun = dnorm, color = "red",
-    args = with(my.anova.residuals, c(mean = mean(residuals), sd = sd(residuals)))
-  )
+ggplot(my.anova.residuals, aes(sample = residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red")
 ```
 
 ## Shapiro-Wilk testas

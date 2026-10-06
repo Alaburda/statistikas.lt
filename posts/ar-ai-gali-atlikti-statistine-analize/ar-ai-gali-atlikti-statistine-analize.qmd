@@ -1,0 +1,29 @@
+---
+title: "Ar AI gali atlikti statistinę analizę?"
+description: ""
+date: "2026-07-05"
+author: "Paulius Alaburda"
+categories: [AI, statistika]
+editor: source
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+Jeigu šiandien į ChatGPT, Gemini arba Claude įkeltumėte savo duomenų rinkinį ir savo rankraštį, tikėtina, kad kiekvienas iš jų gebėtų atlikti statistinę analizę. Šiais laikais kiekvienas iš jų sugeba inicijuoji programavimo sesiją, parengti kodą ir pateikti analizę. Juo labiau, AI modeliai nuo 2026 m. pradžios dažniausiai išvengia haliucinacijų. Kiekvienas dabar gali savarankiškai padaryti daugiau negu bet kada anksčiau. Nepaisant pažangos, yra kelios priežastys, kodėl eksperto pagalba gali būti reikalinga.
+
+## AI nėra sidabrinė kulka
+
+Labai tikėtina, kad jūsų analizė turi sekti tam tikrus reikalavimus. Jeigu studijuojate, jūsų baigiamasis darbas turi šriftų, numeravimo, lentelių bei grafikų formato standartus. Su Claude Pro licencija galima atiduoti duomenų rinkinį bei reikalavimų sąrašą ir iš tikrųjų *LABAI* tikėtina, kad gausite gerą rezultatą. Bet nemokamais įrankiai vargu, ar AI sugebės parengti tinkamą rezultatą - jis vis tiek reikalaus skirti laiką ir pastangas, jog pasiektumėte publikuotiną analizę. Vienintelis iššūkis yra nerašyti standartai - pavyzdžiui, kiekviena analizė turėtų turėti "Table 1" su apibendrinamąją statistika, bet tai daugiau standartinė praktika negu privalomas reikalavimas. 
+
+Antra, AI įrankiai yra labai linkę įtikti. Išskyrus Claude, kiti įrankiai nestabdys tavęs atlikti netinkamą statistinį testą, užsiimti "cherry-pick'inimu" ar selektyviai pasirintki rezultatus. Jeigu paprašysi t-test'o, jie duos t-testą, nors galbūt reikėjo tiesinės regresijos arba Mann-Whitney testo. Galbūt iš viso reikėjo kitaip pažiūrėti į patį tyrimą ir gal net susikurti išvestinį stulpelį arba apsitvarkyti duomenis. AI nėra linkęs sustoti ir sakyti "žinai, tavo duomenys nėra labai tvarkingi, gal pirma paskirkim laiko susitvarkyti?".
+
+Galiausiai, yra paprasčiausias argumentas - o kur išsiunčiame savo surinktus duomenis? Ar turime bioetikos leidimą dalintis duomenimis už ES ribų? Ar mūsų duomenys yra anonimizuoti, jog galėtume jais dalintis? 
+
+## Kita monetos pusė
+
+Aš pats matau pagrindinį iššūkį statistikoje ne technologijoje, o procese. Didžiausias butelio kaklelis, kurį aš pats patyriau, yra fragmentuotuose įrankiuose. Mano darbas yra Word'e, mano statistika visai kitur - tai toli gražu nėra patogu, kai reikia kopijuoti iš vienos vietos į kitą ir tai kartoti N kartų. Įrankiai kaip `Quarto` tai išsprendžia, bet reikia jaustis patogiai dirbti su *kodo* redaktoriumi.
+
+
+

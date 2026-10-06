@@ -3,148 +3,159 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  initNavbarScroll();
-  initSmoothScroll();
-  initFadeAnimations();
+  initReveal();
+  initHeroFigure();
+  initTopicFromUrl();
   initFormHandling();
-  initCounterAnimation();
-  initTypingEffect();
 });
 
 // ============================================
-// Navbar scroll effect
+// Gentle reveal of blocks on scroll
 // ============================================
-function initNavbarScroll() {
-  const navbar = document.querySelector('.navbar');
-  if (!navbar) return;
-
-  let lastScroll = 0;
-  const scrollThreshold = 100;
-
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    // Add background on scroll
-    if (currentScroll > 50) {
-      navbar.classList.add('navbar-scrolled');
-    } else {
-      navbar.classList.remove('navbar-scrolled');
-    }
-
-    // Hide/show on scroll direction (optional, disabled by default)
-    // if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
-    //   navbar.style.transform = 'translateY(-100%)';
-    // } else {
-    //   navbar.style.transform = 'translateY(0)';
-    // }
-    
-    lastScroll = currentScroll;
-  });
-}
-
-// ============================================
-// Smooth scroll for anchor links
-// ============================================
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      
-      const target = document.querySelector(targetId);
-      if (target) {
-        e.preventDefault();
-        const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-}
-
-// ============================================
-// Fade-in animations on scroll
-// ============================================
-function initFadeAnimations() {
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -50px 0px',
-    threshold: 0.1
-  };
+function initReveal() {
+  const targets = document.querySelectorAll('.tier, .aud, .step, .service-block, .quarto-grid-item');
+  if (!('IntersectionObserver' in window) || targets.length === 0) return;
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-visible');
+        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
-  }, observerOptions);
+  }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
 
-  // Observe elements with fade-in class
-  document.querySelectorAll('.fade-in').forEach(el => {
+  targets.forEach((el) => {
+    // Only animate what starts below the fold, so nothing flashes on load
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+    const siblings = Array.from(el.parentElement.children);
+    el.classList.add('reveal');
+    el.style.transitionDelay = `${(siblings.indexOf(el) % 4) * 0.08}s`;
     observer.observe(el);
-  });
-
-  // Auto-add fade-in to specific elements
-  const autoFadeSelectors = [
-    '.service-card',
-    '.testimonial-card',
-    '.process-step',
-    '.faq-item',
-    '.pricing-card'
-  ];
-
-  autoFadeSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach((el, index) => {
-      if (!el.classList.contains('fade-in')) {
-        el.classList.add('fade-in');
-        el.style.transitionDelay = `${index * 0.1}s`;
-        observer.observe(el);
-      }
-    });
   });
 }
 
 // ============================================
-// Form handling with feedback
+// Hero figure: "jūsų" histogram reshuffles; hovering it replays the others
+// ============================================
+function initHeroFigure() {
+  const figure = document.querySelector('.hero-figure');
+  const cell = figure && figure.querySelector('.m-yours');
+  if (!cell) return;
+
+  const bars = Array.from(cell.querySelectorAll('.yours-bars i'));
+  const k = bars.length;
+  const gauss = (x, mu, sd) => Math.exp(-0.5 * ((x - mu) / sd) ** 2);
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  // Plausible shapes for "your" data, evaluated at bin centres x in (0, 1)
+  const shapes = [
+    () => { const mu = rand(0.35, 0.65), sd = rand(0.12, 0.2); return x => gauss(x, mu, sd); },
+    () => { const r = rand(3, 6); return x => Math.exp(-r * x); },
+    () => { const r = rand(3, 6); return x => Math.exp(-r * (1 - x)); },
+    () => { const a = rand(0.15, 0.35), b = rand(0.6, 0.85), w = rand(0.5, 1); return x => gauss(x, a, 0.09) + w * gauss(x, b, 0.1); },
+    () => { const s = rand(0.25, 0.45); return x => x ** 1.5 * Math.exp(-x / s * 2); },
+    () => () => 1,
+  ];
+
+  let last = -1;
+  function shuffle() {
+    let pick;
+    do { pick = Math.floor(Math.random() * shapes.length); } while (pick === last);
+    last = pick;
+    const f = shapes[pick]();
+    const raw = bars.map((_, i) => f((i + 0.5) / k) * rand(0.85, 1.15));
+    const max = Math.max(...raw);
+    bars.forEach((bar, i) => {
+      bar.style.setProperty('--h', Math.max(5, Math.round(raw[i] / max * 92)));
+    });
+  }
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reshuffle on a loop, only while the hero is on screen and the tab is visible
+  let timer = null;
+  let onScreen = true;
+  let ready = false;
+  const stop = () => { clearInterval(timer); timer = null; };
+  const start = () => {
+    if (reduceMotion || !ready || timer || !onScreen || document.hidden) return;
+    timer = setInterval(shuffle, 2600);
+  };
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      onScreen ? start() : stop();
+    }).observe(cell);
+  }
+  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+  // Let the entrance animation finish before the first reshuffle
+  setTimeout(() => { ready = true; start(); }, 2000);
+
+  // Replay the four histograms (throttled so it can't stutter)
+  let replayFlip = false;
+  let lastReplay = 0;
+  function replay() {
+    const now = Date.now();
+    if (reduceMotion || now - lastReplay < 1600) return;
+    lastReplay = now;
+    replayFlip = !replayFlip;
+    figure.classList.toggle('replay-a', replayFlip);
+    figure.classList.toggle('replay-b', !replayFlip);
+    shuffle();
+    stop();
+    start();
+  }
+
+  cell.addEventListener('pointerenter', replay);
+  cell.addEventListener('click', replay);
+}
+
+// ============================================
+// Contact page: preselect topic from ?tema=...
+// ============================================
+function initTopicFromUrl() {
+  const topic = new URLSearchParams(window.location.search).get('tema');
+  if (!topic) return;
+
+  const input = document.querySelector(`input[name="tema"][value="${CSS.escape(topic)}"]`);
+  if (input) input.checked = true;
+}
+
+// ============================================
+// Formspree submission with inline feedback
 // ============================================
 function initFormHandling() {
   const forms = document.querySelectorAll('form[action*="formspree"]');
-  
+
   forms.forEach(form => {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      
-      // Show loading state
+
       submitBtn.innerHTML = '<span class="loading-spinner"></span> Siunčiama...';
       submitBtn.disabled = true;
-      
+
+      const data = new FormData(form);
+      const topicLabel = form.querySelector('input[name="tema"]:checked')?.dataset.label;
+      if (topicLabel) data.set('_subject', `Statistikas.lt užklausa: ${topicLabel}`);
+
       try {
         const response = await fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
-          headers: {
-            'Accept': 'application/json'
-          }
+          body: data,
+          headers: { 'Accept': 'application/json' }
         });
-        
-        if (response.ok) {
-          // Success
-          showFormMessage(form, 'success', 'Ačiū! Jūsų žinutė išsiųsta. Susisieksiu su jumis artimiausiu metu.');
-          form.reset();
-        } else {
-          throw new Error('Form submission failed');
-        }
+
+        if (!response.ok) throw new Error('Form submission failed');
+
+        showFormMessage(form, 'success', 'Ačiū! Žinutė gauta – netrukus su jumis susisieksiu.');
+        form.reset();
       } catch (error) {
-        showFormMessage(form, 'error', 'Atsiprašome, įvyko klaida. Bandykite dar kartą arba susisiekite el. paštu.');
+        showFormMessage(form, 'error', 'Nepavyko išsiųsti žinutės. Bandykite dar kartą arba rašykite info@statistikas.lt.');
       } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
@@ -154,169 +165,11 @@ function initFormHandling() {
 }
 
 function showFormMessage(form, type, message) {
-  // Remove existing messages
   form.querySelectorAll('.form-message').forEach(el => el.remove());
-  
+
   const messageEl = document.createElement('div');
   messageEl.className = `form-message form-message-${type}`;
-  messageEl.innerHTML = `
-    <span class="message-icon">${type === 'success' ? '✓' : '✕'}</span>
-    <span class="message-text">${message}</span>
-  `;
-  
+  messageEl.setAttribute('role', 'status');
+  messageEl.textContent = message;
   form.appendChild(messageEl);
-  
-  // Auto-remove success message after 5 seconds
-  if (type === 'success') {
-    setTimeout(() => {
-      messageEl.classList.add('fade-out');
-      setTimeout(() => messageEl.remove(), 300);
-    }, 5000);
-  }
 }
-
-// ============================================
-// Counter animation for stats
-// ============================================
-function initCounterAnimation() {
-  const counters = document.querySelectorAll('.stat-number');
-  if (counters.length === 0) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCounter(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  counters.forEach(counter => observer.observe(counter));
-}
-
-function animateCounter(element) {
-  const target = parseInt(element.getAttribute('data-target') || element.textContent);
-  const duration = 2000;
-  const step = target / (duration / 16);
-  let current = 0;
-
-  const timer = setInterval(() => {
-    current += step;
-    if (current >= target) {
-      element.textContent = target + (element.getAttribute('data-suffix') || '');
-      clearInterval(timer);
-    } else {
-      element.textContent = Math.floor(current) + (element.getAttribute('data-suffix') || '');
-    }
-  }, 16);
-}
-
-// ============================================
-// Typing effect for hero
-// ============================================
-function initTypingEffect() {
-  const typingElement = document.querySelector('.typing-text');
-  if (!typingElement) return;
-
-  const words = ['statistiką', 'duomenis', 'analizę', 'rezultatus'];
-  let wordIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let typeSpeed = 100;
-
-  function type() {
-    const currentWord = words[wordIndex];
-    
-    if (isDeleting) {
-      typingElement.textContent = currentWord.substring(0, charIndex - 1);
-      charIndex--;
-      typeSpeed = 50;
-    } else {
-      typingElement.textContent = currentWord.substring(0, charIndex + 1);
-      charIndex++;
-      typeSpeed = 100;
-    }
-
-    if (!isDeleting && charIndex === currentWord.length) {
-      typeSpeed = 2000; // Pause at end
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      typeSpeed = 500;
-    }
-
-    setTimeout(type, typeSpeed);
-  }
-
-  type();
-}
-
-// ============================================
-// FAQ accordion
-// ============================================
-document.addEventListener('click', function(e) {
-  if (e.target.closest('.faq-question')) {
-    const faqItem = e.target.closest('.faq-item');
-    const isOpen = faqItem.classList.contains('open');
-    
-    // Close all other items
-    document.querySelectorAll('.faq-item.open').forEach(item => {
-      if (item !== faqItem) {
-        item.classList.remove('open');
-      }
-    });
-    
-    // Toggle current item
-    faqItem.classList.toggle('open', !isOpen);
-  }
-});
-
-// ============================================
-// Mobile menu toggle
-// ============================================
-document.addEventListener('click', function(e) {
-  const menuToggle = e.target.closest('.navbar-toggler');
-  if (menuToggle) {
-    document.body.classList.toggle('mobile-menu-open');
-  }
-});
-
-// ============================================
-// Utility: Add loading spinner styles dynamically
-// ============================================
-const spinnerStyles = document.createElement('style');
-spinnerStyles.textContent = `
-  .loading-spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  
-  .fade-in-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .fade-out {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-`;
-document.head.appendChild(spinnerStyles);
-
-console.log('Statistikas.lt scripts loaded ✓');

@@ -1,0 +1,98 @@
+---
+title: "Ką iš tikrųjų reiškia p reikšmė?"
+description: "p < 0,05 — ir kas toliau? Paaiškiname, ką p reikšmė reiškia, ko ji nereiškia ir kodėl statistinis reikšmingumas nėra tas pats, kas praktinė svarba."
+date: "2026-06-12"
+author: "Paulius Alaburda"
+categories: [statistika, pradedantiesiems, R]
+image: ka-reiskia-p-reiksme_files/figure-html/p-simuliacija-1.png
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+p reikšmė yra bene dažniausiai naudojamas ir bene dažniausiai klaidingai interpretuojamas skaičius statistikoje. Beveik kiekviena publikacija remiasi riba p < 0,05, bet paklausus, ką tas skaičius iš tikrųjų reiškia, atsakymai dažnai būna netikslūs.
+
+# Apibrėžimas
+
+> p reikšmė — tai tikimybė gauti tokį ar dar ekstremalesnį rezultatą, **jei nulinė hipotezė būtų teisinga** (t. y. jei skirtumo iš tikrųjų nebūtų).
+
+Kitaip tariant, p reikšmė atsako į klausimą: „Jei grupės iš tikrųjų nesiskiria, kiek tikėtina vien dėl atsitiktinumo pamatyti tokį skirtumą, kokį pamatėme?" Jei ta tikimybė maža (tarkime, mažesnė nei 5 %), darome išvadą, kad duomenys nesuderinami su nuline hipoteze, ir vadiname rezultatą statistiškai reikšmingu.
+
+# Ko p reikšmė NEreiškia
+
+Šios interpretacijos yra klaidingos, nors sutinkamos net publikacijose:
+
+- ❌ „p = 0,03 reiškia, kad yra 97 % tikimybė, jog skirtumas tikras." p reikšmė nieko nesako apie tikimybę, kad hipotezė teisinga — ji skaičiuojama *darant prielaidą*, kad nulinė hipotezė teisinga.
+- ❌ „p = 0,03 reiškia, kad tikimybė suklysti yra 3 %."
+- ❌ „p > 0,05 įrodo, kad skirtumo nėra." Reikšmingumo nebuvimas nėra nebuvimo įrodymas — galbūt tiesiog [imtis per maža](../kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.qmd).
+- ❌ „Maža p reikšmė reiškia didelį ir svarbų efektą." p reikšmė priklauso ir nuo efekto dydžio, ir nuo imties dydžio — su milžiniška imtimi net mikroskopinis skirtumas taps „reikšmingu".
+
+# Pažiūrėkime simuliacijoje
+
+Ką daro p reikšmė, geriausiai matyti sumodeliavus daug tyrimų. Sugeneruokime po 5 000 eksperimentų dviem atvejais: kai skirtumo tarp grupių **nėra** ir kai jis **yra** (vidutinis efektas, d = 0,5):
+
+```{r}
+#| label: p-simuliacija
+#| fig-width: 8
+#| fig-height: 4.5
+library(ggplot2)
+
+set.seed(42)
+simuliuok <- function(delta, k = 5000, n = 30) {
+  replicate(k, t.test(rnorm(n), rnorm(n, mean = delta))$p.value)
+}
+
+rezultatai <- rbind(
+  data.frame(p = simuliuok(0),   atvejis = "Skirtumo nėra (d = 0)"),
+  data.frame(p = simuliuok(0.5), atvejis = "Skirtumas yra (d = 0,5)")
+)
+
+ggplot(rezultatai, aes(x = p)) +
+  geom_histogram(breaks = seq(0, 1, 0.05), fill = "#4F46E5", alpha = 0.8) +
+  geom_vline(xintercept = 0.05, color = "red", linetype = "dashed") +
+  facet_wrap(~atvejis) +
+  labs(
+    title = "p reikšmių pasiskirstymas 5 000 simuliuotų tyrimų",
+    subtitle = "Raudona linija — riba p = 0,05; n = 30 kiekvienoje grupėje",
+    x = "p reikšmė",
+    y = "Tyrimų skaičius"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+Du svarbūs pastebėjimai:
+
+1. **Kai skirtumo nėra**, p reikšmės pasiskirsto tolygiai — ir vis tiek apie 5 % tyrimų „atranda" reikšmingą skirtumą. Tai ir yra α = 0,05: sutinkame su 5 % klaidingų aliarmų rizika.
+2. **Kai skirtumas yra**, dauguma p reikšmių susitelkia prie nulio, bet dalis tyrimų jo vis tiek neaptinka — čia veikia statistinė galia.
+
+```{r}
+mean(rezultatai$p[rezultatai$atvejis == "Skirtumas yra (d = 0,5)"] < 0.05)
+```
+
+Su 30 tiriamųjų grupėje realų vidutinį efektą aptinkame tik maždaug puse atvejų — todėl imties dydį verta skaičiuoti prieš tyrimą, o ne tikėtis sėkmės.
+
+# Statistinis reikšmingumas ≠ praktinė svarba
+
+p reikšmė nesako, ar skirtumas yra *svarbus*. Vaistas, kuris statistiškai reikšmingai (p < 0,001) sumažina kraujospūdį 1 mmHg, yra kliniškai bevertis. Ir atvirkščiai — pilotiniame tyrime p = 0,08 su dideliu efekto dydžiu gali būti daug žadantis rezultatas.
+
+Todėl šalia p reikšmės visada pateikite:
+
+- **Efekto dydį** — vidurkių skirtumą, Cohen'o *d*, šansų santykį.
+- **Pasikliautinąjį intervalą** — jis parodo, koks efektų diapazonas suderinamas su jūsų duomenimis.
+
+::: {.callout-tip}
+## Kaip rašyti publikacijoje
+Vietoje „grupės reikšmingai skyrėsi (p = 0,021)" rašykite „B grupės balas buvo vidutiniškai 4,2 punkto didesnis (95 % PI 0,7–7,7; p = 0,021)". Skaitytojas iškart mato ir kryptį, ir dydį, ir neapibrėžtumą.
+:::
+
+# Santrauka
+
+| Klausimas | Atsakymas |
+|-----------|-----------|
+| Ką reiškia p = 0,03? | Jei skirtumo nebūtų, tokį ar ekstremalesnį rezultatą matytume 3 % atvejų |
+| Ar p < 0,05 įrodo, kad skirtumas tikras? | Ne — tai tik susitarimo riba |
+| Ar p > 0,05 įrodo, kad skirtumo nėra? | Ne — galbūt trūksta statistinės galios |
+| Ką pateikti šalia p? | Efekto dydį ir pasikliautinąjį intervalą |
+
+Jei nesate tikri, kaip interpretuoti ar pateikti savo tyrimo rezultatus, [susisiekite](../../kontaktai.qmd) — padėsiu ne tik suskaičiuoti, bet ir suprasti, ką skaičiai reiškia.

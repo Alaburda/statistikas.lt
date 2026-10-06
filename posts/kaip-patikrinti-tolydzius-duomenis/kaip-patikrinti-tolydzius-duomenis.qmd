@@ -2,6 +2,7 @@
 title: "Kaip patikrinti tolydžius duomenis?"
 description: "Prieš atliekant statistinę analizę, svarbu patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime, kaip tai padaryti."
 date: "2023-03-10"
+author: "Paulius Alaburda"
 categories: [duomenų-paruošimas, R, pradedantiesiems]
 editor: visual
 execute:
@@ -63,7 +64,7 @@ Normalumo tikrinimas yra svarbus daugumai parametrinių testų:
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Length)) +
-  geom_histogram(aes(y = ..density..), bins = 20, fill = "#4F46E5", alpha = 0.7) +
+  geom_histogram(aes(y = after_stat(density)), bins = 20, fill = "#4F46E5", alpha = 0.7) +
   geom_density(color = "red", linewidth = 1) +
   labs(title = "Taurėlapių ilgio histograma su tankio kreive")
 ```

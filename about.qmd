@@ -1,5 +1,6 @@
 ---
 title: "Apie"
+description: "Paulius Alaburda – statistikos konsultantas su daugiau nei 10 metų patirtimi medicinos, farmacijos ir socialinių mokslų srityse."
 image: images/paulius.jpg
 about:
   template: trestles
@@ -11,7 +12,7 @@ about:
       href: mailto:info@statistikas.lt
     - icon: linkedin
       text: LinkedIn
-      href: https://www.linkedin.com/in/paulius-alaburda/
+      href: https://www.linkedin.com/in/pauliusalaburda/
     - icon: github
       text: GitHub
       href: https://github.com/Alaburda
@@ -27,7 +28,7 @@ Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį d
 
 - **Statistinė analizė** – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas
 - **Duomenų vizualizacija** – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms
-- **Moksliniai tyrimai** – klinikiniųtyrimų statistika, meta-analizės, sisteminės apžvalgos
+- **Moksliniai tyrimai** – klinikinių tyrimų statistika, meta-analizės, sisteminės apžvalgos
 - **Konsultavimas** – pagalba planuojant tyrimus, interpretuojant rezultatus
 
 ## Įrankiai
@@ -48,4 +49,4 @@ Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį d
 
 ### Susisiekite
 
-Turite klausimų? Rašykite el. paštu [info@statistikas.lt](mailto:info@statistikas.lt) arba susisiekite per [LinkedIn](https://www.linkedin.com/in/paulius-alaburda/).
+Turite klausimų? Rašykite el. paštu [info@statistikas.lt](mailto:info@statistikas.lt) arba susisiekite per [LinkedIn](https://www.linkedin.com/in/pauliusalaburda/).

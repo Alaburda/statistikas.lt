@@ -1,0 +1,13 @@
+---
+title: "Kada atlikti p reikšmių korekciją?"
+description: ""
+date: "2026-07-05"
+author: "Paulius Alaburda"
+categories: [R, p reikšmės]
+editor: source
+execute:
+  warning: false
+  message: false
+toc: true
+---
+

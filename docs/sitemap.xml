@@ -2,51 +2,71 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://alaburda.github.io/statistikas.lt/straipsniai.html</loc>
-    <lastmod>2026-01-26T16:50:43.530Z</lastmod>
+    <lastmod>2026-07-05T17:23:44.993Z</lastmod>
   </url>
   <url>
     <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html</loc>
-    <lastmod>2026-01-26T16:55:07.564Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</loc>
-    <lastmod>2026-01-26T16:54:25.321Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</loc>
-    <lastmod>2026-01-26T16:54:25.255Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</loc>
-    <lastmod>2026-02-08T08:09:46.946Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/kontaktai.html</loc>
-    <lastmod>2026-01-26T16:51:54.051Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/about.html</loc>
-    <lastmod>2026-01-26T16:50:05.059Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/index.html</loc>
-    <lastmod>2026-02-08T08:40:26.846Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/paslaugos.html</loc>
-    <lastmod>2026-01-26T16:50:36.526Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</loc>
-    <lastmod>2026-02-08T08:09:46.931Z</lastmod>
-  </url>
-  <url>
-    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</loc>
-    <lastmod>2026-02-08T08:09:46.946Z</lastmod>
+    <lastmod>2026-07-04T10:39:40.434Z</lastmod>
   </url>
   <url>
     <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html</loc>
-    <lastmod>2026-01-26T16:55:07.640Z</lastmod>
+    <lastmod>2026-07-04T10:39:34.326Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.html</loc>
+    <lastmod>2026-07-04T10:42:16.694Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html</loc>
+    <lastmod>2026-07-04T10:39:37.487Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</loc>
+    <lastmod>2026-07-04T10:38:54.257Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html</loc>
+    <lastmod>2026-07-04T10:43:10.949Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/kontaktai.html</loc>
+    <lastmod>2026-10-04T22:48:07.048Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/about.html</loc>
+    <lastmod>2026-07-04T10:39:54.798Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/index.html</loc>
+    <lastmod>2026-10-04T22:56:44.931Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/paslaugos.html</loc>
+    <lastmod>2026-10-04T22:48:07.048Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html</loc>
+    <lastmod>2026-07-05T17:23:24.860Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-atlikti-p-reiksmiu-korekcija/kada-atlikti-p-reiksmiu-korekcija.html</loc>
+    <lastmod>2026-07-05T14:44:42.854Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</loc>
+    <lastmod>2026-07-04T10:39:32.293Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</loc>
+    <lastmod>2026-07-04T10:39:38.959Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html</loc>
+    <lastmod>2026-07-04T10:39:36.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html</loc>
+    <lastmod>2026-07-04T10:41:22.560Z</lastmod>
   </url>
   <url>
     <loc>https://alaburda.github.io/statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html</loc>

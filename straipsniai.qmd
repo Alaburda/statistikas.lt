@@ -1,6 +1,6 @@
 ---
-title: "Straipsniai"
-subtitle: "Patarimai, vadovai ir įžvalgos apie statistiką"
+title: "Blogas"
+description: "Praktiniai patarimai kasdieniame darbe."
 listing:
   contents: posts
   sort: "date desc"
@@ -13,7 +13,7 @@ listing:
 page-layout: full
 ---
 
-Šiame puslapyje rasite straipsnius apie statistikos metodus, patarimus ir praktines įžvalgas. Straipsniai skirti tiek pradedantiesiems, tiek patyrusiems tyrėjams.
+Norite patys išmokti statistikos? Periodiškai dalinuosi straipsniais, kaip savarankiškai dirbti su duomenimis.
 
 ::: {.callout-note}
 ## Turite klausimą?

@@ -8,6 +8,11 @@ build/
 # IDE
 .vscode/
 .idea/
+.Rproj.user/
+.claude/
+
+# Private notes (not for the public repo)
+.github/skills/
 
 # OS
 .DS_Store

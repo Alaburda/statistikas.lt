@@ -1,125 +1,212 @@
 ---
-title: "Paslaugos"
-subtitle: "Profesionalios statistikos paslaugos moksliniams tyrimams ir verslui"
-toc: true
-toc-location: left
-page-layout: article
+pagetitle: "Paslaugos | Statistikas.lt"
+description: "Statistikos konsultacijos, vienkartiniai projektai (imties dydis, statistinės ataskaitos, įrankiai) ir nuolatinė partnerystė (periodinės ataskaitos, duomenų platformos). Pirmas pokalbis nemokamas."
+toc: false
+page-layout: custom
+section-divs: false
 ---
 
-## Statistinės analizės
+```{=html}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Paslaugos</span>
+    <h1>Nuo vieno klausimo iki nuolatinės partnerystės.</h1>
+    <p class="lede">Trys būdai dirbti kartu, priklausomai nuo to, kiek pagalbos reikia. Nežinote, kuris tinka? Parašykite — išsiaiškinsime per pirmą nemokamą pokalbį.</p>
+    <nav class="tier-nav" aria-label="Paslaugų tipai">
+      <a href="#konsultacija" class="btn-line"><span class="sq sq-yellow"></span>Konsultacija</a>
+      <a href="#projektas" class="btn-line"><span class="sq sq-red"></span>Projektas</a>
+      <a href="#partneryste" class="btn-line"><span class="sq sq-blue"></span>Partnerystė</a>
+    </nav>
+  </div>
+</section>
 
-Atlieku pilną duomenų analizę nuo A iki Z. Gausite detalią ataskaitą su visais rezultatais, grafikais ir lentelėmis, paruoštą įtraukti į jūsų darbą.
+<div class="wrap">
 
-### Ką gausite:
+  <section id="konsultacija" class="service-block">
+    <div class="service-aside">
+      <span class="chip chip-yellow">01</span>
+      <h2>Konsultacija</h2>
+      <p class="tier-when">Žinote, ką norite daryti, bet norite antros nuomonės ar kryptį rodančio žmogaus.</p>
+      <div class="price-box"><strong>nuo 50 € / val.</strong>nuotoliu arba gyvai</div>
+      <a href="kontaktai.html?tema=konsultacija" class="btn-blue">Užsisakyti konsultaciją →</a>
+    </div>
+    <div class="service-body">
+      <p>Jūs vairuojate, aš padedu išvengti duobių. Tinka komandoms, kurios analizę atlieka pačios, bet nori įsitikinti, kad metodas teisingas, o išvados — pagrįstos.</p>
 
-- **Aprašomąją statistiką** – vidurkiai, standartiniai nuokrypiai, pasiskirstymas
-- **Hipotezių tikrinimą** – t-testai, ANOVA, chi-kvadrato testai ir kt.
-- **Regresinę analizę** – tiesinė, logistinė, daugiamatis modeliavimas
-- **Vizualizacijas** – profesionalūs grafikai, tinkami publikacijoms
-- **Interpretaciją** – ne tik skaičiai, bet ir ką jie reiškia
+      <h3>Kada tinka</h3>
+      <ul class="dash-list">
+        <li>Planuojate eksperimentą ar tyrimą ir norite patikrinti dizainą prieš renkant duomenis</li>
+        <li>Turite rezultatus, bet abejojate, ar teisingai pasirinkote testą ar modelį</li>
+        <li>Reikia, kad kas nors peržiūrėtų R / Python kodą ar analizės logiką</li>
+        <li>Ruošiatės atsakyti į recenzentų ar vadovybės klausimus</li>
+      </ul>
 
-### Formatas:
+      <h3>Formatai</h3>
+      <div class="offer-grid">
+        <div class="offer">
+          <h4>Vienkartinė konsultacija</h4>
+          <p>Valandos pokalbis apie konkretų klausimą — nuotoliu arba gyvai.</p>
+          <span class="offer-price">nuo 50 €</span>
+        </div>
+        <div class="offer">
+          <h4>Analizės ar kodo peržiūra</h4>
+          <p>Peržiūriu jūsų analizę, kodą ar rankraščio metodų dalį ir pateikiu pastabas.</p>
+          <span class="offer-price">kaina pagal apimtį</span>
+        </div>
+        <div class="offer">
+          <h4>Palydėjimas per projektą</h4>
+          <p>Reguliarūs susitikimai visą projekto laiką: nuo dizaino iki rezultatų.</p>
+          <span class="offer-price">valandų paketas</span>
+        </div>
+        <div class="offer">
+          <h4>Mokymai komandai</h4>
+          <p>Statistikos pagrindai, R, duomenų vizualizacija ar konkretūs metodai — individualiai arba grupei iki 10 žmonių.</p>
+          <span class="offer-price">nuo 60 € / val.</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-Analizės pateikiamos **Word formatu** su:
+  <section id="projektas" class="service-block">
+    <div class="service-aside">
+      <span class="chip chip-red">02</span>
+      <h2>Projektas</h2>
+      <p class="tier-when">Reikia konkretaus rezultato per sutartą laiką ir už sutartą kainą.</p>
+      <div class="price-box"><strong>nuo 50 €</strong>fiksuota kaina, sutarta iš anksto</div>
+      <a href="kontaktai.html?tema=projektas" class="btn-blue">Aptarti projektą →</a>
+    </div>
+    <div class="service-body">
+      <p>Aiškiai apibrėžta užduotis nuo pradžios iki galo. Prieš pradedant gaunate pasiūlymą su apimtimi, kaina ir terminu, o pabaigoje — rezultatą, kurį galite naudoti iš karto.</p>
 
-- Metodų aprašymu (tinka kopijuoti į jūsų darbą)
-- Lentelėmis APA formatu
-- Grafikais aukšta raiška
-- Rezultatų interpretacija
+      <h3>Dažniausi projektai</h3>
+      <div class="offer-grid">
+        <div class="offer">
+          <h4>Imties dydžio skaičiavimas</h4>
+          <p>Keli scenarijai (pvz., 80 % ir 90 % galia), skaičiavimo pagrindimas paraiškai ar bioetikos komitetui ir rekomendacijos, jei imtis per didelė.</p>
+          <span class="offer-price">nuo 50 €</span>
+        </div>
+        <div class="offer">
+          <h4>Statistinė analizė ir ataskaita</h4>
+          <p>Aprašomoji statistika, hipotezių tikrinimas, regresiniai modeliai. Ataskaita su metodų aprašymu, lentelėmis, grafikais ir interpretacija.</p>
+          <span class="offer-price">nuo 100 €</span>
+        </div>
+        <div class="offer">
+          <h4>Apklausų ir eksperimentų analizė</h4>
+          <p>Apklausų duomenų analizė, A/B testų vertinimas: ar skirtumas tikras ir kiek jis vertas.</p>
+          <span class="offer-price">kaina pagal apimtį</span>
+        </div>
+        <div class="offer">
+          <h4>Individualūs įrankiai</h4>
+          <p>Skaičiuoklės, interaktyvios aplikacijos ir pakartojami analizės šablonai, kuriuos jūsų komanda naudos pati.</p>
+          <span class="offer-price">kaina pagal apimtį</span>
+        </div>
+        <div class="offer">
+          <h4>Duomenų paruošimas</h4>
+          <p>Netvarkingų lentelių valymas, trūkstamos reikšmės, kintamųjų kodavimas ir kelių šaltinių sujungimas.</p>
+          <span class="offer-price">nuo 50 €</span>
+        </div>
+        <div class="offer">
+          <h4>Sudėtinga analizė</h4>
+          <p>Daugiamatis modeliavimas, išgyvenamumo analizė, mišrūs modeliai ir kiti nestandartiniai uždaviniai.</p>
+          <span class="offer-price">nuo 300 €</span>
+        </div>
+      </div>
 
----
+      <h3>Ką gausite</h3>
+      <ul class="dash-list">
+        <li>Ataskaitą Word, PDF ar HTML formatu — su metodų aprašymu, kurį galima naudoti jūsų dokumentuose</li>
+        <li>Publikacijoms tinkamas lenteles ir aukštos raiškos grafikus</li>
+        <li>Pakartojamą kodą, jei jo reikia</li>
+        <li>Rezultatų aptarimą ir atsakymus į klausimus po projekto</li>
+      </ul>
+    </div>
+  </section>
 
-## Imties dydžio skaičiavimai
+  <section id="partneryste" class="service-block">
+    <div class="service-aside">
+      <span class="chip chip-blue">03</span>
+      <h2>Partnerystė</h2>
+      <p class="tier-when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p>
+      <div class="price-box"><strong>mėnesinis mokestis</strong>pagal sutartą apimtį</div>
+      <a href="kontaktai.html?tema=partneryste" class="btn-blue">Aptarti partnerystę →</a>
+    </div>
+    <div class="service-body">
+      <p>Ilgalaikis bendradarbiavimas įmonėms ir institucijoms, kurioms duomenys — ne vienkartinis projektas. Gaunate statistiką savo komandoje be etato išlaidų ir ilgos atrankos.</p>
 
-Planuojate tyrimą? Padėsiu apskaičiuoti, kiek tiriamųjų reikia, kad gautumėte statistiškai reikšmingus rezultatus.
+      <h3>Ką galime kurti kartu</h3>
+      <div class="offer-grid">
+        <div class="offer">
+          <h4>Periodinės ataskaitos</h4>
+          <p>Mėnesio ar ketvirčio ataskaitos, kurios atsinaujina automatiškai, o ne ruošiamos rankomis kaskart iš naujo.</p>
+        </div>
+        <div class="offer">
+          <h4>Rodiklių sistemos</h4>
+          <p>KPI apibrėžimas, skaičiavimas ir stebėsena — kad visi žiūrėtų į tuos pačius skaičius.</p>
+        </div>
+        <div class="offer">
+          <h4>Duomenų platforma</h4>
+          <p>Duomenų surinkimas iš skirtingų šaltinių, saugojimas ir paruošimas analizei, augant jūsų poreikiams.</p>
+        </div>
+        <div class="offer">
+          <h4>Statistikas pagal poreikį</h4>
+          <p>Sutartas valandų kiekis per mėnesį jūsų komandos klausimams, eksperimentams ir analizėms.</p>
+        </div>
+      </div>
 
-### Kaip tai veikia:
+      <h3>Kaip pradedame</h3>
+      <ul class="dash-list">
+        <li>Pokalbis apie jūsų duomenis, sprendimus ir dabartines ataskaitas</li>
+        <li>Pirmasis etapas — apibrėžtas projektas, kad abu pamatytume, kaip dirbame kartu</li>
+        <li>Toliau — mėnesinis susitarimas, kurį galima keisti augant poreikiams</li>
+      </ul>
+    </div>
+  </section>
 
-1. Aptariame jūsų tyrimo dizainą ir tikslus
-2. Nustatomė laukiamą efekto dydį
-3. Pasirenkame statistinį testą
-4. Apskaičiuojame optimalų imties dydį
+</div>
 
-### Ką gausite:
+<section class="band band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">D.U.K.</span>
+        <h2>Dažni klausimai</h2>
+      </div>
+      <p>Neradote atsakymo? Rašykite <a href="mailto:info@statistikas.lt">info@statistikas.lt</a>.</p>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Kaip nustatoma galutinė kaina?</summary>
+        <p>Po nemokamo pokalbio paruošiu pasiūlymą su darbų apimtimi, kaina ir terminu. Projektams kaina fiksuota — ji nesikeičia, nebent pasikeičia pati užduotis.</p>
+      </details>
+      <details>
+        <summary>Su kokiomis programomis dirbate?</summary>
+        <p>Daugiausia su R ir Python, taip pat su SPSS ir Excel. Jei jūsų komanda naudoja kitą įrankį, rezultatus pritaikysiu jam.</p>
+      </details>
+      <details>
+        <summary>Kiek laiko trunka projektas?</summary>
+        <p>Imties dydžio skaičiavimas ar paprasta analizė dažniausiai užtrunka kelias dienas, sudėtingesni projektai — vieną ar dvi savaites. Tikslų terminą nurodau pasiūlyme.</p>
+      </details>
+      <details>
+        <summary>Ar mano duomenys bus saugūs?</summary>
+        <p>Taip. Duomenis naudoju tik jūsų užduočiai, nesidalinu jais su trečiosiomis šalimis ir, jei reikia, pasirašau konfidencialumo sutartį.</p>
+      </details>
+      <details>
+        <summary>Ar dirbate su studentais?</summary>
+        <p>Taip — konsultuoju ir rašančius baigiamuosius darbus. Daug atsakymų rasite <a href="straipsniai.html">straipsniuose</a>, o jei reikia pagalbos, rinkitės konsultaciją.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-- Kelis galimus scenarijus (80%, 90% galia)
-- Paaiškinimą, kaip imtis buvo apskaičiuota
-- Rekomendacijas, ką daryti, jei imtis per didelė
-
----
-
-## Konsultacijos
-
-Norite analizę atlikti patys, bet reikia pagalbos? Galime susitikti gyvai arba nuotoliniu būdu.
-
-### Konsultacijų tipai:
-
-- **Vienkartinė konsultacija** – atsakysiu į konkrečius klausimus
-- **Reguliarios konsultacijos** – palydėsiu per visą projektą
-- **Kodo peržiūra** – patikrinsiu jūsų R/Python kodą
-
-### Kaip tai vyksta:
-
-1. Susisiekiate ir aprašote problemą
-2. Sutariame laiką (Zoom, Google Meet arba gyvai)
-3. Konsultacijos metu sprendžiame jūsų klausimus
-4. Jei reikia – gaunu papildomų užduočių
-
----
-
-## Duomenų paruošimas
-
-Netvarkinga duomenų lentelė? Padėsiu ją sutvarkyti ir paruošti analizei.
-
-### Pagalba su:
-
-- Excel lentelių valymu ir struktūrizavimu
-- Trūkstamų reikšmių tvarkymu
-- Duomenų transformacijomis
-- Kelių šaltinių sujungimu
-- Kodavimu ir rekodavimu
-
----
-
-## Mokymai
-
-Norite išmokti statistiką patys? Siūlau individualius arba grupinius mokymus.
-
-### Temos:
-
-- **Statistikos pagrindai** – ką reiškia p-reikšmė, pasikliautiniai intervalai
-- **R pradmenys** – nuo nulio iki pirmos analizės
-- **Duomenų vizualizacija** – ggplot2 ir profesionalūs grafikai
-- **Specifiniai metodai** – regresinė analizė, survival analizė ir kt.
-
-### Formatai:
-
-- Individualūs mokymai (1:1)
-- Grupiniai mokymai (iki 10 žmonių)
-- Online arba gyvai
-
----
-
-## Kainos
-
-| Paslauga | Kaina nuo |
-|----------|-----------|
-| Paprasta statistinė analizė | 100 € |
-| Sudėtinga analizė | 300 € |
-| Imties dydžio skaičiavimas | 50 € |
-| Konsultacija (1 val.) | 50 € |
-| Duomenų paruošimas | 50 € |
-| Individualūs mokymai (1 val.) | 60 € |
-
-*Tikslią kainą galėsiu pasakyti po nemokamos pirminės konsultacijos, susipažinęs su jūsų projektu.*
-
----
-
-## Susisiekite
-
-Turite klausimų? [Susisiekite su manimi](kontaktai.qmd) arba rašykite tiesiogiai: [info@statistikas.lt](mailto:info@statistikas.lt)
-
-::: {.callout-tip}
-## Nemokama konsultacija
-Pirminė konsultacija (iki 30 min.) yra nemokama. Aptarsime jūsų projektą ir rasime geriausią sprendimą.
-:::
+<section class="cta-band">
+  <div class="wrap">
+    <span class="eyebrow">Susisiekite</span>
+    <h2>Nežinote, nuo ko pradėti?</h2>
+    <p>Aprašykite situaciją keliais sakiniais — pasiūlysiu, kuris variantas jums tinka labiausiai.</p>
+    <div class="cta-actions">
+      <a href="kontaktai.html" class="btn-yellow">Susisiekti →</a>
+      <a href="mailto:info@statistikas.lt" class="cta-mail">info@statistikas.lt</a>
+    </div>
+  </div>
+</section>
+```

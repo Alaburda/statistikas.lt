@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="lt" xml:lang="lt"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.52">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Statistikas jūsų komandai: konsultacijos, vienkartiniai projektai ir nuolatinė partnerystė įmonėms ir tyrėjams. Pirmas pokalbis nemokamas.">
 
-<title>Statistikas.lt | Profesionalios statistikos paslaugos – Statistikas.lt</title>
+<title>Statistikas.lt | Statistikos ir duomenų analizės konsultacijos – Statistikas.lt</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,12 +26,10 @@ ul.task-list li input[type="checkbox"] {
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
 <link href="./images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -41,32 +40,49 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Nėra rezultatų",
+    "search-matching-documents-text": "atitinkančių dokumentų",
+    "search-copy-link-title": "Kopijuoti nuorodą į paiešką",
+    "search-hide-matches-text": "Slėpti kitus atitikimus",
+    "search-more-match-text": "daugiau atitikimų šiame dokumente",
+    "search-more-matches-text": "daugiau atitikimų šiame dokumente",
+    "search-clear-button-title": "Išvalyti",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
+    "search-detached-cancel-button-title": "Atšaukti",
+    "search-submit-button-title": "Pateikti",
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-blog-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-blog-listing'] = new List('listing-blog-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DT3Y3KGPJQ"></script>
 
 <script type="text/javascript">
@@ -77,15 +93,50 @@ gtag('js', new Date());
 gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="theme/styles.css">
-<meta property="og:title" content="Statistikas.lt | Profesionalios statistikos paslaugos">
-<meta property="og:image" content="https://alaburda.github.io/statistikas.lt/images/card_image.png">
+<meta property="og:title" content="Statistikas.lt | Statistikos ir duomenų analizės konsultacijos">
+<meta property="og:description" content="Statistikas jūsų komandai: konsultacijos, vienkartiniai projektai ir nuolatinė partnerystė įmonėms ir tyrėjams. Pirmas pokalbis nemokamas.">
+<meta property="og:image" content="https://alaburda.github.io/statistikas.lt/images/card.png">
 <meta property="og:site_name" content="Statistikas.lt">
-<meta name="twitter:title" content="Statistikas.lt | Profesionalios statistikos paslaugos">
-<meta name="twitter:image" content="https://alaburda.github.io/statistikas.lt/images/logo.svg">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:title" content="Statistikas.lt | Statistikos ir duomenų analizės konsultacijos">
+<meta name="twitter:description" content="Statistikas jūsų komandai: konsultacijos, vienkartiniai projektai ir nuolatinė partnerystė įmonėms ir tyrėjams. Pirmas pokalbis nemokamas.">
+<meta name="twitter:image" content="https://alaburda.github.io/statistikas.lt/images/card.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="630">
+<meta name="twitter:image-width" content="1200">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -96,19 +147,17 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.svg" alt="Statistikas.lt" class="navbar-logo">
+    <img src="./images/mark.svg" alt="Statistikas.lt" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Statistikas.lt</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Rodyti/Slėpti navigaciją" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Pradžia</span></a>
-  </li>  
   <li class="nav-item">
     <a class="nav-link" href="./paslaugos.html"> 
 <span class="menu-text">Paslaugos</span></a>
@@ -123,14 +172,14 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/pauliusalaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="./kontaktai.html"> 
 <span class="menu-text">Susisiekti</span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/paulius-alaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
-</i> 
-<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -148,379 +197,262 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 
-<div class="hero-section">
-<div class="container">
-<div class="row align-items-center">
-<div class="col-lg-6">
-<p><span class="hero-badge">Patikima statistikos pagalba</span></p>
-<h1 class="hero-title" id="statistinė-analizėkuria-galite-pasitikėti"><span class="hero-title">Statistinė analizė,</span><span class="text-gradient">kuria galite pasitikėti</span></h1>
-<p>Padedama suprasti duomenis ir priimti pagrįstus sprendimus. Nuo mokslinių tyrimų iki verslo analitikos – profesionali pagalba kiekviename žingsnyje.</p>
-<div class="d-flex gap-3 flex-wrap mb-4">
-<p><a href="./kontaktai.html" class="btn-primary-custom">Gauti nemokamą konsultaciją →</a> <a href="#paslaugos" class="btn-outline-custom">Sužinoti daugiau</a></p>
-</div>
-<div class="hero-stats">
-  <div class="hero-stat">
-    <span class="stat-number" data-target="10" data-suffix="+">10+</span>
-    <span class="stat-label">metų patirtis</span>
-  </div>
-  <div class="hero-stat">
-    <span class="stat-number" data-target="200" data-suffix="+">200+</span>
-    <span class="stat-label">sėkmingų projektų</span>
-  </div>
-  <div class="hero-stat">
-    <span class="stat-number" data-target="98" data-suffix="%">98%</span>
-    <span class="stat-label">patenkintų klientų</span>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Trust Section -->
-<div class="trust-section">
-<div class="container">
-<p><span class="trust-text">Pasitiki mokslo ir verslo atstovai</span></p>
-<div class="trust-logos">
-<p><span class="trust-logo">🏛️ Universitetai</span> <span class="trust-logo">🏥 Medicinos įstaigos</span> <span class="trust-logo">📈 Verslo įmonės</span> <span class="trust-logo">🔬 Mokslo institutai</span></p>
-</div>
-</div>
-</div>
-<!-- Audience Section -->
-<section id="kam-skirta">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">Kam skirta?</span></p>
-<h2 class="section-title" id="dirbu-su-studentais-mokslininkais-ir-verslu">Dirbu su studentais, mokslininkais ir verslu</h2>
-<p>Nesvarbu, ar rašote bakalauro darbą, ar vadovaujate tyrėjų komandai – pritaikysiu paslaugas jūsų poreikiams</p>
-</div>
-<div class="audience-grid">
-<div class="audience-card audience-card-highlight">
-  <div class="audience-icon">🎓</div>
-  <h3 class="audience-title">Studentai ir mokslininkai</h3>
-  <p class="audience-description">Pagalba nuo bakalauro darbo iki mokslinių publikacijų. Nesvarbu, ar rašote baigiamąjį darbą, ar ruošiate straipsnį tarptautiniam žurnalui – pritaikysiu analizę jūsų lygiui.</p>
-  <ul class="audience-list">
-    <li>Bakalauro ir magistro baigiamieji darbai</li>
-    <li>Disertacijos ir mokslinės publikacijos</li>
-    <li>Imties dydžio skaičiavimai</li>
-    <li>Regresinė, faktorinė analizė ir kt.</li>
-  </ul>
-</div>
-
-<div class="audience-card">
-  <div class="audience-icon">🏛️</div>
-  <h3 class="audience-title">Institucijos</h3>
-  <p class="audience-description">Statistikos paslaugos universitetams, ligoninėms, mokslo institutams ir kitoms organizacijoms.</p>
-  <ul class="audience-list">
-    <li>Klinikiniai tyrimai</li>
-    <li>Apklausų analizė</li>
-    <li>Mokymai komandai</li>
-  </ul>
-</div>
-
-<div class="audience-card">
-  <div class="audience-icon">💼</div>
-  <h3 class="audience-title">Verslas</h3>
-  <p class="audience-description">Duomenimis grįsti sprendimai jūsų verslui – nuo klientų analizės iki veiklos efektyvumo vertinimo.</p>
-  <ul class="audience-list">
-    <li>Verslo analitika</li>
-    <li>Prognozavimas</li>
-    <li>A/B testavimas</li>
-  </ul>
-</div>
-</div>
-</div>
+<!-- TODO: kai turėsite 2–3 klientų atvejus (net anonimizuotus), įdėkite "Atvejai" sekciją po paslaugomis – tai stipriausias pasitikėjimo signalas. -->
+<section class="s-hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Statistikas jūsų komandai — <em>tada, kai jo reikia.</em></h1>
+        <p class="lede">Padedu įmonėms ir tyrėjams priimti sprendimus, kuriais galima pasitikėti: nuo vienos konsultacijos iki reguliarių ataskaitų ir duomenų sistemų.</p>
+        <div class="hero-actions">
+          <div class="hero-cta">
+            <a href="kontaktai.html" class="btn-blue">Aptarkime jūsų projektą →</a>
+            <p class="hero-note">Pirmas 30 min. pokalbis — nemokamas</p>
+          </div>
+          <a href="#paslaugos" class="text-link">Paslaugos ↓</a>
+        </div>
+      </div>
+      <div class="mondrian hero-figure" aria-hidden="true">
+        <div class="m-cap"><span>Pav. 1 — Keturi skirstiniai</span><span>n = 1 000</span></div>
+        <div class="m-red"></div>
+        <figure class="m-hist h-normal figure"><figcaption>Normalusis <span class="fx">N(μ, σ²)</span></figcaption><svg viewbox="0 0 100 100" preserveaspectratio="none" aria-hidden="true"><g class="bars"><rect x="0.0" y="99.2" width="3.704" height="0.8" style="--i:0"></rect><rect x="3.704" y="99.0" width="3.704" height="1.0" style="--i:1"></rect><rect x="7.407" y="97.9" width="3.704" height="2.1" style="--i:2"></rect><rect x="11.111" y="96.1" width="3.704" height="3.9" style="--i:3"></rect><rect x="14.815" y="92.6" width="3.704" height="7.4" style="--i:4"></rect><rect x="18.519" y="87.4" width="3.704" height="12.6" style="--i:5"></rect><rect x="22.222" y="80.4" width="3.704" height="19.6" style="--i:6"></rect><rect x="25.926" y="69.1" width="3.704" height="30.9" style="--i:7"></rect><rect x="29.63" y="58.2" width="3.704" height="41.8" style="--i:8"></rect><rect x="33.333" y="42.1" width="3.704" height="57.9" style="--i:9"></rect><rect x="37.037" y="30.3" width="3.704" height="69.7" style="--i:10"></rect><rect x="40.741" y="18.2" width="3.704" height="81.8" style="--i:11"></rect><rect x="44.444" y="6.9" width="3.704" height="93.1" style="--i:12"></rect><rect x="48.148" y="0.0" width="3.704" height="100.0" style="--i:13"></rect><rect x="51.852" y="9.7" width="3.704" height="90.3" style="--i:14"></rect><rect x="55.556" y="17.1" width="3.704" height="82.9" style="--i:15"></rect><rect x="59.259" y="26.3" width="3.704" height="73.7" style="--i:16"></rect><rect x="62.963" y="39.1" width="3.704" height="60.9" style="--i:17"></rect><rect x="66.667" y="55.8" width="3.704" height="44.2" style="--i:18"></rect><rect x="70.37" y="69.4" width="3.704" height="30.6" style="--i:19"></rect><rect x="74.074" y="78.6" width="3.704" height="21.4" style="--i:20"></rect><rect x="77.778" y="87.9" width="3.704" height="12.1" style="--i:21"></rect><rect x="81.481" y="92.3" width="3.704" height="7.7" style="--i:22"></rect><rect x="85.185" y="96.0" width="3.704" height="4.0" style="--i:23"></rect><rect x="88.889" y="98.0" width="3.704" height="2.0" style="--i:24"></rect><rect x="92.593" y="99.0" width="3.704" height="1.0" style="--i:25"></rect><rect x="96.296" y="99.2" width="3.704" height="0.8" style="--i:26"></rect></g><path class="seps" d="M3.704 0V100M7.407 0V100M11.111 0V100M14.815 0V100M18.519 0V100M22.222 0V100M25.926 0V100M29.63 0V100M33.333 0V100M37.037 0V100M40.741 0V100M44.444 0V100M48.148 0V100M51.852 0V100M55.556 0V100M59.259 0V100M62.963 0V100M66.667 0V100M70.37 0V100M74.074 0V100M77.778 0V100M81.481 0V100M85.185 0V100M88.889 0V100M92.593 0V100M96.296 0V100"></path></svg></figure>
+        <figure class="m-hist h-uniform figure"><figcaption>Tolygusis</figcaption><svg viewbox="0 0 100 100" preserveaspectratio="none" aria-hidden="true"><g class="bars"><rect x="0.0" y="11.6" width="16.667" height="88.4" style="--i:0"></rect><rect x="16.667" y="20.5" width="16.667" height="79.5" style="--i:1"></rect><rect x="33.333" y="14.9" width="16.667" height="85.1" style="--i:2"></rect><rect x="50.0" y="14.1" width="16.667" height="85.9" style="--i:3"></rect><rect x="66.667" y="17.8" width="16.667" height="82.2" style="--i:4"></rect><rect x="83.333" y="15.3" width="16.667" height="84.7" style="--i:5"></rect></g><path class="seps" d="M16.667 0V100M33.333 0V100M50.0 0V100M66.667 0V100M83.333 0V100"></path></svg></figure>
+        <figure class="m-hist h-expo figure"><figcaption>Eksponentinis <span class="fx">Exp(λ)</span></figcaption><svg viewbox="0 0 100 100" preserveaspectratio="none" aria-hidden="true"><g class="bars"><rect x="0.0" y="0.0" width="7.143" height="100.0" style="--i:0"></rect><rect x="7.143" y="26.0" width="7.143" height="74.0" style="--i:1"></rect><rect x="14.286" y="43.9" width="7.143" height="56.1" style="--i:2"></rect><rect x="21.429" y="55.6" width="7.143" height="44.4" style="--i:3"></rect><rect x="28.571" y="68.2" width="7.143" height="31.8" style="--i:4"></rect><rect x="35.714" y="76.9" width="7.143" height="23.1" style="--i:5"></rect><rect x="42.857" y="82.2" width="7.143" height="17.8" style="--i:6"></rect><rect x="50.0" y="87.0" width="7.143" height="13.0" style="--i:7"></rect><rect x="57.143" y="90.6" width="7.143" height="9.4" style="--i:8"></rect><rect x="64.286" y="92.5" width="7.143" height="7.5" style="--i:9"></rect><rect x="71.429" y="94.5" width="7.143" height="5.5" style="--i:10"></rect><rect x="78.571" y="96.2" width="7.143" height="3.8" style="--i:11"></rect><rect x="85.714" y="97.1" width="7.143" height="2.9" style="--i:12"></rect><rect x="92.857" y="97.8" width="7.143" height="2.2" style="--i:13"></rect></g><path class="seps" d="M7.143 0V100M14.286 0V100M21.429 0V100M28.571 0V100M35.714 0V100M42.857 0V100M50.0 0V100M57.143 0V100M64.286 0V100M71.429 0V100M78.571 0V100M85.714 0V100M92.857 0V100"></path></svg></figure>
+        <figure class="m-hist h-bimodal figure"><figcaption>Bimodalinis</figcaption><svg viewbox="0 0 100 100" preserveaspectratio="none" aria-hidden="true"><g class="bars"><rect x="0.0" y="98.2" width="7.143" height="1.8" style="--i:0"></rect><rect x="7.143" y="85.1" width="7.143" height="14.9" style="--i:1"></rect><rect x="14.286" y="46.2" width="7.143" height="53.8" style="--i:2"></rect><rect x="21.429" y="0.0" width="7.143" height="100.0" style="--i:3"></rect><rect x="28.571" y="26.8" width="7.143" height="73.2" style="--i:4"></rect><rect x="35.714" y="70.3" width="7.143" height="29.7" style="--i:5"></rect><rect x="42.857" y="83.9" width="7.143" height="16.1" style="--i:6"></rect><rect x="50.0" y="67.8" width="7.143" height="32.2" style="--i:7"></rect><rect x="57.143" y="39.4" width="7.143" height="60.6" style="--i:8"></rect><rect x="64.286" y="34.3" width="7.143" height="65.7" style="--i:9"></rect><rect x="71.429" y="50.8" width="7.143" height="49.2" style="--i:10"></rect><rect x="78.571" y="78.5" width="7.143" height="21.5" style="--i:11"></rect><rect x="85.714" y="94.3" width="7.143" height="5.7" style="--i:12"></rect><rect x="92.857" y="99.0" width="7.143" height="1.0" style="--i:13"></rect></g><path class="seps" d="M7.143 0V100M14.286 0V100M21.429 0V100M28.571 0V100M35.714 0V100M42.857 0V100M50.0 0V100M57.143 0V100M64.286 0V100M71.429 0V100M78.571 0V100M85.714 0V100M92.857 0V100"></path></svg></figure>
+        <div class="m-blue"></div>
+        <div class="m-yellow"></div>
+        <figure class="m-yours figure"><figcaption><span>Kokie jūsų duomenys?</span><span class="fx">n = ?</span></figcaption><div class="yours-bars"><i style="--h:22;--i:0"></i><i style="--h:48;--i:1"></i><i style="--h:81;--i:2"></i><i style="--h:64;--i:3"></i><i style="--h:37;--i:4"></i><i style="--h:52;--i:5"></i><i style="--h:90;--i:6"></i><i style="--h:70;--i:7"></i><i style="--h:41;--i:8"></i><i style="--h:26;--i:9"></i><i style="--h:15;--i:10"></i><i style="--h:8;--i:11"></i></div></figure>
+      </div>
+    </div>
 </section>
-<!-- Services Section -->
-<section id="paslaugos" class="section-dark">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">Paslaugos</span></p>
-<h2 class="section-title" id="kaip-galiu-padėti">Kaip galiu padėti?</h2>
-<p>Siūlau platų spektrą statistikos paslaugų, pritaikytų jūsų poreikiams</p>
-</div>
-<div class="services-grid">
-<div class="service-card service-card-featured">
-<p><span class="service-icon">📊</span></p>
-<h3 class="service-title" id="statistinės-analizės">Statistinės analizės</h3>
-<p>Pilnas duomenų analizės paketas su detaliu metodų aprašymu, grafikais ir lentelėmis. Analizės pateikiamos Word formatu, paruoštos įtraukti į jūsų darbą.</p>
-<ul>
-<li>Aprašomoji statistika</li>
-<li>Hipotezių tikrinimas</li>
-<li>Regresinė analizė</li>
-<li>Daugiamatis modeliavimas</li>
-</ul>
-<p><a href="./paslaugos.html" class="service-link">Sužinoti daugiau →</a></p>
-</div>
-<div class="service-card">
-<p><span class="service-icon">⏱️</span></p>
-<h3 class="service-title" id="imties-dydžio-skaičiavimai">Imties dydžio skaičiavimai</h3>
-<p>Padėsiu apskaičiuoti optimalų tiriamųjų skaičių jūsų tyrimui, kad rezultatai būtų statistiškai reikšmingi ir patikimi.</p>
-<p><a href="./paslaugos.html" class="service-link">Sužinoti daugiau →</a></p>
-</div>
-<div class="service-card">
-<p><span class="service-icon">👥</span></p>
-<h3 class="service-title" id="konsultacijos">Konsultacijos</h3>
-<p>Kai norite analizę atlikti patys, galime susitikti gyvai ar nuotoliniu būdu ir aptarti jūsų klausimus bei padėti išspręsti problemas.</p>
-<p><a href="./paslaugos.html" class="service-link">Sužinoti daugiau →</a></p>
-</div>
-<div class="service-card">
-<p><span class="service-icon">📋</span></p>
-<h3 class="service-title" id="duomenų-paruošimas">Duomenų paruošimas</h3>
-<p>Padėsiu sutvarkyti ir paruošti duomenis analizei – nuo Excel lentelių iki sudėtingų duomenų bazių.</p>
-<p><a href="./paslaugos.html" class="service-link">Sužinoti daugiau →</a></p>
-</div>
-<div class="service-card">
-<p><span class="service-icon">🎓</span></p>
-<h3 class="service-title" id="mokymai">Mokymai</h3>
-<p>Individualūs arba grupiniai statistikos mokymai, pritaikyti jūsų srities poreikiams ir įgūdžių lygiui.</p>
-<p><a href="./paslaugos.html" class="service-link">Sužinoti daugiau →</a></p>
-</div>
-</div>
-</div>
+
+<section id="paslaugos" class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Paslaugos</span>
+        <h2>Trys būdai dirbti kartu</h2>
+      </div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+
+    <div class="tiers">
+      <article class="tier tier-yellow">
+        <span class="chip chip-yellow">01</span>
+        <h3>Konsultacija</h3>
+        <p class="tier-when">Žinote, ką norite daryti, bet norite antros nuomonės ar kryptį rodančio žmogaus.</p>
+        <ul class="dash-list">
+          <li>Tyrimo ar eksperimento dizaino peržiūra</li>
+          <li>Metodo pasirinkimas ir rezultatų interpretacija</li>
+          <li>R / Python kodo ir analizės peržiūra</li>
+          <li>Mokymai jūsų komandai</li>
+        </ul>
+        <div class="tier-price"><span>nuo <strong>50 € / val.</strong></span><a href="paslaugos.html#konsultacija">Plačiau →</a></div>
+      </article>
+
+      <article class="tier tier-red">
+        <span class="chip chip-red">02</span>
+        <h3>Projektas</h3>
+        <p class="tier-when">Reikia konkretaus rezultato per sutartą laiką ir už sutartą kainą.</p>
+        <ul class="dash-list">
+          <li>Imties dydžio skaičiavimas ir pagrindimas</li>
+          <li>Statistinė analizė ir ataskaita</li>
+          <li>Apklausų ir A/B testų analizė</li>
+          <li>Individualūs įrankiai: skaičiuoklės, interaktyvios aplikacijos</li>
+        </ul>
+        <div class="tier-price"><span>fiksuota kaina, nuo <strong>50 €</strong></span><a href="paslaugos.html#projektas">Plačiau →</a></div>
+      </article>
+
+      <article class="tier tier-blue">
+        <span class="chip chip-blue">03</span>
+        <h3>Partnerystė</h3>
+        <p class="tier-when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p>
+        <ul class="dash-list">
+          <li>Periodinės ataskaitos, kurios atsinaujina pačios</li>
+          <li>Rodiklių (KPI) sistemos ir stebėsena</li>
+          <li>Duomenų platformos kūrimas ir plėtra</li>
+          <li>Statistikas pagal poreikį jūsų komandai</li>
+        </ul>
+        <div class="tier-price"><span><strong>mėnesinis</strong> mokestis</span><a href="paslaugos.html#partneryste">Plačiau →</a></div>
+      </article>
+    </div>
+    <p class="tiers-foot">Tikslią kainą ir terminą sutariame prieš pradedant darbą — be netikėtumų.</p>
+  </div>
 </section>
-<!-- About Section -->
-<section id="apie" class="section-dark">
-<div class="container">
-<div class="about-grid">
-<div class="about-image-container">
-<div class="about-avatar">👨‍💻</div>
-<div class="about-experience-badge">
-<p><span class="exp-number">10+</span> <span class="exp-text">metų patirtis</span></p>
-</div>
-</div>
-<div class="about-content">
-<p><span class="section-badge">Apie mane</span></p>
-<h2 class="section-title" id="sveiki-aš-esu-paulius">Sveiki! 👋 Aš esu Paulius</h2>
-<p>Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais, todėl gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes.</p>
-<p>Mano tikslas – padėti jums suprasti savo duomenis ir priimti pagrįstus sprendimus. Nesvarbu, ar ruošiate disertaciją, ar analizuojate verslo rodiklius – esu čia, kad padėčiau.</p>
-<div class="about-skills">
-<div class="skill-item">
-<p><span class="skill-icon">📊</span> <span class="skill-title">Statistinė analizė</span> <span class="skill-subtitle">R, SPSS, Python</span></p>
-</div>
-<div class="skill-item">
-<p><span class="skill-icon">🎓</span> <span class="skill-title">Akademiniai tyrimai</span> <span class="skill-subtitle">Publikacijos, disertacijos</span></p>
-</div>
-<div class="skill-item">
-<p><span class="skill-icon">💼</span> <span class="skill-title">Verslo analitika</span> <span class="skill-subtitle">Sprendimų priėmimas</span></p>
-</div>
-<div class="skill-item">
-<p><span class="skill-icon">🏥</span> <span class="skill-title">Medicinos statistika</span> <span class="skill-subtitle">Klinikiniai tyrimai</span></p>
-</div>
-</div>
-<p><a href="./kontaktai.html" class="btn-primary-custom">Susisiekime →</a></p>
-</div>
-</div>
-</div>
+
+<section class="band band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Kam</span>
+        <h2>Verslui ir tyrėjams</h2>
+      </div>
+      <p>Skirtingi klausimai, tas pats principas: teisingas metodas, aiškus atsakymas ir rezultatas, kurį galite paaiškinti kitiems.</p>
+    </div>
+
+    <div class="audience">
+      <div class="aud aud-primary">
+        <span class="eyebrow">Įmonėms</span>
+        <h3>Turite duomenų, bet neturite laiko ar žmogaus juos paversti atsakymais.</h3>
+        <p>Dirbu kaip jūsų komandos statistikas — be etato ir be ilgos atrankos.</p>
+        <ul class="dash-list">
+          <li>Pardavimų, klientų ir veiklos analitika</li>
+          <li>A/B testai ir eksperimentai: kiek laukti ir ar skirtumas tikras</li>
+          <li>Apklausos ir rinkos tyrimai</li>
+          <li>Automatizuotos ataskaitos vadovybei</li>
+        </ul>
+      </div>
+      <div class="aud">
+        <span class="eyebrow">Tyrėjams</span>
+        <h3>Metodologija, kuri atlaikys recenzentus.</h3>
+        <p>Mokslininkams, gydytojams ir institucijoms, kuriems svarbus tikslumas.</p>
+        <ul class="dash-list">
+          <li>Imties dydis paraiškoms ir bioetikos komitetams</li>
+          <li>Statistinė analizė publikacijoms</li>
+          <li>Klinikinių ir stebėjimo tyrimų duomenys</li>
+          <li>Atsakymai į recenzentų pastabas</li>
+        </ul>
+        <p class="aud-foot">Rašote baigiamąjį darbą? Pradėkite nuo <a href="straipsniai.html">straipsnių</a> arba užsisakykite <a href="kontaktai.html?tema=konsultacija">konsultaciją</a>.</p>
+      </div>
+    </div>
+  </div>
 </section>
-<!-- Process Section -->
-<section id="procesas">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">Procesas</span></p>
-<h2 class="section-title" id="kaip-vyksta-bendradarbiavimas">Kaip vyksta bendradarbiavimas?</h2>
-<p>Paprastas ir aiškus darbo procesas, kuris užtikrina kokybiškus rezultatus</p>
-</div>
-<div class="process-timeline">
-<div class="process-step">
-  <span class="step-number">01</span>
-  <div class="step-content">
-    <h3 class="step-title">Nemokama konsultacija</h3>
-    <p>Susipažįstame su jūsų projektu, aptariame tikslus ir nustatome, kokios analizės reikia. Ši konsultacija yra nemokama.</p>
-  </div>
-</div>
 
-<div class="process-step">
-  <span class="step-number">02</span>
-  <div class="step-content">
-    <h3 class="step-title">Pasiūlymas ir sutartis</h3>
-    <p>Paruošiu detalų pasiūlymą su kaina ir terminais. Jei viskas tinka, sudarome sutartį.</p>
-  </div>
-</div>
+<section class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Procesas</span>
+        <h2>Kaip vyksta darbas</h2>
+      </div>
+      <p>Aiški apimtis prieš pradedant, reguliarus ryšys darbo metu ir rezultatas, kurį suprasite.</p>
+    </div>
 
-<div class="process-step">
-  <span class="step-number">03</span>
-  <div class="step-content">
-    <h3 class="step-title">Duomenų analizė</h3>
-    <p>Atlieku analizę, reguliariai informuodamas apie progresą. Jei iškyla klausimų – sprendžiame kartu.</p>
-  </div>
-</div>
+    <div class="steps">
+      <div class="step">
+        <span class="chip">01</span>
+        <h3>Pokalbis</h3>
+        <p>Nemokamai aptariame jūsų klausimą, duomenis ir terminus. Jei galiu padėti — pasakysiu kaip, jei ne — pasakysiu ir tai.</p>
+      </div>
+      <div class="step">
+        <span class="chip">02</span>
+        <h3>Pasiūlymas</h3>
+        <p>Raštu gaunate darbų apimtį, kainą ir terminą. Pradedame tik jums sutikus.</p>
+      </div>
+      <div class="step">
+        <span class="chip">03</span>
+        <h3>Darbas</h3>
+        <p>Reguliariai informuoju apie eigą. Iškilusius klausimus sprendžiame kartu, ne paskutinę dieną.</p>
+      </div>
+      <div class="step">
+        <span class="chip">04</span>
+        <h3>Rezultatas</h3>
+        <p>Ataskaita, kodas ir paaiškinimas. Padedu interpretuoti ir pristatyti rezultatus kitiems.</p>
+      </div>
+    </div>
 
-<div class="process-step">
-  <span class="step-number">04</span>
-  <div class="step-content">
-    <h3 class="step-title">Rezultatai ir palaikymas</h3>
-    <p>Gausite detalią ataskaitą su visais rezultatais. Jei reikės – paaiškinsiu, padėsiu interpretuoti ar papildysiu.</p>
+    <div class="tools"><span>Įrankiai</span><span>R</span><span>Python</span><span>SPSS</span><span>Excel</span><span>Quarto</span></div>
   </div>
-</div>
-</div>
-</div>
 </section>
-<!-- Latest Posts Section -->
-<section id="straipsniai" class="section-dark">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">Naujausi straipsniai</span></p>
-<h2 class="section-title" id="statistikos-patarimai-ir-įžvalgos">Statistikos patarimai ir įžvalgos</h2>
-</div>
-<div id="blog-listing">
 
+<section class="band band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Straipsniai</span>
+        <h2>Apie statistiką — lietuviškai</h2>
+      </div>
+      <p>Praktiniai gidai, kaip pasirinkti metodą, apskaičiuoti imtį ir teisingai interpretuoti rezultatus.</p>
+    </div>
+<div id="listing-blog-listing" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="AI,statistika" data-listing-date-sort="1783198800000" data-listing-file-modified-sort="1783272204860" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="321">
+<a href="./posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 190px;">&nbsp;</div>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Ar AI gali atlikti statistinę analizę?
+</h5>
+<div class="card-text listing-description">
+Jeigu šiandien į ChatGPT, Gemini arba Claude įkeltumėte savo duomenų rinkinį ir savo rankraštį, tikėtina, kad kiekvienas iš jų gebėtų atlikti statistinę analizę. Šiais…
 </div>
-</div>
-</section>
-<!-- Testimonials Section -->
-<section id="atsiliepimai">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">Atsiliepimai</span></p>
-<h2 class="section-title" id="ką-sako-klientai">Ką sako klientai?</h2>
-</div>
-<div class="testimonials-grid">
-<div class="testimonial-card">
-<p><span class="testimonial-rating">⭐⭐⭐⭐⭐</span></p>
-<p>“Paulius padėjo su disertacijos statistine dalimi. Viskas buvo paaiškinta suprantamai, o rezultatai pateikti kokybiškai. Labai rekomenduoju!”</p>
-<div class="testimonial-author">
-<p><span class="author-avatar">👩‍🔬</span> <span class="author-name">Dr.&nbsp;Indrė K.</span> <span class="author-role">Biomedicinos mokslai</span></p>
-</div>
-</div>
-<div class="testimonial-card">
-<p><span class="testimonial-rating">⭐⭐⭐⭐⭐</span></p>
-<p>“Greitas ir profesionalus darbas. Gavome ne tik analizę, bet ir vertingų įžvalgų, kaip tobulinti tyrimą. Tikrai verta investicija.”</p>
-<div class="testimonial-author">
-<p><span class="author-avatar">👨‍⚕️</span> <span class="author-name">Prof.&nbsp;Tomas R.</span> <span class="author-role">Medicinos fakultetas</span></p>
-</div>
-</div>
-<div class="testimonial-card">
-<p><span class="testimonial-rating">⭐⭐⭐⭐⭐</span></p>
-<p>“Konsultacija padėjo suprasti, kokią statistiką taikyti mūsų verslo duomenims. Dabar galime priimti geresnius sprendimus.”</p>
-<div class="testimonial-author">
-<p><span class="author-avatar">👩‍💼</span> <span class="author-name">Laura S.</span> <span class="author-role">Marketingo vadovė</span></p>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026-07-05
 </div>
 </div>
 </div>
 </div>
-</section>
-<!-- FAQ Section -->
-<section id="duk" class="section-dark">
-<div class="container">
-<div class="section-header">
-<p><span class="section-badge">D.U.K.</span></p>
-<h2 class="section-title" id="dažniausiai-užduodami-klausimai">Dažniausiai užduodami klausimai</h2>
-</div>
-<div class="faq-list">
-<details class="faq-item">
-  <summary>Kiek kainuoja statistinė analizė?</summary>
-  <div class="faq-answer">
-    <p>Kaina priklauso nuo projekto sudėtingumo ir apimties. Paprastos analizės prasideda nuo 100€, sudėtingesni projektai – nuo 300€. Tiksią kainą galėsiu pasakyti po nemokamos konsultacijos, susipažinęs su jūsų duomenimis ir tikslais.</p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary>Per kiek laiko gausite rezultatus?</summary>
-  <div class="faq-answer">
-    <p>Standartinis terminas yra 5-10 darbo dienų, priklausomai nuo projekto sudėtingumo. Jei skubate – galime aptarti greitesnį variantą už papildomą mokestį.</p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary>Ar galite padėti su R arba SPSS?</summary>
-  <div class="faq-answer">
-    <p>Taip! Dirbu su R, SPSS, Python ir Excel. Galiu atlikti analizę bet kuria iš šių programų arba padėti jums išmokti jomis naudotis.</p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary>Ar dirbate su studentais?</summary>
-  <div class="faq-answer">
-    <p>Taip, dirbu su bakalauro, magistro ir doktorantūros studentais. Studentams taikau specialias kainas. Galiu padėti su baigiamųjų darbų statistine dalimi.</p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary>Kaip saugomi mano duomenys?</summary>
-  <div class="faq-answer">
-    <p>Jūsų duomenų konfidencialumas yra prioritetas. Visi duomenys saugomi šifruotoje aplinkoje, o pabaigus projektą – ištrinami. Jei reikia, galime pasirašyti konfidencialumo sutartį (NDA).</p>
-  </div>
-</details>
-</div>
-</div>
-</section>
-<!-- Contact Section -->
-<section id="kontaktai">
-<div class="container">
-<div class="contact-grid">
-<div class="contact-info">
-<p><span class="section-badge">Kontaktai</span></p>
-<h2 class="section-title" id="susisiekime">Susisiekime!</h2>
-<p>Turite klausimų ar norite aptarti projektą? Parašykite man – atsakysiu per 24 valandas.</p>
-<a href="mailto:info@statistikas.lt" class="contact-method">
-  <div class="method-icon">✉️</div>
-  <div>
-    <span class="method-label">El. paštas</span>
-    <span class="method-value">info@statistikas.lt</span>
-  </div>
 </a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="R,p reikšmės" data-listing-date-sort="1783198800000" data-listing-file-modified-sort="1783262682854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<a href="./posts/kada-atlikti-p-reiksmiu-korekcija/kada-atlikti-p-reiksmiu-korekcija.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 190px;">&nbsp;</div>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Kada atlikti p reikšmių korekciją?
+</h5>
+<div class="card-text listing-description">
 
-<a href="https://www.linkedin.com/in/paulius-alaburda/" target="_blank" class="contact-method">
-  <div class="method-icon">💼</div>
-  <div>
-    <span class="method-label">LinkedIn</span>
-    <span class="method-value">Paulius Alaburda</span>
-  </div>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026-07-05
+</div>
+</div>
+</div>
+</div>
 </a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="statistika,pradedantiesiems,R" data-listing-date-sort="1783112400000" data-listing-file-modified-sort="1783161682560" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="575">
+<a href="./posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa_files/figure-html/testu-zemelapis-1.png" class="thumbnail-image card-img" style="height: 190px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Kaip pasirinkti statistinį testą? Paprastas gidas
+</h5>
+<div class="card-text listing-description">
+Nežinote, ar rinktis t-testą, ANOVA, ar chi-kvadrato testą? Atsakykite į tris klausimus apie savo duomenis ir šis gidas parodys, kuris testas tinka jūsų tyrimui.
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026-07-04
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+Atitinkančių elementų nerasta
+</div>
+</div>
+    <div class="listing-more"><a href="straipsniai.html" class="text-link">Visi straipsniai →</a></div>
+  </div>
+</section>
 
-<div class="contact-guarantee">
-  <div class="guarantee-icon">✅</div>
-  <div>
-    <div class="guarantee-title">Nemokama pirminė konsultacija</div>
-    <div class="guarantee-text">Aptarsime jūsų projektą ir rasime geriausią sprendimą</div>
+<section class="cta-band">
+  <div class="wrap cta-grid">
+    <div>
+      <span class="eyebrow">Susisiekite</span>
+      <h2>Turite duomenų ir klausimą?</h2>
+      <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+      <div class="cta-actions">
+        <a href="kontaktai.html" class="btn-yellow">Aptarkime projektą →</a>
+        <a href="mailto:info@statistikas.lt" class="cta-mail">info@statistikas.lt</a>
+      </div>
+    </div>
+    <div class="mondrian cta-art" aria-hidden="true">
+      <div class="m-blue"></div><div class="m-yellow"></div><div class="m-red"></div>
+    </div>
   </div>
-</div>
-</div>
-<div class="contact-form">
-<form action="https://formspree.io/f/your-form-id" method="POST">
-  <div class="form-group">
-    <label for="name" class="form-label">Vardas</label>
-    <input type="text" id="name" name="name" class="form-input" placeholder="Jūsų vardas" required="">
-  </div>
-  
-  <div class="form-group">
-    <label for="email" class="form-label">El. paštas</label>
-    <input type="email" id="email" name="email" class="form-input" placeholder="jusu@email.lt" required="">
-  </div>
-  
-  <div class="form-group">
-    <label for="subject" class="form-label">Tema</label>
-    <select id="subject" name="subject" class="form-input">
-      <option value="">Pasirinkite temą...</option>
-      <option value="analizes">Statistinė analizė</option>
-      <option value="imtis">Imties dydžio skaičiavimas</option>
-      <option value="konsultacija">Konsultacija</option>
-      <option value="mokymai">Mokymai</option>
-      <option value="kita">Kita</option>
-    </select>
-  </div>
-  
-  <div class="form-group">
-    <label for="message" class="form-label">Žinutė</label>
-    <textarea id="message" name="message" class="form-input" placeholder="Aprašykite savo projektą ar užduokite klausimą..." rows="5" required=""></textarea>
-  </div>
-  
-  <button type="submit" class="btn-primary-custom" style="width: 100%; justify-content: center;">
-    Siųsti žinutę ✉️
-  </button>
-</form>
-</div>
-</div>
-</div>
 </section>
-<!-- CTA Section -->
-<div class="cta-section">
-<section id="pasiruošę-pradėti" class="cta-title container">
-<h2 class="cta-title">Pasiruošę pradėti?</h2>
-<p>Susisiekite dabar ir gaukite nemokamą pirminę konsultaciją. Kartu rasime geriausią sprendimą jūsų projektui.</p>
-<p><a href="mailto:info@statistikas.lt" class="btn-white">Rašyti el. laišką ✉️</a></p>
-</section>
-</div>
+
 
 
 
@@ -568,12 +500,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Nukopijuota!");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Nukopijuota!");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -949,14 +881,36 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2025 Statistikas.lt. Visos teisės saugomos.</p>
+<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
-<p><a href="./paslaugos.html">Paslaugos</a> · <a href="./straipsniai.html">Straipsniai</a> · <a href="./about.html">Apie</a></p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="./paslaugos.html">
+<p>Paslaugos</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="./straipsniai.html">
+<p>Straipsniai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="./about.html">
+<p>Apie</p>
+</a>
+  </li>  
+</ul>
+    </div>
     <div class="nav-footer-right">
-<p>Sukurta su ❤️ ir <a href="https://quarto.org">Quarto</a></p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:info@statistikas.lt">
+<p>info@statistikas.lt</p>
+</a>
+  </li>  
+</ul>
+    </div>
   </div>
 </footer>
 <script src="theme/main.js"></script>

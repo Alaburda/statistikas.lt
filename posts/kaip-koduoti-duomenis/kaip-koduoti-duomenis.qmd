@@ -2,6 +2,7 @@
 title: "Kaip koduoti duomenis?"
 description: "Duomenų kodavimas yra svarbus žingsnis prieš statistinę analizę. Sužinokite, kaip teisingai koduoti kintamuosius."
 date: "2023-02-15"
+author: "Paulius Alaburda"
 categories: [duomenų-paruošimas, R, pradedantiesiems]
 editor: visual
 execute:

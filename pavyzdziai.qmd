@@ -1,0 +1,57 @@
+---
+draft: true  # paslėpta, kol nėra pavyzdžių
+pagetitle: "Pavyzdžiai | Statistikas.lt"
+description: "Atliktų darbų pavyzdžiai: koks buvo klausimas, ką padariau ir ką gavo klientas. Kad prieš pradedant žinotumėte, ko tikėtis."
+toc: false
+page-layout: custom
+section-divs: false
+listing:
+  id: examples-listing
+  contents: "pavyzdziai/*/index.qmd"
+  sort: "date desc"
+  type: grid
+  grid-columns: 3
+  image-height: 200px
+  categories: false
+  fields: [image, categories, title, description]
+---
+
+<!-- Naujas pavyzdys: nukopijuokite pavyzdziai/_sablonas/ į pavyzdziai/<pavadinimas>/ ir užpildykite. -->
+
+```{=html}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Pavyzdžiai</span>
+    <h1>Ką gausite, kai dirbsime kartu.</h1>
+    <p class="lede">Realūs darbai (kai reikia, anonimizuoti): koks buvo klausimas, ką padariau ir kokį rezultatą klientas gavo į rankas. Straipsniuose dalinuosi idėjomis, o čia matysite patį darbą.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+```
+
+::: {#examples-listing}
+:::
+
+```{=html}
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap cta-grid">
+    <div>
+      <span class="eyebrow">Susisiekite</span>
+      <h2>Turite panašų klausimą?</h2>
+      <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+      <div class="cta-actions">
+        <a href="kontaktai.html" class="btn-yellow">Aptarkime projektą →</a>
+        <a href="mailto:info@statistikas.lt" class="cta-mail">info@statistikas.lt</a>
+      </div>
+    </div>
+    <div class="mondrian cta-art" aria-hidden="true">
+      <div class="m-blue"></div><div class="m-yellow"></div><div class="m-red"></div>
+    </div>
+  </div>
+</section>
+```

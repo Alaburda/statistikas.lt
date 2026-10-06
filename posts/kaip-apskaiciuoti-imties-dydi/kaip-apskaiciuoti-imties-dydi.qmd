@@ -1,0 +1,111 @@
+---
+title: "Kaip apskaičiuoti imties dydį?"
+description: "Kiek tiriamųjų reikia jūsų tyrimui? Sužinokite, kas yra statistinė galia, efekto dydis ir kaip apskaičiuoti imties dydį su R."
+date: "2026-06-26"
+author: "Paulius Alaburda"
+categories: [statistika, imties-dydis, R]
+image: kaip-apskaiciuoti-imties-dydi_files/figure-html/galios-kreives-1.png
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+„Kiek tiriamųjų man reikia?" — klausimas, kurį verta užduoti *prieš* renkant duomenis, o ne po to. Per maža imtis reiškia, kad realiai egzistuojančio skirtumo galite tiesiog nepamatyti, o per didelė — švaistote laiką, pinigus, o medicinos tyrimuose tai ir etikos klausimas: kam tirti daugiau žmonių, nei būtina?
+
+# Keturi ingredientai
+
+Imties dydžio skaičiavimui reikia keturių dalykų:
+
+1. **Statistinis testas**, kurį planuojate taikyti (t-testas, chi kvadrato testas ir t.t.). Jei nesate tikri, pradėkite nuo [testo pasirinkimo gido](../kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.qmd).
+2. **Reikšmingumo lygmuo (α)** — dažniausiai 0,05.
+3. **Statistinė galia (1 − β)** — tikimybė aptikti skirtumą, jei jis iš tikrųjų egzistuoja. Standartas — 80 %, griežtesniuose tyrimuose 90 %.
+4. **Laukiamas efekto dydis** — koks skirtumas tarp grupių būtų prasmingas.
+
+Pirmi trys yra susitarimo reikalas. Visas darbas — ketvirtajame.
+
+# Iš kur gauti efekto dydį?
+
+Efekto dydis yra svarbiausias ir sunkiausias ingredientas. Trys dažniausi šaltiniai:
+
+- **Ankstesni tyrimai** — panašių publikacijų rezultatai (vidurkiai ir standartiniai nuokrypiai).
+- **Pilotinis tyrimas** — nedidelė bandomoji imtis jūsų pačių sąlygomis.
+- **Mažiausias prasmingas skirtumas** — klinikinėje praktikoje vadinamas MCID: koks skirtumas apskritai būtų vertas dėmesio?
+
+Tolydiems kintamiesiems efekto dydis dažnai išreiškiamas Cohen'o *d* — grupių vidurkių skirtumu, padalintu iš standartinio nuokrypio. Orientyrai: 0,2 — mažas, 0,5 — vidutinis, 0,8 — didelis efektas.
+
+# Skaičiavimas su R
+
+## Dviejų grupių vidurkių palyginimas
+
+Tarkime, tikimės, kad naujas metodas pagerins testo balą 5 punktais, o standartinis nuokrypis yra 10 punktų (taigi *d* = 0,5):
+
+```{r}
+power.t.test(delta = 5, sd = 10, sig.level = 0.05, power = 0.8)
+```
+
+Reikia maždaug **64 tiriamųjų kiekvienoje grupėje** (visada apvaliname į viršų).
+
+## Dviejų proporcijų palyginimas
+
+Jei lauksime, kad pasveikusių dalis padidės nuo 60 % iki 80 %:
+
+```{r}
+power.prop.test(p1 = 0.6, p2 = 0.8, sig.level = 0.05, power = 0.8)
+```
+
+## Kaip imties dydis priklauso nuo efekto dydžio?
+
+Svarbiausia pamoka: kuo mažesnio efekto tikitės, tuo dramatiškai daugiau tiriamųjų reikia.
+
+```{r}
+#| label: galios-kreives
+#| fig-width: 8
+#| fig-height: 5
+library(ggplot2)
+
+scenarijai <- expand.grid(
+  n = seq(10, 200, by = 2),
+  d = c(0.2, 0.5, 0.8)
+)
+scenarijai$galia <- mapply(
+  function(n, d) power.t.test(n = n, delta = d, sd = 1)$power,
+  scenarijai$n, scenarijai$d
+)
+scenarijai$efektas <- factor(
+  scenarijai$d,
+  levels = c(0.8, 0.5, 0.2),
+  labels = c("Didelis (d = 0,8)", "Vidutinis (d = 0,5)", "Mažas (d = 0,2)")
+)
+
+ggplot(scenarijai, aes(x = n, y = galia, color = efektas)) +
+  geom_line(linewidth = 1.2) +
+  geom_hline(yintercept = 0.8, linetype = "dashed", color = "grey40") +
+  annotate("text", x = 195, y = 0.83, label = "80 % galia", hjust = 1, color = "grey40") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Statistinė galia priklauso nuo imties ir efekto dydžio",
+    subtitle = "Dviejų nepriklausomų grupių t-testas, α = 0,05",
+    x = "Imties dydis vienoje grupėje",
+    y = "Statistinė galia",
+    color = "Efekto dydis"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+Dideliam efektui aptikti užtenka ~26 tiriamųjų grupėje, vidutiniam — ~64, o mažam reikia jau beveik 400. Todėl „paimsiu 30, nes taip visi daro" nėra imties dydžio skaičiavimas.
+
+# Keli praktiniai patarimai
+
+::: {.callout-tip}
+## Numatykite nubyrėjimą
+Jei tikitės, kad dalis tiriamųjų iškris (neatsakys į anketą, nutrauks dalyvavimą), apskaičiuotą imtį padidinkite. Pavyzdžiui, laukiant 15 % nubyrėjimo: 64 / 0,85 ≈ 76 tiriamieji grupėje.
+:::
+
+- **Skaičiuokite kelis scenarijus.** Efekto dydis yra prielaida, todėl verta pažiūrėti, kaip keičiasi imtis su optimistiniu ir pesimistiniu scenarijumi.
+- **Dokumentuokite prielaidas.** Recenzentai ir etikos komitetai klaus, iš kur paėmėte efekto dydį — turėkite šaltinį.
+- **Post-hoc galios skaičiavimas** (galia iš jau surinktų duomenų) yra beprasmis — galią skaičiuokite tik planuodami tyrimą.
+
+# Reikia pagalbos?
+
+Imties dydžio skaičiavimas sudėtingesniems dizainams (kartotiniai matavimai, klasterizuotos imtys, neproporcinga randomizacija) reikalauja daugiau nei `power.t.test`. Jei planuojate tyrimą, [parašykite man](../../kontaktai.qmd) — paruošiu kelis imties scenarijus su paaiškinimu, kurį galėsite dėti tiesiai į protokolą. Daugiau apie tai — [paslaugų puslapyje](../../paslaugos.qmd).

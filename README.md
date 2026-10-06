@@ -1,95 +1,50 @@
 # statistikas.lt
 
-Profesionali statistikos konsultacijų svetainė lietuvių kalba.
+Statistikos konsultacijų svetainė lietuvių kalba, sukurta su [Quarto](https://quarto.org).
 
-## Apie projektą
-
-Tai yra moderni, responsivinė svetainė, skirta statistikos konsultavimo paslaugoms reklamuoti. Svetainė sukurta naudojant gryną HTML, CSS ir JavaScript be jokių framework'ų.
+Gyva svetainė: https://alaburda.github.io/statistikas.lt
 
 ## Struktūra
 
 ```
 statistikas.lt/
-├── index.html          # Pagrindinis puslapis
-├── css/
-│   └── styles.css      # Stiliai
-├── js/
-│   └── main.js         # JavaScript funkcionalumas
-├── images/
-│   ├── favicon.svg     # Favicon
-│   └── paulius.jpg     # Profilio nuotrauka (reikia pridėti)
-└── README.md
+├── _quarto.yml         # Svetainės konfigūracija (navigacija, tema, analytics)
+├── index.qmd           # Pagrindinis puslapis
+├── paslaugos.qmd       # Paslaugos ir kainos
+├── straipsniai.qmd     # Straipsnių sąrašas (listing)
+├── about.qmd           # Apie mane
+├── kontaktai.qmd       # Kontaktų forma (Formspree)
+├── posts/              # Straipsniai (po vieną aplanką kiekvienam)
+│   └── <slug>/<slug>.qmd
+├── theme/              # custom.scss, styles.css, main.js
+├── images/             # Logotipai, ikonos, nuotraukos
+├── _freeze/            # Užšaldyti R skaičiavimų rezultatai (commitinama)
+└── docs/               # Sugeneruota svetainė (GitHub Pages šaltinis)
 ```
 
-## Funkcionalumas
+## Darbas su svetaine
 
-- ✅ Responsiyvus dizainas (mobiliesiems, planšetėms, kompiuteriams)
-- ✅ Moderni, profesionali išvaizda
-- ✅ Sklandus slinkimas (smooth scrolling)
-- ✅ Animuoti elementai
-- ✅ Kontaktų forma
-- ✅ SEO optimizuotas
-- ✅ Greitas ir lengvas (be framework'ų)
-
-## Paleidimas
-
-Tiesiog atidarykite `index.html` naršyklėje arba naudokite lokalų serverį:
+Reikalavimai: [Quarto](https://quarto.org/docs/get-started/) ir R (straipsniams su kodu; naudojami paketai: `ggplot2`, `dplyr`, `broom`, `car` ir kt.).
 
 ```bash
-# Su Python
-python -m http.server 8000
+# Peržiūra su automatiniu perkrovimu
+quarto preview
 
-# Su Node.js (npx)
-npx serve
+# Pilnas svetainės sugeneravimas į docs/
+quarto render
 ```
 
-## Konfigūracija
+`execute: freeze: auto` reiškia, kad R kodas perskaičiuojamas tik pakeitus patį straipsnį — `_freeze/` katalogą reikia commitinti kartu.
 
-### Kontaktų forma
+## Naujas straipsnis
 
-Kontaktų forma sukonfigūruota veikti su [Formspree](https://formspree.io/). Norėdami įjungti:
+1. Sukurkite `posts/<slug>/<slug>.qmd` su frontmatter: `title`, `description`, `date`, `author`, `categories`, `image`.
+2. `quarto render` — straipsnis automatiškai atsiras straipsnių sąraše ir RSS sraute.
 
-1. Užsiregistruokite Formspree
-2. Sukurkite naują formą
-3. Pakeiskite `your-form-id` į savo formos ID faile `index.html`:
+## Publikavimas
 
-```html
-<form class="contact__form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-```
-
-### Nuotraukos
-
-Pridėkite savo profilio nuotrauką į `images/paulius.jpg`. Rekomenduojamas dydis: 800x1000 px.
-
-### Google Analytics
-
-Norėdami pridėti Google Analytics, įdėkite tracking kodą į `<head>` sekciją `index.html` faile.
-
-## Deployment
-
-Svetainę galima patalpinti bet kurioje statinių svetainių talpinimo paslaugoje:
-
-- **GitHub Pages** (nemokama)
-- **Netlify** (nemokama)
-- **Vercel** (nemokama)
-- **Cloudflare Pages** (nemokama)
-
-### GitHub Pages
-
-1. Push'inkite kodą į GitHub repozitoriją
-2. Eikite į Settings > Pages
-3. Source pasirinkite "Deploy from a branch"
-4. Pasirinkite `main` branch ir `/root` folder
-5. Svetainė bus pasiekiama per `https://username.github.io/repo-name`
-
-### Custom Domain
-
-Pridėkite `CNAME` failą su savo domenu:
-
-```
-statistikas.lt
-```
+Svetainė talpinama per GitHub Pages iš `docs/` katalogo `master` šakoje. Publikavimas = `quarto render` + commit + push.
 
 ## Licencija
 
-© 2024 Paulius Alaburda. Visos teisės saugomos.
+© Paulius Alaburda. Visos teisės saugomos.

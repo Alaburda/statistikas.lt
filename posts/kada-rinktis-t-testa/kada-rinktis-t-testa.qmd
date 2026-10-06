@@ -2,6 +2,7 @@
 title: "Kaip naudoti Stjudento t-testą?"
 description: "Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus. Sužinokite, kaip ir kada taikyti Stjudento t-testą."
 date: "2023-04-22"
+author: "Paulius Alaburda"
 categories: [statistika, t-testas, R]
 image: kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png
 editor: visual

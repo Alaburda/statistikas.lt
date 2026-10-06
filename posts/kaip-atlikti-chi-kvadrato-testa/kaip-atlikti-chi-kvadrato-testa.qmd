@@ -2,6 +2,7 @@
 title: "Kaip atlikti Chi-kvadrato testą?"
 description: "Chi-kvadrato testas naudojamas kategoriniams kintamiesiems. Sužinokite, kada ir kaip jį taikyti."
 date: "2023-05-20"
+author: "Paulius Alaburda"
 categories: [statistika, kategoriniai-duomenys, R]
 editor: visual
 execute:

@@ -1,93 +1,98 @@
 ---
-title: "Susisiekite"
-subtitle: "Aptarkime jūsų projektą"
-page-layout: article
+pagetitle: "Susisiekite | Statistikas.lt"
+description: "Susisiekite dėl statistikos konsultacijos, projekto ar ilgalaikės partnerystės. Pirmas pokalbis nemokamas."
+toc: false
+page-layout: custom
+section-divs: false
 ---
 
-::: {.contact-intro}
-## Aš mielu noru padėsiu! 👋
-
-Nesvarbu, ar turite klausimą apie statistikos metodus, ar jums reikia pagalbos su duomenų analize – susisiekite ir aptarsime, kaip galiu padėti.
-:::
-
-:::: {.grid .gap-4}
-
-::: {.g-col-12 .g-col-md-7}
-### Parašykite žinutę
-
-<form action="https://formspree.io/f/xpzgodgn" method="POST" class="contact-form">
-  <div class="form-group">
-    <label for="name">Vardas *</label>
-    <input type="text" id="name" name="name" required placeholder="Jūsų vardas">
+```{=html}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Susisiekite</span>
+    <h1>Papasakokite, ką sprendžiate.</h1>
+    <p class="lede">Keli sakiniai apie situaciją — ir pasiūlysiu, kaip galiu padėti. Pirmas pokalbis nemokamas ir nieko neįpareigoja.</p>
   </div>
-  
-  <div class="form-group">
-    <label for="email">El. paštas *</label>
-    <input type="email" id="email" name="email" required placeholder="jusu@pastas.lt">
+</section>
+
+<div class="wrap">
+  <div class="contact-layout">
+
+    <form action="https://formspree.io/f/xpzgodgn" method="POST">
+      <fieldset class="form-step">
+        <legend><span class="step-num">01</span>Dėl ko kreipiatės?</legend>
+        <div class="topic-grid">
+          <label class="topic-card">
+            <input type="radio" name="tema" value="konsultacija" data-label="Konsultacija">
+            <span class="chip chip-yellow">01</span>
+            <span class="topic-title">Konsultacija</span>
+            <span class="topic-desc">Noriu antros nuomonės ar patarimo dėl savo analizės.</span>
+          </label>
+          <label class="topic-card">
+            <input type="radio" name="tema" value="projektas" data-label="Projektas">
+            <span class="chip chip-red">02</span>
+            <span class="topic-title">Projektas</span>
+            <span class="topic-desc">Reikia konkretaus rezultato: imties, analizės, ataskaitos ar įrankio.</span>
+          </label>
+          <label class="topic-card">
+            <input type="radio" name="tema" value="partneryste" data-label="Partnerystė">
+            <span class="chip chip-blue">03</span>
+            <span class="topic-title">Partnerystė</span>
+            <span class="topic-desc">Ieškau ilgalaikės pagalbos: ataskaitų, rodiklių, duomenų sistemų.</span>
+          </label>
+        </div>
+        <div class="topic-other">
+          <label><input type="radio" name="tema" value="kita" data-label="Kita"> Kita / dar nežinau</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-step">
+        <legend><span class="step-num">02</span>Apie jus</legend>
+        <div class="field-grid">
+          <div class="field">
+            <label for="name">Vardas *</label>
+            <input type="text" id="name" name="name" required autocomplete="name" placeholder="Vardas Pavardė">
+          </div>
+          <div class="field">
+            <label for="email">El. paštas *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="vardas@imone.lt">
+          </div>
+          <div class="field full">
+            <label for="org">Įmonė ar institucija</label>
+            <input type="text" id="org" name="organizacija" autocomplete="organization" placeholder="Neprivaloma">
+          </div>
+          <div class="field full">
+            <label for="message">Jūsų situacija *</label>
+            <textarea id="message" name="message" rows="6" required placeholder="Kokius duomenis turite, ką norite sužinoti ir iki kada?"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-blue">Siųsti žinutę →</button>
+        <span class="form-hint">Jūsų duomenys naudojami tik atsakyti į šią užklausą.</span>
+      </div>
+    </form>
+
+    <div class="contact-aside">
+      <div class="aside-block">
+        <h3>El. paštas</h3>
+        <a class="big" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+      </div>
+      <div class="aside-block">
+        <h3>LinkedIn</h3>
+        <a class="big" href="https://www.linkedin.com/in/pauliusalaburda/">Paulius Alaburda</a>
+      </div>
+      <div class="aside-block">
+        <h3>Kas bus toliau</h3>
+        <p>Perskaitysiu jūsų žinutę ir pasiūlysiu trumpą nemokamą pokalbį. Po jo — jei sutinkate — gausite pasiūlymą su apimtimi, kaina ir terminu.</p>
+      </div>
+      <div class="aside-block">
+        <h3>Konfidencialumas</h3>
+        <p>Duomenis naudoju tik jūsų užduočiai ir nesidalinu jais su trečiosiomis šalimis.</p>
+      </div>
+    </div>
+
   </div>
-  
-  <div class="form-group">
-    <label for="subject">Tema</label>
-    <select id="subject" name="subject">
-      <option value="">Pasirinkite temą...</option>
-      <option value="konsultacija">Konsultacija</option>
-      <option value="duomenu-analize">Duomenų analizė</option>
-      <option value="mokymasi">Mokymai</option>
-      <option value="kita">Kita</option>
-    </select>
-  </div>
-  
-  <div class="form-group">
-    <label for="message">Žinutė *</label>
-    <textarea id="message" name="message" rows="6" required placeholder="Aprašykite savo projektą ar klausimą..."></textarea>
-  </div>
-  
-  <button type="submit" class="submit-btn">
-    <span>Siųsti žinutę</span>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-    </svg>
-  </button>
-</form>
-:::
-
-::: {.g-col-12 .g-col-md-5}
-### Kiti kontaktai
-
-::: {.contact-card}
-#### 📧 El. paštas
-[paulius.alaburda@gmail.com](mailto:paulius.alaburda@gmail.com)
-:::
-
-::: {.contact-card}
-#### 💼 LinkedIn
-[Paulius Alaburda](https://www.linkedin.com/in/alaburda/)
-:::
-
-::: {.contact-card}
-#### 🐙 GitHub
-[Alaburda](https://github.com/Alaburda)
-:::
-
-### Dažni klausimai
-
-::: {.faq-item}
-**Kiek kainuoja konsultacija?**
-
-Vienos valandos konsultacija kainuoja nuo 50€. Tikslesnę kainą nustatome aptarę jūsų projekto apimtį.
-:::
-
-::: {.faq-item}
-**Ar dirbate su visomis statistikos programomis?**
-
-Taip! Dirbu su R, Python, SPSS, Stata ir kitomis programomis. Taip pat galiu padėti pasirinkti tinkamiausią įrankį jūsų projektui.
-:::
-
-::: {.faq-item}
-**Kiek laiko trunka projektas?**
-
-Priklauso nuo projekto sudėtingumo. Paprasta analizė gali būti atlikta per 1-2 dienas, sudėtingesni projektai – per 1-2 savaites.
-:::
-:::
-
-::::
+</div>
+```
