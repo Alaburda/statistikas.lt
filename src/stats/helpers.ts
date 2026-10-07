@@ -2,7 +2,7 @@ import type { Dataset, Variable } from "../types";
 
 export function getVar(dataset: Dataset, key: string): Variable {
   const v = dataset.variables.find((x) => x.key === key);
-  if (!v) throw new Error(`Unknown variable: ${key}`);
+  if (!v) throw new Error(`Nežinomas kintamasis: ${key}`);
   return v;
 }
 

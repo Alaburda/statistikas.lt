@@ -25,8 +25,10 @@ export interface Dataset {
 export interface InputSlot {
   id: string;
   label: string;
-  accepts: VariableType;
+  accepts: VariableType | "any";
   help?: string;
+  /** Allow selecting multiple variables; picks serialized as comma-separated keys. */
+  multi?: true;
 }
 
 export interface TestDefinition {
@@ -40,6 +42,8 @@ export interface TestDefinition {
   methods?: string;
   /** APA-formatted citation for the reference list. */
   apa?: string;
+  /** Optional statistikas.lt article explaining when to use this test. */
+  guide?: { title: string; url: string };
 }
 
 export interface ResultTable {
@@ -54,6 +58,16 @@ export type PlotSpec =
   | { kind: "scatter"; title: string; points: { x: number; y: number }[]; xLabel: string; yLabel: string; line?: { slope: number; intercept: number } }
   | { kind: "bar"; title: string; series: { label: string; values: { x: string; y: number }[] }[]; xLabel: string; yLabel: string };
 
+/** Outcome of one automated assumption check attached to a result. */
+export interface AssumptionCheck {
+  label: string;
+  status: "pass" | "warn" | "fail";
+  /** Plain-language explanation with the supporting statistic. */
+  detail: string;
+  /** Optional one-click remedy: switch this chunk to a better-suited test. */
+  switchTo?: { testId: string; picks: Record<string, string>; label: string };
+}
+
 export interface AnalysisResult {
   /** Narrative interpretation in plain English (APA-ish). */
   description: string;
@@ -61,6 +75,8 @@ export interface AnalysisResult {
   plot?: PlotSpec;
   /** Headline p-value, when applicable, for quick scanning. */
   pValue?: number;
+  /** Automated assumption checks with plain-language guidance. */
+  assumptions?: AssumptionCheck[];
 }
 
 export interface Chunk {

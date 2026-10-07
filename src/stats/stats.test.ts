@@ -9,6 +9,9 @@ import { getTest } from "./tests";
 import { birthwt } from "../data/birthwt";
 import type { Dataset } from "../types";
 
+/** Parse a formatted table cell (Lithuanian decimal comma) back to a number. */
+const num = (s: unknown): number => Number(String(s).replace(",", "."));
+
 describe("distribution tails (analytic checkpoints)", () => {
   it("normal CDF at 1.96 ≈ 0.975", () => {
     expect(normalCdf(1.959964)).toBeCloseTo(0.975, 3);
@@ -39,9 +42,36 @@ describe("test engine on synthetic data", () => {
     const res = getTest("regression").run(ds, { outcome: "y", predictor: "x" });
     // slope row is the second coefficient row
     const slopeRow = res.tables[0].rows[1];
-    expect(Number(slopeRow[1])).toBeCloseTo(2, 6);
+    expect(num(slopeRow[1])).toBeCloseTo(2, 6);
     const fit = res.tables[1].rows[0];
-    expect(Number(fit[0])).toBeCloseTo(1, 6); // R^2 = 1
+    expect(num(fit[0])).toBeCloseTo(1, 6); // R^2 = 1
+  });
+
+  it("multiple regression recovers exact coefficients on perfect linear data", () => {
+    // y = 1 + 2*x1 + 3*x2
+    const ds: Dataset = {
+      name: "synthetic",
+      description: "",
+      variables: [
+        { key: "y", label: "y", type: "numeric" },
+        { key: "x1", label: "x1", type: "numeric" },
+        { key: "x2", label: "x2", type: "numeric" },
+      ],
+      rows: [
+        { x1: 1, x2: 2, y: 1 + 2 * 1 + 3 * 2 },
+        { x1: 2, x2: 1, y: 1 + 2 * 2 + 3 * 1 },
+        { x1: 3, x2: 4, y: 1 + 2 * 3 + 3 * 4 },
+        { x1: 4, x2: 3, y: 1 + 2 * 4 + 3 * 3 },
+        { x1: 5, x2: 2, y: 1 + 2 * 5 + 3 * 2 },
+        { x1: 1, x2: 5, y: 1 + 2 * 1 + 3 * 5 },
+      ],
+    };
+    const res = getTest("multiple_regression").run(ds, { outcome: "y", predictors: "x1,x2" });
+    const coefRows = res.tables[0].rows;
+    expect(num(coefRows[0][1])).toBeCloseTo(1, 4); // intercept
+    expect(num(coefRows[1][1])).toBeCloseTo(2, 4); // x1
+    expect(num(coefRows[2][1])).toBeCloseTo(3, 4); // x2
+    expect(num(res.tables[1].rows[0][0])).toBeCloseTo(1, 4); // R² = 1
   });
 
   it("t-test recovers a known mean difference", () => {
@@ -69,7 +99,7 @@ describe("birthwt sanity checks vs R", () => {
   });
   it("lwt and bwt are positively, weakly correlated (R: r≈0.186)", () => {
     const res = getTest("correlation").run(birthwt, { x: "lwt", y: "bwt" });
-    const r = Number(res.tables[0].rows[0][0]);
+    const r = num(res.tables[0].rows[0][0]);
     expect(r).toBeGreaterThan(0.12);
     expect(r).toBeLessThan(0.25);
   });

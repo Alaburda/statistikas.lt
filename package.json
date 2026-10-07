@@ -1,18 +1,20 @@
 {
-  "name": "spss-killer-web",
+  "name": "statistikas-analize",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Browser-first, chunk-based statistical analysis. An SPSS alternative.",
+  "description": "Statistikas.lt Analizė — nemokama, naršyklėje veikianti statistinė analizė (free in-browser statistics tool).",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:site": "tsc -b && vite build --base /analize/ --outDir ../../statistikas.lt/analize --emptyOutDir",
     "preview": "vite preview",
     "test": "vitest run"
   },
   "dependencies": {
     "docx": "^9.0.2",
     "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

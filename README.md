@@ -1,128 +1,110 @@
-# SPSS Killer — Web (browser-first MVP)
+# Statistikas.lt Analizė
 
-A browser-first, **chunk-based** statistical analysis app. Each "chunk" runs one
-statistical test on columns you pick and returns a **plain-English description, a
-plot, and a results table**. The whole report exports to **Microsoft Word**.
+Free, browser-only statistics tool for **https://statistikas.lt/analize/**. It is
+both a useful free product (Lithuanian UI, t-test / ANOVA / chi-square /
+regression / logistic regression / Table 1, Word report) and a sales funnel for
+the statistics consulting services at [statistikas.lt](https://statistikas.lt).
 
-Everything runs **client-side in the browser** — no server, no R, no API key, and
-your data never leaves the page.
+Each **analysis block** („analizės blokas") runs one statistical test on the
+columns you pick and returns a plain-language description, a plot and result
+tables. The whole report exports to **Word (.docx)**.
 
-> This is a fresh TypeScript/React take on the concept. The R Shiny code in the
-> repository root (`app.R`, `R/`) is the earlier natural-language prototype, kept
-> as reference. The two are independent.
+Everything runs **client-side** — no server, no R, no API key; the dataset never
+leaves the page. The UI is Lithuanian only (plain strings, no i18n framework).
 
-## Quick start
+> The R Shiny code in the repository root (`app.R`, `R/`) is an earlier
+> prototype kept as reference only. This `web/` app is the active one.
+
+## Development
 
 ```bash
 cd web
 npm install
-npm run dev        # opens http://localhost:5173
+npm run dev          # http://localhost:5173
+npm test             # statistics unit tests (vitest)
+npm run build        # type-check + production build to dist/
+npm run preview      # serve the production build
 ```
 
-Other scripts:
+## Deploying to statistikas.lt
+
+The Quarto site repo lives next to this one (`../../statistikas.lt` relative to
+`web/`). The app is published as static files under `/analize/`.
 
 ```bash
-npm run build      # type-check + production build to dist/
-npm run preview    # serve the production build
-npm test           # run the statistics unit tests (vitest)
+cd web
+npm run build:site   # tsc -b && vite build --base /analize/ → ../../statistikas.lt/analize
+cd ../../statistikas.lt
+quarto render        # rebuilds the site into docs/
+git add -A && git commit -m "Update analize" && git push
 ```
 
-## How it works
+`build:site` wipes and refills `statistikas.lt/analize/` (`--emptyOutDir`).
+`quarto render` must copy that folder into `docs/analize/`; if it doesn't, add
+`analize/**` to `project.resources` in the site's `_quarto.yml`.
 
-1. The app loads with a demo medical dataset — **MASS::birthwt** (R), the
-   Hosmer & Lemeshow low-birth-weight study of 189 births.
-2. Four example chunks are pre-run so you can see results immediately.
-3. Add a chunk → pick a **test** → pick the **column(s)** it needs → **Run**.
-4. Click **Export to Word** to download a `.docx` containing every completed
-   chunk (description + tables + rasterised plot).
-5. **Upload CSV** to analyse your own data (column types are inferred).
+The `.github/workflows/deploy.yml` GitHub Pages workflow (old `/web-stats/`
+deploy) was removed — it is superseded by the flow above.
 
-## Working with your variables
+## Funnel touchpoints
 
-The **Edit variables** panel (in the dataset bar) lets you tailor metadata
-without touching the data:
+All outbound links are absolute (`src/site.ts`, `SITE_URL` + `contactUrl(source)`)
+and open in a new tab (`target="_blank" rel="noopener"`) so the analysis is not
+lost. Contact links go to `/kontaktai.html?tema=konsultacija&saltinis=analize-<source>`.
 
-- **Rename** — give any column a human-readable label (e.g. `bwt` →
-  "Birth weight"). Labels flow into pickers, tables, plots, and the Word report.
-- **Recode values** — for a categorical column, relabel its codes
-  (`0 → No`, `1 → Yes`). Used everywhere the level appears.
-- **Retype** — switch a column between numeric and categorical (handy after a
-  CSV upload mis-infers a coded column).
+| Where | Source / location | Notes |
+|-------|-------------------|-------|
+| Header "Klausti statistiko" button | `topbar` | secondary yellow button |
+| Intro panel (3 steps + privacy line) | – | collapsible, remembered in `localStorage` |
+| Per test: "Plačiau: {title} →" | `guide` | shown when the test definition has `guide` |
+| Per test: assumption hint | `prielaidos` | shown when any assumption check is warn/fail |
+| CTA panel after the block list | `cta` | Mondrian blocks, price anchor |
+| Toast after Word export | `eksportas` | dismissible, non-blocking |
+| Word document footer paragraph | – | contact e-mail + app URL |
+| Page footer | `footer` | Statistikas.lt · Paslaugos · Straipsniai · Susisiekti |
 
-Editing variables automatically re-runs any chunk that had already run, so
-results stay in sync.
+## Analytics
+
+`src/analytics.ts` loads GA4 (`G-DT3Y3KGPJQ`, the same property as the main site)
+**only in production builds** (`import.meta.env.PROD`). `track(event, params)`
+is a no-op when gtag is absent. Events:
+
+| Event | Params |
+|-------|--------|
+| `analize_upload` | `file_type` (csv/xlsx), `rows`, `cols` |
+| `analize_demo` | – |
+| `analize_add_chunk` | – |
+| `analize_test_selected` | `test_id` |
+| `analize_export_word` | `chunks` |
+| `analize_share_link` | – |
+| `analize_cta_click` | `location` (topbar / cta / prielaidos / eksportas / guide / footer) |
+
+Never send dataset contents, file names or variable names.
 
 ## Themes
 
-The 🎨 picker in the top bar restyles **both tables and plots** together. Pick
-from **Ocean**, **Viridis**, **Sunset**, or **Slate (print)** — the choice drives
-the plot colour palette and the UI/table accents, and is carried into the Word
-export so downloaded reports match what you see. Themes live in
-[`src/theme.ts`](src/theme.ts).
-
-## Tests implemented
-
-| Test | Inputs | Output |
-|------|--------|--------|
-| Descriptive statistics | 1 numeric | summary table + histogram |
-| Frequency table | 1 categorical | counts/percents + bar chart |
-| Independent t-test (Welch) | numeric + 2-group categorical | t, df, p, 95% CI, Cohen's d + boxplot |
-| One-way ANOVA | numeric + categorical | F, df, p, η² + boxplot |
-| Chi-square (independence) | 2 categorical | crosstab, χ², p, Cramér's V + bar chart |
-| Pearson correlation | 2 numeric | r, r², p + scatter w/ fit line |
-| Linear regression | 2 numeric | coefficients, R², F + scatter w/ fit line |
-| Mann–Whitney U | numeric + 2-group categorical | U, z, p + boxplot |
-
-All p-values come from in-house implementations of the t, F, χ², and normal
-distributions (incomplete beta / incomplete gamma — see
-[`src/stats/distributions.ts`](src/stats/distributions.ts)). Results are checked
-against R in [`src/stats/stats.test.ts`](src/stats/stats.test.ts).
-
-## Deploying to GitHub Pages
-
-This app is fully static, so GitHub Pages can host it. A workflow at
-[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) builds `web/`
-and publishes it on every push to `main`.
-
-One-time setup:
-
-1. Push this repo to GitHub (`git init && git add -A && git commit && git push`).
-2. In the repo: **Settings → Pages → Build and deployment → Source = "GitHub Actions"**.
-3. Push to `main`. The workflow builds and deploys automatically.
-4. Your app is live at `https://<username>.github.io/<repo>/`.
-
-The workflow sets `VITE_BASE=/<repo>/` so assets resolve under the Pages
-subpath; `vite.config.ts` reads it (defaulting to `/` for local dev). If you
-later use a custom domain or a `<username>.github.io` repo, drop the `VITE_BASE`
-env line so the base is `/`.
+The theme picker restyles tables and plots together and is carried into the
+Word export: **Statistikas** (default, site palette), **Viridis**, and
+**Spausdinimui** (print, greyscale). See [`src/theme.ts`](src/theme.ts). The UI
+follows the statistikas.lt Mondrian identity (square corners, 2px ink rules,
+Instrument Sans + IBM Plex Mono) — see [`src/styles.css`](src/styles.css).
 
 ## Architecture
 
 ```
 src/
-  stats/
-    distributions.ts   incomplete beta/gamma, t/F/chi-square/normal tails
-    tests.ts           the test registry (each test: inputs + run())
-    helpers.ts         column extraction, grouping, descriptive math
-  charts/svg.ts        pure SVG-string charts (reused for display AND Word PNGs)
+  stats/               test registry (tests.ts), distributions, helpers, format
+  charts/svg.ts        pure SVG-string charts (display AND Word PNGs)
   export/word.ts       docx assembly; rasterises SVG -> PNG via canvas
-  data/
-    birthwt.ts         the embedded demo dataset
-    csv.ts             CSV upload + type inference
-  components/          React UI (ChunkCard, ResultView, Plot, DataPreview)
-  App.tsx              app state: dataset + chunks
+  data/                demo dataset, CSV/XLSX import + type inference
+  components/          React UI (ChunkCard, ResultView, Funnel, ...)
+  site.ts              SITE_URL + contactUrl()
+  analytics.ts         GA4 loader + track()
+  App.tsx              app state: dataset + analysis blocks
+public/                mark.svg (logo), favicon.svg
 ```
 
-Adding a new test is local: implement one `TestDefinition` (an `inputs` list and
-a `run(dataset, picks)` function returning a description, tables, and an optional
-plot) and add it to the `TESTS` array in `src/stats/tests.ts`. The UI, Word
-export, and column-pickers pick it up automatically.
-
-## The "Word plugin" idea
-
-The MVP ships **server-free Word export** (`docx` generated in the browser),
-which is the lowest-friction path. A true **Office Add-in** is a separate, larger
-effort: it's an HTML/JS task pane (this same React app can be reused) loaded
-inside Word via an add-in manifest, using the Office.js API to write results into
-the active document. The chunk/stats engine here is already framework-agnostic
-and could be dropped into that task pane later.
+Adding a test is local: implement one `TestDefinition` (inputs + `run()`
+returning description, tables and optional plot, optionally `methods`, `apa` and
+`guide`) and add it to `TESTS` in `src/stats/tests.ts`. The UI and Word export
+pick it up automatically.

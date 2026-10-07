@@ -12,12 +12,21 @@ const M = { top: 44, right: 24, bottom: 64, left: 64 };
 const PLOT_W = W - M.left - M.right;
 const PLOT_H = H - M.top - M.bottom;
 
+// Instrument Sans matches the site; the fallbacks are what the Word PNG export
+// (SVG rasterised without web fonts) will actually use.
+const FONT_STACK = "Instrument Sans, Segoe UI, Arial, sans-serif";
+
+/** Axis tick label with a Lithuanian decimal comma. */
+function tickLabel(v: number): string {
+  return String(v).replace(".", ",");
+}
+
 function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function svgWrap(inner: string, title: string, t: PlotTheme): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="Segoe UI, Arial, sans-serif">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="${FONT_STACK}">
   <rect width="${W}" height="${H}" fill="${t.plotBg}"/>
   <text x="${W / 2}" y="26" text-anchor="middle" font-size="16" font-weight="600" fill="${t.text}">${esc(title)}</text>
   ${inner}
@@ -44,7 +53,7 @@ function yAxis(min: number, max: number, label: string, t: PlotTheme): string {
   for (const tk of ticks) {
     const y = sy(tk);
     s += `<line x1="${M.left}" y1="${y}" x2="${M.left + PLOT_W}" y2="${y}" stroke="${t.grid}"/>`;
-    s += `<text x="${M.left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t.axis}">${tk}</text>`;
+    s += `<text x="${M.left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t.axis}">${tickLabel(tk)}</text>`;
   }
   s += `<text x="16" y="${M.top + PLOT_H / 2}" text-anchor="middle" font-size="12" fill="${t.text}" transform="rotate(-90 16 ${M.top + PLOT_H / 2})">${esc(label)}</text>`;
   return s;
@@ -80,10 +89,10 @@ function histogram(spec: Extract<PlotSpec, { kind: "histogram" }>, t: PlotTheme)
   const xticks = niceTicks(min, max);
   let xt = "";
   for (const tk of xticks) {
-    xt += `<text x="${sx(tk)}" y="${M.top + PLOT_H + 18}" text-anchor="middle" font-size="11" fill="${t.axis}">${tk}</text>`;
+    xt += `<text x="${sx(tk)}" y="${M.top + PLOT_H + 18}" text-anchor="middle" font-size="11" fill="${t.axis}">${tickLabel(tk)}</text>`;
   }
   const axisLine = `<line x1="${M.left}" y1="${M.top + PLOT_H}" x2="${M.left + PLOT_W}" y2="${M.top + PLOT_H}" stroke="${t.axis}"/>`;
-  return svgWrap(yAxis(0, maxCount, "Count", t) + bars + xt + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);
+  return svgWrap(yAxis(0, maxCount, "Dažnis", t) + bars + xt + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);
 }
 
 function boxplot(spec: Extract<PlotSpec, { kind: "boxplot" }>, t: PlotTheme): string {
@@ -156,7 +165,7 @@ function scatter(spec: Extract<PlotSpec, { kind: "scatter" }>, t: PlotTheme): st
   let xt = "";
   for (const tk of xticks) {
     xt += `<line x1="${sx(tk)}" y1="${M.top}" x2="${sx(tk)}" y2="${M.top + PLOT_H}" stroke="${t.grid}"/>`;
-    xt += `<text x="${sx(tk)}" y="${M.top + PLOT_H + 18}" text-anchor="middle" font-size="11" fill="${t.axis}">${tk}</text>`;
+    xt += `<text x="${sx(tk)}" y="${M.top + PLOT_H + 18}" text-anchor="middle" font-size="11" fill="${t.axis}">${tickLabel(tk)}</text>`;
   }
   const axisLine = `<line x1="${M.left}" y1="${M.top + PLOT_H}" x2="${M.left + PLOT_W}" y2="${M.top + PLOT_H}" stroke="${t.axis}"/>`;
   return svgWrap(yAxis(ylo, yhi, spec.yLabel, t) + xt + line + pts + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);

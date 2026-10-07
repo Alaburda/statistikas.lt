@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Dataset, Variable } from "../types";
+import { TYPE_LABEL } from "./labels";
 
 /** Distinct non-missing raw values of a column, sorted, capped for sanity. */
 function distinctValues(dataset: Dataset, key: string): string[] {
@@ -49,7 +50,7 @@ export function VariableEditor({
   return (
     <div className="var-editor">
       <button className="link-btn" onClick={() => setOpen((o) => !o)}>
-        {open ? "▾" : "▸"} Edit variables — rename, recode, retype
+        {open ? "▾" : "▸"} Redaguoti kintamuosius – pervadinti, perkoduoti, keisti tipą
       </button>
       {open && (
         <div className="var-list">
@@ -58,29 +59,29 @@ export function VariableEditor({
             return (
               <div className="var-row" key={v.key}>
                 <div className="var-main">
-                  <code className="var-key" title="original column name">
+                  <code className="var-key" title="pradinis stulpelio pavadinimas">
                     {v.key}
                   </code>
                   <input
                     className="var-label-input"
                     value={v.label}
                     onChange={(e) => setLabel(v, e.target.value)}
-                    aria-label={`Label for ${v.key}`}
+                    aria-label={`Kintamojo „${v.key}“ pavadinimas`}
                   />
                   <select
                     className="var-type-select"
                     value={v.type}
                     onChange={(e) => setType(v, e.target.value as Variable["type"])}
                   >
-                    <option value="numeric">numeric</option>
-                    <option value="categorical">categorical</option>
+                    <option value="numeric">{TYPE_LABEL.numeric}</option>
+                    <option value="categorical">{TYPE_LABEL.categorical}</option>
                   </select>
                   {v.type === "categorical" ? (
                     <button
                       className="link-btn recode-toggle"
                       onClick={() => setExpanded(isExpanded ? null : v.key)}
                     >
-                      {isExpanded ? "hide values" : "recode values"}
+                      {isExpanded ? "slėpti reikšmes" : "perkoduoti reikšmes"}
                     </button>
                   ) : (
                     <span className="recode-spacer" />

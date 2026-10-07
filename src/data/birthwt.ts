@@ -195,21 +195,22 @@ const rows = [
 ];
 
 export const birthwt: Dataset = {
-  name: "Low Birth Weight Study (MASS::birthwt)",
+  name: "Mažo gimimo svorio tyrimas (MASS::birthwt)",
   description:
-    "Data on 189 births at Baystate Medical Center (Springfield, MA, 1986), from " +
-    "Hosmer & Lemeshow. A classic teaching dataset for risk factors of low infant birth weight.",
+    "Klasikinis Hosmer ir Lemeshow (1989) mažo gimimo svorio tyrimas: 189 gimimų Baystate medicinos centre " +
+    "(Springfildas, Masačusetsas, 1986 m.). Duomenų rinkinys paimtas iš R paketo MASS ir plačiai naudojamas " +
+    "mokymuose nagrinėjant naujagimių mažo gimimo svorio rizikos veiksnius.",
   variables: [
-    { key: "bwt", label: "Birth weight", type: "numeric", unit: "grams" },
-    { key: "age", label: "Mother age", type: "numeric", unit: "years" },
-    { key: "lwt", label: "Mother weight at LMP", type: "numeric", unit: "lbs" },
-    { key: "ptl", label: "Previous premature labours", type: "numeric" },
-    { key: "ftv", label: "First-trimester physician visits", type: "numeric" },
-    { key: "low", label: "Low birth weight (<2.5kg)", type: "categorical", valueLabels: { "0": "No", "1": "Yes" } },
-    { key: "smoke", label: "Smoked during pregnancy", type: "categorical", valueLabels: { "0": "No", "1": "Yes" } },
-    { key: "race", label: "Race", type: "categorical", valueLabels: { "1": "White", "2": "Black", "3": "Other" } },
-    { key: "ht", label: "History of hypertension", type: "categorical", valueLabels: { "0": "No", "1": "Yes" } },
-    { key: "ui", label: "Uterine irritability", type: "categorical", valueLabels: { "0": "No", "1": "Yes" } },
+    { key: "bwt", label: "Naujagimio svoris", type: "numeric", unit: "g" },
+    { key: "age", label: "Motinos amžius", type: "numeric", unit: "metai" },
+    { key: "lwt", label: "Motinos svoris prieš nėštumą", type: "numeric", unit: "svarai" },
+    { key: "ptl", label: "Ankstesni priešlaikiniai gimdymai", type: "numeric" },
+    { key: "ftv", label: "Gydytojo apsilankymai I trimestre", type: "numeric" },
+    { key: "low", label: "Mažas gimimo svoris (< 2500 g)", type: "categorical", valueLabels: { "0": "Ne", "1": "Taip" } },
+    { key: "smoke", label: "Rūkė nėštumo metu", type: "categorical", valueLabels: { "0": "Ne", "1": "Taip" } },
+    { key: "race", label: "Rasė", type: "categorical", valueLabels: { "1": "Baltoji", "2": "Juodoji", "3": "Kita" } },
+    { key: "ht", label: "Hipertenzija", type: "categorical", valueLabels: { "0": "Ne", "1": "Taip" } },
+    { key: "ui", label: "Gimdos dirglumas", type: "categorical", valueLabels: { "0": "Ne", "1": "Taip" } },
   ],
   rows,
 };

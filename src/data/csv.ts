@@ -1,7 +1,30 @@
 import type { Dataset, Variable } from "../types";
+import { ltPlural } from "../stats/format";
 
-/** Minimal CSV parser handling quoted fields and commas. */
-function parseCsv(text: string): string[][] {
+type Delimiter = "," | ";" | "\t";
+
+/**
+ * Guess the field delimiter from the header line: count ",", ";" and tab outside
+ * quotes and pick the most frequent (default ","). Lithuanian Excel writes ";".
+ */
+export function detectDelimiter(text: string): Delimiter {
+  const counts: Record<Delimiter, number> = { ",": 0, ";": 0, "\t": 0 };
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') inQuotes = !inQuotes;
+    else if (!inQuotes) {
+      if (c === "\n" || c === "\r") break;
+      if (c === "," || c === ";" || c === "\t") counts[c]++;
+    }
+  }
+  let best: Delimiter = ",";
+  for (const d of [";", "\t"] as const) if (counts[d] > counts[best]) best = d;
+  return best;
+}
+
+/** Minimal CSV parser handling quoted fields and a configurable delimiter. */
+function parseCsv(text: string, delimiter: Delimiter = ","): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
   let field = "";
@@ -16,7 +39,7 @@ function parseCsv(text: string): string[][] {
         } else inQuotes = false;
       } else field += c;
     } else if (c === '"') inQuotes = true;
-    else if (c === ",") {
+    else if (c === delimiter) {
       row.push(field);
       field = "";
     } else if (c === "\n" || c === "\r") {
@@ -38,8 +61,30 @@ function parseCsv(text: string): string[][] {
 
 /** Build a Dataset from raw CSV text, inferring numeric vs categorical per column. */
 export function datasetFromCsv(text: string, name: string): Dataset {
-  const grid = parseCsv(text);
-  if (grid.length < 2) throw new Error("CSV needs a header row and at least one data row.");
+  const clean = text.replace(/^\uFEFF/, ""); // strip UTF-8 BOM
+  const delimiter = detectDelimiter(clean);
+  const grid = parseCsv(clean, delimiter);
+  if (grid.length < 2)
+    throw new Error("CSV faile turi būti antraščių eilutė ir bent viena duomenų eilutė.");
+  // With ";" or tab as delimiter the comma is free to be the decimal mark ("3,45").
+  return datasetFromGrid(grid, name, delimiter !== ",");
+}
+
+/** Parse a cell as a number; with `decimalComma`, "3,45" is read as 3.45. NaN if not numeric. */
+function parseNumber(raw: string, decimalComma: boolean): number {
+  if (decimalComma && /^[+-]?(\d+,\d*|,\d+)([eE][+-]?\d+)?$/.test(raw)) {
+    return Number(raw.replace(",", "."));
+  }
+  return Number(raw);
+}
+
+/**
+ * Build a Dataset from a string grid (header + data rows), inferring numeric vs categorical per column.
+ * `decimalComma` additionally accepts "3,45" as a number (for ";"/tab separated files).
+ */
+export function datasetFromGrid(grid: string[][], name: string, decimalComma = false): Dataset {
+  if (grid.length < 2)
+    throw new Error("Duomenyse turi būti antraščių eilutė ir bent viena duomenų eilutė.");
   const header = grid[0];
   const dataRows = grid.slice(1);
 
@@ -52,7 +97,7 @@ export function datasetFromCsv(text: string, name: string): Dataset {
       if (raw === "") continue;
       present++;
       distinct.add(raw);
-      if (!Number.isNaN(Number(raw))) numericCount++;
+      if (!Number.isNaN(parseNumber(raw, decimalComma))) numericCount++;
     }
     // Numeric if (nearly) all values parse as numbers AND it isn't a small-integer code set.
     const mostlyNumeric = present > 0 && numericCount / present > 0.9;
@@ -66,7 +111,7 @@ export function datasetFromCsv(text: string, name: string): Dataset {
     variables.forEach((v, ci) => {
       const raw = (r[ci] ?? "").trim();
       if (raw === "") obj[v.key] = null;
-      else if (v.type === "numeric") obj[v.key] = Number(raw);
+      else if (v.type === "numeric") obj[v.key] = parseNumber(raw, decimalComma);
       else obj[v.key] = raw;
     });
     return obj;
@@ -74,7 +119,9 @@ export function datasetFromCsv(text: string, name: string): Dataset {
 
   return {
     name,
-    description: `Uploaded dataset — ${rows.length} rows, ${variables.length} columns.`,
+    description:
+      `Įkeltas duomenų rinkinys: ${rows.length} ${ltPlural(rows.length, ["eilutė", "eilutės", "eilučių"])}, ` +
+      `${variables.length} ${ltPlural(variables.length, ["stulpelis", "stulpeliai", "stulpelių"])}.`,
     variables,
     rows,
   };

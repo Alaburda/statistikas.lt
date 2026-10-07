@@ -7,7 +7,7 @@ export function DataPreview({ dataset }: { dataset: Dataset }) {
   return (
     <div className="data-preview">
       <button className="link-btn" onClick={() => setOpen((o) => !o)}>
-        {open ? "▾" : "▸"} Data preview ({dataset.rows.length} rows × {dataset.variables.length} columns)
+        {open ? "▾" : "▸"} Duomenų peržiūra ({dataset.rows.length} eil. × {dataset.variables.length} stulp.)
       </button>
       {open && (
         <div className="table-scroll preview-scroll">

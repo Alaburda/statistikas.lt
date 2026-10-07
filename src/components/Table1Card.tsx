@@ -1,5 +1,6 @@
 import type { Chunk, Dataset } from "../types";
 import { computeTable1 } from "../stats/table1";
+import { typeLabel } from "./labels";
 
 interface Props {
   chunk: Chunk;
@@ -44,12 +45,12 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
     <div className="t1-body">
       <div className="t1-controls">
         <label className="t1-control">
-          <span className="t1-ctrl-label">Group columns by</span>
+          <span className="t1-ctrl-label">Stulpeliai pagal</span>
           <select
             value={groupVar}
             onChange={(e) => update({ groupVar: e.target.value })}
           >
-            <option value="">— none (overall only) —</option>
+            <option value="">— nėra (tik bendra) —</option>
             {catVars.map((v) => (
               <option key={v.key} value={v.key}>
                 {v.label}
@@ -65,13 +66,13 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
               checked={showTotal}
               onChange={() => update({ showTotal: showTotal ? "0" : "1" })}
             />
-            <span>Show total</span>
+            <span>Rodyti bendrą stulpelį</span>
           </label>
         )}
       </div>
 
       <div className="t1-rowvars">
-        <span className="t1-ctrl-label">Row variables</span>
+        <span className="t1-ctrl-label">Eilučių kintamieji</span>
         <div className="t1-tags">
           {rowVars.map((key) => {
             const v = dataset.variables.find((vv) => vv.key === key);
@@ -84,7 +85,8 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
                 <button
                   className="t1-tag-x"
                   onClick={() => removeRowVar(key)}
-                  title="Remove variable"
+                  title="Pašalinti kintamąjį"
+                  aria-label="Pašalinti kintamąjį"
                 >
                   ×
                 </button>
@@ -99,10 +101,10 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
                 if (e.target.value) addRowVar(e.target.value);
               }}
             >
-              <option value="">+ Add variable…</option>
+              <option value="">+ Pridėti kintamąjį…</option>
               {availableForRows.map((v) => (
                 <option key={v.key} value={v.key}>
-                  {v.label} ({v.type})
+                  {v.label} ({typeLabel(v.type)})
                 </option>
               ))}
             </select>
@@ -113,7 +115,7 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
       {tableData ? (
         <div className="result">
           <div className="table-block">
-            <div className="table-title">Table 1. Baseline characteristics</div>
+            <div className="table-title">1 lentelė. Imties charakteristikos</div>
             <div className="table-scroll">
               <table>
                 <thead>
@@ -165,7 +167,7 @@ export function Table1Card({ chunk, dataset, onChange }: Props) {
         </div>
       ) : (
         <div className="chunk-hint">
-          Add at least one variable to the rows above.
+          Pridėkite bent vieną kintamąjį į eilutes.
         </div>
       )}
     </div>

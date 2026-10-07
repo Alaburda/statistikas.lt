@@ -1,6 +1,6 @@
 import type { Dataset } from "../types";
 import { getVar, levelLabel, mean, sd } from "./helpers";
-import { fmt } from "./format";
+import { fmt, fmtPct } from "./format";
 
 export interface Table1Row {
   label: string;
@@ -39,7 +39,7 @@ function catCell(rows: Slice, varKey: string, levelRaw: string): string {
     if (String(val) === levelRaw) count++;
   }
   if (denom === 0) return "—";
-  return `${count} (${((100 * count) / denom).toFixed(1)}%)`;
+  return `${count} (${fmtPct((100 * count) / denom, 1)})`;
 }
 
 export function computeTable1(
@@ -75,15 +75,15 @@ export function computeTable1(
   if (groups.length > 0) {
     for (const g of groups) {
       groupHeaders.push(g.label);
-      const pct = totalN > 0 ? ((100 * g.rows.length) / totalN).toFixed(1) : "—";
-      nRow.push(`n = ${g.rows.length} (${pct}%)`);
+      const pct = totalN > 0 ? fmtPct((100 * g.rows.length) / totalN, 1) : "—";
+      nRow.push(`n = ${g.rows.length} (${pct})`);
     }
     if (showTotal) {
-      groupHeaders.push("Total");
+      groupHeaders.push("Iš viso");
       nRow.push(`N = ${totalN}`);
     }
   } else {
-    groupHeaders.push("Overall");
+    groupHeaders.push("Visa imtis");
     nRow.push(`N = ${totalN}`);
   }
 
@@ -100,7 +100,7 @@ export function computeTable1(
 
     if (v.type === "numeric") {
       rows.push({
-        label: `${v.label}${v.unit ? `, ${v.unit}` : ""}, mean (SD)`,
+        label: `${v.label}${v.unit ? `, ${v.unit}` : ""}, vidurkis (SN)`,
         cells: slices.map((s) => numericCell(s, varKey)),
         indent: false,
         bold: false,

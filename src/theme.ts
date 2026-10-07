@@ -28,22 +28,22 @@ export interface Theme {
 
 export const THEMES: Theme[] = [
   {
-    id: "ocean",
-    name: "Ocean",
+    id: "statistikas",
+    name: "Statistikas",
     plot: {
-      palette: ["#2563eb", "#db2777", "#16a34a", "#d97706", "#7c3aed", "#0891b2"],
-      axis: "#475569",
-      grid: "#e2e8f0",
-      text: "#1e293b",
+      palette: ["#1F45A0", "#C23B2A", "#E9B93A", "#4A4741", "#1F7A45", "#2A8C94"],
+      axis: "#4A4741",
+      grid: "#E3E1DC",
+      text: "#1C1B19",
       plotBg: "#ffffff",
     },
     ui: {
-      brand: "#2563eb",
-      brandDark: "#1d4ed8",
-      accent: "#db2777",
-      thBg: "#1e293b",
+      brand: "#1F45A0",
+      brandDark: "#17357C",
+      accent: "#C23B2A",
+      thBg: "#1C1B19",
       thText: "#ffffff",
-      rowStripe: "#f8fafc",
+      rowStripe: "#F5F4F1",
     },
   },
   {
@@ -66,27 +66,8 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "sunset",
-    name: "Sunset",
-    plot: {
-      palette: ["#e11d48", "#f97316", "#f59e0b", "#9333ea", "#0d9488", "#2563eb"],
-      axis: "#57534e",
-      grid: "#eee6e0",
-      text: "#1c1917",
-      plotBg: "#ffffff",
-    },
-    ui: {
-      brand: "#e11d48",
-      brandDark: "#be123c",
-      accent: "#f97316",
-      thBg: "#431407",
-      thText: "#ffffff",
-      rowStripe: "#fff7ed",
-    },
-  },
-  {
     id: "slate",
-    name: "Slate (print)",
+    name: "Spausdinimui",
     plot: {
       palette: ["#0f172a", "#64748b", "#94a3b8", "#334155", "#cbd5e1", "#475569"],
       axis: "#475569",

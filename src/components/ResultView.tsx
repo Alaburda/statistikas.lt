@@ -4,8 +4,10 @@ import { Plot } from "./Plot";
 function isNum(v: string | number): boolean {
   if (typeof v === "number") return true;
   const s = String(v).trim();
-  if (/^[<>≤≥]\s*\.?\d/.test(s)) return true; // < .001, > .05 etc.
-  return s !== "" && s !== "—" && !isNaN(Number(s));
+  if (/^[<>≤≥]\s*[.,]?\d/.test(s)) return true; // < 0,001, > 0,05 etc.
+  // Lithuanian numbers: decimal comma, optional (no-break/thin) space as thousands separator, U+2212 minus.
+  const n = s.replace(/[\s  ]/g, "").replace("−", "-").replace(",", ".");
+  return n !== "" && n !== "—" && !isNaN(Number(n));
 }
 
 export function ResultView({ result }: { result: AnalysisResult }) {

@@ -178,6 +178,31 @@ export function normalQuantile(p: number): number {
     ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
 }
 
+/**
+ * Fisher's exact test for a 2×2 table [[a, b], [c, d]], two-sided.
+ * Sums hypergeometric probabilities of all tables (with the same margins)
+ * that are no more likely than the observed one — matching R's fisher.test.
+ */
+export function fisherExact2x2(a: number, b: number, c: number, d: number): number {
+  const logChoose = (n: number, k: number) =>
+    logGamma(n + 1) - logGamma(k + 1) - logGamma(n - k + 1);
+  const r1 = a + b;
+  const r2 = c + d;
+  const c1 = a + c;
+  const n = a + b + c + d;
+  const logDenom = logChoose(n, c1);
+  const prob = (x: number) => Math.exp(logChoose(r1, x) + logChoose(r2, c1 - x) - logDenom);
+  const lo = Math.max(0, c1 - r2);
+  const hi = Math.min(c1, r1);
+  const pObs = prob(a);
+  let p = 0;
+  for (let x = lo; x <= hi; x++) {
+    const px = prob(x);
+    if (px <= pObs * (1 + 1e-7)) p += px;
+  }
+  return Math.min(1, p);
+}
+
 /** Student-t CDF. */
 export function tCdf(t: number, df: number): number {
   const x = df / (df + t * t);

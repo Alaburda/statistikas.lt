@@ -1,10 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// On GitHub Pages the app is served from /<repo>/, so the CI sets VITE_BASE
-// (e.g. "/spss-killer/"). Locally it defaults to "/".
+// Base defaults to "/" for local dev. The production build for statistikas.lt
+// passes `--base /analize/` on the CLI (see `npm run build:site`).
 export default defineConfig({
-  base: process.env.VITE_BASE ?? "/",
   plugins: [react()],
   server: { port: 5173, open: true },
 });
