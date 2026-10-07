@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { Chunk, Dataset } from "./types";
-import { birthwt } from "./data/birthwt";
+import { DEMOS, getDemo } from "./data/demos";
+import type { Demo } from "./data/demos";
 import { datasetFromCsv } from "./data/csv";
 import { getTest } from "./stats/tests";
 import { ChunkCard } from "./components/ChunkCard";
@@ -17,15 +18,9 @@ import { track } from "./analytics";
 let counter = 0;
 const newId = () => `chunk-${++counter}`;
 
-/** Demo chunks that showcase the dataset out of the box. */
-function seedChunks(): Chunk[] {
-  return [
-    { id: newId(), testId: "ttest", picks: { outcome: "bwt", group: "smoke" } },
-    { id: newId(), testId: "chisq", picks: { rowVar: "low", colVar: "smoke" } },
-    { id: newId(), testId: "correlation", picks: { x: "lwt", y: "bwt" } },
-    { id: newId(), testId: "anova", picks: { outcome: "bwt", group: "race" } },
-    { id: newId(), testId: "logistic", picks: { outcome: "low", predictors: "age,lwt,smoke" } },
-  ];
+/** Demo chunks that showcase the demo dataset out of the box. */
+function seedChunks(demo: Demo): Chunk[] {
+  return demo.seed.map((c) => ({ id: newId(), ...c }));
 }
 
 function runChunk(chunk: Chunk, dataset: Dataset): Chunk {
@@ -39,10 +34,12 @@ function runChunk(chunk: Chunk, dataset: Dataset): Chunk {
 }
 
 export function App() {
-  const [dataset, setDataset] = useState<Dataset>(birthwt);
+  const [dataset, setDataset] = useState<Dataset>(DEMOS[0].dataset);
   const [chunks, setChunks] = useState<Chunk[]>(() =>
-    seedChunks().map((c) => runChunk(c, birthwt))
+    seedChunks(DEMOS[0]).map((c) => runChunk(c, DEMOS[0].dataset))
   );
+  // Which built-in demo is loaded; null once the user uploads their own file.
+  const [demoId, setDemoId] = useState<string | null>(DEMOS[0].id);
   const [busy, setBusy] = useState(false);
   const [themeId, setThemeId] = useState(THEMES[0].id);
   const theme = getTheme(themeId);
@@ -149,6 +146,7 @@ export function App() {
       }
 
       setDataset(ds);
+      setDemoId(null);
       setChunks(nextChunks.map((c) => runChunk(c, ds)));
       // Only coarse counts — never file names, column names or values.
       track("analize_upload", {
@@ -161,10 +159,12 @@ export function App() {
     }
   };
 
-  const loadDemo = () => {
-    track("analize_demo");
-    setDataset(birthwt);
-    setChunks(seedChunks().map((c) => runChunk(c, birthwt)));
+  const loadDemo = (id: string) => {
+    const demo = getDemo(id);
+    track("analize_demo", { dataset: demo.id });
+    setDemoId(demo.id);
+    setDataset(demo.dataset);
+    setChunks(seedChunks(demo).map((c) => runChunk(c, demo.dataset)));
   };
 
   const copyLink = () => {
@@ -276,9 +276,25 @@ export function App() {
                 }}
               />
             </label>
-            <button className="ghost-btn" onClick={loadDemo}>
-              Demonstraciniai duomenys
-            </button>
+            <label className="theme-picker" title="Demonstraciniai duomenys">
+              <span>Pavyzdys</span>
+              <select
+                value={demoId ?? ""}
+                onChange={(e) => loadDemo(e.target.value)}
+                aria-label="Demonstraciniai duomenys"
+              >
+                {demoId === null && (
+                  <option value="" disabled>
+                    Jūsų duomenys
+                  </option>
+                )}
+                {DEMOS.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button className="ghost-btn" onClick={copyLink}>
               {copied ? "✓ Nukopijuota" : "Kopijuoti nuorodą"}
             </button>

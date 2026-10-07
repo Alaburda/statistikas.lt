@@ -162,7 +162,7 @@ export function SiteFooter() {
     <footer className="foot">
       <p>
         Duomenys apdorojami tik jūsų naršyklėje ir niekur nesiunčiami. Demonstraciniai duomenys:
-        MASS::birthwt (R).
+        MASS::birthwt ir AER::CPS1985 (R).
       </p>
       <nav className="foot-links" aria-label="Svetainės nuorodos">
         <OutLink href={SITE_URL}>Statistikas.lt</OutLink>

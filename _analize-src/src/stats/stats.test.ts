@@ -7,6 +7,8 @@ import {
 } from "./distributions";
 import { getTest } from "./tests";
 import { birthwt } from "../data/birthwt";
+import { cps1985 } from "../data/cps1985";
+import { DEMOS } from "../data/demos";
 import type { Dataset } from "../types";
 
 /** Parse a formatted table cell (Lithuanian decimal comma) back to a number. */
@@ -108,4 +110,30 @@ describe("birthwt sanity checks vs R", () => {
     expect(res.pValue).toBeGreaterThan(0);
     expect(res.pValue).toBeLessThan(1);
   });
+});
+
+describe("cps1985 sanity checks vs R", () => {
+  it("has all 534 workers", () => {
+    expect(cps1985.rows).toHaveLength(534);
+  });
+  it("wage differs by gender (R Welch t-test: p≈1.4e-6)", () => {
+    const res = getTest("ttest").run(cps1985, { outcome: "wage", group: "gender" });
+    expect(res.pValue!).toBeLessThan(1e-4);
+  });
+  it("education and wage correlate (R: r≈0.382)", () => {
+    const res = getTest("correlation").run(cps1985, { x: "education", y: "wage" });
+    const r = num(res.tables[0].rows[0][0]);
+    expect(r).toBeGreaterThan(0.37);
+    expect(r).toBeLessThan(0.39);
+  });
+});
+
+describe("demo seeds", () => {
+  for (const demo of DEMOS) {
+    it(`${demo.id}: every seeded chunk runs without error`, () => {
+      for (const c of demo.seed) {
+        expect(() => getTest(c.testId).run(demo.dataset, c.picks)).not.toThrow();
+      }
+    });
+  }
 });
