@@ -4,6 +4,8 @@ project:
   resources:
     - .nojekyll
     - CNAME
+    # Nemokamas analizės įrankis (React programėlė iš spss-killer/web, `npm run build:site`)
+    - analize/**
 
 lang: lt
 
@@ -39,6 +41,8 @@ website:
       #   href: pavyzdziai.qmd
       - text: "Straipsniai"
         href: straipsniai.qmd
+      - text: "Nemokama analizė"
+        href: analize/index.html
       - text: "Apie"
         href: about.qmd
     right:
@@ -59,6 +63,8 @@ website:
       #   href: pavyzdziai.qmd
       - text: "Straipsniai"
         href: straipsniai.qmd
+      - text: "Nemokama analizė"
+        href: analize/index.html
       - text: "Apie"
         href: about.qmd
     right:

@@ -116,7 +116,14 @@ function initHeroFigure() {
 // Contact page: preselect topic from ?tema=...
 // ============================================
 function initTopicFromUrl() {
-  const topic = new URLSearchParams(window.location.search).get('tema');
+  const params = new URLSearchParams(window.location.search);
+
+  // Where the visitor came from (e.g. "analize-cta" from the free analysis tool)
+  const source = params.get('saltinis');
+  const sourceInput = document.querySelector('input[name="saltinis"]');
+  if (source && sourceInput) sourceInput.value = source.slice(0, 60);
+
+  const topic = params.get('tema');
   if (!topic) return;
 
   const input = document.querySelector(`input[name="tema"][value="${CSS.escape(topic)}"]`);
@@ -141,7 +148,8 @@ function initFormHandling() {
 
       const data = new FormData(form);
       const topicLabel = form.querySelector('input[name="tema"]:checked')?.dataset.label;
-      if (topicLabel) data.set('_subject', `Statistikas.lt užklausa: ${topicLabel}`);
+      const fromTool = (data.get('saltinis') || '').toString().includes('analize');
+      if (topicLabel) data.set('_subject', `Statistikas.lt užklausa: ${topicLabel}${fromTool ? ' (iš Analizės įrankio)' : ''}`);
 
       try {
         const response = await fetch(form.action, {

@@ -19,6 +19,7 @@ section-divs: false
   <div class="contact-layout">
 
     <form action="https://formspree.io/f/xpzgodgn" method="POST">
+      <input type="hidden" name="saltinis" value="">
       <fieldset class="form-step">
         <legend><span class="step-num">01</span>Dėl ko kreipiatės?</legend>
         <div class="topic-grid">
