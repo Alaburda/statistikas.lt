@@ -4,8 +4,10 @@
   "description": "Profesionalios statistikos paslaugos Lietuvoje",
   "main": "index.html",
   "scripts": {
-    "serve": "npx serve",
-    "build": "echo 'No build required - static site'"
+    "serve": "npx serve docs",
+    "analize:dev": "npm --prefix _analize-src run dev",
+    "analize:test": "npm --prefix _analize-src test",
+    "analize:build": "npm --prefix _analize-src run build"
   },
   "repository": {
     "type": "git",

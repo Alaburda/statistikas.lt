@@ -1,0 +1,27 @@
+# Type-checks, tests and builds the free analysis app (_analize-src/) on every
+# change to it. Publishing is still `quarto render` + commit + push, which
+# rebuilds the app into docs/analize/ via scripts/build-analize.ts.
+name: Analizė
+
+on:
+  push:
+    paths: ["_analize-src/**", ".github/workflows/analize.yml"]
+  pull_request:
+    paths: ["_analize-src/**", ".github/workflows/analize.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: _analize-src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: _analize-src/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

@@ -4,8 +4,9 @@ project:
   resources:
     - .nojekyll
     - CNAME
-    # Nemokamas analizės įrankis (React programėlė iš spss-killer/web, `npm run build:site`)
+    # Nemokamas analizės įrankis: _analize-src/ sukompiliuojamas į analize/ (žr. pre-render)
     - analize/**
+  pre-render: scripts/build-analize.ts
 
 lang: lt
 

@@ -12,37 +12,33 @@ tables. The whole report exports to **Word (.docx)**.
 Everything runs **client-side** — no server, no R, no API key; the dataset never
 leaves the page. The UI is Lithuanian only (plain strings, no i18n framework).
 
-> The R Shiny code in the repository root (`app.R`, `R/`) is an earlier
-> prototype kept as reference only. This `web/` app is the active one.
+It lives inside the [statistikas.lt](https://github.com/Alaburda/statistikas.lt)
+site repo (it used to be the separate `web-stats` repo). The leading `_` in
+`_analize-src/` keeps Quarto from rendering anything in here.
 
 ## Development
 
+From the site repo root:
+
 ```bash
-cd web
-npm install
-npm run dev          # http://localhost:5173
-npm test             # statistics unit tests (vitest)
-npm run build        # type-check + production build to dist/
-npm run preview      # serve the production build
+npm --prefix _analize-src ci   # first time
+npm run analize:dev            # http://localhost:5173
+npm run analize:test           # statistics unit tests (vitest)
+npm run analize:build          # type-check + production build into ../analize/
 ```
 
-## Deploying to statistikas.lt
+(or `cd _analize-src` and use `npm run dev` / `npm test` / `npm run build`).
 
-Automatic. Every push to `main` runs
-[`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml), which
-runs the tests, builds with `--base /analize/`, and commits the build into the
-[statistikas.lt](https://github.com/Alaburda/statistikas.lt) repo (both
-`analize/` and `docs/analize/`). GitHub Pages serves that repo's `docs/`, so the
-change is live at https://statistikas.lt/analize/ a minute or two later. It can
-also be run by hand from the Actions tab ("Run workflow").
+## Publishing
 
-One-time setup: the workflow needs a repo secret `SITE_DEPLOY_TOKEN` — a
-fine-grained personal access token with **Contents: Read and write** on
-`Alaburda/statistikas.lt` only.
+Same as the rest of the site: `quarto render`, commit, push. The site's
+`_quarto.yml` runs [`scripts/build-analize.ts`](../scripts/build-analize.ts) as a
+`pre-render` step on full renders; it builds this app with base `/analize/` into
+`analize/` (git-ignored), which `project.resources` copies into `docs/analize/`
+for GitHub Pages. Partial renders and `quarto preview` reuse the existing build.
 
-The site's `_quarto.yml` lists `analize/**` under `project.resources`, so a
-local `quarto render` of the site keeps the app in `docs/analize/`. Pull the
-site repo before rendering so you have the latest deployed build.
+CI ([`.github/workflows/analize.yml`](../.github/workflows/analize.yml)) runs the
+tests and a build on every change under `_analize-src/`.
 
 ## Funnel touchpoints
 

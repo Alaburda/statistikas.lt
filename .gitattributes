@@ -1,0 +1,2 @@
+# Keep the app source LF on Windows checkouts so builds match docs/analize/ byte for byte
+_analize-src/** text=auto eol=lf
