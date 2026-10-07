@@ -1,0 +1,58 @@
+# Builds the app and publishes it to https://statistikas.lt/analize/ by
+# committing the build into the statistikas.lt repo (GitHub Pages serves its
+# docs/ folder). Needs the SITE_DEPLOY_TOKEN secret: a fine-grained token with
+# Contents: read & write on Alaburda/statistikas.lt.
+name: Deploy to statistikas.lt/analize
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npx tsc -b && npx vite build --base /analize/
+
+      - name: Check out statistikas.lt
+        uses: actions/checkout@v4
+        with:
+          repository: Alaburda/statistikas.lt
+          ref: master
+          token: ${{ secrets.SITE_DEPLOY_TOKEN }}
+          path: site
+
+      # analize/ is the Quarto source copy (kept so `quarto render` includes it);
+      # docs/analize/ is what GitHub Pages serves. Update both.
+      - name: Copy build into the site
+        run: |
+          for d in site/analize site/docs/analize; do
+            rm -rf "$d" && mkdir -p "$d" && cp -r dist/. "$d/"
+          done
+
+      - name: Commit and push
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A analize docs/analize
+          if git diff --cached --quiet; then
+            echo "Build unchanged, nothing to publish."
+            exit 0
+          fi
+          git commit -m "Deploy analize from web-stats@${GITHUB_SHA::7}"
+          git push
