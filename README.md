@@ -28,23 +28,21 @@ npm run preview      # serve the production build
 
 ## Deploying to statistikas.lt
 
-The Quarto site repo lives next to this one (`../../statistikas.lt` relative to
-`web/`). The app is published as static files under `/analize/`.
+Automatic. Every push to `main` runs
+[`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml), which
+runs the tests, builds with `--base /analize/`, and commits the build into the
+[statistikas.lt](https://github.com/Alaburda/statistikas.lt) repo (both
+`analize/` and `docs/analize/`). GitHub Pages serves that repo's `docs/`, so the
+change is live at https://statistikas.lt/analize/ a minute or two later. It can
+also be run by hand from the Actions tab ("Run workflow").
 
-```bash
-cd web
-npm run build:site   # tsc -b && vite build --base /analize/ → ../../statistikas.lt/analize
-cd ../../statistikas.lt
-quarto render        # rebuilds the site into docs/
-git add -A && git commit -m "Update analize" && git push
-```
+One-time setup: the workflow needs a repo secret `SITE_DEPLOY_TOKEN` — a
+fine-grained personal access token with **Contents: Read and write** on
+`Alaburda/statistikas.lt` only.
 
-`build:site` wipes and refills `statistikas.lt/analize/` (`--emptyOutDir`).
-`quarto render` must copy that folder into `docs/analize/`; if it doesn't, add
-`analize/**` to `project.resources` in the site's `_quarto.yml`.
-
-The `.github/workflows/deploy.yml` GitHub Pages workflow (old `/web-stats/`
-deploy) was removed — it is superseded by the flow above.
+The site's `_quarto.yml` lists `analize/**` under `project.resources`, so a
+local `quarto render` of the site keeps the app in `docs/analize/`. Pull the
+site repo before rendering so you have the latest deployed build.
 
 ## Funnel touchpoints
 

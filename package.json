@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:site": "tsc -b && vite build --base /analize/ --outDir ../../statistikas.lt/analize --emptyOutDir",
     "preview": "vite preview",
     "test": "vitest run"
   },
