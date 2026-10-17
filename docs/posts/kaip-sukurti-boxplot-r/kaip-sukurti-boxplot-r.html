@@ -112,6 +112,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1344">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html">
 </head>
 
 <body class="nav-fixed post">
@@ -187,7 +188,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -231,8 +232,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<section id="kas-yra-stačiakampė-diagrama-boxplot" class="level1">
-<h1>Kas yra stačiakampė diagrama (boxplot)?</h1>
+<section id="kas-yra-stačiakampė-diagrama-boxplot" class="level2">
+<h2 class="anchored" data-anchor-id="kas-yra-stačiakampė-diagrama-boxplot">Kas yra stačiakampė diagrama (boxplot)?</h2>
 <p>Stačiakampė diagrama, arba <em>boxplot</em>, yra vienas iš dažniausiai naudojamų grafikų moksliniuose darbuose. Ji parodo duomenų pasiskirstymą kompaktiškai: medianą, kvartiles, ekstremumus ir galimus išskirtis (<em>outliers</em>). Boxplot ypač naudingas, kai norime palyginti kelis pogrupius.</p>
 <p>Šiame straipsnyje parodysiu <strong>4 skirtingus būdus</strong>, kaip sukurti boxplot su R:</p>
 <ol type="1">
@@ -252,8 +253,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-<section id="base-r" class="level1">
-<h1>1. Base R</h1>
+<section id="base-r" class="level2">
+<h2 class="anchored" data-anchor-id="base-r">1. Base R</h2>
 <p>Paprasčiausias būdas – naudoti <code>boxplot()</code> funkciją, kuri yra įtraukta į base R. Nereikia jokių papildomų paketų:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Length <span class="sc">~</span> Species,</span>
@@ -296,8 +297,8 @@ Kada naudoti base R?
 <li>Netinka publikacijoms</li>
 </ul>
 </section>
-<section id="ggplot2" class="level1">
-<h1>2. ggplot2</h1>
+<section id="ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="ggplot2">2. ggplot2</h2>
 <p><code>ggplot2</code> yra populiariausias R vizualizacijos paketas. Jis leidžia kurti gražius ir profesionalius grafikus naudojant „gramatikos” principą – grafikas kuriamas sluoksnis po sluoksnio:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -367,8 +368,8 @@ Patarimas
 <li>Pradedantiesiems gali būti sudėtinga sintaksė</li>
 </ul>
 </section>
-<section id="tidyplots" class="level1">
-<h1>3. tidyplots</h1>
+<section id="tidyplots" class="level2">
+<h2 class="anchored" data-anchor-id="tidyplots">3. tidyplots</h2>
 <p><a href="https://jbengler.github.io/tidyplots/"><code>tidyplots</code></a> yra naujas paketas, sukurtas specialiai mokslinėms publikacijoms. Jo sintaksė yra labai intuityvi – naudojamas <em>pipe</em> operatorius <code>|&gt;</code>, o funkcijos pradedamos nuo <code>add_</code>, <code>adjust_</code>, <code>remove_</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyplots)</span>
@@ -435,8 +436,8 @@ Kodėl verta išbandyti tidyplots?
 <li>Mažiau pritaikymo galimybių nei <code>ggplot2</code></li>
 </ul>
 </section>
-<section id="ggpubr" class="level1">
-<h1>4. ggpubr</h1>
+<section id="ggpubr" class="level2">
+<h2 class="anchored" data-anchor-id="ggpubr">4. ggpubr</h2>
 <p><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a> yra <code>ggplot2</code> plėtinys, kuris supaprastina grafikų kūrimą ir prideda galimybę tiesiogiai grafikuose rodyti statistinius palyginimus:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
@@ -491,8 +492,8 @@ Statistiniai palyginimai grafike
 <li>Ribotesnis stilių pasirinkimas</li>
 </ul>
 </section>
-<section id="palyginimas" class="level1">
-<h1>Palyginimas</h1>
+<section id="palyginimas" class="level2">
+<h2 class="anchored" data-anchor-id="palyginimas">Palyginimas</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -542,8 +543,8 @@ Statistiniai palyginimai grafike
 </tbody>
 </table>
 </section>
-<section id="išvados" class="level1">
-<h1>Išvados</h1>
+<section id="išvados" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="išvados">Išvados</h2>
 <ul>
 <li><strong>Eksploracijai</strong> – naudokite <strong>base R</strong> <code>boxplot()</code>, jei norite greitai peržiūrėti duomenis.</li>
 <li><strong>Publikacijoms</strong> – naudokite <strong>ggplot2</strong> arba <strong>tidyplots</strong>, jei norite pilnai kontroliuoti grafiko išvaizdą.</li>
@@ -552,6 +553,15 @@ Statistiniai palyginimai grafike
 </ul>
 <p>Nepriklausomai nuo to, kurį būdą pasirinksite, svarbiausia, kad boxplot būtų aiškus, informatyvus ir tinkamai pavaizduotų jūsų duomenis. 🎯</p>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -980,7 +990,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

@@ -108,6 +108,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:image" content="https://statistikas.lt/posts/kaip-koduoti-duomenis/images/card.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html">
 </head>
 
 <body class="nav-fixed post">
@@ -182,7 +183,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -226,8 +227,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.</p>
-<section id="kintamųjų-tipai" class="level1">
-<h1>Kintamųjų tipai</h1>
+<section id="kintamųjų-tipai" class="level2">
+<h2 class="anchored" data-anchor-id="kintamųjų-tipai">Kintamųjų tipai</h2>
 <p>Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:</p>
 <table class="caption-top table">
 <colgroup>
@@ -261,8 +262,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </tbody>
 </table>
 </section>
-<section id="kategorinių-kintamųjų-kodavimas" class="level1">
-<h1>Kategorinių kintamųjų kodavimas</h1>
+<section id="kategorinių-kintamųjų-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="kategorinių-kintamųjų-kodavimas">Kategorinių kintamųjų kodavimas</h2>
 <p>R kalboje kategoriniai kintamieji turėtų būti <code>factor</code> tipo:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -285,8 +286,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-<section id="ranginių-kintamųjų-kodavimas" class="level1">
-<h1>Ranginių kintamųjų kodavimas</h1>
+<section id="ranginių-kintamųjų-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="ranginių-kintamųjų-kodavimas">Ranginių kintamųjų kodavimas</h2>
 <p>Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>issilavinimas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Vidurinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Pagrindinis"</span>, <span class="st">"Aukštasis"</span>, <span class="st">"Vidurinis"</span>)</span>
@@ -317,8 +318,8 @@ Patarimas
 </div>
 </div>
 </section>
-<section id="dummy-kodavimas" class="level1">
-<h1>Dummy kodavimas</h1>
+<section id="dummy-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="dummy-kodavimas">Dummy kodavimas</h2>
 <p>Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model.matrix automatiškai sukuria dummy kintamuosius</span></span>
@@ -338,8 +339,8 @@ attr(,"contrasts")$lytis
 </div>
 </div>
 </section>
-<section id="dažnos-klaidos" class="level1">
-<h1>Dažnos klaidos</h1>
+<section id="dažnos-klaidos" class="level2">
+<h2 class="anchored" data-anchor-id="dažnos-klaidos">Dažnos klaidos</h2>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -358,8 +359,8 @@ Ko vengti?
 </div>
 </div>
 </section>
-<section id="praktinis-pavyzdys" class="level1">
-<h1>Praktinis pavyzdys</h1>
+<section id="praktinis-pavyzdys" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="praktinis-pavyzdys">Praktinis pavyzdys</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -389,6 +390,15 @@ Ko vengti?
 </div>
 </div>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -817,7 +827,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

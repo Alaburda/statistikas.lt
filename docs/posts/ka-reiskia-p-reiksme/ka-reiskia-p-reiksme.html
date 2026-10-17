@@ -112,6 +112,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="864">
 <meta name="twitter:image-width" content="1536">
+<link rel="canonical" href="https://statistikas.lt/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html">
 </head>
 
 <body class="nav-fixed post">
@@ -229,15 +230,15 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>p reikšmė yra bene dažniausiai naudojamas ir bene dažniausiai klaidingai interpretuojamas skaičius statistikoje. Beveik kiekviena publikacija remiasi riba p &lt; 0,05, bet paklausus, ką tas skaičius iš tikrųjų reiškia, atsakymai dažnai būna netikslūs.</p>
-<section id="apibrėžimas" class="level1">
-<h1>Apibrėžimas</h1>
+<section id="apibrėžimas" class="level2">
+<h2 class="anchored" data-anchor-id="apibrėžimas">Apibrėžimas</h2>
 <blockquote class="blockquote">
 <p>p reikšmė — tai tikimybė gauti tokį ar dar ekstremalesnį rezultatą, <strong>jei nulinė hipotezė būtų teisinga</strong> (t. y. jei skirtumo iš tikrųjų nebūtų).</p>
 </blockquote>
 <p>Kitaip tariant, p reikšmė atsako į klausimą: „Jei grupės iš tikrųjų nesiskiria, kiek tikėtina vien dėl atsitiktinumo pamatyti tokį skirtumą, kokį pamatėme?” Jei ta tikimybė maža (tarkime, mažesnė nei 5 %), darome išvadą, kad duomenys nesuderinami su nuline hipoteze, ir vadiname rezultatą statistiškai reikšmingu.</p>
 </section>
-<section id="ko-p-reikšmė-nereiškia" class="level1">
-<h1>Ko p reikšmė NEreiškia</h1>
+<section id="ko-p-reikšmė-nereiškia" class="level2">
+<h2 class="anchored" data-anchor-id="ko-p-reikšmė-nereiškia">Ko p reikšmė NEreiškia</h2>
 <p>Šios interpretacijos yra klaidingos, nors sutinkamos net publikacijose:</p>
 <ul>
 <li>❌ „p = 0,03 reiškia, kad yra 97 % tikimybė, jog skirtumas tikras.” p reikšmė nieko nesako apie tikimybę, kad hipotezė teisinga — ji skaičiuojama <em>darant prielaidą</em>, kad nulinė hipotezė teisinga.</li>
@@ -246,8 +247,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <li>❌ „Maža p reikšmė reiškia didelį ir svarbų efektą.” p reikšmė priklauso ir nuo efekto dydžio, ir nuo imties dydžio — su milžiniška imtimi net mikroskopinis skirtumas taps „reikšmingu”.</li>
 </ul>
 </section>
-<section id="pažiūrėkime-simuliacijoje" class="level1">
-<h1>Pažiūrėkime simuliacijoje</h1>
+<section id="pažiūrėkime-simuliacijoje" class="level2">
+<h2 class="anchored" data-anchor-id="pažiūrėkime-simuliacijoje">Pažiūrėkime simuliacijoje</h2>
 <p>Ką daro p reikšmė, geriausiai matyti sumodeliavus daug tyrimų. Sugeneruokime po 5 000 eksperimentų dviem atvejais: kai skirtumo tarp grupių <strong>nėra</strong> ir kai jis <strong>yra</strong> (vidutinis efektas, d = 0,5):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -294,8 +295,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </div>
 <p>Su 30 tiriamųjų grupėje realų vidutinį efektą aptinkame tik maždaug puse atvejų — todėl imties dydį verta skaičiuoti prieš tyrimą, o ne tikėtis sėkmės.</p>
 </section>
-<section id="statistinis-reikšmingumas-praktinė-svarba" class="level1">
-<h1>Statistinis reikšmingumas ≠ praktinė svarba</h1>
+<section id="statistinis-reikšmingumas-praktinė-svarba" class="level2">
+<h2 class="anchored" data-anchor-id="statistinis-reikšmingumas-praktinė-svarba">Statistinis reikšmingumas ≠ praktinė svarba</h2>
 <p>p reikšmė nesako, ar skirtumas yra <em>svarbus</em>. Vaistas, kuris statistiškai reikšmingai (p &lt; 0,001) sumažina kraujospūdį 1 mmHg, yra kliniškai bevertis. Ir atvirkščiai — pilotiniame tyrime p = 0,08 su dideliu efekto dydžiu gali būti daug žadantis rezultatas.</p>
 <p>Todėl šalia p reikšmės visada pateikite:</p>
 <ul>
@@ -316,8 +317,8 @@ Kaip rašyti publikacijoje
 </div>
 </div>
 </section>
-<section id="santrauka" class="level1">
-<h1>Santrauka</h1>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -778,7 +779,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

@@ -112,6 +112,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1344">
+<link rel="canonical" href="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html">
 </head>
 
 <body class="nav-fixed post">
@@ -194,7 +195,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -237,14 +238,14 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </header>
 
 
-<section id="kaip-rinktis-anova" class="level1">
-<h1>Kaip rinktis ANOVA?</h1>
-<section id="kada-rinktis-anova" class="level2">
-<h2 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h2>
+<section id="kaip-rinktis-anova" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-rinktis-anova">Kaip rinktis ANOVA?</h2>
+<section id="kada-rinktis-anova" class="level3">
+<h3 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h3>
 <p>ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.</p>
 </section>
-<section id="vienpusė-anova" class="level2">
-<h2 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h2>
+<section id="vienpusė-anova" class="level3">
+<h3 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h3>
 <p>Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
@@ -277,12 +278,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </section>
 </section>
-<section id="dvipusė-anova" class="level1">
-<h1>Dvipusė ANOVA</h1>
+<section id="dvipusė-anova" class="level2">
+<h2 class="anchored" data-anchor-id="dvipusė-anova">Dvipusė ANOVA</h2>
 <p>Dvipusė ANOVA naudojama, kai norime įvertinti dviejų nepriklausomų kintamųjų poveikį priklausomam kintamajam.</p>
 </section>
-<section id="post-hoc-testai" class="level1">
-<h1>Post-hoc testai</h1>
+<section id="post-hoc-testai" class="level2">
+<h2 class="anchored" data-anchor-id="post-hoc-testai">Post-hoc testai</h2>
 <p>Jeigu mūsų ANOVA rezultatas buvo statistiškai reikšmingas, vis dar nežinome, kuri pora grupių tarpusavyje turėtų statistiškai reikšmingą skirtumą. Tam turime atlikti post-hoc testą, t.y. testą, kuris parenka 2 subgrupes ir konkrečiai jas palygina.</p>
 <p>Nėra vieno standarto, kaip būtinai reikia atlikti post-hoc testą, bet dažniausias pasirinkimas yra Tukey HSD (Honestly Significant Difference) testas. Su R tai galima atlikti naudojantis <code>TukeyHSD</code> funkcija:</p>
 <div class="cell">
@@ -302,20 +303,20 @@ virginica-versicolor 0.652 0.4082273 0.8957727     0</code></pre>
 </div>
 <p>Post-hoc testas nurodo, jog skirtumai buvo tarp visų 3 rūšių tarpusavyje, didžiausias skirtumas buvo tarp virginica ir setosa (vidutiniškai 1,58, 95% PI [1,34-1,83], p &lt; 0,001).</p>
 </section>
-<section id="vienpusės-anova-poskoniai" class="level1">
-<h1>3 vienpusės ANOVA poskoniai</h1>
+<section id="vienpusės-anova-poskoniai" class="level2">
+<h2 class="anchored" data-anchor-id="vienpusės-anova-poskoniai">3 vienpusės ANOVA poskoniai</h2>
 <p>Kai mūsų duomenų rinkinys yra subalansuotas, visi ANOVA tipai duos tokį patį rezultatą. Kai duomenų rinkinys yra nesubalansuotas (viena grupė turi daugiau matavimų negu kitos), rezultatai gali skirtis.</p>
 </section>
-<section id="ar-anova-buvo-tinkamas-testas" class="level1">
-<h1>Ar ANOVA buvo tinkamas testas?</h1>
+<section id="ar-anova-buvo-tinkamas-testas" class="level2">
+<h2 class="anchored" data-anchor-id="ar-anova-buvo-tinkamas-testas">Ar ANOVA buvo tinkamas testas?</h2>
 <p>Stjudento t-testo tinkamumą praktiniais sumetimais galime numatyti iš anksto, nors teisingas būdas tikrinti būtų toks kaip ir ANOVA atveju. ANOVA turi tris reikalavimus:</p>
 <ul>
 <li><strong>Likutinių verčių (paklaidų) pasiskirstymas turi būti pagal Normalųjį skirstinį</strong>. Mažai kas tai tikrina iš tikrųjų ir dažniausiai naudoja histogramas (ok), QQ grafikus (gerai) arba Shapiro-Wilk testą (blogai!)</li>
 <li><strong>Homogeniška variacija</strong> tarp grupių</li>
 <li><strong>Nepriklausomi stebėjimai</strong></li>
 </ul>
-<section id="homogeniška-variacija" class="level2">
-<h2 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h2>
+<section id="homogeniška-variacija" class="level3">
+<h3 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h3>
 <p>Homogenišką variaciją galima patikrinti su <strong>Levene testu</strong>, <strong>Brown-Forsythe testu</strong> arba <strong>Bartlett testu</strong>, mes panaudosime Levene testą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(my.anova)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -329,8 +330,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level2">
-<h2 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h2>
+<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level3">
+<h3 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h3>
 <p>Prieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>my.anova.residuals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">residuals =</span> <span class="fu">residuals</span>(<span class="at">object =</span> my.anova))</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -398,8 +399,8 @@ Dėmesio
 </div>
 </section>
 </section>
-<section id="kaip-pavaizduoti-anova-rezultatą" class="level1">
-<h1>Kaip pavaizduoti ANOVA rezultatą?</h1>
+<section id="kaip-pavaizduoti-anova-rezultatą" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kaip-pavaizduoti-anova-rezultatą">Kaip pavaizduoti ANOVA rezultatą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Sepal.Length, <span class="at">fill =</span> Species)) <span class="sc">+</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
@@ -418,6 +419,15 @@ Dėmesio
 </div>
 </div>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -846,7 +856,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

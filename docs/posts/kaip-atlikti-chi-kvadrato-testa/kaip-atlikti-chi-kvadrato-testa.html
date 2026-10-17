@@ -108,6 +108,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:image" content="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/images/card.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html">
 </head>
 
 <body class="nav-fixed post">
@@ -182,7 +183,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -226,8 +227,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>Chi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.</p>
-<section id="kada-taikyti-chi-kvadrato-testą" class="level1">
-<h1>Kada taikyti Chi-kvadrato testą?</h1>
+<section id="kada-taikyti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-taikyti-chi-kvadrato-testą">Kada taikyti Chi-kvadrato testą?</h2>
 <p>Chi-kvadrato testą renkamės, kai:</p>
 <ul>
 <li><strong>Abu kintamieji yra kategoriniai</strong> (pvz., lytis ir rūkymo statusas)</li>
@@ -249,8 +250,8 @@ Dėmesio
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-chi-kvadrato-testą" class="level1">
-<h1>Kaip atlikti Chi-kvadrato testą?</h1>
+<section id="kaip-atlikti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-chi-kvadrato-testą">Kaip atlikti Chi-kvadrato testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame pavyzdinius duomenis</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>stuff <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -269,8 +270,8 @@ X-squared = 0, df = 1, p-value = 1</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-rezultatus" class="level1">
-<h1>Kaip interpretuoti rezultatus?</h1>
+<section id="kaip-interpretuoti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-rezultatus">Kaip interpretuoti rezultatus?</h2>
 <p>Chi-kvadrato testo rezultate svarbu:</p>
 <ol type="1">
 <li><strong>X-squared</strong> - testo statistika</li>
@@ -278,15 +279,15 @@ X-squared = 0, df = 1, p-value = 1</code></pre>
 <li><strong>p-value</strong> - jei &lt; 0.05, ryšys yra statistiškai reikšmingas</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-chi-kvadrato-testą" class="level1">
-<h1>Kaip raportuoti Chi-kvadrato testą?</h1>
+<section id="kaip-raportuoti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-chi-kvadrato-testą">Kaip raportuoti Chi-kvadrato testą?</h2>
 <p>Aš dažniausiai naudoju tokį šabloną:</p>
 <blockquote class="blockquote">
 <p>“Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121).”</p>
 </blockquote>
 </section>
-<section id="fishers-exact-testas" class="level1">
-<h1>Fisher’s exact testas</h1>
+<section id="fishers-exact-testas" class="level2">
+<h2 class="anchored" data-anchor-id="fishers-exact-testas">Fisher’s exact testas</h2>
 <p>Kai laukiami dažniai yra maži (&lt; 5), naudojame Fisher’s exact testą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sukuriame mažą lentelę</span></span>
@@ -307,8 +308,8 @@ odds ratio
 </div>
 </div>
 </section>
-<section id="vizualizacija" class="level1">
-<h1>Vizualizacija</h1>
+<section id="vizualizacija" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vizualizacija">Vizualizacija</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -331,6 +332,15 @@ odds ratio
 </div>
 </div>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -759,7 +769,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

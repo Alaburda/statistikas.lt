@@ -112,6 +112,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1536">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.html">
 </head>
 
 <body class="nav-fixed post">
@@ -234,8 +235,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>„Kiek tiriamųjų man reikia?” — klausimas, kurį verta užduoti <em>prieš</em> renkant duomenis, o ne po to. Per maža imtis reiškia, kad realiai egzistuojančio skirtumo galite tiesiog nepamatyti, o per didelė — švaistote laiką, pinigus, o medicinos tyrimuose tai ir etikos klausimas: kam tirti daugiau žmonių, nei būtina?</p>
-<section id="keturi-ingredientai" class="level1">
-<h1>Keturi ingredientai</h1>
+<section id="keturi-ingredientai" class="level2">
+<h2 class="anchored" data-anchor-id="keturi-ingredientai">Keturi ingredientai</h2>
 <p>Imties dydžio skaičiavimui reikia keturių dalykų:</p>
 <ol type="1">
 <li><strong>Statistinis testas</strong>, kurį planuojate taikyti (t-testas, chi kvadrato testas ir t.t.). Jei nesate tikri, pradėkite nuo <a href="../../posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html">testo pasirinkimo gido</a>.</li>
@@ -245,8 +246,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </ol>
 <p>Pirmi trys yra susitarimo reikalas. Visas darbas — ketvirtajame.</p>
 </section>
-<section id="iš-kur-gauti-efekto-dydį" class="level1">
-<h1>Iš kur gauti efekto dydį?</h1>
+<section id="iš-kur-gauti-efekto-dydį" class="level2">
+<h2 class="anchored" data-anchor-id="iš-kur-gauti-efekto-dydį">Iš kur gauti efekto dydį?</h2>
 <p>Efekto dydis yra svarbiausias ir sunkiausias ingredientas. Trys dažniausi šaltiniai:</p>
 <ul>
 <li><strong>Ankstesni tyrimai</strong> — panašių publikacijų rezultatai (vidurkiai ir standartiniai nuokrypiai).</li>
@@ -255,10 +256,10 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </ul>
 <p>Tolydiems kintamiesiems efekto dydis dažnai išreiškiamas Cohen’o <em>d</em> — grupių vidurkių skirtumu, padalintu iš standartinio nuokrypio. Orientyrai: 0,2 — mažas, 0,5 — vidutinis, 0,8 — didelis efektas.</p>
 </section>
-<section id="skaičiavimas-su-r" class="level1">
-<h1>Skaičiavimas su R</h1>
-<section id="dviejų-grupių-vidurkių-palyginimas" class="level2">
-<h2 class="anchored" data-anchor-id="dviejų-grupių-vidurkių-palyginimas">Dviejų grupių vidurkių palyginimas</h2>
+<section id="skaičiavimas-su-r" class="level2">
+<h2 class="anchored" data-anchor-id="skaičiavimas-su-r">Skaičiavimas su R</h2>
+<section id="dviejų-grupių-vidurkių-palyginimas" class="level3">
+<h3 class="anchored" data-anchor-id="dviejų-grupių-vidurkių-palyginimas">Dviejų grupių vidurkių palyginimas</h3>
 <p>Tarkime, tikimės, kad naujas metodas pagerins testo balą 5 punktais, o standartinis nuokrypis yra 10 punktų (taigi <em>d</em> = 0,5):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">10</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -278,8 +279,8 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 <p>Reikia maždaug <strong>64 tiriamųjų kiekvienoje grupėje</strong> (visada apvaliname į viršų).</p>
 </section>
-<section id="dviejų-proporcijų-palyginimas" class="level2">
-<h2 class="anchored" data-anchor-id="dviejų-proporcijų-palyginimas">Dviejų proporcijų palyginimas</h2>
+<section id="dviejų-proporcijų-palyginimas" class="level3">
+<h3 class="anchored" data-anchor-id="dviejų-proporcijų-palyginimas">Dviejų proporcijų palyginimas</h3>
 <p>Jei lauksime, kad pasveikusių dalis padidės nuo 60 % iki 80 %:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.prop.test</span>(<span class="at">p1 =</span> <span class="fl">0.6</span>, <span class="at">p2 =</span> <span class="fl">0.8</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -298,8 +299,8 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio" class="level2">
-<h2 class="anchored" data-anchor-id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio">Kaip imties dydis priklauso nuo efekto dydžio?</h2>
+<section id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio" class="level3">
+<h3 class="anchored" data-anchor-id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio">Kaip imties dydis priklauso nuo efekto dydžio?</h3>
 <p>Svarbiausia pamoka: kuo mažesnio efekto tikitės, tuo dramatiškai daugiau tiriamųjų reikia.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -342,8 +343,8 @@ NOTE: n is number in *each* group</code></pre>
 <p>Dideliam efektui aptikti užtenka ~26 tiriamųjų grupėje, vidutiniam — ~64, o mažam reikia jau beveik 400. Todėl „paimsiu 30, nes taip visi daro” nėra imties dydžio skaičiavimas.</p>
 </section>
 </section>
-<section id="keli-praktiniai-patarimai" class="level1">
-<h1>Keli praktiniai patarimai</h1>
+<section id="keli-praktiniai-patarimai" class="level2">
+<h2 class="anchored" data-anchor-id="keli-praktiniai-patarimai">Keli praktiniai patarimai</h2>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -363,8 +364,8 @@ Numatykite nubyrėjimą
 <li><strong>Post-hoc galios skaičiavimas</strong> (galia iš jau surinktų duomenų) yra beprasmis — galią skaičiuokite tik planuodami tyrimą.</li>
 </ul>
 </section>
-<section id="reikia-pagalbos" class="level1">
-<h1>Reikia pagalbos?</h1>
+<section id="reikia-pagalbos" class="level2">
+<h2 class="anchored" data-anchor-id="reikia-pagalbos">Reikia pagalbos?</h2>
 <p>Imties dydžio skaičiavimas sudėtingesniems dizainams (kartotiniai matavimai, klasterizuotos imtys, neproporcinga randomizacija) reikalauja daugiau nei <code>power.t.test</code>. Jei planuojate tyrimą, <a href="../../kontaktai.html">parašykite man</a> — paruošiu kelis imties scenarijus su paaiškinimu, kurį galėsite dėti tiesiai į protokolą. Daugiau apie tai — <a href="../../paslaugos.html">paslaugų puslapyje</a>.</p>
 
 
@@ -795,7 +796,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

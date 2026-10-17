@@ -108,6 +108,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:image" content="https://statistikas.lt/posts/kada-rinktis-mann-whitney/images/card.png">
 <meta name="twitter:creator" content="@p_alab">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://statistikas.lt/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">
 </head>
 
 <body class="nav-fixed post">
@@ -182,7 +183,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -226,8 +227,8 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.</p>
-<section id="kada-taikyti-mann-whitney-testą" class="level1">
-<h1>Kada taikyti Mann-Whitney testą?</h1>
+<section id="kada-taikyti-mann-whitney-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-taikyti-mann-whitney-testą">Kada taikyti Mann-Whitney testą?</h2>
 <p>Mann-Whitney testą reikėtų rinktis šiais atvejais:</p>
 <ul>
 <li><strong>Duomenys nepasiskirsto pagal normalųjį skirstinį</strong> - tai dažniausia priežastis</li>
@@ -248,8 +249,8 @@ Svarbu
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-wilcoxon-testą" class="level1">
-<h1>Kaip atlikti Wilcoxon testą?</h1>
+<section id="kaip-atlikti-wilcoxon-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-wilcoxon-testą">Kaip atlikti Wilcoxon testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -269,23 +270,23 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-rezultatus" class="level1">
-<h1>Kaip interpretuoti rezultatus?</h1>
+<section id="kaip-interpretuoti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-rezultatus">Kaip interpretuoti rezultatus?</h2>
 <p>Mann-Whitney testo rezultate svarbu:</p>
 <ol type="1">
 <li><strong>W statistika</strong> - testo statistika</li>
 <li><strong>p reikšmė</strong> - jei &lt; 0.05, skirtumas yra statistiškai reikšmingas</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-mann-whitney-testą" class="level1">
-<h1>Kaip raportuoti Mann-Whitney testą?</h1>
+<section id="kaip-raportuoti-mann-whitney-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-mann-whitney-testą">Kaip raportuoti Mann-Whitney testą?</h2>
 <p>Štai šablonas, kurį galite naudoti:</p>
 <blockquote class="blockquote">
 <p>“Atlikus Mann-Whitney U testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis nei versicolor rūšies (U = 23.5, p &lt; 0.001).”</p>
 </blockquote>
 </section>
-<section id="porinių-imčių-wilcoxon-testas" class="level1">
-<h1>Porinių imčių Wilcoxon testas</h1>
+<section id="porinių-imčių-wilcoxon-testas" class="level2">
+<h2 class="anchored" data-anchor-id="porinių-imčių-wilcoxon-testas">Porinių imčių Wilcoxon testas</h2>
 <p>Jei turime priklausomas (porines) imtis, naudojame <code>paired = TRUE</code> parametrą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pavyzdys su poriniais duomenimis</span></span>
@@ -303,8 +304,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 </section>
-<section id="vizualizacija" class="level1">
-<h1>Vizualizacija</h1>
+<section id="vizualizacija" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vizualizacija">Vizualizacija</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>iris_subset <span class="ot">&lt;-</span> iris[iris<span class="sc">$</span>Species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"setosa"</span>, <span class="st">"versicolor"</span>), ]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -327,6 +328,15 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -755,7 +765,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

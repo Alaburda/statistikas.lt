@@ -112,6 +112,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1344">
+<link rel="canonical" href="https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html">
 </head>
 
 <body class="nav-fixed post">
@@ -189,7 +190,7 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -233,16 +234,16 @@ gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
 
 
 <p>Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus, todėl Stjudento t-testas yra vienas dažniausių taikomų statistinių testų. Jeigu atliekate tyrimus, tikėtina, jog susidursite su duomenimis, kur t-testas bus tinkamas. Dėl to svarbu suprasti, kada taikyti testą, kaip jį interpretuoti bei kaip jį pateikti publikacijoje.</p>
-<section id="kam-skirtas-t-testas" class="level1">
-<h1>Kam skirtas t-testas?</h1>
+<section id="kam-skirtas-t-testas" class="level2">
+<h2 class="anchored" data-anchor-id="kam-skirtas-t-testas">Kam skirtas t-testas?</h2>
 <p>T-testas yra skirtas palyginti dviejų imčių vidurkius. Tai gali būti:</p>
 <ul>
 <li><strong>Nepriklausomos imtys</strong>: pavyzdžiui, vyrai ir moterys</li>
 <li><strong>Priklausomos (porinės) imtys</strong>: pavyzdžiui, matavimai prieš ir po gydymo tam pačiam pacientui</li>
 </ul>
 </section>
-<section id="kada-rinktis-t-testą" class="level1">
-<h1>Kada rinktis t-testą?</h1>
+<section id="kada-rinktis-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-rinktis-t-testą">Kada rinktis t-testą?</h2>
 <p>T-testą galima atlikti su tolydžiu kintamuoju, kurį galima padalinti į dvi grupes. Tolydų kintamąjį toliau vadinsime priklausomu kintamuoju, o savo grupių kintamąjį - nepriklausomu kintamuoju.</p>
 <p>Pirma, priklausomas kintamasis turi būti tolydus, t.y. jis turi gebėti įgyti daug skirtingų reikšmių. Tinkami priklausomi kintamieji:</p>
 <ul>
@@ -264,8 +265,8 @@ Patarimas
 <p>R naudoja Welch t-testą, kuriam nesvarbi skirtinga variacija. Todėl variacijos testavimas dirbant su R nėra būtinas!</p>
 </div>
 </div>
-<section id="normalumo-tikrinimas" class="level2">
-<h2 class="anchored" data-anchor-id="normalumo-tikrinimas">Normalumo tikrinimas</h2>
+<section id="normalumo-tikrinimas" class="level3">
+<h3 class="anchored" data-anchor-id="normalumo-tikrinimas">Normalumo tikrinimas</h3>
 <p>Normalumą galima patikrinti vizualiai su QQ grafiku:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Excel</a></li></ul>
@@ -296,8 +297,8 @@ Patarimas
 </div>
 </section>
 </section>
-<section id="kaip-atlikti-t-testą" class="level1">
-<h1>Kaip atlikti t-testą?</h1>
+<section id="kaip-atlikti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-t-testą">Kaip atlikti t-testą?</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Excel</a></li></ul>
 <div class="tab-content">
@@ -325,8 +326,8 @@ sample estimates:
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-t-testą" class="level1">
-<h1>Kaip interpretuoti t-testą?</h1>
+<section id="kaip-interpretuoti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-t-testą">Kaip interpretuoti t-testą?</h2>
 <p>T-testo rezultate svarbiausios reikšmės:</p>
 <ol type="1">
 <li><strong>t reikšmė</strong> - kuo toliau nuo 0, tuo didesnis skirtumas</li>
@@ -334,17 +335,26 @@ sample estimates:
 <li><strong>Pasikliautinasis intervalas</strong> - parodo skirtumų intervalą</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-t-testą" class="level1">
-<h1>Kaip raportuoti t-testą?</h1>
+<section id="kaip-raportuoti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-t-testą">Kaip raportuoti t-testą?</h2>
 <p>Štai šablonas, kurį galite naudoti:</p>
 <blockquote class="blockquote">
 <p>“Atlikus nepriklausomų imčių t-testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis (M = 5.01, SD = 0.35) nei versicolor rūšies (M = 5.94, SD = 0.52); t(86.54) = -10.52, p &lt; 0.001.”</p>
 </blockquote>
 </section>
-<section id="jeigu-negaliu-taikyti-t-testo" class="level1">
-<h1>Jeigu negaliu taikyti t-testo?</h1>
+<section id="jeigu-negaliu-taikyti-t-testo" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="jeigu-negaliu-taikyti-t-testo">Jeigu negaliu taikyti t-testo?</h2>
 <p>Jeigu Stjudento t-testas nėra tinkamas, tokiu atveju reikėtų taikyti Mann-Whitney U testą. Aprašą apie testą galima rasti <a href="../../posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">čia</a>.</p>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -773,7 +783,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Statistikas.lt · Paulius Alaburda</p>
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">

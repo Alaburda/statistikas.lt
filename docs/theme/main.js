@@ -7,7 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
   initHeroFigure();
   initTopicFromUrl();
   initFormHandling();
+  initFooterYear();
 });
+
+// ============================================
+// Footer year stays current without a re-render
+// ============================================
+function initFooterYear() {
+  document.querySelectorAll('.footer-year').forEach((el) => {
+    el.textContent = new Date().getFullYear();
+  });
+}
 
 // ============================================
 // Gentle reveal of blocks on scroll
@@ -118,8 +128,15 @@ function initHeroFigure() {
 function initTopicFromUrl() {
   const params = new URLSearchParams(window.location.search);
 
-  // Where the visitor came from (e.g. "analize-cta" from the free analysis tool)
-  const source = params.get('saltinis');
+  // Where the visitor came from (e.g. "analize-cta" from the free analysis tool,
+  // or utm_* tags on Facebook links). Kept for the session so it survives the
+  // visitor browsing a few pages before reaching the contact form.
+  let source = params.get('saltinis') ||
+    [params.get('utm_source'), params.get('utm_campaign')].filter(Boolean).join('-');
+  try {
+    if (source) sessionStorage.setItem('saltinis', source);
+    else source = sessionStorage.getItem('saltinis');
+  } catch (e) { /* storage blocked: use the URL value only */ }
   const sourceInput = document.querySelector('input[name="saltinis"]');
   if (source && sourceInput) sourceInput.value = source.slice(0, 60);
 

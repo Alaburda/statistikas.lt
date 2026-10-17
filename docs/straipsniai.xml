@@ -8,7 +8,7 @@
 <title>Statistikas.lt</title>
 <link>https://statistikas.lt/straipsniai.html</link>
 <atom:link href="https://statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
-<description>Praktiniai patarimai kasdieniame darbe.</description>
+<description>Praktiniai statistikos gidai lietuviškai: kaip pasirinkti statistinį testą, apskaičiuoti imties dydį, atlikti t testą, ANOVA ar chi kvadrato testą ir interpretuoti p reikšmę.</description>
 <generator>quarto-1.5.52</generator>
 <lastBuildDate>Sat, 04 Jul 2026 21:00:00 GMT</lastBuildDate>
 <item>
@@ -27,10 +27,19 @@
 <p>Antra, AI įrankiai yra labai linkę įtikti. Išskyrus Claude, kiti įrankiai nestabdys tavęs atlikti netinkamą statistinį testą, užsiimti “cherry-pick’inimu” ar selektyviai pasirintki rezultatus. Jeigu paprašysi t-test’o, jie duos t-testą, nors galbūt reikėjo tiesinės regresijos arba Mann-Whitney testo. Galbūt iš viso reikėjo kitaip pažiūrėti į patį tyrimą ir gal net susikurti išvestinį stulpelį arba apsitvarkyti duomenis. AI nėra linkęs sustoti ir sakyti “žinai, tavo duomenys nėra labai tvarkingi, gal pirma paskirkim laiko susitvarkyti?”.</p>
 <p>Galiausiai, yra paprasčiausias argumentas - o kur išsiunčiame savo surinktus duomenis? Ar turime bioetikos leidimą dalintis duomenimis už ES ribų? Ar mūsų duomenys yra anonimizuoti, jog galėtume jais dalintis?</p>
 </section>
-<section id="kita-monetos-pusė" class="level2">
+<section id="kita-monetos-pusė" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="kita-monetos-pusė">Kita monetos pusė</h2>
 <p>Aš pats matau pagrindinį iššūkį statistikoje ne technologijoje, o procese. Didžiausias butelio kaklelis, kurį aš pats patyriau, yra fragmentuotuose įrankiuose. Mano darbas yra Word’e, mano statistika visai kitur - tai toli gražu nėra patogu, kai reikia kopijuoti iš vienos vietos į kitą ir tai kartoti N kartų. Įrankiai kaip <code>Quarto</code> tai išsprendžia, bet reikia jaustis patogiai dirbti su <em>kodo</em> redaktoriumi.</p>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -38,24 +47,6 @@
   <category>AI</category>
   <category>statistika</category>
   <guid>https://statistikas.lt/posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html</guid>
-  <pubDate>Sat, 04 Jul 2026 21:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Kada atlikti p reikšmių korekciją?</title>
-  <dc:creator>Paulius Alaburda</dc:creator>
-  <link>https://statistikas.lt/posts/kada-atlikti-p-reiksmiu-korekcija/kada-atlikti-p-reiksmiu-korekcija.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-
- ]]></description>
-  <category>R</category>
-  <category>p reikšmės</category>
-  <guid>https://statistikas.lt/posts/kada-atlikti-p-reiksmiu-korekcija/kada-atlikti-p-reiksmiu-korekcija.html</guid>
   <pubDate>Sat, 04 Jul 2026 21:00:00 GMT</pubDate>
 </item>
 <item>
@@ -68,10 +59,10 @@
 
 
 <p>„Kokį testą man taikyti?” — tai dažniausias klausimas, kurį girdžiu iš studentų ir tyrėjų. Gera žinia: daugumai baigiamųjų darbų ir publikacijų užtenka vos kelių testų, o tinkamą išsirinkti galima atsakius į tris klausimus apie savo duomenis.</p>
-<section id="trys-klausimai-prieš-renkantis-testą" class="level1">
-<h1>Trys klausimai prieš renkantis testą</h1>
-<section id="koks-jūsų-priklausomas-kintamasis" class="level2">
-<h2 class="anchored" data-anchor-id="koks-jūsų-priklausomas-kintamasis">1. Koks jūsų priklausomas kintamasis?</h2>
+<section id="trys-klausimai-prieš-renkantis-testą" class="level2">
+<h2 class="anchored" data-anchor-id="trys-klausimai-prieš-renkantis-testą">Trys klausimai prieš renkantis testą</h2>
+<section id="koks-jūsų-priklausomas-kintamasis" class="level3">
+<h3 class="anchored" data-anchor-id="koks-jūsų-priklausomas-kintamasis">1. Koks jūsų priklausomas kintamasis?</h3>
 <p>Priklausomas kintamasis — tai matavimas, kurį lyginate tarp grupių. Jis gali būti:</p>
 <ul>
 <li><strong>Tolydus</strong> — ūgis, svoris, balų suma, laboratorinis rodiklis. Gali įgyti daug skirtingų reikšmių.</li>
@@ -79,23 +70,23 @@
 <li><strong>Ranginis</strong> — Likerto skalės klausimai („visiškai nesutinku” … „visiškai sutinku”). Formaliai tai kategorijos, bet su aiškia tvarka.</li>
 </ul>
 </section>
-<section id="kiek-grupių-lyginate" class="level2">
-<h2 class="anchored" data-anchor-id="kiek-grupių-lyginate">2. Kiek grupių lyginate?</h2>
+<section id="kiek-grupių-lyginate" class="level3">
+<h3 class="anchored" data-anchor-id="kiek-grupių-lyginate">2. Kiek grupių lyginate?</h3>
 <ul>
 <li><strong>Dvi grupės</strong> — pavyzdžiui, kontrolinė ir tiriamoji.</li>
 <li><strong>Trys ar daugiau grupių</strong> — pavyzdžiui, trys gydymo schemos.</li>
 </ul>
 </section>
-<section id="ar-imtys-nepriklausomos" class="level2">
-<h2 class="anchored" data-anchor-id="ar-imtys-nepriklausomos">3. Ar imtys nepriklausomos?</h2>
+<section id="ar-imtys-nepriklausomos" class="level3">
+<h3 class="anchored" data-anchor-id="ar-imtys-nepriklausomos">3. Ar imtys nepriklausomos?</h3>
 <ul>
 <li><strong>Nepriklausomos imtys</strong> — skirtingi žmonės skirtingose grupėse (vyrai ir moterys).</li>
 <li><strong>Priklausomos (porinės) imtys</strong> — tie patys tiriamieji matuojami kelis kartus (prieš ir po gydymo).</li>
 </ul>
 </section>
 </section>
-<section id="testų-žemėlapis" class="level1">
-<h1>Testų žemėlapis</h1>
+<section id="testų-žemėlapis" class="level2">
+<h2 class="anchored" data-anchor-id="testų-žemėlapis">Testų žemėlapis</h2>
 <p>Atsakę į šiuos klausimus, testą galite rasti šiame žemėlapyje:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -327,10 +318,10 @@ font-style: inherit;">element_blank</span>())</span></code></pre></div>
 </div>
 </div>
 </section>
-<section id="dažniausi-scenarijai" class="level1">
-<h1>Dažniausi scenarijai</h1>
-<section id="lyginate-dvi-grupes" class="level2">
-<h2 class="anchored" data-anchor-id="lyginate-dvi-grupes">Lyginate dvi grupes</h2>
+<section id="dažniausi-scenarijai" class="level2">
+<h2 class="anchored" data-anchor-id="dažniausi-scenarijai">Dažniausi scenarijai</h2>
+<section id="lyginate-dvi-grupes" class="level3">
+<h3 class="anchored" data-anchor-id="lyginate-dvi-grupes">Lyginate dvi grupes</h3>
 <p>Jei priklausomas kintamasis tolydus ir pasiskirstęs apytiksliai pagal normalųjį skirstinį — rinkitės <a href="../../posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html">Stjudento t-testą</a>. Jei skirstinys akivaizdžiai nenormalus arba kintamasis ranginis — <a href="../../posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">Mann-Whitney testą</a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -346,21 +337,21 @@ Patarimas
 </div>
 </div>
 </section>
-<section id="lyginate-tris-ar-daugiau-grupių" class="level2">
-<h2 class="anchored" data-anchor-id="lyginate-tris-ar-daugiau-grupių">Lyginate tris ar daugiau grupių</h2>
+<section id="lyginate-tris-ar-daugiau-grupių" class="level3">
+<h3 class="anchored" data-anchor-id="lyginate-tris-ar-daugiau-grupių">Lyginate tris ar daugiau grupių</h3>
 <p>Tolydiems, normaliai pasiskirsčiusiems duomenims — <a href="../../posts/kada-rinktis-anova/kada-rinktis-anova.html">ANOVA</a>. Nenormaliems ar ranginiams — <a href="../../posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html">Kruskal-Wallis testas</a>. Abiem atvejais po statistiškai reikšmingo rezultato reikės post-hoc testų, kad sužinotumėte, <em>kurios</em> grupės skiriasi.</p>
 </section>
-<section id="lyginate-dažnius-ar-proporcijas" class="level2">
-<h2 class="anchored" data-anchor-id="lyginate-dažnius-ar-proporcijas">Lyginate dažnius ar proporcijas</h2>
+<section id="lyginate-dažnius-ar-proporcijas" class="level3">
+<h3 class="anchored" data-anchor-id="lyginate-dažnius-ar-proporcijas">Lyginate dažnius ar proporcijas</h3>
 <p>Kai ir priklausomas, ir nepriklausomas kintamieji yra kategoriniai (pvz., ar pasveikusių dalis skiriasi tarp gydymo grupių) — <a href="../../posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html">chi kvadrato testas</a>.</p>
 </section>
-<section id="matuojate-tuos-pačius-žmones-kelis-kartus" class="level2">
-<h2 class="anchored" data-anchor-id="matuojate-tuos-pačius-žmones-kelis-kartus">Matuojate tuos pačius žmones kelis kartus</h2>
+<section id="matuojate-tuos-pačius-žmones-kelis-kartus" class="level3">
+<h3 class="anchored" data-anchor-id="matuojate-tuos-pačius-žmones-kelis-kartus">Matuojate tuos pačius žmones kelis kartus</h3>
 <p>Prieš–po matavimams su tolydžiu kintamuoju tinka porinis t-testas (<code>t.test(..., paired = TRUE)</code>), nenormaliems duomenims — Wilcoxon ženklų testas (<code>wilcox.test(..., paired = TRUE)</code>), kategoriniams — McNemar testas.</p>
 </section>
 </section>
-<section id="ko-šis-žemėlapis-neapima" class="level1">
-<h1>Ko šis žemėlapis neapima?</h1>
+<section id="ko-šis-žemėlapis-neapima" class="level2">
+<h2 class="anchored" data-anchor-id="ko-šis-žemėlapis-neapima">Ko šis žemėlapis neapima?</h2>
 <p>Žemėlapis apima dažniausius palyginimo scenarijus, bet ne viską:</p>
 <ul>
 <li><strong>Ryšio tarp dviejų tolydžių kintamųjų</strong> vertinimui naudokite koreliaciją arba tiesinę regresiją.</li>
@@ -369,8 +360,8 @@ Patarimas
 <li><strong>Daugiau nei dviem matavimams laike</strong> — kartotinių matavimų ANOVA arba mišriuosius modelius.</li>
 </ul>
 </section>
-<section id="prieš-atlikdami-testą" class="level1">
-<h1>Prieš atlikdami testą</h1>
+<section id="prieš-atlikdami-testą" class="level2">
+<h2 class="anchored" data-anchor-id="prieš-atlikdami-testą">Prieš atlikdami testą</h2>
 <p>Nepamirškite, kad testo pasirinkimas — tik pusė darbo. Prieš tai verta <a href="../../posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html">patikrinti duomenų kokybę</a> ir įsitikinti, kad <a href="../../posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html">duomenys tinkamai užkoduoti</a>. O planuojant tyrimą iš anksto — apskaičiuoti reikiamą imties dydį.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -407,8 +398,8 @@ Vis dar abejojate?
 
 
 <p>„Kiek tiriamųjų man reikia?” — klausimas, kurį verta užduoti <em>prieš</em> renkant duomenis, o ne po to. Per maža imtis reiškia, kad realiai egzistuojančio skirtumo galite tiesiog nepamatyti, o per didelė — švaistote laiką, pinigus, o medicinos tyrimuose tai ir etikos klausimas: kam tirti daugiau žmonių, nei būtina?</p>
-<section id="keturi-ingredientai" class="level1">
-<h1>Keturi ingredientai</h1>
+<section id="keturi-ingredientai" class="level2">
+<h2 class="anchored" data-anchor-id="keturi-ingredientai">Keturi ingredientai</h2>
 <p>Imties dydžio skaičiavimui reikia keturių dalykų:</p>
 <ol type="1">
 <li><strong>Statistinis testas</strong>, kurį planuojate taikyti (t-testas, chi kvadrato testas ir t.t.). Jei nesate tikri, pradėkite nuo <a href="../../posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html">testo pasirinkimo gido</a>.</li>
@@ -418,8 +409,8 @@ Vis dar abejojate?
 </ol>
 <p>Pirmi trys yra susitarimo reikalas. Visas darbas — ketvirtajame.</p>
 </section>
-<section id="iš-kur-gauti-efekto-dydį" class="level1">
-<h1>Iš kur gauti efekto dydį?</h1>
+<section id="iš-kur-gauti-efekto-dydį" class="level2">
+<h2 class="anchored" data-anchor-id="iš-kur-gauti-efekto-dydį">Iš kur gauti efekto dydį?</h2>
 <p>Efekto dydis yra svarbiausias ir sunkiausias ingredientas. Trys dažniausi šaltiniai:</p>
 <ul>
 <li><strong>Ankstesni tyrimai</strong> — panašių publikacijų rezultatai (vidurkiai ir standartiniai nuokrypiai).</li>
@@ -428,10 +419,10 @@ Vis dar abejojate?
 </ul>
 <p>Tolydiems kintamiesiems efekto dydis dažnai išreiškiamas Cohen’o <em>d</em> — grupių vidurkių skirtumu, padalintu iš standartinio nuokrypio. Orientyrai: 0,2 — mažas, 0,5 — vidutinis, 0,8 — didelis efektas.</p>
 </section>
-<section id="skaičiavimas-su-r" class="level1">
-<h1>Skaičiavimas su R</h1>
-<section id="dviejų-grupių-vidurkių-palyginimas" class="level2">
-<h2 class="anchored" data-anchor-id="dviejų-grupių-vidurkių-palyginimas">Dviejų grupių vidurkių palyginimas</h2>
+<section id="skaičiavimas-su-r" class="level2">
+<h2 class="anchored" data-anchor-id="skaičiavimas-su-r">Skaičiavimas su R</h2>
+<section id="dviejų-grupių-vidurkių-palyginimas" class="level3">
+<h3 class="anchored" data-anchor-id="dviejų-grupių-vidurkių-palyginimas">Dviejų grupių vidurkių palyginimas</h3>
 <p>Tarkime, tikimės, kad naujas metodas pagerins testo balą 5 punktais, o standartinis nuokrypis yra 10 punktų (taigi <em>d</em> = 0,5):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -469,8 +460,8 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 <p>Reikia maždaug <strong>64 tiriamųjų kiekvienoje grupėje</strong> (visada apvaliname į viršų).</p>
 </section>
-<section id="dviejų-proporcijų-palyginimas" class="level2">
-<h2 class="anchored" data-anchor-id="dviejų-proporcijų-palyginimas">Dviejų proporcijų palyginimas</h2>
+<section id="dviejų-proporcijų-palyginimas" class="level3">
+<h3 class="anchored" data-anchor-id="dviejų-proporcijų-palyginimas">Dviejų proporcijų palyginimas</h3>
 <p>Jei lauksime, kad pasveikusių dalis padidės nuo 60 % iki 80 %:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
@@ -507,8 +498,8 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio" class="level2">
-<h2 class="anchored" data-anchor-id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio">Kaip imties dydis priklauso nuo efekto dydžio?</h2>
+<section id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio" class="level3">
+<h3 class="anchored" data-anchor-id="kaip-imties-dydis-priklauso-nuo-efekto-dydžio">Kaip imties dydis priklauso nuo efekto dydžio?</h3>
 <p>Svarbiausia pamoka: kuo mažesnio efekto tikitės, tuo dramatiškai daugiau tiriamųjų reikia.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
@@ -732,8 +723,8 @@ font-style: inherit;">13</span>)</span></code></pre></div>
 <p>Dideliam efektui aptikti užtenka ~26 tiriamųjų grupėje, vidutiniam — ~64, o mažam reikia jau beveik 400. Todėl „paimsiu 30, nes taip visi daro” nėra imties dydžio skaičiavimas.</p>
 </section>
 </section>
-<section id="keli-praktiniai-patarimai" class="level1">
-<h1>Keli praktiniai patarimai</h1>
+<section id="keli-praktiniai-patarimai" class="level2">
+<h2 class="anchored" data-anchor-id="keli-praktiniai-patarimai">Keli praktiniai patarimai</h2>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -753,8 +744,8 @@ Numatykite nubyrėjimą
 <li><strong>Post-hoc galios skaičiavimas</strong> (galia iš jau surinktų duomenų) yra beprasmis — galią skaičiuokite tik planuodami tyrimą.</li>
 </ul>
 </section>
-<section id="reikia-pagalbos" class="level1">
-<h1>Reikia pagalbos?</h1>
+<section id="reikia-pagalbos" class="level2">
+<h2 class="anchored" data-anchor-id="reikia-pagalbos">Reikia pagalbos?</h2>
 <p>Imties dydžio skaičiavimas sudėtingesniems dizainams (kartotiniai matavimai, klasterizuotos imtys, neproporcinga randomizacija) reikalauja daugiau nei <code>power.t.test</code>. Jei planuojate tyrimą, <a href="../../kontaktai.html">parašykite man</a> — paruošiu kelis imties scenarijus su paaiškinimu, kurį galėsite dėti tiesiai į protokolą. Daugiau apie tai — <a href="../../paslaugos.html">paslaugų puslapyje</a>.</p>
 
 
@@ -778,15 +769,15 @@ Numatykite nubyrėjimą
 
 
 <p>p reikšmė yra bene dažniausiai naudojamas ir bene dažniausiai klaidingai interpretuojamas skaičius statistikoje. Beveik kiekviena publikacija remiasi riba p &lt; 0,05, bet paklausus, ką tas skaičius iš tikrųjų reiškia, atsakymai dažnai būna netikslūs.</p>
-<section id="apibrėžimas" class="level1">
-<h1>Apibrėžimas</h1>
+<section id="apibrėžimas" class="level2">
+<h2 class="anchored" data-anchor-id="apibrėžimas">Apibrėžimas</h2>
 <blockquote class="blockquote">
 <p>p reikšmė — tai tikimybė gauti tokį ar dar ekstremalesnį rezultatą, <strong>jei nulinė hipotezė būtų teisinga</strong> (t. y. jei skirtumo iš tikrųjų nebūtų).</p>
 </blockquote>
 <p>Kitaip tariant, p reikšmė atsako į klausimą: „Jei grupės iš tikrųjų nesiskiria, kiek tikėtina vien dėl atsitiktinumo pamatyti tokį skirtumą, kokį pamatėme?” Jei ta tikimybė maža (tarkime, mažesnė nei 5 %), darome išvadą, kad duomenys nesuderinami su nuline hipoteze, ir vadiname rezultatą statistiškai reikšmingu.</p>
 </section>
-<section id="ko-p-reikšmė-nereiškia" class="level1">
-<h1>Ko p reikšmė NEreiškia</h1>
+<section id="ko-p-reikšmė-nereiškia" class="level2">
+<h2 class="anchored" data-anchor-id="ko-p-reikšmė-nereiškia">Ko p reikšmė NEreiškia</h2>
 <p>Šios interpretacijos yra klaidingos, nors sutinkamos net publikacijose:</p>
 <ul>
 <li>❌ „p = 0,03 reiškia, kad yra 97 % tikimybė, jog skirtumas tikras.” p reikšmė nieko nesako apie tikimybę, kad hipotezė teisinga — ji skaičiuojama <em>darant prielaidą</em>, kad nulinė hipotezė teisinga.</li>
@@ -795,8 +786,8 @@ Numatykite nubyrėjimą
 <li>❌ „Maža p reikšmė reiškia didelį ir svarbų efektą.” p reikšmė priklauso ir nuo efekto dydžio, ir nuo imties dydžio — su milžiniška imtimi net mikroskopinis skirtumas taps „reikšmingu”.</li>
 </ul>
 </section>
-<section id="pažiūrėkime-simuliacijoje" class="level1">
-<h1>Pažiūrėkime simuliacijoje</h1>
+<section id="pažiūrėkime-simuliacijoje" class="level2">
+<h2 class="anchored" data-anchor-id="pažiūrėkime-simuliacijoje">Pažiūrėkime simuliacijoje</h2>
 <p>Ką daro p reikšmė, geriausiai matyti sumodeliavus daug tyrimų. Sugeneruokime po 5 000 eksperimentų dviem atvejais: kai skirtumo tarp grupių <strong>nėra</strong> ir kai jis <strong>yra</strong> (vidutinis efektas, d = 0,5):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -994,8 +985,8 @@ font-style: inherit;">0.05</span>)</span></code></pre></div>
 </div>
 <p>Su 30 tiriamųjų grupėje realų vidutinį efektą aptinkame tik maždaug puse atvejų — todėl imties dydį verta skaičiuoti prieš tyrimą, o ne tikėtis sėkmės.</p>
 </section>
-<section id="statistinis-reikšmingumas-praktinė-svarba" class="level1">
-<h1>Statistinis reikšmingumas ≠ praktinė svarba</h1>
+<section id="statistinis-reikšmingumas-praktinė-svarba" class="level2">
+<h2 class="anchored" data-anchor-id="statistinis-reikšmingumas-praktinė-svarba">Statistinis reikšmingumas ≠ praktinė svarba</h2>
 <p>p reikšmė nesako, ar skirtumas yra <em>svarbus</em>. Vaistas, kuris statistiškai reikšmingai (p &lt; 0,001) sumažina kraujospūdį 1 mmHg, yra kliniškai bevertis. Ir atvirkščiai — pilotiniame tyrime p = 0,08 su dideliu efekto dydžiu gali būti daug žadantis rezultatas.</p>
 <p>Todėl šalia p reikšmės visada pateikite:</p>
 <ul>
@@ -1016,8 +1007,8 @@ Kaip rašyti publikacijoje
 </div>
 </div>
 </section>
-<section id="santrauka" class="level1">
-<h1>Santrauka</h1>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1070,8 +1061,8 @@ Kaip rašyti publikacijoje
 
 
 
-<section id="kas-yra-stačiakampė-diagrama-boxplot" class="level1">
-<h1>Kas yra stačiakampė diagrama (boxplot)?</h1>
+<section id="kas-yra-stačiakampė-diagrama-boxplot" class="level2">
+<h2 class="anchored" data-anchor-id="kas-yra-stačiakampė-diagrama-boxplot">Kas yra stačiakampė diagrama (boxplot)?</h2>
 <p>Stačiakampė diagrama, arba <em>boxplot</em>, yra vienas iš dažniausiai naudojamų grafikų moksliniuose darbuose. Ji parodo duomenų pasiskirstymą kompaktiškai: medianą, kvartiles, ekstremumus ir galimus išskirtis (<em>outliers</em>). Boxplot ypač naudingas, kai norime palyginti kelis pogrupius.</p>
 <p>Šiame straipsnyje parodysiu <strong>4 skirtingus būdus</strong>, kaip sukurti boxplot su R:</p>
 <ol type="1">
@@ -1091,8 +1082,8 @@ Kaip rašyti publikacijoje
 </div>
 </div>
 </section>
-<section id="base-r" class="level1">
-<h1>1. Base R</h1>
+<section id="base-r" class="level2">
+<h2 class="anchored" data-anchor-id="base-r">1. Base R</h2>
 <p>Paprasčiausias būdas – naudoti <code>boxplot()</code> funkciją, kuri yra įtraukta į base R. Nereikia jokių papildomų paketų:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -1163,8 +1154,8 @@ Kada naudoti base R?
 <li>Netinka publikacijoms</li>
 </ul>
 </section>
-<section id="ggplot2" class="level1">
-<h1>2. ggplot2</h1>
+<section id="ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="ggplot2">2. ggplot2</h2>
 <p><code>ggplot2</code> yra populiariausias R vizualizacijos paketas. Jis leidžia kurti gražius ir profesionalius grafikus naudojant „gramatikos” principą – grafikas kuriamas sluoksnis po sluoksnio:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
@@ -1406,8 +1397,8 @@ Patarimas
 <li>Pradedantiesiems gali būti sudėtinga sintaksė</li>
 </ul>
 </section>
-<section id="tidyplots" class="level1">
-<h1>3. tidyplots</h1>
+<section id="tidyplots" class="level2">
+<h2 class="anchored" data-anchor-id="tidyplots">3. tidyplots</h2>
 <p><a href="https://jbengler.github.io/tidyplots/"><code>tidyplots</code></a> yra naujas paketas, sukurtas specialiai mokslinėms publikacijoms. Jo sintaksė yra labai intuityvi – naudojamas <em>pipe</em> operatorius <code>|&gt;</code>, o funkcijos pradedamos nuo <code>add_</code>, <code>adjust_</code>, <code>remove_</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
@@ -1604,8 +1595,8 @@ Kodėl verta išbandyti tidyplots?
 <li>Mažiau pritaikymo galimybių nei <code>ggplot2</code></li>
 </ul>
 </section>
-<section id="ggpubr" class="level1">
-<h1>4. ggpubr</h1>
+<section id="ggpubr" class="level2">
+<h2 class="anchored" data-anchor-id="ggpubr">4. ggpubr</h2>
 <p><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a> yra <code>ggplot2</code> plėtinys, kuris supaprastina grafikų kūrimą ir prideda galimybę tiesiogiai grafikuose rodyti statistinius palyginimus:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
@@ -1748,8 +1739,8 @@ Statistiniai palyginimai grafike
 <li>Ribotesnis stilių pasirinkimas</li>
 </ul>
 </section>
-<section id="palyginimas" class="level1">
-<h1>Palyginimas</h1>
+<section id="palyginimas" class="level2">
+<h2 class="anchored" data-anchor-id="palyginimas">Palyginimas</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1799,8 +1790,8 @@ Statistiniai palyginimai grafike
 </tbody>
 </table>
 </section>
-<section id="išvados" class="level1">
-<h1>Išvados</h1>
+<section id="išvados" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="išvados">Išvados</h2>
 <ul>
 <li><strong>Eksploracijai</strong> – naudokite <strong>base R</strong> <code>boxplot()</code>, jei norite greitai peržiūrėti duomenis.</li>
 <li><strong>Publikacijoms</strong> – naudokite <strong>ggplot2</strong> arba <strong>tidyplots</strong>, jei norite pilnai kontroliuoti grafiko išvaizdą.</li>
@@ -1809,6 +1800,15 @@ Statistiniai palyginimai grafike
 </ul>
 <p>Nepriklausomai nuo to, kurį būdą pasirinksite, svarbiausia, kad boxplot būtų aiškus, informatyvus ir tinkamai pavaizduotų jūsų duomenis. 🎯</p>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -1830,8 +1830,8 @@ Statistiniai palyginimai grafike
 
 
 
-<section id="kada-taikyti-kruskal-wallis-testą" class="level1">
-<h1>Kada taikyti Kruskal-Wallis testą?</h1>
+<section id="kada-taikyti-kruskal-wallis-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-taikyti-kruskal-wallis-testą">Kada taikyti Kruskal-Wallis testą?</h2>
 <p>Kruskal-Wallis testas yra neparametrinis testas palyginti 3 arba daugiau grupių. Įprastai jis taikomas tada, kai ANOVA likutinės reikšmės yra nepasiskirsčiusios pagal normalųjį skirstinį. Kruskal-Wallis principas labai panašus (variacijos palyginimas), tik prieš testo atlikimą priklausomo kintamojo reikšmės yra transformuojamos į rangines vertes. Atitinkamai, testo rezultatai bus taip pat panašūs.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1851,8 +1851,8 @@ Kada rinktis Kruskal-Wallis?
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-kruskal-wallis-testą" class="level1">
-<h1>Kaip atlikti Kruskal-Wallis testą?</h1>
+<section id="kaip-atlikti-kruskal-wallis-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-kruskal-wallis-testą">Kaip atlikti Kruskal-Wallis testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1877,15 +1877,15 @@ Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-raportuoti-kruskal-wallis-testą" class="level1">
-<h1>Kaip raportuoti Kruskal-Wallis testą?</h1>
+<section id="kaip-raportuoti-kruskal-wallis-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-kruskal-wallis-testą">Kaip raportuoti Kruskal-Wallis testą?</h2>
 <p>Štai šablonas, kurį galite naudoti:</p>
 <blockquote class="blockquote">
 <p>“Atlikus Kruskal-Wallis testą, nustatyta, kad taurėlapių ilgis statistiškai reikšmingai skyrėsi tarp rūšių (H = 96.94, df = 2, p &lt; 0.001).”</p>
 </blockquote>
 </section>
-<section id="post-hoc-testai" class="level1">
-<h1>Post-hoc testai</h1>
+<section id="post-hoc-testai" class="level2">
+<h2 class="anchored" data-anchor-id="post-hoc-testai">Post-hoc testai</h2>
 <p>Jei Kruskal-Wallis testas yra statistiškai reikšmingas, reikia atlikti post-hoc testą. Galima naudoti pairwise Wilcoxon testą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
@@ -1913,8 +1913,8 @@ P value adjustment method: BH </code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-vizualizuoti-kruskal-wallis-testą" class="level1">
-<h1>Kaip vizualizuoti Kruskal-Wallis testą?</h1>
+<section id="kaip-vizualizuoti-kruskal-wallis-testą" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kaip-vizualizuoti-kruskal-wallis-testą">Kaip vizualizuoti Kruskal-Wallis testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1977,6 +1977,15 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 </div>
 
 
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
 </section>
 
  ]]></description>
@@ -1997,8 +2006,8 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 
 
 <p>Chi-kvadrato testas yra vienas populiariausių statistinių testų kategoriniams duomenims analizuoti. Jis naudojamas patikrinti, ar egzistuoja ryšys tarp dviejų kategorinių kintamųjų.</p>
-<section id="kada-taikyti-chi-kvadrato-testą" class="level1">
-<h1>Kada taikyti Chi-kvadrato testą?</h1>
+<section id="kada-taikyti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-taikyti-chi-kvadrato-testą">Kada taikyti Chi-kvadrato testą?</h2>
 <p>Chi-kvadrato testą renkamės, kai:</p>
 <ul>
 <li><strong>Abu kintamieji yra kategoriniai</strong> (pvz., lytis ir rūkymo statusas)</li>
@@ -2020,8 +2029,8 @@ Dėmesio
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-chi-kvadrato-testą" class="level1">
-<h1>Kaip atlikti Chi-kvadrato testą?</h1>
+<section id="kaip-atlikti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-chi-kvadrato-testą">Kaip atlikti Chi-kvadrato testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -2088,8 +2097,8 @@ X-squared = 0, df = 1, p-value = 1</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-rezultatus" class="level1">
-<h1>Kaip interpretuoti rezultatus?</h1>
+<section id="kaip-interpretuoti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-rezultatus">Kaip interpretuoti rezultatus?</h2>
 <p>Chi-kvadrato testo rezultate svarbu:</p>
 <ol type="1">
 <li><strong>X-squared</strong> - testo statistika</li>
@@ -2097,15 +2106,15 @@ X-squared = 0, df = 1, p-value = 1</code></pre>
 <li><strong>p-value</strong> - jei &lt; 0.05, ryšys yra statistiškai reikšmingas</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-chi-kvadrato-testą" class="level1">
-<h1>Kaip raportuoti Chi-kvadrato testą?</h1>
+<section id="kaip-raportuoti-chi-kvadrato-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-chi-kvadrato-testą">Kaip raportuoti Chi-kvadrato testą?</h2>
 <p>Aš dažniausiai naudoju tokį šabloną:</p>
 <blockquote class="blockquote">
 <p>“Atlikus Chi-kvadrato testą, sąsaja tarp lyties ir rūkymo nebuvo statistiškai reikšminga (χ² = 2.4, df = 1, p = 0.121).”</p>
 </blockquote>
 </section>
-<section id="fishers-exact-testas" class="level1">
-<h1>Fisher’s exact testas</h1>
+<section id="fishers-exact-testas" class="level2">
+<h2 class="anchored" data-anchor-id="fishers-exact-testas">Fisher’s exact testas</h2>
 <p>Kai laukiami dažniai yra maži (&lt; 5), naudojame Fisher’s exact testą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
@@ -2148,8 +2157,8 @@ odds ratio
 </div>
 </div>
 </section>
-<section id="vizualizacija" class="level1">
-<h1>Vizualizacija</h1>
+<section id="vizualizacija" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vizualizacija">Vizualizacija</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2223,6 +2232,15 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 </div>
 
 
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
 </section>
 
  ]]></description>
@@ -2242,16 +2260,16 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 
 
 <p>Palyginti dviejų imčių vidurkius yra standartinė užduotis atliekant tyrimus, todėl Stjudento t-testas yra vienas dažniausių taikomų statistinių testų. Jeigu atliekate tyrimus, tikėtina, jog susidursite su duomenimis, kur t-testas bus tinkamas. Dėl to svarbu suprasti, kada taikyti testą, kaip jį interpretuoti bei kaip jį pateikti publikacijoje.</p>
-<section id="kam-skirtas-t-testas" class="level1">
-<h1>Kam skirtas t-testas?</h1>
+<section id="kam-skirtas-t-testas" class="level2">
+<h2 class="anchored" data-anchor-id="kam-skirtas-t-testas">Kam skirtas t-testas?</h2>
 <p>T-testas yra skirtas palyginti dviejų imčių vidurkius. Tai gali būti:</p>
 <ul>
 <li><strong>Nepriklausomos imtys</strong>: pavyzdžiui, vyrai ir moterys</li>
 <li><strong>Priklausomos (porinės) imtys</strong>: pavyzdžiui, matavimai prieš ir po gydymo tam pačiam pacientui</li>
 </ul>
 </section>
-<section id="kada-rinktis-t-testą" class="level1">
-<h1>Kada rinktis t-testą?</h1>
+<section id="kada-rinktis-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-rinktis-t-testą">Kada rinktis t-testą?</h2>
 <p>T-testą galima atlikti su tolydžiu kintamuoju, kurį galima padalinti į dvi grupes. Tolydų kintamąjį toliau vadinsime priklausomu kintamuoju, o savo grupių kintamąjį - nepriklausomu kintamuoju.</p>
 <p>Pirma, priklausomas kintamasis turi būti tolydus, t.y. jis turi gebėti įgyti daug skirtingų reikšmių. Tinkami priklausomi kintamieji:</p>
 <ul>
@@ -2273,8 +2291,8 @@ Patarimas
 <p>R naudoja Welch t-testą, kuriam nesvarbi skirtinga variacija. Todėl variacijos testavimas dirbant su R nėra būtinas!</p>
 </div>
 </div>
-<section id="normalumo-tikrinimas" class="level2">
-<h2 class="anchored" data-anchor-id="normalumo-tikrinimas">Normalumo tikrinimas</h2>
+<section id="normalumo-tikrinimas" class="level3">
+<h3 class="anchored" data-anchor-id="normalumo-tikrinimas">Normalumo tikrinimas</h3>
 <p>Normalumą galima patikrinti vizualiai su QQ grafiku:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Excel</a></li></ul>
@@ -2343,8 +2361,8 @@ font-style: inherit;">"iris duomenų rinkinys; kuo arčiau linijos centre yra ta
 </div>
 </section>
 </section>
-<section id="kaip-atlikti-t-testą" class="level1">
-<h1>Kaip atlikti t-testą?</h1>
+<section id="kaip-atlikti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-t-testą">Kaip atlikti t-testą?</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Excel</a></li></ul>
 <div class="tab-content">
@@ -2388,8 +2406,8 @@ sample estimates:
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-t-testą" class="level1">
-<h1>Kaip interpretuoti t-testą?</h1>
+<section id="kaip-interpretuoti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-t-testą">Kaip interpretuoti t-testą?</h2>
 <p>T-testo rezultate svarbiausios reikšmės:</p>
 <ol type="1">
 <li><strong>t reikšmė</strong> - kuo toliau nuo 0, tuo didesnis skirtumas</li>
@@ -2397,17 +2415,26 @@ sample estimates:
 <li><strong>Pasikliautinasis intervalas</strong> - parodo skirtumų intervalą</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-t-testą" class="level1">
-<h1>Kaip raportuoti t-testą?</h1>
+<section id="kaip-raportuoti-t-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-t-testą">Kaip raportuoti t-testą?</h2>
 <p>Štai šablonas, kurį galite naudoti:</p>
 <blockquote class="blockquote">
 <p>“Atlikus nepriklausomų imčių t-testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis (M = 5.01, SD = 0.35) nei versicolor rūšies (M = 5.94, SD = 0.52); t(86.54) = -10.52, p &lt; 0.001.”</p>
 </blockquote>
 </section>
-<section id="jeigu-negaliu-taikyti-t-testo" class="level1">
-<h1>Jeigu negaliu taikyti t-testo?</h1>
+<section id="jeigu-negaliu-taikyti-t-testo" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="jeigu-negaliu-taikyti-t-testo">Jeigu negaliu taikyti t-testo?</h2>
 <p>Jeigu Stjudento t-testas nėra tinkamas, tokiu atveju reikėtų taikyti Mann-Whitney U testą. Aprašą apie testą galima rasti <a href="../../posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html">čia</a>.</p>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
@@ -2429,8 +2456,8 @@ sample estimates:
 
 
 <p>O ne, surinkome duomenis, kurie nepasiskirsto pagal normalųjį skirstinį! Ką daryti? Turint 2 grupes, kurių vidurkius norime palyginti, vietoje Stjudento t-testo galime naudoti Mann-Whitney (arba dviejų imčių Wilcoxon) testą.</p>
-<section id="kada-taikyti-mann-whitney-testą" class="level1">
-<h1>Kada taikyti Mann-Whitney testą?</h1>
+<section id="kada-taikyti-mann-whitney-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kada-taikyti-mann-whitney-testą">Kada taikyti Mann-Whitney testą?</h2>
 <p>Mann-Whitney testą reikėtų rinktis šiais atvejais:</p>
 <ul>
 <li><strong>Duomenys nepasiskirsto pagal normalųjį skirstinį</strong> - tai dažniausia priežastis</li>
@@ -2451,8 +2478,8 @@ Svarbu
 </div>
 </div>
 </section>
-<section id="kaip-atlikti-wilcoxon-testą" class="level1">
-<h1>Kaip atlikti Wilcoxon testą?</h1>
+<section id="kaip-atlikti-wilcoxon-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-wilcoxon-testą">Kaip atlikti Wilcoxon testą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2492,23 +2519,23 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 </section>
-<section id="kaip-interpretuoti-rezultatus" class="level1">
-<h1>Kaip interpretuoti rezultatus?</h1>
+<section id="kaip-interpretuoti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti-rezultatus">Kaip interpretuoti rezultatus?</h2>
 <p>Mann-Whitney testo rezultate svarbu:</p>
 <ol type="1">
 <li><strong>W statistika</strong> - testo statistika</li>
 <li><strong>p reikšmė</strong> - jei &lt; 0.05, skirtumas yra statistiškai reikšmingas</li>
 </ol>
 </section>
-<section id="kaip-raportuoti-mann-whitney-testą" class="level1">
-<h1>Kaip raportuoti Mann-Whitney testą?</h1>
+<section id="kaip-raportuoti-mann-whitney-testą" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-raportuoti-mann-whitney-testą">Kaip raportuoti Mann-Whitney testą?</h2>
 <p>Štai šablonas, kurį galite naudoti:</p>
 <blockquote class="blockquote">
 <p>“Atlikus Mann-Whitney U testą, nustatyta, kad setosa rūšies taurėlapių ilgis buvo statistiškai reikšmingai mažesnis nei versicolor rūšies (U = 23.5, p &lt; 0.001).”</p>
 </blockquote>
 </section>
-<section id="porinių-imčių-wilcoxon-testas" class="level1">
-<h1>Porinių imčių Wilcoxon testas</h1>
+<section id="porinių-imčių-wilcoxon-testas" class="level2">
+<h2 class="anchored" data-anchor-id="porinių-imčių-wilcoxon-testas">Porinių imčių Wilcoxon testas</h2>
 <p>Jei turime priklausomas (porines) imtis, naudojame <code>paired = TRUE</code> parametrą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
@@ -2562,8 +2589,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 </section>
-<section id="vizualizacija" class="level1">
-<h1>Vizualizacija</h1>
+<section id="vizualizacija" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vizualizacija">Vizualizacija</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">iris_subset <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -2645,6 +2672,15 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 </div>
 
 
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
 </section>
 
  ]]></description>
@@ -2663,14 +2699,14 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 
 
 
-<section id="kaip-rinktis-anova" class="level1">
-<h1>Kaip rinktis ANOVA?</h1>
-<section id="kada-rinktis-anova" class="level2">
-<h2 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h2>
+<section id="kaip-rinktis-anova" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-rinktis-anova">Kaip rinktis ANOVA?</h2>
+<section id="kada-rinktis-anova" class="level3">
+<h3 class="anchored" data-anchor-id="kada-rinktis-anova">Kada rinktis ANOVA?</h3>
 <p>ANOVA galima rinktis tokiu atveju, kai turime 3 arba daugiau kategorijų nepriklausomame kintamajame, pagal kurias norime palyginti tolydų priklausomą kintamąjį. Pavyzdžiui, norime palyginti, ar gerklės skausmo lygis skyrėsi priklausomai nuo to, ar buvo atlikta mažos, vidutinės ar didelės apimties operacija. Tokių atvejų pasitaiko dažnai, bet ne kiekvienas žino, ką daryti, jeigu ANOVA rezultatas yra statistiškai reikšmingas.</p>
 </section>
-<section id="vienpusė-anova" class="level2">
-<h2 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h2>
+<section id="vienpusė-anova" class="level3">
+<h3 class="anchored" data-anchor-id="vienpusė-anova">Vienpusė ANOVA</h3>
 <p>Vienpusė ANOVA reiškia, jog turime tolydų kintamąjį (ūgį, svorį, amžių) ir jų norime palyginti tarp 3 arba daugiau grupių.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -2721,12 +2757,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </section>
 </section>
-<section id="dvipusė-anova" class="level1">
-<h1>Dvipusė ANOVA</h1>
+<section id="dvipusė-anova" class="level2">
+<h2 class="anchored" data-anchor-id="dvipusė-anova">Dvipusė ANOVA</h2>
 <p>Dvipusė ANOVA naudojama, kai norime įvertinti dviejų nepriklausomų kintamųjų poveikį priklausomam kintamajam.</p>
 </section>
-<section id="post-hoc-testai" class="level1">
-<h1>Post-hoc testai</h1>
+<section id="post-hoc-testai" class="level2">
+<h2 class="anchored" data-anchor-id="post-hoc-testai">Post-hoc testai</h2>
 <p>Jeigu mūsų ANOVA rezultatas buvo statistiškai reikšmingas, vis dar nežinome, kuri pora grupių tarpusavyje turėtų statistiškai reikšmingą skirtumą. Tam turime atlikti post-hoc testą, t.y. testą, kuris parenka 2 subgrupes ir konkrečiai jas palygina.</p>
 <p>Nėra vieno standarto, kaip būtinai reikia atlikti post-hoc testą, bet dažniausias pasirinkimas yra Tukey HSD (Honestly Significant Difference) testas. Su R tai galima atlikti naudojantis <code>TukeyHSD</code> funkcija:</p>
 <div class="cell">
@@ -2748,20 +2784,20 @@ virginica-versicolor 0.652 0.4082273 0.8957727     0</code></pre>
 </div>
 <p>Post-hoc testas nurodo, jog skirtumai buvo tarp visų 3 rūšių tarpusavyje, didžiausias skirtumas buvo tarp virginica ir setosa (vidutiniškai 1,58, 95% PI [1,34-1,83], p &lt; 0,001).</p>
 </section>
-<section id="vienpusės-anova-poskoniai" class="level1">
-<h1>3 vienpusės ANOVA poskoniai</h1>
+<section id="vienpusės-anova-poskoniai" class="level2">
+<h2 class="anchored" data-anchor-id="vienpusės-anova-poskoniai">3 vienpusės ANOVA poskoniai</h2>
 <p>Kai mūsų duomenų rinkinys yra subalansuotas, visi ANOVA tipai duos tokį patį rezultatą. Kai duomenų rinkinys yra nesubalansuotas (viena grupė turi daugiau matavimų negu kitos), rezultatai gali skirtis.</p>
 </section>
-<section id="ar-anova-buvo-tinkamas-testas" class="level1">
-<h1>Ar ANOVA buvo tinkamas testas?</h1>
+<section id="ar-anova-buvo-tinkamas-testas" class="level2">
+<h2 class="anchored" data-anchor-id="ar-anova-buvo-tinkamas-testas">Ar ANOVA buvo tinkamas testas?</h2>
 <p>Stjudento t-testo tinkamumą praktiniais sumetimais galime numatyti iš anksto, nors teisingas būdas tikrinti būtų toks kaip ir ANOVA atveju. ANOVA turi tris reikalavimus:</p>
 <ul>
 <li><strong>Likutinių verčių (paklaidų) pasiskirstymas turi būti pagal Normalųjį skirstinį</strong>. Mažai kas tai tikrina iš tikrųjų ir dažniausiai naudoja histogramas (ok), QQ grafikus (gerai) arba Shapiro-Wilk testą (blogai!)</li>
 <li><strong>Homogeniška variacija</strong> tarp grupių</li>
 <li><strong>Nepriklausomi stebėjimai</strong></li>
 </ul>
-<section id="homogeniška-variacija" class="level2">
-<h2 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h2>
+<section id="homogeniška-variacija" class="level3">
+<h3 class="anchored" data-anchor-id="homogeniška-variacija">Homogeniška variacija</h3>
 <p>Homogenišką variaciją galima patikrinti su <strong>Levene testu</strong>, <strong>Brown-Forsythe testu</strong> arba <strong>Bartlett testu</strong>, mes panaudosime Levene testą:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
@@ -2777,8 +2813,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level2">
-<h2 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h2>
+<section id="pasiskirstymas-pagal-normalųjį-skirstinį" class="level3">
+<h3 class="anchored" data-anchor-id="pasiskirstymas-pagal-normalųjį-skirstinį">Pasiskirstymas pagal normalųjį skirstinį</h3>
 <p>Prieš tikrindami, ar mūsų likutinės reikšmės (nepaaiškinta variacija ANOVA modelio) pasiskirsto pagal normalųjį skirstinį, turime iš ANOVA modelio jas išsitraukti, o tada vizualizuoti arba tikrinti su Shapiro-Wilk testu.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">my.anova.residuals <span class="ot" style="color: #003B4F;
@@ -2918,8 +2954,8 @@ Dėmesio
 </div>
 </section>
 </section>
-<section id="kaip-pavaizduoti-anova-rezultatą" class="level1">
-<h1>Kaip pavaizduoti ANOVA rezultatą?</h1>
+<section id="kaip-pavaizduoti-anova-rezultatą" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kaip-pavaizduoti-anova-rezultatą">Kaip pavaizduoti ANOVA rezultatą?</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2973,6 +3009,15 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 </div>
 
 
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
 </section>
 
  ]]></description>
@@ -2993,8 +3038,8 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
 
 
 <p>Prieš atliekant bet kokią statistinę analizę, būtina patikrinti duomenų kokybę. Šiame straipsnyje apžvelgsime pagrindinius žingsnius.</p>
-<section id="trūkstamos-reikšmės" class="level1">
-<h1>Trūkstamos reikšmės</h1>
+<section id="trūkstamos-reikšmės" class="level2">
+<h2 class="anchored" data-anchor-id="trūkstamos-reikšmės">Trūkstamos reikšmės</h2>
 <p>Pirmiausia reikia patikrinti, ar yra trūkstamų reikšmių:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -3032,8 +3077,8 @@ Ką daryti su trūkstamomis reikšmėmis?
 </div>
 </div>
 </section>
-<section id="ekstremalios-reikšmės-outliers" class="level1">
-<h1>Ekstremalios reikšmės (outliers)</h1>
+<section id="ekstremalios-reikšmės-outliers" class="level2">
+<h2 class="anchored" data-anchor-id="ekstremalios-reikšmės-outliers">Ekstremalios reikšmės (outliers)</h2>
 <p>Ekstremalias reikšmes galima aptikti vizualiai:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
@@ -3142,8 +3187,8 @@ font-style: inherit;">"Ekstremalios reikšmės:"</span>, outliers)</span></code>
 </div>
 </div>
 </section>
-<section id="skirstinys" class="level1">
-<h1>Skirstinys</h1>
+<section id="skirstinys" class="level2">
+<h2 class="anchored" data-anchor-id="skirstinys">Skirstinys</h2>
 <p>Normalumo tikrinimas yra svarbus daugumai parametrinių testų:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
@@ -3207,8 +3252,8 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
 </div>
 </div>
 </section>
-<section id="santrauka" class="level1">
-<h1>Santrauka</h1>
+<section id="santrauka" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -3242,6 +3287,15 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
 </table>
 
 
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
 </section>
 
  ]]></description>
@@ -3261,8 +3315,8 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
 
 
 <p>Duomenų kodavimas yra vienas svarbiausių žingsnių prieš statistinę analizę. Nuo to, kaip koduojate kintamuosius, priklauso, kokius statistinius metodus galėsite taikyti.</p>
-<section id="kintamųjų-tipai" class="level1">
-<h1>Kintamųjų tipai</h1>
+<section id="kintamųjų-tipai" class="level2">
+<h2 class="anchored" data-anchor-id="kintamųjų-tipai">Kintamųjų tipai</h2>
 <p>Prieš koduojant duomenis, svarbu suprasti kintamųjų tipus:</p>
 <table class="caption-top table">
 <colgroup>
@@ -3296,8 +3350,8 @@ font-style: inherit;">"Taurėlapių ilgio histograma su tankio kreive"</span>)</
 </tbody>
 </table>
 </section>
-<section id="kategorinių-kintamųjų-kodavimas" class="level1">
-<h1>Kategorinių kintamųjų kodavimas</h1>
+<section id="kategorinių-kintamųjų-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="kategorinių-kintamųjų-kodavimas">Kategorinių kintamųjų kodavimas</h2>
 <p>R kalboje kategoriniai kintamieji turėtų būti <code>factor</code> tipo:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -3382,8 +3436,8 @@ font-style: inherit;">str</span>(duomenys)</span></code></pre></div>
 </div>
 </div>
 </section>
-<section id="ranginių-kintamųjų-kodavimas" class="level1">
-<h1>Ranginių kintamųjų kodavimas</h1>
+<section id="ranginių-kintamųjų-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="ranginių-kintamųjų-kodavimas">Ranginių kintamųjų kodavimas</h2>
 <p>Ranginiai kintamieji turėtų būti koduojami su nurodyta tvarka:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">issilavinimas <span class="ot" style="color: #003B4F;
@@ -3446,8 +3500,8 @@ Patarimas
 </div>
 </div>
 </section>
-<section id="dummy-kodavimas" class="level1">
-<h1>Dummy kodavimas</h1>
+<section id="dummy-kodavimas" class="level2">
+<h2 class="anchored" data-anchor-id="dummy-kodavimas">Dummy kodavimas</h2>
 <p>Kai kuriems modeliams reikia konvertuoti kategorinius kintamuosius į skaitinius:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
@@ -3475,8 +3529,8 @@ attr(,"contrasts")$lytis
 </div>
 </div>
 </section>
-<section id="dažnos-klaidos" class="level1">
-<h1>Dažnos klaidos</h1>
+<section id="dažnos-klaidos" class="level2">
+<h2 class="anchored" data-anchor-id="dažnos-klaidos">Dažnos klaidos</h2>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -3495,8 +3549,8 @@ Ko vengti?
 </div>
 </div>
 </section>
-<section id="praktinis-pavyzdys" class="level1">
-<h1>Praktinis pavyzdys</h1>
+<section id="praktinis-pavyzdys" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="praktinis-pavyzdys">Praktinis pavyzdys</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3644,6 +3698,15 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 </div>
 </div>
 
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
 
 </section>
 
