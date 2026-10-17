@@ -1,10 +1,10 @@
 import type { PlotSpec } from "../types";
 import type { PlotTheme } from "../theme";
-import { DEFAULT_THEME } from "../theme";
+import { PLOT_THEME } from "../theme";
 
 // Pure SVG-string chart renderer. The same markup is injected into the DOM for
 // display and rasterised to PNG for the Word export, so colours are explicit
-// (no CSS variables) and come from the active PlotTheme.
+// (no CSS variables) and come from PLOT_THEME.
 
 const W = 640;
 const H = 400;
@@ -202,7 +202,7 @@ function bar(spec: Extract<PlotSpec, { kind: "bar" }>, t: PlotTheme): string {
   return svgWrap(yAxis(0, maxY, spec.yLabel, t) + body + legend + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);
 }
 
-export function renderPlotSvg(spec: PlotSpec, theme: PlotTheme = DEFAULT_THEME.plot): string {
+export function renderPlotSvg(spec: PlotSpec, theme: PlotTheme = PLOT_THEME): string {
   switch (spec.kind) {
     case "histogram":
       return histogram(spec, theme);

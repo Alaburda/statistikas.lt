@@ -75,13 +75,13 @@ is a no-op when gtag is absent. Events:
 
 Never send dataset contents, file names or variable names.
 
-## Themes
+## Look and Word output
 
-The theme picker restyles tables and plots together and is carried into the
-Word export: **Statistikas** (default, site palette), **Viridis**, and
-**Spausdinimui** (print, greyscale). See [`src/theme.ts`](src/theme.ts). The UI
-follows the statistikas.lt Mondrian identity (square corners, 2px ink rules,
-Instrument Sans + IBM Plex Mono) — see [`src/styles.css`](src/styles.css).
+Plots use the site palette ([`src/theme.ts`](src/theme.ts)); there is no theme
+picker. The UI follows the statistikas.lt Mondrian identity (square corners, 2px
+ink rules, Instrument Sans + IBM Plex Mono) — see [`src/styles.css`](src/styles.css).
+Word tables are publication-style (APA / booktabs): horizontal rules only above
+and below the header and at the foot of the table, no shading, no vertical lines.
 
 ## Architecture
 

@@ -10,7 +10,6 @@ export interface SavedVariable {
 }
 
 export interface ShareState {
-  themeId: string;
   datasetName?: string;
   datasetDesc?: string;
   variables: SavedVariable[];

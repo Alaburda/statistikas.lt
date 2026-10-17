@@ -9,7 +9,6 @@ import { ChunkToc } from "./components/ChunkToc";
 import { DataPreview } from "./components/DataPreview";
 import { VariableEditor } from "./components/VariableEditor";
 import { ContactLink, CtaPanel, ExportToast, IntroPanel, OutLink, SiteFooter } from "./components/Funnel";
-import { THEMES, ThemeContext, getTheme } from "./theme";
 import { readShareFromUrl, buildShareUrl, applyShareToVariables } from "./share";
 import type { ShareState } from "./share";
 import { SITE_URL } from "./site";
@@ -41,8 +40,6 @@ export function App() {
   // Which built-in demo is loaded; null once the user uploads their own file.
   const [demoId, setDemoId] = useState<string | null>(DEMOS[0].id);
   const [busy, setBusy] = useState(false);
-  const [themeId, setThemeId] = useState(THEMES[0].id);
-  const theme = getTheme(themeId);
   const [pendingRestore, setPendingRestore] = useState<ShareState | null>(null);
   const [copied, setCopied] = useState(false);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -71,22 +68,8 @@ export function App() {
   // Read shareable link state from URL hash on first load.
   useEffect(() => {
     const state = readShareFromUrl();
-    if (state) {
-      setPendingRestore(state);
-      if (state.themeId) setThemeId(state.themeId);
-    }
+    if (state) setPendingRestore(state);
   }, []);
-
-  // Apply theme to the whole UI (chrome + tables) via CSS custom properties.
-  useEffect(() => {
-    const root = document.documentElement.style;
-    root.setProperty("--brand", theme.ui.brand);
-    root.setProperty("--brand-dark", theme.ui.brandDark);
-    root.setProperty("--accent", theme.ui.accent);
-    root.setProperty("--th-bg", theme.ui.thBg);
-    root.setProperty("--th-text", theme.ui.thText);
-    root.setProperty("--row-stripe", theme.ui.rowStripe);
-  }, [theme]);
 
   // Reactive: every change to a chunk (test or variable picks) recomputes it
   // immediately once all its inputs are filled — no "Run" button needed.
@@ -169,7 +152,6 @@ export function App() {
 
   const copyLink = () => {
     const state: ShareState = {
-      themeId,
       datasetName: dataset.name,
       datasetDesc: dataset.description,
       variables: dataset.variables.map(({ key, label, type, valueLabels, unit }) => ({
@@ -197,7 +179,7 @@ export function App() {
     try {
       // Loaded on demand: the docx library is the bulk of the bundle.
       const { exportToWord } = await import("./export/word");
-      await exportToWord(dataset, chunks, theme);
+      await exportToWord(dataset, chunks);
       track("analize_export_word", { chunks: completed });
       setExportToast(true);
     } catch (e) {
@@ -230,7 +212,7 @@ export function App() {
   };
 
   return (
-    <ThemeContext.Provider value={theme}>
+    <>
       <ChunkToc chunks={chunks} activeId={activeChunkId} />
       <div className="app">
         <header className="topbar">
@@ -249,20 +231,6 @@ export function App() {
             <span className="tagline">Nemokama statistinė analizė naršyklėje</span>
           </div>
           <div className="top-actions">
-            <label className="theme-picker" title="Lentelių ir diagramų tema">
-              <span>Tema</span>
-              <select
-                value={themeId}
-                onChange={(e) => setThemeId(e.target.value)}
-                aria-label="Lentelių ir diagramų tema"
-              >
-                {THEMES.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
-            </label>
             <label className="ghost-btn">
               Įkelti CSV / Excel
               <input
@@ -276,7 +244,7 @@ export function App() {
                 }}
               />
             </label>
-            <label className="theme-picker" title="Demonstraciniai duomenys">
+            <label className="select-picker" title="Demonstraciniai duomenys">
               <span>Pavyzdys</span>
               <select
                 value={demoId ?? ""}
@@ -355,6 +323,6 @@ export function App() {
         <SiteFooter />
       </div>
       {exportToast && <ExportToast onClose={() => setExportToast(false)} />}
-    </ThemeContext.Provider>
+    </>
   );
 }

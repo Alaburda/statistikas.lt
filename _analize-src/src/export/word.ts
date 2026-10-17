@@ -1,5 +1,6 @@
 import {
   AlignmentType,
+  BorderStyle,
   Document,
   HeadingLevel,
   ImageRun,
@@ -13,8 +14,6 @@ import {
 } from "docx";
 import { saveAs } from "file-saver";
 import type { Chunk, Dataset, ResultTable } from "../types";
-import type { Theme } from "../theme";
-import { DEFAULT_THEME } from "../theme";
 import { getTest } from "../stats/tests";
 import { renderPlotSvg, PLOT_HEIGHT, PLOT_WIDTH } from "../charts/svg";
 import { CONTACT_EMAIL, SITE_URL } from "../site";
@@ -51,36 +50,52 @@ function svgToPng(svg: string, scale = 2): Promise<Uint8Array> {
   });
 }
 
-const hex = (c: string) => c.replace(/^#/, "");
+// Publication-style (APA / booktabs) tables: no vertical lines, no shading —
+// only a rule above and below the header and one closing the table.
+const RULE_THICK = { style: BorderStyle.SINGLE, size: 8, color: "000000" }; // 1 pt
+const RULE_THIN = { style: BorderStyle.SINGLE, size: 4, color: "000000" }; // ½ pt
+const NO_RULE = { style: BorderStyle.NONE, size: 0, color: "auto" };
 
-function buildTable(t: ResultTable, theme: Theme): Table {
+function cellParagraph(text: string, col: number, bold = false): Paragraph {
+  return new Paragraph({
+    // First column holds row labels; the rest are values, centred under their headings.
+    alignment: col === 0 ? AlignmentType.LEFT : AlignmentType.CENTER,
+    children: [new TextRun({ text, bold })],
+  });
+}
+
+function buildTable(t: ResultTable): Table {
   const header = new TableRow({
     tableHeader: true,
+    cantSplit: true,
     children: t.columns.map(
-      (c) =>
+      (c, i) =>
         new TableCell({
-          shading: { fill: hex(theme.ui.thBg) },
-          children: [
-            new Paragraph({
-              children: [new TextRun({ text: String(c), bold: true, color: hex(theme.ui.thText) })],
-            }),
-          ],
+          borders: { top: RULE_THICK, bottom: RULE_THIN },
+          children: [cellParagraph(String(c), i, true)],
         })
     ),
   });
   const body = t.rows.map(
     (row) =>
       new TableRow({
+        cantSplit: true,
         children: row.map(
-          (cell) =>
-            new TableCell({
-              children: [new Paragraph({ children: [new TextRun({ text: String(cell) })] })],
-            })
+          (cell, i) => new TableCell({ children: [cellParagraph(String(cell), i)] })
         ),
       })
   );
   return new Table({
     width: { size: 100, type: WidthType.PERCENTAGE },
+    margins: { top: 40, bottom: 40, left: 100, right: 100 },
+    borders: {
+      top: RULE_THICK,
+      bottom: RULE_THICK,
+      left: NO_RULE,
+      right: NO_RULE,
+      insideHorizontal: NO_RULE,
+      insideVertical: NO_RULE,
+    },
     rows: [header, ...body],
   });
 }
@@ -90,11 +105,7 @@ function dateStamp(d: Date): string {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-export async function exportToWord(
-  dataset: Dataset,
-  chunks: Chunk[],
-  theme: Theme = DEFAULT_THEME
-): Promise<void> {
+export async function exportToWord(dataset: Dataset, chunks: Chunk[]): Promise<void> {
   const children: (Paragraph | Table)[] = [];
   const now = new Date();
   const year = now.getFullYear();
@@ -196,14 +207,14 @@ export async function exportToWord(
           spacing: { before: 120, after: 60 },
           keepNext: true,
         }),
-        buildTable(table, theme),
+        buildTable(table),
         new Paragraph({ text: "" })
       );
     }
 
     if (chunk.result.plot) {
       try {
-        const png = await svgToPng(renderPlotSvg(chunk.result.plot, theme.plot));
+        const png = await svgToPng(renderPlotSvg(chunk.result.plot));
         figureNo++;
         children.push(
           new Paragraph({
