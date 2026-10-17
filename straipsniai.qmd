@@ -1,6 +1,7 @@
 ---
-title: "Blogas"
-description: "Praktiniai patarimai kasdieniame darbe."
+title: "Straipsniai apie statistiką"
+description: "Praktiniai statistikos gidai lietuviškai: kaip pasirinkti statistinį testą, apskaičiuoti imties dydį, atlikti t testą, ANOVA ar chi kvadrato testą ir interpretuoti p reikšmę."
+html-math-method: plain
 listing:
   contents: posts
   sort: "date desc"

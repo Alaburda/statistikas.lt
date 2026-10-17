@@ -7,6 +7,7 @@ project:
     # Nemokamas analizės įrankis: _analize-src/ sukompiliuojamas į analize/ (žr. pre-render)
     - analize/**
   pre-render: scripts/build-analize.ts
+  post-render: scripts/sitemap-analize.ts
 
 lang: lt
 
@@ -81,6 +82,7 @@ format:
       - text: |
           <script src="theme/main.js"></script>
     toc: false
+    canonical-url: true
     page-layout: full
     grid:
       sidebar-width: 0px

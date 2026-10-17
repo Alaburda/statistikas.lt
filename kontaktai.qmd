@@ -1,5 +1,5 @@
 ---
-pagetitle: "Susisiekite | Statistikas.lt"
+pagetitle: "Susisiekite su statistiku"
 description: "Susisiekite dėl statistikos konsultacijos, projekto ar ilgalaikės partnerystės. Pirmas pokalbis nemokamas."
 toc: false
 page-layout: custom

@@ -1,5 +1,36 @@
 ---
-pagetitle: "Statistikas.lt | Statistikos ir duomenų analizės konsultacijos"
+pagetitle: "Statistikos ir duomenų analizės konsultacijos"
+canonical-url: "https://statistikas.lt/"
+# Sąrašo kortelėse nėra formulių, todėl MathJax (~285 KB) nereikalingas
+html-math-method: plain
+# Struktūriniai duomenys Google: kas teikia paslaugą, kur ir kaip susisiekti
+include-in-header:
+  text: |
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "@id": "https://statistikas.lt/#paslauga",
+      "name": "Statistikas.lt",
+      "url": "https://statistikas.lt/",
+      "logo": "https://statistikas.lt/images/mark.svg",
+      "image": "https://statistikas.lt/images/card.png",
+      "description": "Statistikos ir duomenų analizės konsultacijos, projektai ir nuolatinė partnerystė įmonėms ir tyrėjams.",
+      "email": "info@statistikas.lt",
+      "areaServed": { "@type": "Country", "name": "Lietuva" },
+      "availableLanguage": ["lt", "en"],
+      "priceRange": "nuo 50 €",
+      "knowsAbout": ["Statistinė analizė", "A/B testai", "Imties dydžio skaičiavimas", "Apklausų analizė", "Biostatistika", "R", "Python"],
+      "founder": {
+        "@type": "Person",
+        "name": "Paulius Alaburda",
+        "jobTitle": "Statistikos konsultantas",
+        "url": "https://statistikas.lt/about.html",
+        "sameAs": ["https://www.linkedin.com/in/pauliusalaburda/", "https://github.com/Alaburda"]
+      },
+      "sameAs": ["https://www.linkedin.com/in/pauliusalaburda/"]
+    }
+    </script>
 description: "Statistikas jūsų komandai: konsultacijos, vienkartiniai projektai ir nuolatinė partnerystė įmonėms ir tyrėjams. Pirmas pokalbis nemokamas."
 toc: false
 page-layout: custom

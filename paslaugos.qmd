@@ -1,5 +1,5 @@
 ---
-pagetitle: "Paslaugos | Statistikas.lt"
+pagetitle: "Statistinės analizės paslaugos ir kainos"
 description: "Statistikos konsultacijos, vienkartiniai projektai (imties dydis, statistinės ataskaitos, įrankiai) ir nuolatinė partnerystė (periodinės ataskaitos, duomenų platformos). Pirmas pokalbis nemokamas."
 toc: false
 page-layout: custom

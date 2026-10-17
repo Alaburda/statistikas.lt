@@ -1,6 +1,8 @@
 ---
 title: "Ar AI gali atlikti statistinę analizę?"
-description: ""
+description: "ChatGPT, Gemini ar Claude jau gali atlikti statistinę analizę. Kada to užtenka, o kada vis dar reikia statistiko patikrinti metodą, prielaidas ir išvadas?"
+# Šiame įraše skyriai jau rašomi kaip "##"
+shift-heading-level-by: 0
 date: "2026-07-05"
 author: "Paulius Alaburda"
 categories: [AI, statistika]

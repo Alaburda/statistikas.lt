@@ -1,2 +1,4 @@
 # Applies to every blog post: hooks the narrow reading column in theme/custom.scss
 body-classes: post
+# Įrašuose skyriai rašomi kaip "#"; pakeliame lygiu, kad puslapyje liktų vienas h1 (pavadinimas)
+shift-heading-level-by: 1

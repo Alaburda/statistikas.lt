@@ -1,6 +1,7 @@
 ---
 title: "Kada atlikti p reikšmių korekciją?"
 description: ""
+draft: true
 date: "2026-07-05"
 author: "Paulius Alaburda"
 categories: [R, p reikšmės]

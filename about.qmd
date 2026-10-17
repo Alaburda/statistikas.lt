@@ -1,5 +1,6 @@
 ---
-title: "Apie"
+title: "Paulius Alaburda — statistikas"
+pagetitle: "Apie Paulių Alaburdą, statistikos konsultantą"
 description: "Paulius Alaburda – statistikos konsultantas su daugiau nei 10 metų patirtimi medicinos, farmacijos ir socialinių mokslų srityse."
 image: images/paulius.jpg
 about:
