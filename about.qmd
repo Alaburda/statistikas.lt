@@ -71,7 +71,7 @@ section-divs: false
         <span class="eyebrow">Publikacijos</span>
         <h2>Recenzuoti straipsniai</h2>
       </div>
-      <p>Bendraautorystė LSMU anatomijos laboratorijos tyrimuose. Klientų darbai konfidencialūs, todėl jų čia nerasite — užtat galite peržiūrėti pavyzdinę analizę.</p>
+      <p>Bendraautorystė LSMU anatomijos laboratorijos tyrimuose. Klientų darbai konfidencialūs, todėl jų čia nerasite — užtat galite peržiūrėti <a href="pavyzdziai/ist-1/">pavyzdinę ataskaitą</a>.</p>
     </div>
 
     <ol class="pub-list">

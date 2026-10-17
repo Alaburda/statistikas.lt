@@ -38,9 +38,8 @@ website:
     left:
       - text: "Paslaugos"
         href: paslaugos.qmd
-      # Paslėpta, kol nėra pavyzdžių (taip pat žr. draft pavyzdziai.qmd)
-      # - text: "Pavyzdžiai"
-      #   href: pavyzdziai.qmd
+      - text: "Pavyzdžiai"
+        href: pavyzdziai.qmd
       - text: "Straipsniai"
         href: straipsniai.qmd
       - text: "Nemokama analizė"
@@ -60,9 +59,8 @@ website:
     center:
       - text: "Paslaugos"
         href: paslaugos.qmd
-      # Paslėpta, kol nėra pavyzdžių (taip pat žr. draft pavyzdziai.qmd)
-      # - text: "Pavyzdžiai"
-      #   href: pavyzdziai.qmd
+      - text: "Pavyzdžiai"
+        href: pavyzdziai.qmd
       - text: "Straipsniai"
         href: straipsniai.qmd
       - text: "Nemokama analizė"

@@ -1,0 +1,13 @@
+/* HTML version of statistikas reports: the same serif text as the Word file,
+   a readable column and APA-style tables. */
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: #1C1B19;
+  background: #FFFFFF;
+}
+h1, h2, h3, .title { font-family: inherit; font-weight: 700; color: #1C1B19; }
+a { color: #1F45A0; }
+figure img { max-width: 100%; height: auto; }
+figcaption, .figure-caption { font-style: italic; }

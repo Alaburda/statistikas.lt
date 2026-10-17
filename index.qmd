@@ -82,6 +82,7 @@ listing:
     <div class="proof"><strong>200+</strong><span>projektų verslui ir tyrėjams</span></div>
     <div class="proof"><strong>4</strong><span>recenzuotos publikacijos</span></div>
     <div class="proof"><strong>18</strong><span>žmonių duomenų komanda, kuriai vadovauju</span></div>
+    <a class="proof proof-link" href="pavyzdziai/ist-1/"><strong>Pavyzdinė ataskaita →</strong><span>8 psl. PDF: pažiūrėkite, ką gausite</span></a>
   </div>
 </section>
 

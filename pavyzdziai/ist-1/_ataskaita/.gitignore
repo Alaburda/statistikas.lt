@@ -1,0 +1,7 @@
+# Intermediate outputs; the published copies live one folder up
+ist-1.docx
+ist-1.pdf
+ist-1.html
+ist-1_files/
+
+/.quarto/

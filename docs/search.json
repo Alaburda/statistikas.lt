@@ -273,41 +273,6 @@
     "text": "Santrauka\n\n\n\n\n\n\n\nKlausimas\nAtsakymas\n\n\n\n\nKą reiškia p = 0,03?\nJei skirtumo nebūtų, tokį ar ekstremalesnį rezultatą matytume 3 % atvejų\n\n\nAr p &lt; 0,05 įrodo, kad skirtumas tikras?\nNe — tai tik susitarimo riba\n\n\nAr p &gt; 0,05 įrodo, kad skirtumo nėra?\nNe — galbūt trūksta statistinės galios\n\n\nKą pateikti šalia p?\nEfekto dydį ir pasikliautinąjį intervalą\n\n\n\nJei nesate tikri, kaip interpretuoti ar pateikti savo tyrimo rezultatus, susisiekite — padėsiu ne tik suskaičiuoti, bet ir suprasti, ką skaičiai reiškia."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Paulius Alaburda — statistikas",
-    "section": "",
-    "text": "Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.\nSu statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes."
-  },
-  {
-    "objectID": "about.html#sveiki",
-    "href": "about.html#sveiki",
-    "title": "Paulius Alaburda — statistikas",
-    "section": "",
-    "text": "Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.\nSu statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes."
-  },
-  {
-    "objectID": "about.html#mano-patirtis",
-    "href": "about.html#mano-patirtis",
-    "title": "Paulius Alaburda — statistikas",
-    "section": "Mano patirtis",
-    "text": "Mano patirtis\n\nStatistinė analizė – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas\nDuomenų vizualizacija – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms\nMoksliniai tyrimai – klinikinių tyrimų statistika, meta-analizės, sisteminės apžvalgos\nKonsultavimas – pagalba planuojant tyrimus, interpretuojant rezultatus"
-  },
-  {
-    "objectID": "about.html#įrankiai",
-    "href": "about.html#įrankiai",
-    "title": "Paulius Alaburda — statistikas",
-    "section": "Įrankiai",
-    "text": "Įrankiai\n\nR – pagrindinis įrankis statistinei analizei ir vizualizacijai\nPython – duomenų apdorojimas ir mašininis mokymasis\nSPSS – klasikinis statistikos įrankis\nExcel – greiti skaičiavimai ir duomenų paruošimas"
-  },
-  {
-    "objectID": "about.html#kodėl-rinktis-mane",
-    "href": "about.html#kodėl-rinktis-mane",
-    "title": "Paulius Alaburda — statistikas",
-    "section": "Kodėl rinktis mane?",
-    "text": "Kodėl rinktis mane?\n\nPatirtis – daugiau nei 200 sėkmingai įgyvendintų projektų\nAiškumas – rezultatus pateikiu suprantamai, ne tik skaičiais\nLankstumas – prisitaikau prie jūsų poreikių ir terminų\nKonfidencialumas – jūsų duomenys yra saugūs\n\n\n\nSusisiekite\nTurite klausimų? Rašykite el. paštu info@statistikas.lt arba susisiekite per LinkedIn."
-  },
-  {
     "objectID": "posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html",
     "href": "posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html",
     "title": "Ar AI gali atlikti statistinę analizę?",

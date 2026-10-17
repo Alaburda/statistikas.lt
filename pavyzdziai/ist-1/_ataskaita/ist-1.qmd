@@ -1,0 +1,368 @@
+---
+title: "Aspirinas ir heparinas po išeminio insulto"
+subtitle: "Tarptautinio insulto tyrimo (IST-1) duomenų pakartotinė analizė"
+author: "Paulius Alaburda, statistikas.lt"
+date: "2026-10-17"
+date-format: long
+lang: lt
+bibliography: saltiniai.bib
+format:
+  docx:
+    reference-doc: reference.docx
+    toc: true
+    toc-title: "Turinys"
+    number-sections: true
+    fig-dpi: 300
+  html:
+    embed-resources: true
+    css: report.css
+    toc: true
+    toc-title: "Turinys"
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
+knitr:
+  opts_chunk:
+    dev: ragg_png
+    fig-width: 6.3
+    fig-height: 3.9
+---
+
+```{r}
+#| label: setup
+library(statistikas)
+library(ggplot2)
+library(survival)
+set_lang("lt")
+theme_gtsummary_statistikas()
+theme_set(theme_statistikas(base_family = "Times New Roman"))
+
+# Svetainės puslapiui (../index.qmd) išsaugomi ir keli grafikai PNG formatu
+web_png <- function(plot, name, width = 7, height = 4.3) {
+  ggsave(file.path("..", name), plot, width = width, height = height, dpi = 200,
+         device = ragg::agg_png, bg = "white")
+}
+
+ist <- read.csv(gzfile("data/IST_corrected.csv.gz"), stringsAsFactors = FALSE)
+
+yn <- function(x) factor(x, levels = c("Y", "N"), labels = c("Taip", "Ne"))
+d <- data.frame(
+  aspirinas = factor(ist$RXASP, levels = c("Y", "N"), labels = c("Aspirinas", "Be aspirino")),
+  heparinas = factor(ifelse(ist$RXHEP == "N", "Ne", "Taip"), levels = c("Taip", "Ne")),
+  heparino_doze = factor(c(N = "Be heparino", L = "Maža dozė", M = "Vidutinė dozė", H = "Vidutinė dozė")[ist$RXHEP],
+                         levels = c("Be heparino", "Maža dozė", "Vidutinė dozė")),
+  amzius = ist$AGE,
+  lytis = factor(ist$SEX, levels = c("M", "F"), labels = c("Vyras", "Moteris")),
+  delsa = ist$RDELAY,
+  samone = factor(ist$RCONSC, levels = c("F", "D", "U"),
+                  labels = c("Visiškai budrus", "Mieguistas", "Be sąmonės")),
+  sab = ist$RSBP,
+  pv = factor(ifelse(ist$RATRIAL == "", NA, ist$RATRIAL), levels = c("Y", "N"), labels = c("Taip", "Ne")),
+  tipas = factor(ist$STYPE, levels = c("TACS", "PACS", "POCS", "LACS", "OTH"),
+                 labels = c("TACS", "PACS", "POCS", "LACS", "Kitas")),
+  infarktas_kt = yn(ist$RVISINF),
+  mirtis14 = ist$ID14,
+  mirtis_prikl6 = ifelse(ist$OCCODE %in% 1:2, 1, ifelse(ist$OCCODE %in% 3:4, 0, NA)),
+  isc14 = ist$ISC14,
+  hem14 = ist$H14,
+  laikas = pmin(ist$TD, 183),
+  mire = ifelse(ist$TD <= 183, ist$DIED, 0)
+)
+
+n_total <- nrow(d)
+n_countries <- length(unique(ist$CNTRYNUM))
+n_hospitals <- length(unique(ist$HOSPNUM))
+n_missing6 <- sum(is.na(d$mirtis_prikl6))
+pct <- function(x, digits = 1) paste0(fmt_num(100 * x, digits), " %")
+# Tipografinis minuso ženklas ir intervalai su kabliataškiu: „−1,3 (−2,6; 0,1)“
+minus <- function(x) gsub("-", "−", x, fixed = TRUE)
+ci <- function(lo, hi, digits = 1) minus(paste0(fmt_num(lo, digits), "; ", fmt_num(hi, digits)))
+```
+
+# Santrauka {.unnumbered}
+
+```{r}
+#| label: santrauka
+p_asp <- tapply(d$mirtis_prikl6, d$aspirinas, mean, na.rm = TRUE)
+ars6 <- unname(p_asp["Aspirinas"] - p_asp["Be aspirino"])
+test6 <- prop.test(table(d$aspirinas, factor(d$mirtis_prikl6, levels = c(1, 0))))
+p_isc <- tapply(d$isc14, d$aspirinas, mean)
+rr_isc <- 1 - p_isc[["Aspirinas"]] / p_isc[["Be aspirino"]]
+p_hem_hep <- tapply(d$hem14, d$heparinas, mean)
+p_isc_hep <- tapply(d$isc14, d$heparinas, mean)
+```
+
+**Klausimas.** Ar aspirinas ar poodinis heparinas, paskirti per 48 valandas nuo išeminio insulto pradžios, sumažina mirčių ir priklausomybės nuo kitų žmonių riziką po 6 mėnesių?
+
+**Duomenys.** `r fmt_num(n_total, 0)` pacientai iš `r n_countries` šalių, atsitiktinai suskirstyti 2 × 3 faktoriniu dizainu (aspirinas taip / ne; heparinas vidutine, maža doze arba be jo).
+
+**Pagrindiniai rezultatai.**
+
+- Po 6 mėnesių mirė arba buvo priklausomi `r pct(p_asp["Aspirinas"])` aspirino grupės ir `r pct(p_asp["Be aspirino"])` kontrolinės grupės pacientų (`r fmt_num(-100 * ars6, 1)` procentinio punkto mažiau, `r fmt_p(test6$p.value, prefix = TRUE)`). Įvertinus pradinę prognozę, skirtumas statistiškai reikšmingas (žr. 3 lentelę).
+- Aspirinas maždaug `r fmt_num(100 * rr_isc, 0)` % sumažino pakartotinių išeminių insultų per 14 dienų dažnį (`r pct(p_isc["Aspirinas"])` ir `r pct(p_isc["Be aspirino"])`), reikšmingai nedidindamas hemoraginių insultų.
+- Heparinas sumažino pakartotinių išeminių insultų (`r pct(p_isc_hep["Taip"])` ir `r pct(p_isc_hep["Ne"])`), bet panašiu mastu padidino hemoraginių insultų dažnį (`r pct(p_hem_hep["Taip"])` ir `r pct(p_hem_hep["Ne"])`), todėl bendros naudos neturėjo.
+
+**Išvada.** Aspirinas ūminiu išeminio insulto laikotarpiu duoda nedidelę, bet realią naudą; heparino nauda atsveriama kraujavimo rizikos. Rezultatai sutampa su paskelbtais pirminio tyrimo duomenimis.
+
+# Duomenys ir metodai
+
+## Duomenų šaltinis
+
+Analizuoti viešai prieinami Tarptautinio insulto tyrimo (*International Stroke Trial*, IST-1) duomenys [@sandercock2011; @istdata]. Tai atsitiktinių imčių, atvirasis tyrimas, kuriame 1991–1996 m. dalyvavo `r fmt_num(n_total, 0)` pacientai, gydyti `r n_hospitals` ligoninėse `r n_countries` šalyse [@ist1997]. Naudota pataisyta duomenų rinkinio versija (2 versija), kurioje ištaisytos įvykių datų klaidos, atsiradusios anonimizuojant pirminį failą.
+
+Pacientai per 48 valandas nuo insulto pradžios buvo atsitiktinai paskirti į 14 dienų gydymą aspirinu (300 mg per parą) arba be jo ir, nepriklausomai nuo to, į gydymą poodiniu heparinu vidutine (12 500 TV du kartus per parą) arba maža (5 000 TV du kartus per parą) doze, arba be heparino.
+
+## Baigtys
+
+- **Mirtis per 14 dienų** nuo atsitiktinio suskirstymo.
+- **Mirtis arba priklausomybė po 6 mėnesių** (pirminė baigtis): pacientas miręs arba kasdienėje veikloje priklausomas nuo kitų žmonių. `r n_missing6` pacientams (`r pct(n_missing6 / n_total)`) šios baigties duomenų nėra; jie į šią analizę neįtraukti.
+- **Pakartotinis išeminis** ir **hemoraginis insultas** per 14 dienų.
+- **Išgyvenamumas** per 6 mėnesius (183 dienas).
+
+## Statistinė analizė
+
+Visos analizės atliktos pagal ketinimo gydyti principą: pacientai analizuoti toje grupėje, į kurią buvo paskirti. Baigčių dažniai grupėse palyginti chi kvadrato testu; pateikiamas absoliutus rizikos skirtumas (ARS) su 95 % pasikliautinuoju intervalu (PI). Pirminei baigčiai įvertinti taikyta logistinė regresija, įtraukiant abu gydymo veiksnius ir prognozinius veiksnius: amžių, lytį, sąmonės būklę, sistolinį kraujospūdį, prieširdžių virpėjimą, insulto tipą ir delsą iki atsitiktinio suskirstymo. Rezultatai pateikiami šansų santykiais (ŠS). Išgyvenamumas pavaizduotas Kaplan–Meier kreivėmis ir palygintas log-rank testu. Aspirino poveikio vienodumas pogrupiuose vertintas sąveikos nariu logistinės regresijos modelyje. Statistinio reikšmingumo lygmuo α = 0,05. Analizė atlikta R `r paste(R.version$major, R.version$minor, sep = ".")` programa.
+
+# Rezultatai
+
+## Imties charakteristikos
+
+Grupės pagal pradines charakteristikas buvo panašios (1 lentelė), kaip ir tikimasi atsitiktinių imčių tyrime. Pacientų amžiaus mediana – `r fmt_num(median(d$amzius), 0)` metai, `r pct(mean(d$lytis == "Moteris"))` buvo moterys.
+
+```{r}
+#| label: lentele-1
+gtsummary::tbl_summary(
+  d[, c("aspirinas", "amzius", "lytis", "delsa", "samone", "sab", "pv", "tipas", "infarktas_kt")],
+  by = aspirinas,
+  label = list(amzius = "Amžius, metai", lytis = "Lytis", delsa = "Delsa iki suskirstymo, val.",
+               samone = "Sąmonės būklė", sab = "Sistolinis kraujospūdis, mmHg",
+               pv = "Prieširdžių virpėjimas", tipas = "Insulto tipas (OCSP)",
+               infarktas_kt = "Infarktas matomas KT"),
+  missing_text = "Nėra duomenų"
+) |>
+  gtsummary::add_overall(last = TRUE) |>
+  as_apa_flextable(number = 1, title = "Pacientų charakteristikos atsitiktinio suskirstymo metu",
+                   note = "Prieširdžių virpėjimas nebuvo registruojamas bandomajame tyrimo etape. OCSP – Oksfordšyro insultų klasifikacija: TACS – totalinis, PACS – dalinis priekinės kraujotakos infarktas, POCS – užpakalinės kraujotakos, LACS – lakūninis infarktas.")
+```
+
+## Aspirino poveikis
+
+```{r}
+#| label: baigtys
+outcome_row <- function(y, group, label) {
+  ok <- !is.na(y)
+  x <- tapply(y[ok], group[ok], sum)
+  n <- tapply(y[ok], group[ok], length)
+  p <- x / n
+  diff <- p[1] - p[2]
+  se <- sqrt(p[1] * (1 - p[1]) / n[1] + p[2] * (1 - p[2]) / n[2])
+  cell <- function(i) paste0(fmt_num(x[i], 0), " (", fmt_num(100 * p[i], 1), " %)")
+  data.frame(
+    Baigtis = label,
+    a = cell(1),
+    b = cell(2),
+    ARS = paste0(minus(fmt_num(100 * diff, 1)), " (", ci(100 * (diff - 1.96 * se), 100 * (diff + 1.96 * se)), ")"),
+    p = fmt_p(suppressWarnings(chisq.test(table(group[ok], y[ok])))$p.value),
+    check.names = FALSE
+  )
+}
+outcome_table <- function(group, names) {
+  t <- rbind(
+    outcome_row(d$mirtis14, group, "Mirtis per 14 dienų"),
+    outcome_row(d$mirtis_prikl6, group, "Mirtis arba priklausomybė po 6 mėn."),
+    outcome_row(d$isc14, group, "Pakartotinis išeminis insultas per 14 dienų"),
+    outcome_row(d$hem14, group, "Hemoraginis insultas per 14 dienų")
+  )
+  names(t) <- c("Baigtis", names, "ARS, proc. p. (95 % PI)", "p reikšmė")
+  t
+}
+```
+
+Aspirinas mirtingumą per 14 dienų sumažino nedaug ir statistiškai nereikšmingai, tačiau reikšmingai sumažino pakartotinių išeminių insultų dažnį (2 lentelė). Hemoraginių insultų dažnis grupėse beveik nesiskyrė.
+
+```{r}
+#| label: lentele-2
+n_arm <- table(d$aspirinas)
+outcome_table(d$aspirinas, paste0(names(n_arm), "\nN = ", fmt_num(as.numeric(n_arm), 0))) |>
+  as_apa_flextable(number = 2, title = "Baigtys pagal paskirtą gydymą aspirinu, n (%)",
+                   note = paste0("Procentai apskaičiuoti iš pacientų, kurių baigtis žinoma (6 mėn. baigties nėra ", n_missing6, " pacientams). ARS – absoliutus rizikos skirtumas (aspirinas minus be aspirino) procentiniais punktais; neigiama reikšmė reiškia mažesnę riziką aspirino grupėje. PI apskaičiuoti Wald metodu."))
+```
+
+```{r}
+#| label: modelis
+m <- glm(mirtis_prikl6 ~ aspirinas + heparinas + amzius + lytis + samone + sab + pv + tipas + delsa,
+         data = transform(d, aspirinas = relevel(aspirinas, "Be aspirino"),
+                          heparinas = relevel(heparinas, "Ne"),
+                          pv = addNA(pv)),
+         family = binomial)
+or_asp <- exp(coef(m)[["aspirinasAspirinas"]])
+ci_asp <- exp(confint.default(m)["aspirinasAspirinas", ])
+p_asp_adj <- summary(m)$coefficients["aspirinasAspirinas", 4]
+
+m_int <- update(m, . ~ . + aspirinas:heparinas)
+p_int <- anova(m, m_int, test = "LRT")[2, "Pr(>Chi)"]
+```
+
+Įvertinus pradinę paciento prognozę, aspirino grupėje mirties ar priklausomybės po 6 mėnesių šansai buvo mažesni (ŠS `r fmt_num(or_asp, 2)`, 95 % PI `r fmt_num(ci_asp[1], 2)`–`r fmt_num(ci_asp[2], 2)`, `r fmt_p(p_asp_adj, prefix = TRUE)`; 3 lentelė). Stipriausi prognoziniai veiksniai buvo amžius, sąmonės būklė ir insulto tipas. Aspirino ir heparino poveikiai vienas nuo kito nepriklausė (sąveikos `r fmt_p(p_int, prefix = TRUE)`).
+
+```{r}
+#| label: lentele-3
+gtsummary::tbl_regression(
+  m, exponentiate = TRUE,
+  label = list(aspirinas = "Aspirinas", heparinas = "Heparinas", amzius = "Amžius, metai",
+               lytis = "Lytis", samone = "Sąmonės būklė", sab = "Sistolinis kraujospūdis, mmHg",
+               pv = "Prieširdžių virpėjimas", tipas = "Insulto tipas (OCSP)",
+               delsa = "Delsa iki suskirstymo, val.")
+) |>
+  gtsummary::modify_table_body(~ dplyr::mutate(.x, label = ifelse(label == "NA", "Nėra duomenų", label))) |>
+  as_apa_flextable(number = 3, title = "Mirties arba priklausomybės po 6 mėnesių veiksniai (logistinė regresija)",
+                   note = paste0("Modelis apima ", fmt_num(nobs(m), 0), " pacientus. Palyginimo kategorijos: be aspirino, be heparino, vyras, visiškai budrus, prieširdžių virpėjimas – taip, TACS."))
+```
+
+```{r}
+#| label: km
+km <- survfit(Surv(laikas, mire) ~ aspirinas, data = d)
+lr <- survdiff(Surv(laikas, mire) ~ aspirinas, data = d)
+p_lr <- pchisq(lr$chisq, df = 1, lower.tail = FALSE)
+km_df <- data.frame(laikas = km$time, isgyv = km$surv,
+                    grupe = rep(sub("aspirinas=", "", names(km$strata)), km$strata))
+km_df <- rbind(data.frame(laikas = 0, isgyv = 1, grupe = levels(d$aspirinas)), km_df)
+s183 <- summary(km, times = 183)$surv
+```
+
+Per 6 mėnesius mirė `r pct(1 - s183[1])` aspirino ir `r pct(1 - s183[2])` kontrolinės grupės pacientų (Kaplan–Meier įvertis; log-rank `r fmt_p(p_lr, prefix = TRUE)`). Per pirmąsias dvi savaites kreivės beveik sutampa, vėliau aspirino grupės kreivė išlieka šiek tiek aukščiau (1 pav.), tačiau skirtumas statistiškai nereikšmingas.
+
+```{r}
+#| label: pav-1
+#| fig-cap: "1 pav. Išgyvenamumas per 6 mėnesius pagal paskirtą gydymą aspirinu (Kaplan–Meier)"
+pct_lab <- scales::label_percent(accuracy = 1, decimal.mark = ",", suffix = " %")
+p_km <- ggplot(km_df, aes(laikas, isgyv, colour = grupe)) +
+  geom_step(linewidth = 0.8) +
+  scale_colour_statistikas(name = NULL) +
+  scale_y_continuous(labels = pct_lab, limits = c(0.75, 1)) +
+  scale_x_continuous(breaks = seq(0, 180, 30)) +
+  labs(x = "Dienos nuo atsitiktinio suskirstymo", y = "Išgyvenę pacientai")
+p_km
+web_png(p_km, "ist-1-isgyvenamumas.png")
+```
+
+## Poveikis pogrupiuose
+
+```{r}
+#| label: pogrupiai
+sub_or <- function(data) {
+  fit <- glm(mirtis_prikl6 ~ aspirinas, data = transform(data, aspirinas = relevel(aspirinas, "Be aspirino")),
+             family = binomial)
+  ci <- exp(confint.default(fit)["aspirinasAspirinas", ])
+  c(or = exp(coef(fit)[["aspirinasAspirinas"]]), lo = ci[[1]], hi = ci[[2]], n = nobs(fit))
+}
+sub_int <- function(var) {
+  dd <- d[!is.na(d$mirtis_prikl6) & !is.na(d[[var]]), ]
+  f0 <- glm(reformulate(c("aspirinas", var), "mirtis_prikl6"), data = dd, family = binomial)
+  f1 <- glm(reformulate(c(paste0("aspirinas*", var)), "mirtis_prikl6"), data = dd, family = binomial)
+  anova(f0, f1, test = "LRT")[2, "Pr(>Chi)"]
+}
+d$amzius_gr <- cut(d$amzius, c(0, 69, 79, Inf), labels = c("< 70 m.", "70–79 m.", "≥ 80 m."))
+d$delsa_gr <- cut(d$delsa, c(0, 24, 48), labels = c("≤ 24 val.", "25–48 val."))
+d$samone_gr <- factor(ifelse(d$samone == "Visiškai budrus", "Visiškai budrus", "Mieguistas / be sąmonės"),
+                      levels = c("Visiškai budrus", "Mieguistas / be sąmonės"))
+groups <- list(
+  "Amžius" = "amzius_gr", "Lytis" = "lytis", "Delsa" = "delsa_gr", "Sąmonė" = "samone_gr",
+  "Prieširdžių virpėjimas" = "pv", "Insulto tipas" = "tipas", "Heparinas" = "heparinas"
+)
+forest <- do.call(rbind, lapply(names(groups), function(g) {
+  var <- groups[[g]]
+  lev <- setdiff(levels(d[[var]]), "Kitas")
+  rows <- do.call(rbind, lapply(lev, function(l) sub_or(d[which(d[[var]] == l), ])))
+  header <- data.frame(grupe = g, lygis = g, or = NA, lo = NA, hi = NA, n = NA, p_int = NA, antraste = TRUE)
+  rbind(header, data.frame(grupe = g, lygis = lev, rows, p_int = sub_int(var), antraste = FALSE, row.names = NULL))
+}))
+forest <- rbind(data.frame(grupe = "Visi", lygis = "Visi pacientai", t(sub_or(d)), p_int = NA, antraste = TRUE), forest)
+forest$eil <- rev(seq_len(nrow(forest)))
+forest$etikete <- ifelse(forest$antraste & forest$grupe != "Visi", forest$lygis,
+                         paste0(ifelse(forest$antraste, "", "   "), forest$lygis, " (n = ", fmt_num(forest$n, 0), ")"))
+head_rows <- aggregate(eil ~ grupe, forest, max)
+min_p_int <- min(forest$p_int, na.rm = TRUE)
+```
+
+Aspirino poveikis buvo panašus visuose iš anksto apibrėžtuose pogrupiuose: nė viena sąveika nebuvo statistiškai reikšminga (mažiausia sąveikos p reikšmė `r fmt_p(min_p_int)`; 2 pav.). Tai reiškia, kad duomenys nerodo grupės, kuriai aspirinas būtų ypač naudingas ar žalingas.
+
+```{r}
+#| label: pav-2
+#| fig-cap: "2 pav. Aspirino poveikis mirties arba priklausomybės po 6 mėnesių šansams pogrupiuose (nekoreguoti šansų santykiai)"
+#| fig-height: 7.4
+fmt_or <- function(i) paste0(fmt_num(forest$or[i], 2), " (", fmt_num(forest$lo[i], 2), "–", fmt_num(forest$hi[i], 2), ")")
+forest$or_txt <- ifelse(is.na(forest$or), "", fmt_or(seq_len(nrow(forest))))
+p_forest <- ggplot(forest, aes(or, eil)) +
+  geom_vline(xintercept = 1, colour = "#4A4741", linewidth = 0.4) +
+  geom_errorbar(aes(xmin = lo, xmax = hi), width = 0, orientation = "y", colour = "#1C1B19", linewidth = 0.5) +
+  geom_point(aes(size = n), shape = 15, colour = "#1F45A0") +
+  geom_text(aes(x = 1.62, label = or_txt), hjust = 0, size = 3, family = "Times New Roman") +
+  scale_size_area(max_size = 4, guide = "none") +
+  # Eilučių pavadinimai piešiami kaip tekstas, kad grupių antraštės būtų paryškintos
+  geom_text(aes(x = 0.14, label = etikete, fontface = ifelse(antraste, "bold", "plain")),
+            hjust = 0, size = 3, family = "Times New Roman", colour = "#1C1B19") +
+  scale_x_log10(breaks = c(0.6, 0.8, 1, 1.25, 1.5), labels = function(x) fmt_num(x, 2),
+                limits = c(0.14, 2.3)) +
+  scale_y_continuous(breaks = NULL, expand = expansion(add = 0.6)) +
+  annotate("text", x = 0.52, y = max(forest$eil) + 1.1, label = "← aspirinas geriau", hjust = 0,
+           size = 3, family = "Times New Roman", colour = "#4A4741") +
+  annotate("text", x = 1.55, y = max(forest$eil) + 1.1, label = "kontrolė geriau →", hjust = 1,
+           size = 3, family = "Times New Roman", colour = "#4A4741") +
+  coord_cartesian(clip = "off") +
+  labs(x = "Šansų santykis (95 % PI), logaritminė skalė", y = NULL) +
+  theme_statistikas(base_family = "Times New Roman", grid = "x") +
+  theme(axis.line.x = element_blank(), panel.grid.major.y = element_blank())
+p_forest
+web_png(p_forest, "ist-1-pogrupiai.png", height = 7.2)
+```
+
+## Heparino poveikis
+
+```{r}
+#| label: heparinas
+p_hem_dose <- tapply(d$hem14, d$heparino_doze, mean)
+hem_ratio <- p_hem_dose[["Vidutinė dozė"]] / p_hem_dose[["Be heparino"]]
+```
+
+Heparinas, nepriklausomai nuo dozės, mirtingumo ir priklausomybės po 6 mėnesių nesumažino (4 lentelė). Vidutinė dozė hemoraginių insultų dažnį padidino `r fmt_num(hem_ratio, 1)` karto, o pakartotinių išeminių insultų sumažėjimas šios rizikos neatsvėrė.
+
+```{r}
+#| label: lentele-4
+hep_row <- function(y, label) {
+  ok <- !is.na(y)
+  cells <- vapply(levels(d$heparino_doze), function(l) {
+    yy <- y[ok & d$heparino_doze == l]
+    paste0(fmt_num(sum(yy), 0), " (", fmt_num(100 * mean(yy), 1), " %)")
+  }, character(1))
+  p <- suppressWarnings(chisq.test(table(d$heparino_doze[ok], y[ok])))$p.value
+  data.frame(Baigtis = label, t(cells), p = fmt_p(p), check.names = FALSE)
+}
+hep_n <- table(d$heparino_doze)
+t4 <- rbind(
+  hep_row(d$mirtis14, "Mirtis per 14 dienų"),
+  hep_row(d$mirtis_prikl6, "Mirtis arba priklausomybė po 6 mėn."),
+  hep_row(d$isc14, "Pakartotinis išeminis insultas per 14 dienų"),
+  hep_row(d$hem14, "Hemoraginis insultas per 14 dienų")
+)
+names(t4) <- c("Baigtis", paste0(names(hep_n), "\nN = ", fmt_num(as.numeric(hep_n), 0)), "p reikšmė")
+as_apa_flextable(t4, number = 4, title = "Baigtys pagal paskirtą heparino dozę, n (%)",
+                 note = "Maža dozė – 5 000 TV, vidutinė – 12 500 TV poodiniu būdu du kartus per parą (bandomajame etape vidutinė dozė vadinta didele). p reikšmė – chi kvadrato testas tarp trijų grupių.")
+```
+
+# Išvados ir ribotumai
+
+1. Aspirinas, paskirtas per 48 valandas nuo išeminio insulto, nedaug, bet reikšmingai sumažina mirties ar priklausomybės riziką po 6 mėnesių; maždaug `r round(-1000 * ars6)` iš 1 000 gydytų pacientų išvengia šios baigties.
+2. Didžiausia aspirino nauda – rečiau pasikartojantys išeminiai insultai pirmosiomis savaitėmis; kraujavimo rizika reikšmingai nepadidėja.
+3. Poodinis heparinas bendros naudos neduoda: išeminių insultų sumažėjimą atsveria hemoraginių insultų padidėjimas.
+
+Šios analizės rezultatai sutampa su paskelbtais pirminio tyrimo rezultatais [@ist1997]: mirtis per 14 dienų 9,0 % ir 9,4 %, mirtis arba priklausomybė po 6 mėnesių 62,2 % ir 63,5 %.
+
+**Ribotumai.** Tyrimas buvo atvirasis (pacientai ir gydytojai žinojo paskirtą gydymą), tačiau pagrindinės baigtys (mirtis, priklausomybė) mažai priklauso nuo vertintojo. Kompiuterinė tomografija prieš suskirstymą atlikta ne visiems pacientams, todėl dalis hemoraginių insultų galėjo būti neatpažinti. Duomenys surinkti 1991–1996 m., kai insulto gydymas (pvz., trombolizė) buvo kitoks nei šiandien.
+
+# Šaltiniai {.unnumbered}
+
+::: {#refs}
+:::

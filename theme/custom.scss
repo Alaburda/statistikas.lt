@@ -700,10 +700,29 @@ h2, .h2 {
 
   .proof-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr) 1.4fr;
 
     @media (max-width: 900px) {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // The last cell links to the sample report: proof you can open
+  .proof.proof-link {
+    background: $yellow;
+    color: $ink;
+    text-decoration: none;
+    border-left: $rule solid $ink;
+    transition: background 0.15s ease;
+
+    &:hover { background: $ink; color: white; span { color: rgba(white, 0.85); } }
+
+    strong { font-size: 1.2rem; }
+
+    @media (max-width: 900px) {
+      grid-column: 1 / -1;
+      border-left: 0;
+      padding-left: 1.25rem !important;
     }
   }
 
@@ -1389,6 +1408,124 @@ h2, .h2 {
     color: $ink-2;
     margin: 0;
     overflow-wrap: anywhere;
+  }
+}
+
+// ============================================
+// Sample report page (pavyzdziai/ist-1)
+// ============================================
+// The title is set for the Pavyzdžiai listing card; the page shows it in the hero
+.sample-page #title-block-header { display: none; }
+
+.sample-hero-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 4rem;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.sample-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 2.25rem;
+}
+
+.btn-big {
+  font-size: 1.15rem;
+  padding: 1.15rem 1.9rem;
+}
+
+.sample-meta {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  color: $ink-2;
+}
+
+// The report's own figure stands in for a cover, framed like a Mondrian panel
+.sample-cover {
+  position: relative;
+  display: block;
+  border: $grout solid $ink;
+  border-left-width: 14px;
+  border-left-color: $yellow;
+  background: white;
+  padding: 1rem;
+  transition: transform 0.15s ease;
+
+  &:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 $ink; }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.sample-cover-tag {
+  position: absolute;
+  right: -$grout;
+  bottom: -$grout;
+  background: $ink;
+  color: white;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.sample-figure {
+  margin: 0 0 3rem;
+  border: $grout solid $ink;
+  background: $ink;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: white;
+  }
+
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    font-family: $font-family-monospace;
+    font-size: 0.75rem;
+    color: rgba(white, 0.85);
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+}
+
+.sample-list {
+  max-width: 48rem;
+}
+
+.sample-again {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin: 2.5rem 0 0;
+}
+
+.sample-source {
+  max-width: 52rem;
+
+  p {
+    color: $ink-2;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
   }
 }
 
