@@ -2,3 +2,6 @@
 body-classes: post
 # Įrašuose skyriai rašomi kaip "#"; pakeliame lygiu, kad puslapyje liktų vienas h1 (pavadinimas)
 shift-heading-level-by: 1
+# Baigiamasis kvietimas susisiekti įrašams, kuriuose jo dar nėra
+filters:
+  - _post-cta.lua

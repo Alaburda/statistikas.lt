@@ -18,7 +18,7 @@ include-in-header:
       "description": "Statistikos ir duomenų analizės konsultacijos, projektai ir nuolatinė partnerystė įmonėms ir tyrėjams.",
       "email": "info@statistikas.lt",
       "areaServed": { "@type": "Country", "name": "Lietuva" },
-      "availableLanguage": ["lt", "en"],
+      "availableLanguage": "lt",
       "priceRange": "nuo 50 €",
       "knowsAbout": ["Statistinė analizė", "A/B testai", "Imties dydžio skaičiavimas", "Apklausų analizė", "Biostatistika", "R", "Python"],
       "founder": {

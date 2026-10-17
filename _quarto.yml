@@ -56,7 +56,7 @@ website:
 
   page-footer:
     left: |
-      © 2026 Statistikas.lt · Paulius Alaburda
+      © <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda
     center:
       - text: "Paslaugos"
         href: paslaugos.qmd

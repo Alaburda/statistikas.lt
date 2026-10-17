@@ -7,7 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
   initHeroFigure();
   initTopicFromUrl();
   initFormHandling();
+  initFooterYear();
 });
+
+// ============================================
+// Footer year stays current without a re-render
+// ============================================
+function initFooterYear() {
+  document.querySelectorAll('.footer-year').forEach((el) => {
+    el.textContent = new Date().getFullYear();
+  });
+}
 
 // ============================================
 // Gentle reveal of blocks on scroll

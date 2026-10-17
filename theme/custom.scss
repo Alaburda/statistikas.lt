@@ -1613,6 +1613,29 @@ h2, .h2 {
   border-radius: 0 !important;
 }
 
+// Closing call to action appended to posts by posts/_post-cta.lua
+.post-cta {
+  margin: 4rem 0 1rem;
+  padding: 2rem 2rem 2rem 2.25rem;
+  border: $grout solid $ink;
+  border-left: 14px solid $yellow;
+
+  .post-cta-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin: 1.5rem 0 0;
+  }
+}
+
 div.sourceCode,
 pre.sourceCode {
   border-radius: 0;
