@@ -76,6 +76,15 @@ listing:
     </div>
 </section>
 
+<section class="proof-strip" aria-label="Patirtis skaičiais">
+  <div class="wrap proof-grid">
+    <div class="proof"><strong>nuo 2015</strong><span>dirbu su statistika</span></div>
+    <div class="proof"><strong>200+</strong><span>projektų verslui ir tyrėjams</span></div>
+    <div class="proof"><strong>4</strong><span>recenzuotos publikacijos</span></div>
+    <div class="proof"><strong>18</strong><span>žmonių duomenų komanda, kuriai vadovauju</span></div>
+  </div>
+</section>
+
 <section id="paslaugos" class="band">
   <div class="wrap">
     <div class="section-head">
@@ -165,43 +174,6 @@ listing:
         <p class="aud-foot">Rašote baigiamąjį darbą? Pradėkite nuo <a href="straipsniai.html">straipsnių</a>, išbandykite <a href="analize/">nemokamą analizės įrankį</a> arba užsisakykite <a href="kontaktai.html?tema=konsultacija">konsultaciją</a>.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="band">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Procesas</span>
-        <h2>Kaip vyksta darbas</h2>
-      </div>
-      <p>Aiški apimtis prieš pradedant, reguliarus ryšys darbo metu ir rezultatas, kurį suprasite.</p>
-    </div>
-
-    <div class="steps">
-      <div class="step">
-        <span class="chip">01</span>
-        <h3>Pokalbis</h3>
-        <p>Nemokamai aptariame jūsų klausimą, duomenis ir terminus. Jei galiu padėti — pasakysiu kaip, jei ne — pasakysiu ir tai.</p>
-      </div>
-      <div class="step">
-        <span class="chip">02</span>
-        <h3>Pasiūlymas</h3>
-        <p>Raštu gaunate darbų apimtį, kainą ir terminą. Pradedame tik jums sutikus.</p>
-      </div>
-      <div class="step">
-        <span class="chip">03</span>
-        <h3>Darbas</h3>
-        <p>Reguliariai informuoju apie eigą. Iškilusius klausimus sprendžiame kartu, ne paskutinę dieną.</p>
-      </div>
-      <div class="step">
-        <span class="chip">04</span>
-        <h3>Rezultatas</h3>
-        <p>Ataskaita, kodas ir paaiškinimas. Padedu interpretuoti ir pristatyti rezultatus kitiems.</p>
-      </div>
-    </div>
-
-    <div class="tools"><span>Įrankiai</span><span>R</span><span>Python</span><span>SPSS</span><span>Excel</span><span>Quarto</span></div>
   </div>
 </section>
 

@@ -1,53 +1,161 @@
 ---
-title: "Paulius Alaburda — statistikas"
 pagetitle: "Apie Paulių Alaburdą, statistikos konsultantą"
-description: "Paulius Alaburda – statistikos konsultantas su daugiau nei 10 metų patirtimi medicinos, farmacijos ir socialinių mokslų srityse."
-image: images/paulius.jpg
-about:
-  template: trestles
-  image-width: 20em
-  image-shape: rounded
-  links:
-    - icon: envelope
-      text: El. paštas
-      href: mailto:info@statistikas.lt
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/pauliusalaburda/
-    - icon: github
-      text: GitHub
-      href: https://github.com/Alaburda
+description: "Paulius Alaburda – gydytojas pagal išsilavinimą ir statistikas pagal profesiją: moksliniai tyrimai, daugiau nei 200 projektų nuo 2015 m. ir duomenų komandos vadovavimas energetikos įmonėje."
+image: images/card.png
+toc: false
+page-layout: custom
+section-divs: false
 ---
 
-## Sveiki! 👋 
+<!-- Nuotraukos dar nėra: .about-portrait laikinai yra Mondriano blokas. Atsiradus nuotraukai, įdėkite <img> į .about-portrait ir images/paulius.jpg į image: -->
 
-Aš esu Paulius Alaburda, statistikos konsultantas su daugiau nei 10 metų patirtimi.
+```{=html}
+<section class="about-hero">
+  <div class="wrap about-hero-grid">
+    <div class="about-hero-copy">
+      <span class="eyebrow">Apie</span>
+      <h1>Paulius Alaburda — <em>statistikas, kuris supranta ir tyrėjus, ir verslą.</em></h1>
+      <p class="lede">Baigiau mediciną, penkerius metus dirbau mokslinėje laboratorijoje, o šiandien vadovauju duomenų komandai. Statistika visą laiką buvo jungiamoji grandis: nuo pirmo tyrimo dizaino iki vadovybei skirtos ataskaitos.</p>
+      <div class="hero-actions">
+        <a href="kontaktai.html" class="btn-blue">Aptarkime jūsų projektą →</a>
+        <a href="https://www.linkedin.com/in/pauliusalaburda/" class="text-link">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="mondrian about-portrait" aria-hidden="true">
+      <div class="m-blue"></div>
+      <div class="about-stat"><strong>2015</strong><span>dirbu su statistika</span></div>
+      <div class="m-yellow"></div>
+      <div class="about-stat"><strong>200+</strong><span>projektų</span></div>
+      <div class="m-red"></div>
+      <div></div>
+    </div>
+  </div>
+</section>
 
-Su statistika dirbu nuo 2015 metų. Per šį laiką sukaupiau didelę patirtį dirbdamas su moksliniais tyrimais medicinos, farmacijos ir socialinių mokslų srityse. Gerai žinau visus iššūkius, kurie atsiranda rengiant pranešimus, mokslines publikacijas ar komercinių produktų analizes.
+<section class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Patirtis</span>
+        <h2>Dvi pusės, vienas požiūris</h2>
+      </div>
+      <p>Tyrimuose išmokau, kaip svarbu teisingai suplanuoti ir pagrįsti kiekvieną žingsnį. Versle — kaip greitai atsakymas turi virsti sprendimu.</p>
+    </div>
 
-## Mano patirtis
+    <div class="audience about-halves">
+      <div class="aud">
+        <span class="eyebrow">Medicina ir mokslas</span>
+        <h3>Metodologija, kuri atlaiko recenzentus.</h3>
+        <ol class="about-timeline">
+          <li><span class="mono">LSMU</span><p>Medicinos studijos Lietuvos sveikatos mokslų universitete.</p></li>
+          <li><span class="mono">2013–2018</span><p>Mokslinis darbas LSMU anatomijos laboratorijoje: širdies ir žarnyno nervų sistemos tyrimai, keturios recenzuotos publikacijos.</p></li>
+          <li><span class="mono">nuo 2015</span><p>Laisvai samdomas statistikas: daugiau nei 200 projektų gydytojams, mokslininkams, institucijoms ir įmonėms.</p></li>
+        </ol>
+      </div>
+      <div class="aud aud-primary">
+        <span class="eyebrow">Duomenys versle</span>
+        <h3>Analitika, kuria remiasi sprendimai.</h3>
+        <ol class="about-timeline">
+          <li><span class="mono">Aon, Čikaga</span><p>Duomenų analitika vienoje didžiausių pasaulio rizikos ir draudimo konsultacijų įmonių.</p></li>
+          <li><span class="mono">dabar</span><p>Vadovauju 18 žmonių duomenų komandai energetikos įmonėje: ataskaitos, rodiklių sistemos ir duomenų platforma.</p></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
 
-- **Statistinė analizė** – aprašomoji statistika, hipotezių tikrinimas, regresinė analizė, daugiamatis modeliavimas
-- **Duomenų vizualizacija** – aiškūs ir informatyvūs grafikai, pritaikyti publikacijoms
-- **Moksliniai tyrimai** – klinikinių tyrimų statistika, meta-analizės, sisteminės apžvalgos
-- **Konsultavimas** – pagalba planuojant tyrimus, interpretuojant rezultatus
+<section class="band band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Publikacijos</span>
+        <h2>Recenzuoti straipsniai</h2>
+      </div>
+      <p>Bendraautorystė LSMU anatomijos laboratorijos tyrimuose. Klientų darbai konfidencialūs, todėl jų čia nerasite — užtat galite peržiūrėti pavyzdinę analizę.</p>
+    </div>
 
-## Įrankiai
+    <ol class="pub-list">
+      <li>
+        <span class="pub-year mono">2020</span>
+        <div>
+          <p class="pub-title">Ultrastructural changes of the human enteric nervous system and interstitial cells of Cajal in diverticular disease</p>
+          <p class="pub-meta"><strong>Alaburda P</strong>, Lukosiene JI, Pauza AG ir kt. <em>Histology and Histopathology</em>. <a href="https://doi.org/10.14670/HH-18-136">doi:10.14670/HH-18-136</a></p>
+        </div>
+      </li>
+      <li>
+        <span class="pub-year mono">2019</span>
+        <div>
+          <p class="pub-title">Alterations in enteric calcitonin gene-related peptide in patients with colonic diverticular disease</p>
+          <p class="pub-meta">Pauza AG, Rysevaite-Kyguoliene K, Malinauskas M, Lukosiene JI, <strong>Alaburda P</strong> ir kt. <em>Autonomic Neuroscience</em>. <a href="https://doi.org/10.1016/j.autneu.2018.09.006">doi:10.1016/j.autneu.2018.09.006</a></p>
+        </div>
+      </li>
+      <li>
+        <span class="pub-year mono">2017</span>
+        <div>
+          <p class="pub-title">Neuroanatomy of the pig cardiac ventricles. A stereomicroscopic, confocal and electron microscope study</p>
+          <p class="pub-meta">Pauziene N, Rysevaite-Kyguoliene K, <strong>Alaburda P</strong> ir kt. <em>The Anatomical Record</em>. <a href="https://doi.org/10.1002/ar.23619">doi:10.1002/ar.23619</a></p>
+        </div>
+      </li>
+      <li>
+        <span class="pub-year mono">2016</span>
+        <div>
+          <p class="pub-title">Innervation of the rabbit cardiac ventricles</p>
+          <p class="pub-meta">Pauziene N, <strong>Alaburda P</strong>, Rysevaite-Kyguoliene K ir kt. <em>Journal of Anatomy</em>. <a href="https://doi.org/10.1111/joa.12400">doi:10.1111/joa.12400</a></p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
 
-- **R** – pagrindinis įrankis statistinei analizei ir vizualizacijai
-- **Python** – duomenų apdorojimas ir mašininis mokymasis
-- **SPSS** – klasikinis statistikos įrankis
-- **Excel** – greiti skaičiavimai ir duomenų paruošimas
+<section class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Kaip dirbu</span>
+        <h2>Ką tai reiškia jums</h2>
+      </div>
+      <p>Ilgametė patirtis abiejose pusėse reiškia mažiau aiškinimo jums ir daugiau laiko pačiam klausimui.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="chip chip-yellow">01</span>
+        <h3>Suprantu kontekstą</h3>
+        <p>Klinikinis tyrimas, apklausa ar pardavimų duomenys — žinau, kokių klausimų sulauksite iš recenzento ar vadovybės.</p>
+      </div>
+      <div class="step">
+        <span class="chip chip-red">02</span>
+        <h3>Rašau aiškiai</h3>
+        <p>Rezultatus pateikiu taip, kad juos galėtumėte paaiškinti kitiems: lentelės, grafikai ir išvados žodžiais.</p>
+      </div>
+      <div class="step">
+        <span class="chip chip-blue">03</span>
+        <h3>Dirbu pakartojamai</h3>
+        <p>Analizę rašau kodu (R, Python), todėl ją galima patikrinti, pakartoti ir atnaujinti su naujais duomenimis.</p>
+      </div>
+      <div class="step">
+        <span class="chip chip-ink">04</span>
+        <h3>Saugau konfidencialumą</h3>
+        <p>Klientų nevardiju ir duomenų nenaudoju kitur. Jei reikia, pasirašau konfidencialumo sutartį.</p>
+      </div>
+    </div>
+    <div class="tools"><span>Įrankiai</span><span>R</span><span>Python</span><span>SPSS</span><span>Quarto</span><span>Excel</span></div>
+  </div>
+</section>
 
-## Kodėl rinktis mane?
-
-1. **Patirtis** – daugiau nei 200 sėkmingai įgyvendintų projektų
-2. **Aiškumas** – rezultatus pateikiu suprantamai, ne tik skaičiais
-3. **Lankstumas** – prisitaikau prie jūsų poreikių ir terminų
-4. **Konfidencialumas** – jūsų duomenys yra saugūs
-
----
-
-### Susisiekite
-
-Turite klausimų? Rašykite el. paštu [info@statistikas.lt](mailto:info@statistikas.lt) arba susisiekite per [LinkedIn](https://www.linkedin.com/in/pauliusalaburda/).
+<section class="cta-band">
+  <div class="wrap cta-grid">
+    <div>
+      <span class="eyebrow">Susisiekite</span>
+      <h2>Papasakokite apie savo duomenis.</h2>
+      <p>Pirmas 30 min. pokalbis nemokamas. Jei galiu padėti — pasakysiu kaip, jei ne — pasakysiu ir tai.</p>
+      <div class="cta-actions">
+        <a href="kontaktai.html" class="btn-yellow">Aptarkime projektą →</a>
+        <a href="mailto:info@statistikas.lt" class="cta-mail">info@statistikas.lt</a>
+      </div>
+    </div>
+    <div class="mondrian cta-art" aria-hidden="true">
+      <div class="m-blue"></div><div class="m-yellow"></div><div class="m-red"></div>
+    </div>
+  </div>
+</section>
+```
