@@ -8,7 +8,28 @@ document.addEventListener('DOMContentLoaded', function() {
   initTopicFromUrl();
   initFormHandling();
   initFooterYear();
+  initInviewVideos();
 });
+
+// ============================================
+// Demo videos load and play only while on screen; reduced motion gets controls
+// ============================================
+function initInviewVideos() {
+  const videos = document.querySelectorAll('video[data-inview]');
+  if (videos.length === 0) return;
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still || !('IntersectionObserver' in window)) {
+    videos.forEach((v) => { v.controls = true; });
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) target.play().catch(() => { target.controls = true; });
+      else target.pause();
+    });
+  }, { threshold: 0.35 });
+  videos.forEach((v) => observer.observe(v));
+}
 
 // ============================================
 // Footer year stays current without a re-render

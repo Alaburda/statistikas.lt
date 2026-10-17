@@ -1014,6 +1014,36 @@ h2, .h2 {
   }
 }
 
+// Demo video above the /analize cards on the homepage
+.demo-video {
+  margin: 0;
+  border: $grout solid $ink;
+  border-bottom: 0;
+  background: $ink;
+
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: $paper;
+  }
+
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    font-family: $font-family-monospace;
+    font-size: 0.75rem;
+    color: rgba(white, 0.85);
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+}
+
 // ============================================
 // Blog listing (home + Straipsniai)
 // ============================================

@@ -56,7 +56,34 @@ function readCollapsed(): boolean {
   }
 }
 
-/** Compact, collapsible intro with the value proposition and three steps. */
+// Silent screen recording of the tool (scripts/record-analize.mjs), served from public/demo/.
+const DEMO = `${import.meta.env.BASE_URL}demo/analize`;
+
+function DemoVideo() {
+  // Loop quietly for most visitors; with reduced motion, wait for a click instead.
+  const still =
+    typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  return (
+    <video
+      className="intro-video"
+      poster={`${DEMO}-poster.jpg`}
+      autoPlay={!still}
+      muted
+      loop
+      playsInline
+      controls={still}
+      preload="metadata"
+      title="Spustelėkite, kad matytumėte per visą ekraną"
+      onClick={(e) => e.currentTarget.requestFullscreen?.().catch(() => {})}
+      aria-label="Vaizdo įrašas: kaip įrankyje atlikti t testą ir atsisiųsti ataskaitą į Word"
+    >
+      <source src={`${DEMO}.webm`} type="video/webm" />
+      <source src={`${DEMO}.mp4`} type="video/mp4" />
+    </video>
+  );
+}
+
+/** Compact, collapsible intro with the value proposition, three steps and a demo video. */
 export function IntroPanel() {
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const toggle = () => {
@@ -77,29 +104,32 @@ export function IntroPanel() {
         </button>
       </div>
       {!collapsed && (
-        <>
-          <p className="intro-lead">
-            Gaukite lenteles, diagramas ir rezultatų aprašymą be programų diegimo – viskas vyksta
-            jūsų naršyklėje.
-          </p>
-          <ol className="intro-steps">
-            <li>
-              <span className="step-num">1</span>
-              <span>Įkelkite CSV ar Excel failą</span>
-            </li>
-            <li>
-              <span className="step-num">2</span>
-              <span>Pasirinkite testą ir kintamuosius</span>
-            </li>
-            <li>
-              <span className="step-num">3</span>
-              <span>Atsisiųskite ataskaitą į Word</span>
-            </li>
-          </ol>
-          <p className="intro-privacy">
-            Duomenys apdorojami tik jūsų naršyklėje ir niekur nesiunčiami.
-          </p>
-        </>
+        <div className="intro-body">
+          <div>
+            <p className="intro-lead">
+              Gaukite lenteles, diagramas ir rezultatų aprašymą be programų diegimo – viskas vyksta
+              jūsų naršyklėje.
+            </p>
+            <ol className="intro-steps">
+              <li>
+                <span className="step-num">1</span>
+                <span>Įkelkite CSV ar Excel failą</span>
+              </li>
+              <li>
+                <span className="step-num">2</span>
+                <span>Pasirinkite testą ir kintamuosius</span>
+              </li>
+              <li>
+                <span className="step-num">3</span>
+                <span>Atsisiųskite ataskaitą į Word</span>
+              </li>
+            </ol>
+            <p className="intro-privacy">
+              Duomenys apdorojami tik jūsų naršyklėje ir niekur nesiunčiami.
+            </p>
+          </div>
+          <DemoVideo />
+        </div>
       )}
     </section>
   );
