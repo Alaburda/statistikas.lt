@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="lt" xml:lang="lt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.52">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulius Alaburda">
+<meta name="description" content="Kaplan-Meier kreivės, log-rank testas ir Cox regresija su R: kaip analizuoti laiką iki įvykio, kai dalis stebėjimų dar nesibaigė, ir kaip teisingai pateikti rezultatus.">
+
+<title>Kaip atlikti išgyvenamumo analizę? – Statistikas.lt</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "Nėra rezultatų",
+    "search-matching-documents-text": "atitinkančių dokumentų",
+    "search-copy-link-title": "Kopijuoti nuorodą į paiešką",
+    "search-hide-matches-text": "Slėpti kitus atitikimus",
+    "search-more-match-text": "daugiau atitikimų šiame dokumente",
+    "search-more-matches-text": "daugiau atitikimų šiame dokumente",
+    "search-clear-button-title": "Išvalyti",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Atšaukti",
+    "search-submit-button-title": "Pateikti",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DT3Y3KGPJQ"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="Kaip atlikti išgyvenamumo analizę? – Statistikas.lt">
+<meta property="og:description" content="Kaplan-Meier kreivės, log-rank testas ir Cox regresija su R: kaip analizuoti laiką iki įvykio, kai dalis stebėjimų dar nesibaigė, ir kaip teisingai pateikti rezultatus.">
+<meta property="og:image" content="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png">
+<meta property="og:site_name" content="Statistikas.lt">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="Kaip atlikti išgyvenamumo analizę? – Statistikas.lt">
+<meta name="twitter:description" content="Kaplan-Meier kreivės, log-rank testas ir Cox regresija su R: kaip analizuoti laiką iki įvykio, kai dalis stebėjimų dar nesibaigė, ir kaip teisingai pateikti rezultatus.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png">
+<meta name="twitter:creator" content="@p_alab">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="960">
+<meta name="twitter:image-width" content="1536">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html">
+</head>
+
+<body class="nav-fixed post">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/mark.svg" alt="Statistikas.lt" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Statistikas.lt</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Rodyti/Slėpti navigaciją" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html"> 
+<span class="menu-text">Paslaugos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html"> 
+<span class="menu-text">Pavyzdžiai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html"> 
+<span class="menu-text">Straipsniai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html"> 
+<span class="menu-text">Nemokama analizė</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Apie</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/pauliusalaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../kontaktai.html"> 
+<span class="menu-text">Susisiekti</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Šiame tinklalapyje</h2>
+   
+  <ul>
+  <li><a href="#kodėl-negalima-tiesiog-paskaičiuoti-vidurkio" id="toc-kodėl-negalima-tiesiog-paskaičiuoti-vidurkio" class="nav-link active" data-scroll-target="#kodėl-negalima-tiesiog-paskaičiuoti-vidurkio">Kodėl negalima tiesiog paskaičiuoti vidurkio?</a></li>
+  <li><a href="#duomenys" id="toc-duomenys" class="nav-link" data-scroll-target="#duomenys">Duomenys</a></li>
+  <li><a href="#kaplan-meier-kreivė" id="toc-kaplan-meier-kreivė" class="nav-link" data-scroll-target="#kaplan-meier-kreivė">Kaplan-Meier kreivė</a></li>
+  <li><a href="#grupių-palyginimas" id="toc-grupių-palyginimas" class="nav-link" data-scroll-target="#grupių-palyginimas">Grupių palyginimas</a>
+  <ul class="collapse">
+  <li><a href="#log-rank-testas" id="toc-log-rank-testas" class="nav-link" data-scroll-target="#log-rank-testas">Log-rank testas</a></li>
+  </ul></li>
+  <li><a href="#cox-regresija" id="toc-cox-regresija" class="nav-link" data-scroll-target="#cox-regresija">Cox regresija</a>
+  <ul class="collapse">
+  <li><a href="#ar-tenkinama-proporcingų-rizikų-prielaida" id="toc-ar-tenkinama-proporcingų-rizikų-prielaida" class="nav-link" data-scroll-target="#ar-tenkinama-proporcingų-rizikų-prielaida">Ar tenkinama proporcingų rizikų prielaida?</a></li>
+  </ul></li>
+  <li><a href="#kaip-pateikti-rezultatus" id="toc-kaip-pateikti-rezultatus" class="nav-link" data-scroll-target="#kaip-pateikti-rezultatus">Kaip pateikti rezultatus</a></li>
+  <li><a href="#dažniausios-klaidos" id="toc-dažniausios-klaidos" class="nav-link" data-scroll-target="#dažniausios-klaidos">Dažniausios klaidos</a></li>
+  <li><a href="#santrauka" id="toc-santrauka" class="nav-link" data-scroll-target="#santrauka">Santrauka</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Kaip atlikti išgyvenamumo analizę?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistika</div>
+    <div class="quarto-category">išgyvenamumo-analizė</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Kaplan-Meier kreivės, log-rank testas ir Cox regresija su R: kaip analizuoti laiką iki įvykio, kai dalis stebėjimų dar nesibaigė, ir kaip teisingai pateikti rezultatus.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autorius</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulius Alaburda </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Paskelbta</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026 m. spalio 25 d.</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Išgyvenamumo analizė atsako į klausimą <strong>„kiek laiko praeina iki įvykio?“</strong>. Pavadinimas kilęs iš medicinos, kur įvykis dažniausiai yra mirtis ar ligos atkrytis, bet tie patys metodai tinka bet kuriam laikui iki įvykio:</p>
+<ul>
+<li>kiek laiko klientas lieka prenumeratoriumi iki atsisakymo (<em>churn</em>);</li>
+<li>per kiek laiko darbuotojas išeina iš įmonės;</li>
+<li>kada sugenda įrenginys;</li>
+<li>per kiek dienų naujas vartotojas atlieka pirmą pirkimą.</li>
+</ul>
+<p>Šiame įraše pereisime visą kelią su R: nuo duomenų paruošimo iki Kaplan-Meier kreivių, log-rank testo ir Cox regresijos.</p>
+<section id="kodėl-negalima-tiesiog-paskaičiuoti-vidurkio" class="level2">
+<h2 class="anchored" data-anchor-id="kodėl-negalima-tiesiog-paskaičiuoti-vidurkio">Kodėl negalima tiesiog paskaičiuoti vidurkio?</h2>
+<p>Dėl <strong>cenzūravimo</strong>. Kai tyrimas baigiasi, dalis tiriamųjų įvykio dar nepatyrė: pacientas gyvas, klientas vis dar moka prenumeratą. Apie juos žinome tik tiek, kad jų laikas iki įvykio yra <strong>ilgesnis</strong> nei stebėjimo trukmė.</p>
+<p>Abu „paprasti” sprendimai iškreipia rezultatą:</p>
+<ul>
+<li><strong>Atmesti cenzūruotus stebėjimus</strong> reiškia išmesti tuos, kuriems sekėsi geriausiai. Vidutinis laikas iki įvykio bus nepagrįstai trumpas.</li>
+<li><strong>Laikyti cenzūravimo momentą įvykio momentu</strong> irgi sutrumpina laiką: elgiamės taip, lyg visi stebėjimai baigtųsi įvykiu.</li>
+</ul>
+<p>Išgyvenamumo analizės metodai naudoja visą turimą informaciją: cenzūruotas stebėjimas skaičiuojamas „rizikos grupėje” tol, kol jį matome, o po to iš jos tvarkingai pašalinamas.</p>
+</section>
+<section id="duomenys" class="level2">
+<h2 class="anchored" data-anchor-id="duomenys">Duomenys</h2>
+<p>Naudosime klasikinį <code>lung</code> duomenų rinkinį iš <code>survival</code> paketo: 228 pažengusio plaučių vėžio pacientai, stebėti JAV <em>North Central Cancer Treatment Group</em> tyrime. Mus domins:</p>
+<ul>
+<li><code>time</code>: stebėjimo trukmė dienomis;</li>
+<li><code>status</code>: 1, jei stebėjimas cenzūruotas, 2, jei pacientas mirė;</li>
+<li><code>sex</code>: 1 vyras, 2 moteris;</li>
+<li><code>age</code>: amžius metais;</li>
+<li><code>ph.ecog</code>: gydytojo įvertinta funkcinė būklė pagal ECOG skalę (0 = be simptomų, 3 = didžiąją dienos dalį lovoje).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>duom <span class="ot">&lt;-</span> survival<span class="sc">::</span>lung</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>duom<span class="sc">$</span>ivykis <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(duom<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">2</span>)   <span class="co"># 1 = mirtis, 0 = cenzūruota</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>duom<span class="sc">$</span>lytis  <span class="ot">&lt;-</span> <span class="fu">factor</span>(duom<span class="sc">$</span>sex, <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Vyrai"</span>, <span class="st">"Moterys"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(duom<span class="sc">$</span>ivykis)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+ 63 165 </code></pre>
+</div>
+</div>
+<p>Iš 228 pacientų 165 mirė stebėjimo metu, o 63 stebėjimai cenzūruoti.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Įvykį koduokite 0/1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>survival</code> paketas priima ir 1/2 kodavimą, bet aiškus 0/1 (1 = įvykis įvyko) apsaugo nuo klaidų, ypač jei tuos pačius duomenis vėliau analizuosite kita programa.</p>
+</div>
+</div>
+<p>Pagrindinis išgyvenamumo analizės objektas yra <code>Surv()</code>. Pliusas po skaičiumi žymi cenzūruotą stebėjimą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">Surv</span>(duom<span class="sc">$</span>time, duom<span class="sc">$</span>ivykis), <span class="dv">10</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  306   455  1010+  210   883  1022+  310   361   218   166 </code></pre>
+</div>
+</div>
+</section>
+<section id="kaplan-meier-kreivė" class="level2">
+<h2 class="anchored" data-anchor-id="kaplan-meier-kreivė">Kaplan-Meier kreivė</h2>
+<p>Kaplan-Meier metodas įvertina <strong>išgyvenamumo funkciją</strong>, t. y. tikimybę, kad įvykis neįvyks iki tam tikro laiko momento. Kiekvieną kartą, kai kas nors patiria įvykį, tikimybė sumažėja proporcingai tam, kiek žmonių tuo metu buvo rizikos grupėje.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, ivykis) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> duom)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>km</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(time, ivykis) ~ 1, data = duom)
+
+       n events median 0.95LCL 0.95UCL
+[1,] 228    165    310     285     363</code></pre>
+</div>
+</div>
+<p>Išgyvenamumo <strong>mediana</strong> yra 310 d.&nbsp;(95 % PI 285–363): tiek laiko praėjus gyvi išlieka pusė pacientų. Mediana čia geresnė už vidurkį, nes ilgiausiai stebėtų pacientų tikrasis laikas nežinomas.</p>
+<p>Tikimybę išgyventi iki konkretaus momento gauname su <code>summary(..., times = )</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(km, <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">365</span>, <span class="dv">730</span>))</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(time, ivykis) ~ 1, data = duom)
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+  180    160      63    0.722  0.0298       0.6655        0.783
+  365     65      58    0.409  0.0358       0.3447        0.486
+  730     13      38    0.116  0.0283       0.0716        0.187</code></pre>
+</div>
+</div>
+<p>Metus išgyvena apie 41 % pacientų (95 % PI 34–49 %).</p>
+</section>
+<section id="grupių-palyginimas" class="level2">
+<h2 class="anchored" data-anchor-id="grupių-palyginimas">Grupių palyginimas</h2>
+<p>Ar išgyvenamumas skiriasi tarp vyrų ir moterų? Pirmiausia nubraižykime Kaplan-Meier kreives:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>km_lytis <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, ivykis) <span class="sc">~</span> lytis, <span class="at">data =</span> duom)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>kreives <span class="ot">&lt;-</span> <span class="fu">tidy</span>(km_lytis)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>kreives<span class="sc">$</span>lytis <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"lytis="</span>, <span class="st">""</span>, kreives<span class="sc">$</span>strata)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Kreivė prasideda nuo 1 laiko momentu 0</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>kreives <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">time =</span> <span class="dv">0</span>, <span class="at">estimate =</span> <span class="dv">1</span>, <span class="at">n.censor =</span> <span class="dv">0</span>, <span class="at">lytis =</span> <span class="fu">c</span>(<span class="st">"Vyrai"</span>, <span class="st">"Moterys"</span>)),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  kreives[, <span class="fu">c</span>(<span class="st">"time"</span>, <span class="st">"estimate"</span>, <span class="st">"n.censor"</span>, <span class="st">"lytis"</span>)]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kreives, <span class="fu">aes</span>(time, estimate, <span class="at">color =</span> lytis)) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">subset</span>(kreives, n.censor <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x <span class="sc">*</span> <span class="dv">100</span>, <span class="st">" %"</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">Vyrai =</span> <span class="st">"#4F46E5"</span>, <span class="at">Moterys =</span> <span class="st">"#E11D48"</span>)) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Išgyvenamumas pagal lytį"</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Kaplan-Meier įvertis; + žymi cenzūruotus stebėjimus"</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Dienos nuo įtraukimo į tyrimą"</span>, <span class="at">y =</span> <span class="st">"Išgyvenusiųjų dalis"</span>, <span class="at">color =</span> <span class="cn">NULL</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Po grafiku verta pateikti ir <strong>rizikos grupių dydžius</strong>: kiek pacientų dar buvo stebima tam tikru momentu. Dešinė kreivių dalis remiasi vis mažesniu žmonių skaičiumi, todėl ji kur kas mažiau patikima:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rizika <span class="ot">&lt;-</span> <span class="fu">summary</span>(km_lytis, <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">250</span>, <span class="dv">500</span>, <span class="dv">750</span>, <span class="dv">1000</span>), <span class="at">extend =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">dienos =</span> rizika<span class="sc">$</span>time, <span class="at">grupe =</span> rizika<span class="sc">$</span>strata, <span class="at">rizikos_grupeje =</span> rizika<span class="sc">$</span>n.risk)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dienos         grupe rizikos_grupeje
+1       0   lytis=Vyrai             138
+2     250   lytis=Vyrai              62
+3     500   lytis=Vyrai              20
+4     750   lytis=Vyrai               7
+5    1000   lytis=Vyrai               2
+6       0 lytis=Moterys              90
+7     250 lytis=Moterys              53
+8     500 lytis=Moterys              21
+9     750 lytis=Moterys               3
+10   1000 lytis=Moterys               0</code></pre>
+</div>
+</div>
+<section id="log-rank-testas" class="level3">
+<h3 class="anchored" data-anchor-id="log-rank-testas">Log-rank testas</h3>
+<p>Ar kreivės skiriasi statistiškai reikšmingai? Standartinis atsakymas yra <strong>log-rank testas</strong>. Jis kiekvienu įvykio momentu lygina stebėtą įvykių skaičių grupėse su skaičiumi, kurio tikėtumėmės, jei grupių rizika būtų vienoda:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lr <span class="ot">&lt;-</span> <span class="fu">survdiff</span>(<span class="fu">Surv</span>(time, ivykis) <span class="sc">~</span> lytis, <span class="at">data =</span> duom)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lr</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = Surv(time, ivykis) ~ lytis, data = duom)
+
+                N Observed Expected (O-E)^2/E (O-E)^2/V
+lytis=Vyrai   138      112     91.6      4.55      10.3
+lytis=Moterys  90       53     73.4      5.68      10.3
+
+ Chisq= 10.3  on 1 degrees of freedom, p= 0.001 </code></pre>
+</div>
+</div>
+<p>Moterų išgyvenamumas statistiškai reikšmingai geresnis (χ² = 10,3, p = 0,001). Tačiau log-rank testas pasako tik tiek, <em>ar</em> grupės skiriasi. <em>Kiek</em> jos skiriasi, ir atsižvelgiant į kitus veiksnius, parodys Cox regresija.</p>
+</section>
+</section>
+<section id="cox-regresija" class="level2">
+<h2 class="anchored" data-anchor-id="cox-regresija">Cox regresija</h2>
+<p>Cox proporcingų rizikų modelis yra išgyvenamumo analizės „darbinis arklys”. Jis įvertina, kaip kintamieji susiję su <strong>rizika</strong> (angl. <em>hazard</em>), t. y. įvykio dažniu bet kuriuo laiko momentu tarp tų, kurie dar jo nepatyrė. Rezultatas yra <strong>rizikų santykis</strong> (angl. <em>hazard ratio</em>, HR):</p>
+<ul>
+<li>HR = 1: kintamasis su rizika nesusijęs;</li>
+<li>HR &gt; 1: rizika didesnė (įvykis ateina greičiau);</li>
+<li>HR &lt; 1: rizika mažesnė (įvykis ateina lėčiau).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cox <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, ivykis) <span class="sc">~</span> lytis <span class="sc">+</span> age <span class="sc">+</span> ph.ecog, <span class="at">data =</span> duom)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(cox, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)[, <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"estimate"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>, <span class="st">"p.value"</span>)]</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term         estimate conf.low conf.high   p.value
+  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 lytisMoterys    0.575    0.414     0.799 0.000986 
+2 age             1.01     0.993     1.03  0.232    
+3 ph.ecog         1.59     1.27      1.99  0.0000445</code></pre>
+</div>
+</div>
+<p>Kaip skaityti šiuos skaičius:</p>
+<ul>
+<li><strong>Lytis.</strong> Esant tokiam pačiam amžiui ir funkcinei būklei, moterų mirties rizika yra apie 42 % mažesnė nei vyrų (HR = 0,58; 95 % PI 0,41–0,80; p &lt; 0,001).</li>
+<li><strong>Funkcinė būklė.</strong> Kiekvienas ECOG skalės balas rizikai prideda maždaug 59 % (HR = 1,59; 95 % PI 1,27–1,99; p &lt; 0,001). Tai stipriausias modelio veiksnys.</li>
+<li><strong>Amžius.</strong> Atsižvelgus į lytį ir būklę, amžius su rizika reikšmingai nesusijęs (HR = 1,011; 95 % PI 0,993–1,030; p = 0,232).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Rizikų santykis nėra tikimybių santykis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HR = 0,6 nereiškia, kad moterų „tikimybė mirti yra 40 % mažesnė”. Tai reiškia, kad bet kuriuo laiko momentu tarp dar gyvų pacienčių įvykių dažnis yra 0,6 karto mažesnis nei tarp vyrų. Praktiškai tai virsta ilgesniu išgyvenamumu, bet ne fiksuotu tikimybių skirtumu.</p>
+</div>
+</div>
+<section id="ar-tenkinama-proporcingų-rizikų-prielaida" class="level3">
+<h3 class="anchored" data-anchor-id="ar-tenkinama-proporcingų-rizikų-prielaida">Ar tenkinama proporcingų rizikų prielaida?</h3>
+<p>Cox modelis daro prielaidą, kad rizikų santykis laikui bėgant nekinta: jei šiandien moterų rizika 0,6 karto mažesnė, tokia ji ir po metų. Tai patikrinama Schoenfeldo liekanomis:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cox.zph</span>(cox)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        chisq df    p
+lytis   2.305  1 0.13
+age     0.188  1 0.66
+ph.ecog 2.054  1 0.15
+GLOBAL  4.464  3 0.22</code></pre>
+</div>
+</div>
+<p>Maža p reikšmė (tarkime, &lt; 0,05) rodytų, kad kintamojo poveikis laikui bėgant kinta. Šiuo atveju prielaida tenkinama nė vienam kintamajam.</p>
+<p>Jei prielaida pažeista, galimi sprendimai yra stratifikuoti modelį pagal tą kintamąjį (<code>strata()</code>), įtraukti sąveiką su laiku arba rinktis kitą modelį, pavyzdžiui, parametrinį ar ribotą vidutinį išgyvenamumo laiką (RMST).</p>
+</section>
+</section>
+<section id="kaip-pateikti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-pateikti-rezultatus">Kaip pateikti rezultatus</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pavyzdys publikacijai
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Išgyvenamumo mediana buvo 310 d.&nbsp;(95 % PI 285–363). Moterų išgyvenamumas buvo ilgesnis nei vyrų (log-rank p = 0,001; 1 pav.). Daugiamatėje Cox regresijoje moteriškoji lytis buvo susijusi su mažesne mirties rizika (HR = 0,58; 95 % PI 0,41–0,80; p &lt; 0,001), o kiekvienas blogesnės funkcinės būklės ECOG balas su didesne (HR = 1,59; 95 % PI 1,27–1,99; p &lt; 0,001). Proporcingų rizikų prielaida tikrinta Schoenfeldo liekanomis ir nebuvo pažeista.</p>
+</div>
+</div>
+<p>Ataskaitoje turėtų būti:</p>
+<ol type="1">
+<li>Kiek stebėjimų, kiek įvykių, kiek cenzūruota ir kokia stebėjimo trukmė.</li>
+<li>Kaplan-Meier kreivės su rizikos grupių lentele.</li>
+<li>Mediana ir (ar) išgyvenamumas konkrečiais momentais su pasikliautinaisiais intervalais.</li>
+<li>Cox modelio rizikų santykiai su 95 % PI, ne vien p reikšmės.</li>
+<li>Kaip patikrintos modelio prielaidos.</li>
+</ol>
+</section>
+<section id="dažniausios-klaidos" class="level2">
+<h2 class="anchored" data-anchor-id="dažniausios-klaidos">Dažniausios klaidos</h2>
+<ul>
+<li><strong>Cenzūruotų stebėjimų išmetimas</strong> arba jų laikymas įvykiais. Abu būdai iškreipia rezultatus, kaip aptarėme pradžioje.</li>
+<li><strong>Laiko skaičiavimas nuo netinkamo momento.</strong> Pradžios taškas (diagnozė, gydymo pradžia, prenumeratos pradžia) turi būti vienodas visiems ir apibrėžtas iš anksto. Jei grupė priskiriama pagal tai, kas įvyko <em>vėliau</em> (pvz., „pacientai, kurie gavo antrą gydymo kursą”), atsiranda vadinamoji nemirtingo laiko paklaida (<em>immortal time bias</em>): ta grupė tiesiog privalėjo išgyventi iki antro kurso.</li>
+<li><strong>Kreivių dešiniojo krašto pervertinimas.</strong> Kai rizikos grupėje lieka keli žmonės, kiekvienas įvykis kreivę numeta žemyn dideliu laipteliu. Ten išvadų nedarykite.</li>
+<li><strong>Konkuruojančių rizikų ignoravimas.</strong> Jei domina mirtis nuo konkrečios ligos, o pacientai gali mirti ir dėl kitų priežasčių, 1 − Kaplan-Meier pervertina įvykio tikimybę. Tokiu atveju reikalingi konkuruojančių rizikų metodai (pvz., Fine-Gray modelis).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Verslui: klientų išlaikymas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tie patys metodai tinka klientų nutekėjimui analizuoti. „Įvykis” čia yra prenumeratos atsisakymas, o cenzūruoti stebėjimai yra vis dar aktyvūs klientai. Kaplan-Meier kreivė parodo, kiek klientų lieka po 1, 3 ar 12 mėnesių, o Cox regresija leidžia palyginti, pavyzdžiui, kanalus ar planus, atsižvelgiant į kitus veiksnius. Tai patikimiau nei skaičiuoti „vidutinę kliento gyvavimo trukmę” iš vien jau išėjusių klientų.</p>
+</div>
+</div>
+</section>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 28%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Klausimas</th>
+<th>Metodas</th>
+<th>R funkcija</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kokia tikimybė išvengti įvykio iki laiko <em>t</em>?</td>
+<td>Kaplan-Meier</td>
+<td><code>survfit()</code></td>
+</tr>
+<tr class="even">
+<td>Ar grupių išgyvenamumas skiriasi?</td>
+<td>Log-rank testas</td>
+<td><code>survdiff()</code></td>
+</tr>
+<tr class="odd">
+<td>Kiek kintamasis keičia riziką, atsižvelgiant į kitus?</td>
+<td>Cox regresija</td>
+<td><code>coxph()</code></td>
+</tr>
+<tr class="even">
+<td>Ar rizikų santykis pastovus laike?</td>
+<td>Schoenfeldo liekanos</td>
+<td><code>cox.zph()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Jei turite laiko iki įvykio duomenų, klinikinių ar verslo, ir norite įsitikinti, kad analizė atlikta teisingai, <a href="../../kontaktai.html">susisiekite</a>. Padėsiu pasirinkti modelį, patikrinti prielaidas ir aiškiai pateikti rezultatus.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Nukopijuota!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Nukopijuota!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/statistikas\.lt");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html">
+<p>Paslaugos</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html">
+<p>Pavyzdžiai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html">
+<p>Straipsniai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html">
+<p>Nemokama analizė</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+<p>Apie</p>
+</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:info@statistikas.lt">
+<p>info@statistikas.lt</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script src="theme/main.js"></script>
+
+
+
+
+</body></html>

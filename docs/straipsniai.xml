@@ -10,7 +10,675 @@
 <atom:link href="https://statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
 <description>Praktiniai statistikos gidai lietuviškai: kaip pasirinkti statistinį testą, apskaičiuoti imties dydį, atlikti t testą, ANOVA ar chi kvadrato testą ir interpretuoti p reikšmę.</description>
 <generator>quarto-1.5.52</generator>
-<lastBuildDate>Mon, 19 Oct 2026 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 24 Oct 2026 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>Kaip atlikti išgyvenamumo analizę?</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Išgyvenamumo analizė atsako į klausimą <strong>„kiek laiko praeina iki įvykio?“</strong>. Pavadinimas kilęs iš medicinos, kur įvykis dažniausiai yra mirtis ar ligos atkrytis, bet tie patys metodai tinka bet kuriam laikui iki įvykio:</p>
+<ul>
+<li>kiek laiko klientas lieka prenumeratoriumi iki atsisakymo (<em>churn</em>);</li>
+<li>per kiek laiko darbuotojas išeina iš įmonės;</li>
+<li>kada sugenda įrenginys;</li>
+<li>per kiek dienų naujas vartotojas atlieka pirmą pirkimą.</li>
+</ul>
+<p>Šiame įraše pereisime visą kelią su R: nuo duomenų paruošimo iki Kaplan-Meier kreivių, log-rank testo ir Cox regresijos.</p>
+<section id="kodėl-negalima-tiesiog-paskaičiuoti-vidurkio" class="level2">
+<h2 class="anchored" data-anchor-id="kodėl-negalima-tiesiog-paskaičiuoti-vidurkio">Kodėl negalima tiesiog paskaičiuoti vidurkio?</h2>
+<p>Dėl <strong>cenzūravimo</strong>. Kai tyrimas baigiasi, dalis tiriamųjų įvykio dar nepatyrė: pacientas gyvas, klientas vis dar moka prenumeratą. Apie juos žinome tik tiek, kad jų laikas iki įvykio yra <strong>ilgesnis</strong> nei stebėjimo trukmė.</p>
+<p>Abu „paprasti” sprendimai iškreipia rezultatą:</p>
+<ul>
+<li><strong>Atmesti cenzūruotus stebėjimus</strong> reiškia išmesti tuos, kuriems sekėsi geriausiai. Vidutinis laikas iki įvykio bus nepagrįstai trumpas.</li>
+<li><strong>Laikyti cenzūravimo momentą įvykio momentu</strong> irgi sutrumpina laiką: elgiamės taip, lyg visi stebėjimai baigtųsi įvykiu.</li>
+</ul>
+<p>Išgyvenamumo analizės metodai naudoja visą turimą informaciją: cenzūruotas stebėjimas skaičiuojamas „rizikos grupėje” tol, kol jį matome, o po to iš jos tvarkingai pašalinamas.</p>
+</section>
+<section id="duomenys" class="level2">
+<h2 class="anchored" data-anchor-id="duomenys">Duomenys</h2>
+<p>Naudosime klasikinį <code>lung</code> duomenų rinkinį iš <code>survival</code> paketo: 228 pažengusio plaučių vėžio pacientai, stebėti JAV <em>North Central Cancer Treatment Group</em> tyrime. Mus domins:</p>
+<ul>
+<li><code>time</code>: stebėjimo trukmė dienomis;</li>
+<li><code>status</code>: 1, jei stebėjimas cenzūruotas, 2, jei pacientas mirė;</li>
+<li><code>sex</code>: 1 vyras, 2 moteris;</li>
+<li><code>age</code>: amžius metais;</li>
+<li><code>ph.ecog</code>: gydytojo įvertinta funkcinė būklė pagal ECOG skalę (0 = be simptomų, 3 = didžiąją dienos dalį lovoje).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">duom <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> survival<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span>lung</span>
+<span id="cb1-2">duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ivykis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.integer</span>(duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>status <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1 = mirtis, 0 = cenzūruota</span></span>
+<span id="cb1-3">duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lytis  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sex, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vyrai"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Moterys"</span>))</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ivykis)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+ 63 165 </code></pre>
+</div>
+</div>
+<p>Iš 228 pacientų 165 mirė stebėjimo metu, o 63 stebėjimai cenzūruoti.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Įvykį koduokite 0/1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>survival</code> paketas priima ir 1/2 kodavimą, bet aiškus 0/1 (1 = įvykis įvyko) apsaugo nuo klaidų, ypač jei tuos pačius duomenis vėliau analizuosite kita programa.</p>
+</div>
+</div>
+<p>Pagrindinis išgyvenamumo analizės objektas yra <code>Surv()</code>. Pliusas po skaičiumi žymi cenzūruotą stebėjimą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Surv</span>(duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>time, duom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ivykis), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  306   455  1010+  210   883  1022+  310   361   218   166 </code></pre>
+</div>
+</div>
+</section>
+<section id="kaplan-meier-kreivė" class="level2">
+<h2 class="anchored" data-anchor-id="kaplan-meier-kreivė">Kaplan-Meier kreivė</h2>
+<p>Kaplan-Meier metodas įvertina <strong>išgyvenamumo funkciją</strong>, t. y. tikimybę, kad įvykis neįvyks iki tam tikro laiko momento. Kiekvieną kartą, kai kas nors patiria įvykį, tikimybė sumažėja proporcingai tam, kiek žmonių tuo metu buvo rizikos grupėje.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">km <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">survfit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Surv</span>(time, ivykis) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> duom)</span>
+<span id="cb5-2">km</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(time, ivykis) ~ 1, data = duom)
+
+       n events median 0.95LCL 0.95UCL
+[1,] 228    165    310     285     363</code></pre>
+</div>
+</div>
+<p>Išgyvenamumo <strong>mediana</strong> yra 310 d.&nbsp;(95 % PI 285–363): tiek laiko praėjus gyvi išlieka pusė pacientų. Mediana čia geresnė už vidurkį, nes ilgiausiai stebėtų pacientų tikrasis laikas nežinomas.</p>
+<p>Tikimybę išgyventi iki konkretaus momento gauname su <code>summary(..., times = )</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(km, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">365</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">730</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(time, ivykis) ~ 1, data = duom)
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+  180    160      63    0.722  0.0298       0.6655        0.783
+  365     65      58    0.409  0.0358       0.3447        0.486
+  730     13      38    0.116  0.0283       0.0716        0.187</code></pre>
+</div>
+</div>
+<p>Metus išgyvena apie 41 % pacientų (95 % PI 34–49 %).</p>
+</section>
+<section id="grupių-palyginimas" class="level2">
+<h2 class="anchored" data-anchor-id="grupių-palyginimas">Grupių palyginimas</h2>
+<p>Ar išgyvenamumas skiriasi tarp vyrų ir moterų? Pirmiausia nubraižykime Kaplan-Meier kreives:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">km_lytis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">survfit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Surv</span>(time, ivykis) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> lytis, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> duom)</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">kreives <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidy</span>(km_lytis)</span>
+<span id="cb9-4">kreives<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lytis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sub</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lytis="</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>, kreives<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>strata)</span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Kreivė prasideda nuo 1 laiko momentu 0</span></span>
+<span id="cb9-6">kreives <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(</span>
+<span id="cb9-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">time =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n.censor =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lytis =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vyrai"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Moterys"</span>)),</span>
+<span id="cb9-8">  kreives[, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"time"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"estimate"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n.censor"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lytis"</span>)]</span>
+<span id="cb9-9">)</span>
+<span id="cb9-10"></span>
+<span id="cb9-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(kreives, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(time, estimate, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> lytis)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_step</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">subset</span>(kreives, n.censor <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" %"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">limits =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Vyrai =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Moterys =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#E11D48"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb9-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Išgyvenamumas pagal lytį"</span>,</span>
+<span id="cb9-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Kaplan-Meier įvertis; + žymi cenzūruotus stebėjimus"</span>,</span>
+<span id="cb9-19">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dienos nuo įtraukimo į tyrimą"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Išgyvenusiųjų dalis"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span></span>
+<span id="cb9-20">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"top"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Po grafiku verta pateikti ir <strong>rizikos grupių dydžius</strong>: kiek pacientų dar buvo stebima tam tikru momentu. Dešinė kreivių dalis remiasi vis mažesniu žmonių skaičiumi, todėl ji kur kas mažiau patikima:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">rizika <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(km_lytis, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">750</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">extend =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb10-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dienos =</span> rizika<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grupe =</span> rizika<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>strata, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rizikos_grupeje =</span> rizika<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n.risk)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dienos         grupe rizikos_grupeje
+1       0   lytis=Vyrai             138
+2     250   lytis=Vyrai              62
+3     500   lytis=Vyrai              20
+4     750   lytis=Vyrai               7
+5    1000   lytis=Vyrai               2
+6       0 lytis=Moterys              90
+7     250 lytis=Moterys              53
+8     500 lytis=Moterys              21
+9     750 lytis=Moterys               3
+10   1000 lytis=Moterys               0</code></pre>
+</div>
+</div>
+<section id="log-rank-testas" class="level3">
+<h3 class="anchored" data-anchor-id="log-rank-testas">Log-rank testas</h3>
+<p>Ar kreivės skiriasi statistiškai reikšmingai? Standartinis atsakymas yra <strong>log-rank testas</strong>. Jis kiekvienu įvykio momentu lygina stebėtą įvykių skaičių grupėse su skaičiumi, kurio tikėtumėmės, jei grupių rizika būtų vienoda:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">lr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">survdiff</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Surv</span>(time, ivykis) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> lytis, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> duom)</span>
+<span id="cb12-2">lr</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = Surv(time, ivykis) ~ lytis, data = duom)
+
+                N Observed Expected (O-E)^2/E (O-E)^2/V
+lytis=Vyrai   138      112     91.6      4.55      10.3
+lytis=Moterys  90       53     73.4      5.68      10.3
+
+ Chisq= 10.3  on 1 degrees of freedom, p= 0.001 </code></pre>
+</div>
+</div>
+<p>Moterų išgyvenamumas statistiškai reikšmingai geresnis (χ² = 10,3, p = 0,001). Tačiau log-rank testas pasako tik tiek, <em>ar</em> grupės skiriasi. <em>Kiek</em> jos skiriasi, ir atsižvelgiant į kitus veiksnius, parodys Cox regresija.</p>
+</section>
+</section>
+<section id="cox-regresija" class="level2">
+<h2 class="anchored" data-anchor-id="cox-regresija">Cox regresija</h2>
+<p>Cox proporcingų rizikų modelis yra išgyvenamumo analizės „darbinis arklys”. Jis įvertina, kaip kintamieji susiję su <strong>rizika</strong> (angl. <em>hazard</em>), t. y. įvykio dažniu bet kuriuo laiko momentu tarp tų, kurie dar jo nepatyrė. Rezultatas yra <strong>rizikų santykis</strong> (angl. <em>hazard ratio</em>, HR):</p>
+<ul>
+<li>HR = 1: kintamasis su rizika nesusijęs;</li>
+<li>HR &gt; 1: rizika didesnė (įvykis ateina greičiau);</li>
+<li>HR &lt; 1: rizika mažesnė (įvykis ateina lėčiau).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">cox <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coxph</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Surv</span>(time, ivykis) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> lytis <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> age <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> ph.ecog, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> duom)</span>
+<span id="cb14-2"></span>
+<span id="cb14-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidy</span>(cox, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">exponentiate =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">conf.int =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)[, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"term"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"estimate"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"conf.low"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"conf.high"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"p.value"</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term         estimate conf.low conf.high   p.value
+  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 lytisMoterys    0.575    0.414     0.799 0.000986 
+2 age             1.01     0.993     1.03  0.232    
+3 ph.ecog         1.59     1.27      1.99  0.0000445</code></pre>
+</div>
+</div>
+<p>Kaip skaityti šiuos skaičius:</p>
+<ul>
+<li><strong>Lytis.</strong> Esant tokiam pačiam amžiui ir funkcinei būklei, moterų mirties rizika yra apie 42 % mažesnė nei vyrų (HR = 0,58; 95 % PI 0,41–0,80; p &lt; 0,001).</li>
+<li><strong>Funkcinė būklė.</strong> Kiekvienas ECOG skalės balas rizikai prideda maždaug 59 % (HR = 1,59; 95 % PI 1,27–1,99; p &lt; 0,001). Tai stipriausias modelio veiksnys.</li>
+<li><strong>Amžius.</strong> Atsižvelgus į lytį ir būklę, amžius su rizika reikšmingai nesusijęs (HR = 1,011; 95 % PI 0,993–1,030; p = 0,232).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Rizikų santykis nėra tikimybių santykis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HR = 0,6 nereiškia, kad moterų „tikimybė mirti yra 40 % mažesnė”. Tai reiškia, kad bet kuriuo laiko momentu tarp dar gyvų pacienčių įvykių dažnis yra 0,6 karto mažesnis nei tarp vyrų. Praktiškai tai virsta ilgesniu išgyvenamumu, bet ne fiksuotu tikimybių skirtumu.</p>
+</div>
+</div>
+<section id="ar-tenkinama-proporcingų-rizikų-prielaida" class="level3">
+<h3 class="anchored" data-anchor-id="ar-tenkinama-proporcingų-rizikų-prielaida">Ar tenkinama proporcingų rizikų prielaida?</h3>
+<p>Cox modelis daro prielaidą, kad rizikų santykis laikui bėgant nekinta: jei šiandien moterų rizika 0,6 karto mažesnė, tokia ji ir po metų. Tai patikrinama Schoenfeldo liekanomis:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cox.zph</span>(cox)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        chisq df    p
+lytis   2.305  1 0.13
+age     0.188  1 0.66
+ph.ecog 2.054  1 0.15
+GLOBAL  4.464  3 0.22</code></pre>
+</div>
+</div>
+<p>Maža p reikšmė (tarkime, &lt; 0,05) rodytų, kad kintamojo poveikis laikui bėgant kinta. Šiuo atveju prielaida tenkinama nė vienam kintamajam.</p>
+<p>Jei prielaida pažeista, galimi sprendimai yra stratifikuoti modelį pagal tą kintamąjį (<code>strata()</code>), įtraukti sąveiką su laiku arba rinktis kitą modelį, pavyzdžiui, parametrinį ar ribotą vidutinį išgyvenamumo laiką (RMST).</p>
+</section>
+</section>
+<section id="kaip-pateikti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-pateikti-rezultatus">Kaip pateikti rezultatus</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pavyzdys publikacijai
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Išgyvenamumo mediana buvo 310 d.&nbsp;(95 % PI 285–363). Moterų išgyvenamumas buvo ilgesnis nei vyrų (log-rank p = 0,001; 1 pav.). Daugiamatėje Cox regresijoje moteriškoji lytis buvo susijusi su mažesne mirties rizika (HR = 0,58; 95 % PI 0,41–0,80; p &lt; 0,001), o kiekvienas blogesnės funkcinės būklės ECOG balas su didesne (HR = 1,59; 95 % PI 1,27–1,99; p &lt; 0,001). Proporcingų rizikų prielaida tikrinta Schoenfeldo liekanomis ir nebuvo pažeista.</p>
+</div>
+</div>
+<p>Ataskaitoje turėtų būti:</p>
+<ol type="1">
+<li>Kiek stebėjimų, kiek įvykių, kiek cenzūruota ir kokia stebėjimo trukmė.</li>
+<li>Kaplan-Meier kreivės su rizikos grupių lentele.</li>
+<li>Mediana ir (ar) išgyvenamumas konkrečiais momentais su pasikliautinaisiais intervalais.</li>
+<li>Cox modelio rizikų santykiai su 95 % PI, ne vien p reikšmės.</li>
+<li>Kaip patikrintos modelio prielaidos.</li>
+</ol>
+</section>
+<section id="dažniausios-klaidos" class="level2">
+<h2 class="anchored" data-anchor-id="dažniausios-klaidos">Dažniausios klaidos</h2>
+<ul>
+<li><strong>Cenzūruotų stebėjimų išmetimas</strong> arba jų laikymas įvykiais. Abu būdai iškreipia rezultatus, kaip aptarėme pradžioje.</li>
+<li><strong>Laiko skaičiavimas nuo netinkamo momento.</strong> Pradžios taškas (diagnozė, gydymo pradžia, prenumeratos pradžia) turi būti vienodas visiems ir apibrėžtas iš anksto. Jei grupė priskiriama pagal tai, kas įvyko <em>vėliau</em> (pvz., „pacientai, kurie gavo antrą gydymo kursą”), atsiranda vadinamoji nemirtingo laiko paklaida (<em>immortal time bias</em>): ta grupė tiesiog privalėjo išgyventi iki antro kurso.</li>
+<li><strong>Kreivių dešiniojo krašto pervertinimas.</strong> Kai rizikos grupėje lieka keli žmonės, kiekvienas įvykis kreivę numeta žemyn dideliu laipteliu. Ten išvadų nedarykite.</li>
+<li><strong>Konkuruojančių rizikų ignoravimas.</strong> Jei domina mirtis nuo konkrečios ligos, o pacientai gali mirti ir dėl kitų priežasčių, 1 − Kaplan-Meier pervertina įvykio tikimybę. Tokiu atveju reikalingi konkuruojančių rizikų metodai (pvz., Fine-Gray modelis).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Verslui: klientų išlaikymas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tie patys metodai tinka klientų nutekėjimui analizuoti. „Įvykis” čia yra prenumeratos atsisakymas, o cenzūruoti stebėjimai yra vis dar aktyvūs klientai. Kaplan-Meier kreivė parodo, kiek klientų lieka po 1, 3 ar 12 mėnesių, o Cox regresija leidžia palyginti, pavyzdžiui, kanalus ar planus, atsižvelgiant į kitus veiksnius. Tai patikimiau nei skaičiuoti „vidutinę kliento gyvavimo trukmę” iš vien jau išėjusių klientų.</p>
+</div>
+</div>
+</section>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 28%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Klausimas</th>
+<th>Metodas</th>
+<th>R funkcija</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kokia tikimybė išvengti įvykio iki laiko <em>t</em>?</td>
+<td>Kaplan-Meier</td>
+<td><code>survfit()</code></td>
+</tr>
+<tr class="even">
+<td>Ar grupių išgyvenamumas skiriasi?</td>
+<td>Log-rank testas</td>
+<td><code>survdiff()</code></td>
+</tr>
+<tr class="odd">
+<td>Kiek kintamasis keičia riziką, atsižvelgiant į kitus?</td>
+<td>Cox regresija</td>
+<td><code>coxph()</code></td>
+</tr>
+<tr class="even">
+<td>Ar rizikų santykis pastovus laike?</td>
+<td>Schoenfeldo liekanos</td>
+<td><code>cox.zph()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Jei turite laiko iki įvykio duomenų, klinikinių ar verslo, ir norite įsitikinti, kad analizė atlikta teisingai, <a href="../../kontaktai.html">susisiekite</a>. Padėsiu pasirinkti modelį, patikrinti prielaidas ir aiškiai pateikti rezultatus.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>išgyvenamumo-analizė</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html</guid>
+  <pubDate>Sat, 24 Oct 2026 21:00:00 GMT</pubDate>
+  <media:content url="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png" medium="image" type="image/png" height="90" width="144"/>
+</item>
 <item>
   <title>5 dalykai apie p reikšmę, kurių nepasako vadovėlis</title>
   <dc:creator>Paulius Alaburda</dc:creator>
@@ -660,7 +1328,7 @@ Robinson, David. 2014. <span>„How to interpret a p-value histogram“</span>. 
   <category>R</category>
   <guid>https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html</guid>
   <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png" medium="image" type="image/png" height="72" width="144"/>
+  <media:content url="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Ar AI gali atlikti statistinę analizę?</title>

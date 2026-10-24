@@ -1,0 +1,236 @@
+---
+title: "Kaip atlikti išgyvenamumo analizę?"
+description: "Kaplan-Meier kreivės, log-rank testas ir Cox regresija su R: kaip analizuoti laiką iki įvykio, kai dalis stebėjimų dar nesibaigė, ir kaip teisingai pateikti rezultatus."
+date: "2026-10-25"
+author: "Paulius Alaburda"
+categories: [statistika, išgyvenamumo-analizė, R]
+image: kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png
+aliases:
+  - /2021/02/07/kaip-atlikti-isgyvenamumo-analize/index.html
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
+```{r}
+#| include: false
+library(survival)
+library(ggplot2)
+library(broom)
+lt <- function(x, d = 2) formatC(x, format = "f", digits = d, decimal.mark = ",")
+lt_p <- function(p) if (p < 0.001) "< 0,001" else paste("=", lt(p, 3))
+```
+
+Išgyvenamumo analizė atsako į klausimą **„kiek laiko praeina iki įvykio?"**. Pavadinimas kilęs iš medicinos, kur įvykis dažniausiai yra mirtis ar ligos atkrytis, bet tie patys metodai tinka bet kuriam laikui iki įvykio:
+
+- kiek laiko klientas lieka prenumeratoriumi iki atsisakymo (*churn*);
+- per kiek laiko darbuotojas išeina iš įmonės;
+- kada sugenda įrenginys;
+- per kiek dienų naujas vartotojas atlieka pirmą pirkimą.
+
+Šiame įraše pereisime visą kelią su R: nuo duomenų paruošimo iki Kaplan-Meier kreivių, log-rank testo ir Cox regresijos.
+
+# Kodėl negalima tiesiog paskaičiuoti vidurkio?
+
+Dėl **cenzūravimo**. Kai tyrimas baigiasi, dalis tiriamųjų įvykio dar nepatyrė: pacientas gyvas, klientas vis dar moka prenumeratą. Apie juos žinome tik tiek, kad jų laikas iki įvykio yra **ilgesnis** nei stebėjimo trukmė.
+
+Abu „paprasti" sprendimai iškreipia rezultatą:
+
+- **Atmesti cenzūruotus stebėjimus** reiškia išmesti tuos, kuriems sekėsi geriausiai. Vidutinis laikas iki įvykio bus nepagrįstai trumpas.
+- **Laikyti cenzūravimo momentą įvykio momentu** irgi sutrumpina laiką: elgiamės taip, lyg visi stebėjimai baigtųsi įvykiu.
+
+Išgyvenamumo analizės metodai naudoja visą turimą informaciją: cenzūruotas stebėjimas skaičiuojamas „rizikos grupėje" tol, kol jį matome, o po to iš jos tvarkingai pašalinamas.
+
+# Duomenys
+
+Naudosime klasikinį `lung` duomenų rinkinį iš `survival` paketo: `r nrow(survival::lung)` pažengusio plaučių vėžio pacientai, stebėti JAV *North Central Cancer Treatment Group* tyrime. Mus domins:
+
+- `time`: stebėjimo trukmė dienomis;
+- `status`: 1, jei stebėjimas cenzūruotas, 2, jei pacientas mirė;
+- `sex`: 1 vyras, 2 moteris;
+- `age`: amžius metais;
+- `ph.ecog`: gydytojo įvertinta funkcinė būklė pagal ECOG skalę (0 = be simptomų, 3 = didžiąją dienos dalį lovoje).
+
+```{r}
+duom <- survival::lung
+duom$ivykis <- as.integer(duom$status == 2)   # 1 = mirtis, 0 = cenzūruota
+duom$lytis  <- factor(duom$sex, levels = 1:2, labels = c("Vyrai", "Moterys"))
+
+table(duom$ivykis)
+```
+
+Iš `r nrow(duom)` pacientų `r sum(duom$ivykis)` mirė stebėjimo metu, o `r sum(duom$ivykis == 0)` stebėjimai cenzūruoti.
+
+::: {.callout-tip}
+## Įvykį koduokite 0/1
+`survival` paketas priima ir 1/2 kodavimą, bet aiškus 0/1 (1 = įvykis įvyko) apsaugo nuo klaidų, ypač jei tuos pačius duomenis vėliau analizuosite kita programa.
+:::
+
+Pagrindinis išgyvenamumo analizės objektas yra `Surv()`. Pliusas po skaičiumi žymi cenzūruotą stebėjimą:
+
+```{r}
+head(Surv(duom$time, duom$ivykis), 10)
+```
+
+# Kaplan-Meier kreivė
+
+Kaplan-Meier metodas įvertina **išgyvenamumo funkciją**, t. y. tikimybę, kad įvykis neįvyks iki tam tikro laiko momento. Kiekvieną kartą, kai kas nors patiria įvykį, tikimybė sumažėja proporcingai tam, kiek žmonių tuo metu buvo rizikos grupėje.
+
+```{r}
+km <- survfit(Surv(time, ivykis) ~ 1, data = duom)
+km
+```
+
+```{r}
+#| include: false
+km_tab <- summary(km)$table
+metai  <- summary(km, times = 365)
+```
+
+Išgyvenamumo **mediana** yra `r km_tab[["median"]]` d. (95 % PI `r km_tab[["0.95LCL"]]`–`r km_tab[["0.95UCL"]]`): tiek laiko praėjus gyvi išlieka pusė pacientų. Mediana čia geresnė už vidurkį, nes ilgiausiai stebėtų pacientų tikrasis laikas nežinomas.
+
+Tikimybę išgyventi iki konkretaus momento gauname su `summary(..., times = )`:
+
+```{r}
+summary(km, times = c(180, 365, 730))
+```
+
+Metus išgyvena apie `r lt(100 * metai$surv, 0)` % pacientų (95 % PI `r lt(100 * metai$lower, 0)`–`r lt(100 * metai$upper, 0)` %).
+
+# Grupių palyginimas
+
+Ar išgyvenamumas skiriasi tarp vyrų ir moterų? Pirmiausia nubraižykime Kaplan-Meier kreives:
+
+```{r}
+#| label: km-lytis
+#| fig-width: 8
+#| fig-height: 5
+km_lytis <- survfit(Surv(time, ivykis) ~ lytis, data = duom)
+
+kreives <- tidy(km_lytis)
+kreives$lytis <- sub("lytis=", "", kreives$strata)
+# Kreivė prasideda nuo 1 laiko momentu 0
+kreives <- rbind(
+  data.frame(time = 0, estimate = 1, n.censor = 0, lytis = c("Vyrai", "Moterys")),
+  kreives[, c("time", "estimate", "n.censor", "lytis")]
+)
+
+ggplot(kreives, aes(time, estimate, color = lytis)) +
+  geom_step(linewidth = 1) +
+  geom_point(data = subset(kreives, n.censor > 0), shape = 3, size = 2) +
+  scale_y_continuous(labels = function(x) paste0(x * 100, " %"), limits = c(0, 1)) +
+  scale_color_manual(values = c(Vyrai = "#4F46E5", Moterys = "#E11D48")) +
+  labs(
+    title = "Išgyvenamumas pagal lytį",
+    subtitle = "Kaplan-Meier įvertis; + žymi cenzūruotus stebėjimus",
+    x = "Dienos nuo įtraukimo į tyrimą", y = "Išgyvenusiųjų dalis", color = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "top")
+```
+
+Po grafiku verta pateikti ir **rizikos grupių dydžius**: kiek pacientų dar buvo stebima tam tikru momentu. Dešinė kreivių dalis remiasi vis mažesniu žmonių skaičiumi, todėl ji kur kas mažiau patikima:
+
+```{r}
+rizika <- summary(km_lytis, times = c(0, 250, 500, 750, 1000), extend = TRUE)
+data.frame(dienos = rizika$time, grupe = rizika$strata, rizikos_grupeje = rizika$n.risk)
+```
+
+## Log-rank testas
+
+Ar kreivės skiriasi statistiškai reikšmingai? Standartinis atsakymas yra **log-rank testas**. Jis kiekvienu įvykio momentu lygina stebėtą įvykių skaičių grupėse su skaičiumi, kurio tikėtumėmės, jei grupių rizika būtų vienoda:
+
+```{r}
+lr <- survdiff(Surv(time, ivykis) ~ lytis, data = duom)
+lr
+```
+
+Moterų išgyvenamumas statistiškai reikšmingai geresnis (χ² = `r lt(lr$chisq, 1)`, p `r lt_p(lr$pvalue)`). Tačiau log-rank testas pasako tik tiek, *ar* grupės skiriasi. *Kiek* jos skiriasi, ir atsižvelgiant į kitus veiksnius, parodys Cox regresija.
+
+# Cox regresija
+
+Cox proporcingų rizikų modelis yra išgyvenamumo analizės „darbinis arklys". Jis įvertina, kaip kintamieji susiję su **rizika** (angl. *hazard*), t. y. įvykio dažniu bet kuriuo laiko momentu tarp tų, kurie dar jo nepatyrė. Rezultatas yra **rizikų santykis** (angl. *hazard ratio*, HR):
+
+- HR = 1: kintamasis su rizika nesusijęs;
+- HR > 1: rizika didesnė (įvykis ateina greičiau);
+- HR < 1: rizika mažesnė (įvykis ateina lėčiau).
+
+```{r}
+cox <- coxph(Surv(time, ivykis) ~ lytis + age + ph.ecog, data = duom)
+
+tidy(cox, exponentiate = TRUE, conf.int = TRUE)[, c("term", "estimate", "conf.low", "conf.high", "p.value")]
+```
+
+```{r}
+#| include: false
+ct <- tidy(cox, exponentiate = TRUE, conf.int = TRUE)
+hr <- function(term, d = 2) {
+  r <- ct[ct$term == term, ]
+  sprintf("HR = %s; 95 %% PI %s–%s; p %s",
+          lt(r$estimate, d), lt(r$conf.low, d), lt(r$conf.high, d), lt_p(r$p.value))
+}
+hr_m   <- ct$estimate[ct$term == "lytisMoterys"]
+hr_ecog <- ct$estimate[ct$term == "ph.ecog"]
+```
+
+Kaip skaityti šiuos skaičius:
+
+- **Lytis.** Esant tokiam pačiam amžiui ir funkcinei būklei, moterų mirties rizika yra apie `r lt(100 * (1 - hr_m), 0)` % mažesnė nei vyrų (`r hr("lytisMoterys")`).
+- **Funkcinė būklė.** Kiekvienas ECOG skalės balas rizikai prideda maždaug `r lt(100 * (hr_ecog - 1), 0)` % (`r hr("ph.ecog")`). Tai stipriausias modelio veiksnys.
+- **Amžius.** Atsižvelgus į lytį ir būklę, amžius su rizika reikšmingai nesusijęs (`r hr("age", 3)`).
+
+::: {.callout-note}
+## Rizikų santykis nėra tikimybių santykis
+HR = 0,6 nereiškia, kad moterų „tikimybė mirti yra 40 % mažesnė". Tai reiškia, kad bet kuriuo laiko momentu tarp dar gyvų pacienčių įvykių dažnis yra 0,6 karto mažesnis nei tarp vyrų. Praktiškai tai virsta ilgesniu išgyvenamumu, bet ne fiksuotu tikimybių skirtumu.
+:::
+
+## Ar tenkinama proporcingų rizikų prielaida?
+
+Cox modelis daro prielaidą, kad rizikų santykis laikui bėgant nekinta: jei šiandien moterų rizika 0,6 karto mažesnė, tokia ji ir po metų. Tai patikrinama Schoenfeldo liekanomis:
+
+```{r}
+cox.zph(cox)
+```
+
+Maža p reikšmė (tarkime, < 0,05) rodytų, kad kintamojo poveikis laikui bėgant kinta. Šiuo atveju prielaida tenkinama nė vienam kintamajam.
+
+Jei prielaida pažeista, galimi sprendimai yra stratifikuoti modelį pagal tą kintamąjį (`strata()`), įtraukti sąveiką su laiku arba rinktis kitą modelį, pavyzdžiui, parametrinį ar ribotą vidutinį išgyvenamumo laiką (RMST).
+
+# Kaip pateikti rezultatus
+
+::: {.callout-tip}
+## Pavyzdys publikacijai
+Išgyvenamumo mediana buvo `r km_tab[["median"]]` d. (95 % PI `r km_tab[["0.95LCL"]]`–`r km_tab[["0.95UCL"]]`). Moterų išgyvenamumas buvo ilgesnis nei vyrų (log-rank p `r lt_p(lr$pvalue)`; 1 pav.). Daugiamatėje Cox regresijoje moteriškoji lytis buvo susijusi su mažesne mirties rizika (`r hr("lytisMoterys")`), o kiekvienas blogesnės funkcinės būklės ECOG balas su didesne (`r hr("ph.ecog")`). Proporcingų rizikų prielaida tikrinta Schoenfeldo liekanomis ir nebuvo pažeista.
+:::
+
+Ataskaitoje turėtų būti:
+
+1. Kiek stebėjimų, kiek įvykių, kiek cenzūruota ir kokia stebėjimo trukmė.
+2. Kaplan-Meier kreivės su rizikos grupių lentele.
+3. Mediana ir (ar) išgyvenamumas konkrečiais momentais su pasikliautinaisiais intervalais.
+4. Cox modelio rizikų santykiai su 95 % PI, ne vien p reikšmės.
+5. Kaip patikrintos modelio prielaidos.
+
+# Dažniausios klaidos
+
+- **Cenzūruotų stebėjimų išmetimas** arba jų laikymas įvykiais. Abu būdai iškreipia rezultatus, kaip aptarėme pradžioje.
+- **Laiko skaičiavimas nuo netinkamo momento.** Pradžios taškas (diagnozė, gydymo pradžia, prenumeratos pradžia) turi būti vienodas visiems ir apibrėžtas iš anksto. Jei grupė priskiriama pagal tai, kas įvyko *vėliau* (pvz., „pacientai, kurie gavo antrą gydymo kursą"), atsiranda vadinamoji nemirtingo laiko paklaida (*immortal time bias*): ta grupė tiesiog privalėjo išgyventi iki antro kurso.
+- **Kreivių dešiniojo krašto pervertinimas.** Kai rizikos grupėje lieka keli žmonės, kiekvienas įvykis kreivę numeta žemyn dideliu laipteliu. Ten išvadų nedarykite.
+- **Konkuruojančių rizikų ignoravimas.** Jei domina mirtis nuo konkrečios ligos, o pacientai gali mirti ir dėl kitų priežasčių, 1 − Kaplan-Meier pervertina įvykio tikimybę. Tokiu atveju reikalingi konkuruojančių rizikų metodai (pvz., Fine-Gray modelis).
+
+::: {.callout-note}
+## Verslui: klientų išlaikymas
+Tie patys metodai tinka klientų nutekėjimui analizuoti. „Įvykis" čia yra prenumeratos atsisakymas, o cenzūruoti stebėjimai yra vis dar aktyvūs klientai. Kaplan-Meier kreivė parodo, kiek klientų lieka po 1, 3 ar 12 mėnesių, o Cox regresija leidžia palyginti, pavyzdžiui, kanalus ar planus, atsižvelgiant į kitus veiksnius. Tai patikimiau nei skaičiuoti „vidutinę kliento gyvavimo trukmę" iš vien jau išėjusių klientų.
+:::
+
+# Santrauka
+
+| Klausimas | Metodas | R funkcija |
+|-----------|---------|------------|
+| Kokia tikimybė išvengti įvykio iki laiko *t*? | Kaplan-Meier | `survfit()` |
+| Ar grupių išgyvenamumas skiriasi? | Log-rank testas | `survdiff()` |
+| Kiek kintamasis keičia riziką, atsižvelgiant į kitus? | Cox regresija | `coxph()` |
+| Ar rizikų santykis pastovus laike? | Schoenfeldo liekanos | `cox.zph()` |
+
+Jei turite laiko iki įvykio duomenų, klinikinių ar verslo, ir norite įsitikinti, kad analizė atlikta teisingai, [susisiekite](../../kontaktai.qmd). Padėsiu pasirinkti modelį, patikrinti prielaidas ir aiškiai pateikti rezultatus.
