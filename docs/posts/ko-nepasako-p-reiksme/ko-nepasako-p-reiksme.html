@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="lt" xml:lang="lt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.52">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulius Alaburda">
+<meta name="description" content="p reikšmė svyruoja nuo tyrimo iki tyrimo, jų negalima lyginti tarpusavyje, o tūkstantis p reikšmių pasako daugiau nei viena. Penkios pamokos, kurios padeda nepersistengti su p < 0,05.">
+
+<title>5 dalykai apie p reikšmę, kurių nepasako vadovėlis – Statistikas.lt</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "Nėra rezultatų",
+    "search-matching-documents-text": "atitinkančių dokumentų",
+    "search-copy-link-title": "Kopijuoti nuorodą į paiešką",
+    "search-hide-matches-text": "Slėpti kitus atitikimus",
+    "search-more-match-text": "daugiau atitikimų šiame dokumente",
+    "search-more-matches-text": "daugiau atitikimų šiame dokumente",
+    "search-clear-button-title": "Išvalyti",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Atšaukti",
+    "search-submit-button-title": "Pateikti",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DT3Y3KGPJQ"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="5 dalykai apie p reikšmę, kurių nepasako vadovėlis – Statistikas.lt">
+<meta property="og:description" content="p reikšmė svyruoja nuo tyrimo iki tyrimo, jų negalima lyginti tarpusavyje, o tūkstantis p reikšmių pasako daugiau nei viena. Penkios pamokos, kurios padeda nepersistengti su p < 0,05.">
+<meta property="og:image" content="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png">
+<meta property="og:site_name" content="Statistikas.lt">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="5 dalykai apie p reikšmę, kurių nepasako vadovėlis – Statistikas.lt">
+<meta name="twitter:description" content="p reikšmė svyruoja nuo tyrimo iki tyrimo, jų negalima lyginti tarpusavyje, o tūkstantis p reikšmių pasako daugiau nei viena. Penkios pamokos, kurios padeda nepersistengti su p < 0,05.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png">
+<meta name="twitter:creator" content="@p_alab">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="768">
+<meta name="twitter:image-width" content="1536">
+<link rel="canonical" href="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html">
+</head>
+
+<body class="nav-fixed post">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/mark.svg" alt="Statistikas.lt" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Statistikas.lt</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Rodyti/Slėpti navigaciją" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html"> 
+<span class="menu-text">Paslaugos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html"> 
+<span class="menu-text">Pavyzdžiai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html"> 
+<span class="menu-text">Straipsniai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html"> 
+<span class="menu-text">Nemokama analizė</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Apie</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/pauliusalaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../kontaktai.html"> 
+<span class="menu-text">Susisiekti</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Šiame tinklalapyje</h2>
+   
+  <ul>
+  <li><a href="#p-reikšmė-pati-yra-atsitiktinis-dydis" id="toc-p-reikšmė-pati-yra-atsitiktinis-dydis" class="nav-link active" data-scroll-target="#p-reikšmė-pati-yra-atsitiktinis-dydis">1. p reikšmė pati yra atsitiktinis dydis</a></li>
+  <li><a href="#p-reikšmių-negalima-lyginti-tarpusavyje" id="toc-p-reikšmių-negalima-lyginti-tarpusavyje" class="nav-link" data-scroll-target="#p-reikšmių-negalima-lyginti-tarpusavyje">2. p reikšmių negalima lyginti tarpusavyje</a></li>
+  <li><a href="#tūkstantis-p-reikšmių-pasako-daugiau-nei-viena" id="toc-tūkstantis-p-reikšmių-pasako-daugiau-nei-viena" class="nav-link" data-scroll-target="#tūkstantis-p-reikšmių-pasako-daugiau-nei-viena">3. Tūkstantis p reikšmių pasako daugiau nei viena</a></li>
+  <li><a href="#p-reikšmę-lengviau-suprasti-kaip-nuostabą" id="toc-p-reikšmę-lengviau-suprasti-kaip-nuostabą" class="nav-link" data-scroll-target="#p-reikšmę-lengviau-suprasti-kaip-nuostabą">4. p reikšmę lengviau suprasti kaip „nuostabą”</a></li>
+  <li><a href="#problema-dažnai-ne-pati-p-reikšmė" id="toc-problema-dažnai-ne-pati-p-reikšmė" class="nav-link" data-scroll-target="#problema-dažnai-ne-pati-p-reikšmė">5. Problema dažnai ne pati p reikšmė</a></li>
+  <li><a href="#santrauka" id="toc-santrauka" class="nav-link" data-scroll-target="#santrauka">Santrauka</a></li>
+  <li><a href="#šaltiniai" id="toc-šaltiniai" class="nav-link" data-scroll-target="#šaltiniai">Šaltiniai</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">5 dalykai apie p reikšmę, kurių nepasako vadovėlis</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistika</div>
+    <div class="quarto-category">p reikšmės</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    p reikšmė svyruoja nuo tyrimo iki tyrimo, jų negalima lyginti tarpusavyje, o tūkstantis p reikšmių pasako daugiau nei viena. Penkios pamokos, kurios padeda nepersistengti su p &lt; 0,05.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autorius</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulius Alaburda </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Paskelbta</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026 m. spalio 20 d.</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Apie tai, <a href="../../posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html">ką p reikšmė reiškia ir ko ji nereiškia</a>, jau rašiau. Bet net teisingai suprasta p reikšmė lengvai suklaidina. Ji sako mažiau, nei atrodo, ir mažiau stabiliai, nei norėtųsi. Čia surinkau penkis dalykus, kurie statistikos paskaitose dažniausiai lieka nepaminėti. Daugumą jų seniai aprašė Andrew Gelmanas ir kiti statistikai, tik lietuviškai apie juos skaityti beveik nėra kur.</p>
+<section id="p-reikšmė-pati-yra-atsitiktinis-dydis" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmė-pati-yra-atsitiktinis-dydis">1. p reikšmė pati yra atsitiktinis dydis</h2>
+<p>Mes įpratę p reikšmę traktuoti kaip tyrimo „verdiktą”. Iš tikrųjų tai dar vienas iš duomenų apskaičiuotas skaičius, ir jis svyruoja kartu su duomenimis. Pakartokite tą patį tyrimą su nauja imtimi ir gausite kitą p reikšmę, dažnai labai kitokią.</p>
+<p>Sumodeliuokime 20 identiškų tyrimų. Tikrasis efektas visuose vienodas (vidutinis, d = 0,5), kiekvienoje grupėje po 30 tiriamųjų:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>p_kartojimai <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">20</span>, <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fl">0.5</span>))<span class="sc">$</span>p.value)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">tyrimas =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">p =</span> p_kartojimai),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> <span class="fu">reorder</span>(<span class="fu">factor</span>(tyrimas), p))) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.05</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#4F46E5"</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.0001</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="dv">1</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0,0001"</span>, <span class="st">"0,001"</span>, <span class="st">"0,01"</span>, <span class="st">"0,05"</span>, <span class="st">"0,2"</span>, <span class="st">"1"</span>)) <span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Tas pats efektas, 20 tyrimų, 20 skirtingų p reikšmių"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"d = 0,5, n = 30 grupėje; raudona linija: p = 0,05"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"p reikšmė (logaritminė skalė)"</span>, <span class="at">y =</span> <span class="st">"Tyrimas"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mažiausia p reikšmė &lt; 0,001, didžiausia = 0,406, o „reikšmingi” tik 12 iš 20 tyrimų. Tikrovė visiems vienoda, skiriasi tik atsitiktinumas.</p>
+<p>Iš to išplaukia praktinė išvada. Jei jūsų tyrimas davė p = 0,03, o kolegos p = 0,2, tai dar nereiškia, kad vienas iš jūsų suklydo. Tokie skirtumai visiškai įprasti, kai tyrimų galia vidutinė.</p>
+</section>
+<section id="p-reikšmių-negalima-lyginti-tarpusavyje" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmių-negalima-lyginti-tarpusavyje">2. p reikšmių negalima lyginti tarpusavyje</h2>
+<p>Klasikinė klaida skamba taip: „Vyrų grupėje efektas reikšmingas (p = 0,01), moterų nereikšmingas (p = 0,3), vadinasi, vyrams ir moterims intervencija veikia skirtingai.” Ši išvada nepagrįsta, nes dviejų p reikšmių skirtumas pats nėra statistinis testas.</p>
+<p>Gelmanas ir Sternas <span class="citation" data-cites="gelman2006difference">(<a href="#ref-gelman2006difference" role="doc-biblioref">Gelman ir Stern 2006</a>)</span> tai iliustravo paprastu pavyzdžiu. Du tyrimai matuoja tą patį efektą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>tyrimai <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">tyrimas =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ivertis =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">10</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">se      =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>tyrimai<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(tyrimai<span class="sc">$</span>ivertis <span class="sc">/</span> tyrimai<span class="sc">$</span>se))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>tyrimai</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  tyrimas ivertis se          p
+1       A      25 10 0.01241933
+2       B      10 10 0.31731051</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># O dabar patikrinkime, ar tyrimai skiriasi vienas nuo kito</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>skirtumas <span class="ot">&lt;-</span> <span class="dv">25</span> <span class="sc">-</span> <span class="dv">10</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>se_skirtumo <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span>skirtumas <span class="sc">/</span> se_skirtumo)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2888444</code></pre>
+</div>
+</div>
+<p>A tyrimas reikšmingas (p = 0,012), B ne (p = 0,317). Tačiau patikrinę, ar tyrimai skiriasi vienas nuo kito, gauname p = 0,289. Duomenys visiškai suderinami su tuo, kad abu tyrimai matuoja tą patį efektą.</p>
+<p>Pagrindinė mintis telpa į vieną sakinį: <strong>skirtumas tarp „reikšmingo” ir „nereikšmingo” pats nebūtinai yra reikšmingas.</strong> Jei norite teigti, kad efektas skiriasi tarp grupių, tikrinkite tai tiesiogiai, pavyzdžiui, sąveikos nariu regresijoje, o ne lygindami dvi atskiras p reikšmes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Versle tai dažna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A/B testų ataskaitose dažnai rašoma „naujas dizainas veikė mobiliuosiuose (p = 0,02), bet ne kompiuteriuose (p = 0,4)“. Prieš sprendžiant, kad kanalams reikia skirtingų sprendimų, verta patikrinti, ar efektai tarp kanalų apskritai skiriasi.</p>
+</div>
+</div>
+</section>
+<section id="tūkstantis-p-reikšmių-pasako-daugiau-nei-viena" class="level2">
+<h2 class="anchored" data-anchor-id="tūkstantis-p-reikšmių-pasako-daugiau-nei-viena">3. Tūkstantis p reikšmių pasako daugiau nei viena</h2>
+<p>Kai testų daug, pavyzdžiui, genų raiškos tyrime, didelėje apklausoje ar dešimtyse A/B testų, verta nubraižyti visų p reikšmių histogramą. Tai vienas naudingiausių diagnostinių grafikų, kurį gerai aprašė Davidas Robinsonas <span class="citation" data-cites="robinson2014pvalue">(<a href="#ref-robinson2014pvalue" role="doc-biblioref">Robinson 2014</a>)</span>.</p>
+<p>Sumodeliuokime 10 000 testų. 80 % jų nulinė hipotezė teisinga, 20 % efektas yra:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>yra_efektas <span class="ot">&lt;-</span> <span class="fu">runif</span>(k) <span class="sc">&lt;</span> <span class="fl">0.2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>p_daug <span class="ot">&lt;-</span> <span class="fu">sapply</span>(yra_efektas, <span class="cf">function</span>(e)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">20</span>), <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> <span class="cf">if</span> (e) <span class="fl">0.8</span> <span class="cf">else</span> <span class="dv">0</span>))<span class="sc">$</span>p.value)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">p =</span> p_daug), <span class="fu">aes</span>(<span class="at">x =</span> p)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.025</span>), <span class="at">fill =</span> <span class="st">"#4F46E5"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> k <span class="sc">*</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fl">0.025</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">lt</span>(x)) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"10 000 p reikšmių histograma"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Punktyras: kiek p reikšmių stulpelyje duotų vien nulinės hipotezės"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"p reikšmė"</span>, <span class="at">y =</span> <span class="st">"Testų skaičius"</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ko-nepasako-p-reiksme_files/figure-html/p-histograma-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Kai nulinė hipotezė teisinga, p reikšmės pasiskirsčiusios tolygiai, todėl histograma sudaryta iš lygaus „grindų” sluoksnio ir smailės prie nulio, kur susitelkę tikri efektai. Pagal formą galima daug ką pasakyti:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 54%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Histogramos forma</th>
+<th>Ką tai reiškia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tolygi + smailė prie 0</td>
+<td>Viskas tvarkoje: dalis hipotezių turi tikrą efektą</td>
+</tr>
+<tr class="even">
+<td>Visiškai tolygi</td>
+<td>Tikrų efektų beveik nėra (arba galia per maža juos aptikti)</td>
+</tr>
+<tr class="odd">
+<td>Kalnelis prie 1 arba dvi kupros</td>
+<td>Testas netinka duomenims: pažeistos prielaidos, vienpusis testas ne į tą pusę</td>
+</tr>
+<tr class="even">
+<td>Retos „šukos” su tarpais</td>
+<td>Diskretūs duomenys (pvz., maži dažniai), p reikšmės gali įgyti tik kelias reikšmes</td>
+</tr>
+</tbody>
+</table>
+<p>Svarbu ir tai, kad net smailėje prie nulio yra klaidingų atradimų. Šiame pavyzdyje iš 1831 testų su p &lt; 0,05 417 yra nuliniai, tai yra 23 % „atradimų”. Todėl atliekant daug testų reikia p reikšmių korekcijos.</p>
+</section>
+<section id="p-reikšmę-lengviau-suprasti-kaip-nuostabą" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmę-lengviau-suprasti-kaip-nuostabą">4. p reikšmę lengviau suprasti kaip „nuostabą”</h2>
+<p>Viena kliūtis yra pati skalė: p = 0,05 ir p = 0,01 atrodo beveik vienodai maži, nors įrodymų stiprumas skiriasi daugiau nei dvigubai. Rafi ir Greenlandas <span class="citation" data-cites="rafi2020semantic">(<a href="#ref-rafi2020semantic" role="doc-biblioref">Rafi ir Greenland 2020</a>)</span> siūlo p reikšmę perskaičiuoti į <strong>S reikšmę</strong> (angl. <em>surprisal</em>):</p>
+<p><span class="math display">\[
+S = -\log_2(p)
+\]</span></p>
+<p>S reikšmė matuojama bitais, ir ją galima suprasti per monetos metimą: <strong>S bitų tiek pat nustebina, kiek S iš eilės iškritusių herbų</strong> metant simetrišką monetą.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p_pvz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.005</span>, <span class="fl">0.001</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">p =</span> p_pvz, <span class="at">S_bitai =</span> <span class="fu">round</span>(<span class="sc">-</span><span class="fu">log2</span>(p_pvz), <span class="dv">1</span>))</span></code><button title="Kopijuoti į iškarpinę" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      p S_bitai
+1 0.500     1.0
+2 0.250     2.0
+3 0.100     3.3
+4 0.050     4.3
+5 0.010     6.6
+6 0.005     7.6
+7 0.001    10.0</code></pre>
+</div>
+</div>
+<p>Taigi p = 0,05 atitinka maždaug 4 herbus iš eilės. Toks rezultatas nustebintų, bet vargu ar įtikintų, kad moneta nesąžininga. Kad nuostaba prilygtų 10 herbų iš eilės, reikia p ≈ 0,001.</p>
+<p>Tie patys autoriai siūlo ir kitą formuluotę. Užuot rašius „reikšminga / nereikšminga”, p reikšmę verta skaityti kaip <strong>duomenų suderinamumą su hipoteze</strong>. Maža p reikšmė rodo, kad duomenys blogai dera su nuline hipoteze (ir su visomis kitomis modelio prielaidomis). Didelė rodo, kad dera, bet tai dar nereiškia, kad hipotezė teisinga.</p>
+</section>
+<section id="problema-dažnai-ne-pati-p-reikšmė" class="level2">
+<h2 class="anchored" data-anchor-id="problema-dažnai-ne-pati-p-reikšmė">5. Problema dažnai ne pati p reikšmė</h2>
+<p>Po visų šių pastabų gali kilti noras p reikšmių atsisakyti. Gelmanas <span class="citation" data-cites="gelman2016problems">(<a href="#ref-gelman2016problems" role="doc-biblioref">Gelman 2016</a>)</span> į tai atsako, kad problemos su p reikšmėmis yra ne vien p reikšmių problemos. Tos pačios bėdos išlieka ir su pasikliautinaisiais intervalais ar Bajeso faktoriais, kai jie naudojami tuo pačiu būdu:</p>
+<ul>
+<li><strong>Dichotomizavimas.</strong> Tolydų įrodymų matą paverčiame „taip / ne” ties 0,05 riba ir taip prarandame informaciją.</li>
+<li><strong>Šakotis kelias</strong> (angl. <em>garden of forking paths</em>). Kai analizės sprendimai (kurie tiriamieji atmetami, kokie kintamieji įtraukiami, kuris testas pasirenkamas) priimami jau matant duomenis, p reikšmė praranda savo prasmę, net jei niekas sąmoningai nesukčiavo.</li>
+<li><strong>Šiaudinė nulinė hipotezė.</strong> Tikriname, ar efektas lygiai nulis, nors ir taip žinome, kad nėra. Iš tikrųjų mus domina, koks efektas didelis ir ar jis svarbus.</li>
+</ul>
+<p>Kada tuomet p reikšmė naudinga? Kai ji atlieka kuklų darbą: kaip pirmas filtras, ar signalą galima atskirti nuo triukšmo, ir kaip modelio patikrinimas, ar duomenys dera su prielaidomis. Daug sėkmingų taikomųjų analizių apskritai apsieina be p reikšmių ir remiasi efektų įverčiais, neapibrėžtumu ir modeliavimu.</p>
+</section>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pamoka</th>
+<th>Ką daryti</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p reikšmė svyruoja nuo tyrimo iki tyrimo</td>
+<td>Nevertinkite vieno tyrimo kaip galutinio verdikto; žiūrėkite į efekto dydį ir intervalą</td>
+</tr>
+<tr class="even">
+<td>p reikšmių negalima lyginti</td>
+<td>Grupių skirtumus tikrinkite tiesiogiai (sąveika)</td>
+</tr>
+<tr class="odd">
+<td>Daug testų – žiūrėkite į histogramą</td>
+<td>Patikrinkite formą ir taikykite korekciją</td>
+</tr>
+<tr class="even">
+<td>p reikšmę verta skaityti kaip nuostabą</td>
+<td>p = 0,05 ≈ 4 herbai iš eilės</td>
+</tr>
+<tr class="odd">
+<td>Problema dažnai ne p reikšmė</td>
+<td>Venkite dichotomijos ir analizės sprendimų po duomenų peržiūros</td>
+</tr>
+</tbody>
+</table>
+<p>Jei jūsų analizėje daug testų ar grupių palyginimų ir nesate tikri, kurios išvados tvirtos, <a href="../../kontaktai.html">parašykite man</a>. Kartu peržiūrėsime analizės planą ir rezultatus.</p>
+</section>
+<section id="šaltiniai" class="level2">
+<h2 class="anchored" data-anchor-id="šaltiniai">Šaltiniai</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-gelman2016problems" class="csl-entry" role="listitem">
+Gelman, Andrew. 2016. <span>„The problems with p-values are not just with p-values“</span>. <em>The American Statistician, online discussion of the ASA statement on p-values</em>. <a href="http://www.stat.columbia.edu/~gelman/research/published/asa_pvalues.pdf">http://www.stat.columbia.edu/~gelman/research/published/asa_pvalues.pdf</a>.
+</div>
+<div id="ref-gelman2006difference" class="csl-entry" role="listitem">
+Gelman, Andrew, ir Hal Stern. 2006. <span>„The difference between <span>,significant‘</span> and <span>,not significant‘</span> is not itself statistically significant“</span>. <em>The American Statistician</em> 60 (4): 328–31. <a href="https://doi.org/10.1198/000313006X152649">https://doi.org/10.1198/000313006X152649</a>.
+</div>
+<div id="ref-rafi2020semantic" class="csl-entry" role="listitem">
+Rafi, Zad, ir Sander Greenland. 2020. <span>„Semantic and cognitive tools to aid statistical science: replace confidence and significance by compatibility and surprise“</span>. <em>BMC Medical Research Methodology</em> 20: 244. <a href="https://doi.org/10.1186/s12874-020-01105-9">https://doi.org/10.1186/s12874-020-01105-9</a>.
+</div>
+<div id="ref-robinson2014pvalue" class="csl-entry" role="listitem">
+Robinson, David. 2014. <span>„How to interpret a p-value histogram“</span>. <em>Variance Explained</em> (blog). 2014 m. <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/">http://varianceexplained.org/statistics/interpreting-pvalue-histogram/</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Nukopijuota!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Nukopijuota!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/statistikas\.lt");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html">
+<p>Paslaugos</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html">
+<p>Pavyzdžiai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html">
+<p>Straipsniai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html">
+<p>Nemokama analizė</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+<p>Apie</p>
+</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:info@statistikas.lt">
+<p>info@statistikas.lt</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script src="theme/main.js"></script>
+
+
+
+
+</body></html>

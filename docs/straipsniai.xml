@@ -10,7 +10,658 @@
 <atom:link href="https://statistikas.lt/straipsniai.xml" rel="self" type="application/rss+xml"/>
 <description>Praktiniai statistikos gidai lietuviškai: kaip pasirinkti statistinį testą, apskaičiuoti imties dydį, atlikti t testą, ANOVA ar chi kvadrato testą ir interpretuoti p reikšmę.</description>
 <generator>quarto-1.5.52</generator>
-<lastBuildDate>Sat, 04 Jul 2026 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 19 Oct 2026 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>5 dalykai apie p reikšmę, kurių nepasako vadovėlis</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Apie tai, <a href="../../posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html">ką p reikšmė reiškia ir ko ji nereiškia</a>, jau rašiau. Bet net teisingai suprasta p reikšmė lengvai suklaidina. Ji sako mažiau, nei atrodo, ir mažiau stabiliai, nei norėtųsi. Čia surinkau penkis dalykus, kurie statistikos paskaitose dažniausiai lieka nepaminėti. Daugumą jų seniai aprašė Andrew Gelmanas ir kiti statistikai, tik lietuviškai apie juos skaityti beveik nėra kur.</p>
+<section id="p-reikšmė-pati-yra-atsitiktinis-dydis" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmė-pati-yra-atsitiktinis-dydis">1. p reikšmė pati yra atsitiktinis dydis</h2>
+<p>Mes įpratę p reikšmę traktuoti kaip tyrimo „verdiktą”. Iš tikrųjų tai dar vienas iš duomenų apskaičiuotas skaičius, ir jis svyruoja kartu su duomenimis. Pakartokite tą patį tyrimą su nauja imtimi ir gausite kitą p reikšmę, dažnai labai kitokią.</p>
+<p>Sumodeliuokime 20 identiškų tyrimų. Tikrasis efektas visuose vienodas (vidutinis, d = 0,5), kiekvienoje grupėje po 30 tiriamųjų:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2026</span>)</span>
+<span id="cb1-2">p_kartojimai <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">replicate</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t.test</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value)</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tyrimas =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> p_kartojimai),</span>
+<span id="cb1-5">       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> p, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reorder</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(tyrimas), p))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xintercept =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dashed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_log10</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0001</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb1-9">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0,0001"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0,001"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0,01"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0,05"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0,2"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb1-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tas pats efektas, 20 tyrimų, 20 skirtingų p reikšmių"</span>,</span>
+<span id="cb1-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"d = 0,5, n = 30 grupėje; raudona linija: p = 0,05"</span>,</span>
+<span id="cb1-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"p reikšmė (logaritminė skalė)"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tyrimas"</span></span>
+<span id="cb1-14">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.major.y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>())</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mažiausia p reikšmė &lt; 0,001, didžiausia = 0,406, o „reikšmingi” tik 12 iš 20 tyrimų. Tikrovė visiems vienoda, skiriasi tik atsitiktinumas.</p>
+<p>Iš to išplaukia praktinė išvada. Jei jūsų tyrimas davė p = 0,03, o kolegos p = 0,2, tai dar nereiškia, kad vienas iš jūsų suklydo. Tokie skirtumai visiškai įprasti, kai tyrimų galia vidutinė.</p>
+</section>
+<section id="p-reikšmių-negalima-lyginti-tarpusavyje" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmių-negalima-lyginti-tarpusavyje">2. p reikšmių negalima lyginti tarpusavyje</h2>
+<p>Klasikinė klaida skamba taip: „Vyrų grupėje efektas reikšmingas (p = 0,01), moterų nereikšmingas (p = 0,3), vadinasi, vyrams ir moterims intervencija veikia skirtingai.” Ši išvada nepagrįsta, nes dviejų p reikšmių skirtumas pats nėra statistinis testas.</p>
+<p>Gelmanas ir Sternas <span class="citation" data-cites="gelman2006difference">(Gelman ir Stern 2006)</span> tai iliustravo paprastu pavyzdžiu. Du tyrimai matuoja tą patį efektą:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">tyrimai <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb2-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tyrimas =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span>),</span>
+<span id="cb2-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ivertis =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>),</span>
+<span id="cb2-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">se      =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb2-5">)</span>
+<span id="cb2-6">tyrimai<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pnorm</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(tyrimai<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ivertis <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> tyrimai<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>se))</span>
+<span id="cb2-7">tyrimai</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  tyrimas ivertis se          p
+1       A      25 10 0.01241933
+2       B      10 10 0.31731051</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># O dabar patikrinkime, ar tyrimai skiriasi vienas nuo kito</span></span>
+<span id="cb4-2">skirtumas <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span></span>
+<span id="cb4-3">se_skirtumo <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb4-4"><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pnorm</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>skirtumas <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> se_skirtumo)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2888444</code></pre>
+</div>
+</div>
+<p>A tyrimas reikšmingas (p = 0,012), B ne (p = 0,317). Tačiau patikrinę, ar tyrimai skiriasi vienas nuo kito, gauname p = 0,289. Duomenys visiškai suderinami su tuo, kad abu tyrimai matuoja tą patį efektą.</p>
+<p>Pagrindinė mintis telpa į vieną sakinį: <strong>skirtumas tarp „reikšmingo” ir „nereikšmingo” pats nebūtinai yra reikšmingas.</strong> Jei norite teigti, kad efektas skiriasi tarp grupių, tikrinkite tai tiesiogiai, pavyzdžiui, sąveikos nariu regresijoje, o ne lygindami dvi atskiras p reikšmes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Versle tai dažna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A/B testų ataskaitose dažnai rašoma „naujas dizainas veikė mobiliuosiuose (p = 0,02), bet ne kompiuteriuose (p = 0,4)“. Prieš sprendžiant, kad kanalams reikia skirtingų sprendimų, verta patikrinti, ar efektai tarp kanalų apskritai skiriasi.</p>
+</div>
+</div>
+</section>
+<section id="tūkstantis-p-reikšmių-pasako-daugiau-nei-viena" class="level2">
+<h2 class="anchored" data-anchor-id="tūkstantis-p-reikšmių-pasako-daugiau-nei-viena">3. Tūkstantis p reikšmių pasako daugiau nei viena</h2>
+<p>Kai testų daug, pavyzdžiui, genų raiškos tyrime, didelėje apklausoje ar dešimtyse A/B testų, verta nubraižyti visų p reikšmių histogramą. Tai vienas naudingiausių diagnostinių grafikų, kurį gerai aprašė Davidas Robinsonas <span class="citation" data-cites="robinson2014pvalue">(Robinson 2014)</span>.</p>
+<p>Sumodeliuokime 10 000 testų. 80 % jų nulinė hipotezė teisinga, 20 % efektas yra:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb6-2">k <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span></span>
+<span id="cb6-3">yra_efektas <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(k) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span></span>
+<span id="cb6-4">p_daug <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sapply</span>(yra_efektas, <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(e)</span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t.test</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (e) <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value)</span>
+<span id="cb6-6"></span>
+<span id="cb6-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> p_daug), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> p)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_histogram</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.025</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4F46E5"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.025</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dashed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lt</span>(x)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb6-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"10 000 p reikšmių histograma"</span>,</span>
+<span id="cb6-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Punktyras: kiek p reikšmių stulpelyje duotų vien nulinės hipotezės"</span>,</span>
+<span id="cb6-14">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"p reikšmė"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Testų skaičius"</span></span>
+<span id="cb6-15">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-histograma-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Kai nulinė hipotezė teisinga, p reikšmės pasiskirsčiusios tolygiai, todėl histograma sudaryta iš lygaus „grindų” sluoksnio ir smailės prie nulio, kur susitelkę tikri efektai. Pagal formą galima daug ką pasakyti:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 54%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Histogramos forma</th>
+<th>Ką tai reiškia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tolygi + smailė prie 0</td>
+<td>Viskas tvarkoje: dalis hipotezių turi tikrą efektą</td>
+</tr>
+<tr class="even">
+<td>Visiškai tolygi</td>
+<td>Tikrų efektų beveik nėra (arba galia per maža juos aptikti)</td>
+</tr>
+<tr class="odd">
+<td>Kalnelis prie 1 arba dvi kupros</td>
+<td>Testas netinka duomenims: pažeistos prielaidos, vienpusis testas ne į tą pusę</td>
+</tr>
+<tr class="even">
+<td>Retos „šukos” su tarpais</td>
+<td>Diskretūs duomenys (pvz., maži dažniai), p reikšmės gali įgyti tik kelias reikšmes</td>
+</tr>
+</tbody>
+</table>
+<p>Svarbu ir tai, kad net smailėje prie nulio yra klaidingų atradimų. Šiame pavyzdyje iš 1831 testų su p &lt; 0,05 417 yra nuliniai, tai yra 23 % „atradimų”. Todėl atliekant daug testų reikia p reikšmių korekcijos.</p>
+</section>
+<section id="p-reikšmę-lengviau-suprasti-kaip-nuostabą" class="level2">
+<h2 class="anchored" data-anchor-id="p-reikšmę-lengviau-suprasti-kaip-nuostabą">4. p reikšmę lengviau suprasti kaip „nuostabą”</h2>
+<p>Viena kliūtis yra pati skalė: p = 0,05 ir p = 0,01 atrodo beveik vienodai maži, nors įrodymų stiprumas skiriasi daugiau nei dvigubai. Rafi ir Greenlandas <span class="citation" data-cites="rafi2020semantic">(Rafi ir Greenland 2020)</span> siūlo p reikšmę perskaičiuoti į <strong>S reikšmę</strong> (angl. <em>surprisal</em>):</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AS%20=%20-%5Clog_2(p)%0A"></p>
+<p>S reikšmė matuojama bitais, ir ją galima suprasti per monetos metimą: <strong>S bitų tiek pat nustebina, kiek S iš eilės iškritusių herbų</strong> metant simetrišką monetą.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">p_pvz <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.005</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span>)</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> p_pvz, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">S_bitai =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log2</span>(p_pvz), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      p S_bitai
+1 0.500     1.0
+2 0.250     2.0
+3 0.100     3.3
+4 0.050     4.3
+5 0.010     6.6
+6 0.005     7.6
+7 0.001    10.0</code></pre>
+</div>
+</div>
+<p>Taigi p = 0,05 atitinka maždaug 4 herbus iš eilės. Toks rezultatas nustebintų, bet vargu ar įtikintų, kad moneta nesąžininga. Kad nuostaba prilygtų 10 herbų iš eilės, reikia p ≈ 0,001.</p>
+<p>Tie patys autoriai siūlo ir kitą formuluotę. Užuot rašius „reikšminga / nereikšminga”, p reikšmę verta skaityti kaip <strong>duomenų suderinamumą su hipoteze</strong>. Maža p reikšmė rodo, kad duomenys blogai dera su nuline hipoteze (ir su visomis kitomis modelio prielaidomis). Didelė rodo, kad dera, bet tai dar nereiškia, kad hipotezė teisinga.</p>
+</section>
+<section id="problema-dažnai-ne-pati-p-reikšmė" class="level2">
+<h2 class="anchored" data-anchor-id="problema-dažnai-ne-pati-p-reikšmė">5. Problema dažnai ne pati p reikšmė</h2>
+<p>Po visų šių pastabų gali kilti noras p reikšmių atsisakyti. Gelmanas <span class="citation" data-cites="gelman2016problems">(Gelman 2016)</span> į tai atsako, kad problemos su p reikšmėmis yra ne vien p reikšmių problemos. Tos pačios bėdos išlieka ir su pasikliautinaisiais intervalais ar Bajeso faktoriais, kai jie naudojami tuo pačiu būdu:</p>
+<ul>
+<li><strong>Dichotomizavimas.</strong> Tolydų įrodymų matą paverčiame „taip / ne” ties 0,05 riba ir taip prarandame informaciją.</li>
+<li><strong>Šakotis kelias</strong> (angl. <em>garden of forking paths</em>). Kai analizės sprendimai (kurie tiriamieji atmetami, kokie kintamieji įtraukiami, kuris testas pasirenkamas) priimami jau matant duomenis, p reikšmė praranda savo prasmę, net jei niekas sąmoningai nesukčiavo.</li>
+<li><strong>Šiaudinė nulinė hipotezė.</strong> Tikriname, ar efektas lygiai nulis, nors ir taip žinome, kad nėra. Iš tikrųjų mus domina, koks efektas didelis ir ar jis svarbus.</li>
+</ul>
+<p>Kada tuomet p reikšmė naudinga? Kai ji atlieka kuklų darbą: kaip pirmas filtras, ar signalą galima atskirti nuo triukšmo, ir kaip modelio patikrinimas, ar duomenys dera su prielaidomis. Daug sėkmingų taikomųjų analizių apskritai apsieina be p reikšmių ir remiasi efektų įverčiais, neapibrėžtumu ir modeliavimu.</p>
+</section>
+<section id="santrauka" class="level2">
+<h2 class="anchored" data-anchor-id="santrauka">Santrauka</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pamoka</th>
+<th>Ką daryti</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p reikšmė svyruoja nuo tyrimo iki tyrimo</td>
+<td>Nevertinkite vieno tyrimo kaip galutinio verdikto; žiūrėkite į efekto dydį ir intervalą</td>
+</tr>
+<tr class="even">
+<td>p reikšmių negalima lyginti</td>
+<td>Grupių skirtumus tikrinkite tiesiogiai (sąveika)</td>
+</tr>
+<tr class="odd">
+<td>Daug testų – žiūrėkite į histogramą</td>
+<td>Patikrinkite formą ir taikykite korekciją</td>
+</tr>
+<tr class="even">
+<td>p reikšmę verta skaityti kaip nuostabą</td>
+<td>p = 0,05 ≈ 4 herbai iš eilės</td>
+</tr>
+<tr class="odd">
+<td>Problema dažnai ne p reikšmė</td>
+<td>Venkite dichotomijos ir analizės sprendimų po duomenų peržiūros</td>
+</tr>
+</tbody>
+</table>
+<p>Jei jūsų analizėje daug testų ar grupių palyginimų ir nesate tikri, kurios išvados tvirtos, <a href="../../kontaktai.html">parašykite man</a>. Kartu peržiūrėsime analizės planą ir rezultatus.</p>
+</section>
+<section id="šaltiniai" class="level2">
+<h2 class="anchored" data-anchor-id="šaltiniai">Šaltiniai</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-gelman2016problems" class="csl-entry">
+Gelman, Andrew. 2016. <span>„The problems with p-values are not just with p-values“</span>. <em>The American Statistician, online discussion of the ASA statement on p-values</em>. <a href="http://www.stat.columbia.edu/~gelman/research/published/asa_pvalues.pdf">http://www.stat.columbia.edu/~gelman/research/published/asa_pvalues.pdf</a>.
+</div>
+<div id="ref-gelman2006difference" class="csl-entry">
+Gelman, Andrew, ir Hal Stern. 2006. <span>„The difference between <span>,significant‘</span> and <span>,not significant‘</span> is not itself statistically significant“</span>. <em>The American Statistician</em> 60 (4): 328–31. <a href="https://doi.org/10.1198/000313006X152649">https://doi.org/10.1198/000313006X152649</a>.
+</div>
+<div id="ref-rafi2020semantic" class="csl-entry">
+Rafi, Zad, ir Sander Greenland. 2020. <span>„Semantic and cognitive tools to aid statistical science: replace confidence and significance by compatibility and surprise“</span>. <em>BMC Medical Research Methodology</em> 20: 244. <a href="https://doi.org/10.1186/s12874-020-01105-9">https://doi.org/10.1186/s12874-020-01105-9</a>.
+</div>
+<div id="ref-robinson2014pvalue" class="csl-entry">
+Robinson, David. 2014. <span>„How to interpret a p-value histogram“</span>. <em>Variance Explained</em> (blog). 2014 m. <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/">http://varianceexplained.org/statistics/interpreting-pvalue-histogram/</a>.
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>p reikšmės</category>
+  <category>R</category>
+  <guid>https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+  <media:content url="https://statistikas.lt/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme_files/figure-html/p-svyravimai-1.png" medium="image" type="image/png" height="72" width="144"/>
+</item>
 <item>
   <title>Ar AI gali atlikti statistinę analizę?</title>
   <dc:creator>Paulius Alaburda</dc:creator>
@@ -386,7 +1037,7 @@ Vis dar abejojate?
   <category>R</category>
   <guid>https://statistikas.lt/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html</guid>
   <pubDate>Fri, 03 Jul 2026 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa_files/figure-html/testu-zemelapis-1.png" medium="image" type="image/png" height="80" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa_files/figure-html/testu-zemelapis-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip apskaičiuoti imties dydį?</title>
@@ -757,7 +1408,7 @@ Numatykite nubyrėjimą
   <category>R</category>
   <guid>https://statistikas.lt/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.html</guid>
   <pubDate>Thu, 25 Jun 2026 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi_files/figure-html/galios-kreives-1.png" medium="image" type="image/png" height="90" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi_files/figure-html/galios-kreives-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Ką iš tikrųjų reiškia p reikšmė?</title>
@@ -1050,7 +1701,7 @@ Kaip rašyti publikacijoje
   <category>R</category>
   <guid>https://statistikas.lt/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html</guid>
   <pubDate>Thu, 11 Jun 2026 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme_files/figure-html/p-simuliacija-1.png" medium="image" type="image/png" height="81" width="144"/>
+  <media:content url="https://statistikas.lt/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme_files/figure-html/p-simuliacija-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip sukurti boxplot su R? 4 būdai</title>
@@ -1819,7 +2470,7 @@ Statistiniai palyginimai grafike
   <category>tidyplots</category>
   <guid>https://statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html</guid>
   <pubDate>Sat, 07 Feb 2026 22:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/preview-plot-1.png" medium="image" type="image/png" height="103" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r_files/figure-html/preview-plot-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kada rinktis Kruskal-Wallis testą?</title>
@@ -1994,7 +2645,7 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
   <category>R</category>
   <guid>https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html</guid>
   <pubDate>Sat, 03 Jun 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" medium="image" type="image/png" height="103" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis_files/figure-html/unnamed-chunk-3-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip atlikti Chi-kvadrato testą?</title>
@@ -2444,7 +3095,7 @@ sample estimates:
   <category>R</category>
   <guid>https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html</guid>
   <pubDate>Fri, 21 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" medium="image" type="image/png" height="103" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-t-testa/kada-rinktis-t-testa_files/figure-html/unnamed-chunk-1-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kada rinktis Mann-Whitney testą?</title>
@@ -3026,7 +3677,7 @@ font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
   <category>R</category>
   <guid>https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html</guid>
   <pubDate>Fri, 14 Apr 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" medium="image" type="image/png" height="103" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova_files/figure-html/unnamed-chunk-8-1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Kaip patikrinti tolydžius duomenis?</title>
