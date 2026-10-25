@@ -8,7 +8,10 @@
     "analize:dev": "npm --prefix _analize-src run dev",
     "analize:test": "npm --prefix _analize-src test",
     "analize:build": "npm --prefix _analize-src run build",
-    "analize:video": "node scripts/record-analize.mjs"
+    "analize:video": "node scripts/record-analize.mjs",
+    "planavimas:dev": "npm --prefix _planavimas-src run dev",
+    "planavimas:test": "npm --prefix _planavimas-src test",
+    "planavimas:build": "npm --prefix _planavimas-src run build"
   },
   "repository": {
     "type": "git",

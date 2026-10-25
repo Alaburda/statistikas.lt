@@ -6,7 +6,11 @@ project:
     - CNAME
     # Nemokamas analizės įrankis: _analize-src/ sukompiliuojamas į analize/ (žr. pre-render)
     - analize/**
-  pre-render: scripts/build-analize.ts
+    # Nemokamas planavimo įrankis: _planavimas-src/ sukompiliuojamas į planavimas/
+    - planavimas/**
+  pre-render:
+    - scripts/build-analize.ts
+    - scripts/build-planavimas.ts
   post-render: scripts/sitemap-analize.ts
 
 lang: lt

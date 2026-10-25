@@ -1,8 +1,9 @@
-// Quarto post-render step: adds the free analysis app to sitemap.xml. Quarto only
-// lists pages it renders itself, and analize/ is copied in as a resource.
+// Quarto post-render step: adds the free apps (/analize/, /planavimas/) to
+// sitemap.xml. Quarto only lists pages it renders itself, and the apps are
+// copied in as resources.
 const outDir = Deno.env.get("QUARTO_PROJECT_OUTPUT_DIR") ?? "docs";
 const sitemap = `${outDir}/sitemap.xml`;
-const url = "https://statistikas.lt/analize/";
+const urls = ["https://statistikas.lt/analize/", "https://statistikas.lt/planavimas/"];
 
 let xml: string;
 try {
@@ -12,8 +13,12 @@ try {
   Deno.exit(0);
 }
 
-if (!xml.includes(`<loc>${url}</loc>`)) {
+let changed = false;
+for (const url of urls) {
+  if (xml.includes(`<loc>${url}</loc>`)) continue;
   const entry = `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Date().toISOString()}</lastmod>\n  </url>\n`;
-  Deno.writeTextFileSync(sitemap, xml.replace("</urlset>", `${entry}</urlset>`));
-  console.log("sitemap-analize: added /analize/");
+  xml = xml.replace("</urlset>", `${entry}</urlset>`);
+  changed = true;
+  console.log(`sitemap-analize: added ${url}`);
 }
+if (changed) Deno.writeTextFileSync(sitemap, xml);
