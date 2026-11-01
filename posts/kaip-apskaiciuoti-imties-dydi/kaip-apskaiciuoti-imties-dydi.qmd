@@ -13,6 +13,8 @@ toc: true
 
 „Kiek tiriamųjų man reikia?" — klausimas, kurį verta užduoti *prieš* renkant duomenis, o ne po to. Per maža imtis reiškia, kad realiai egzistuojančio skirtumo galite tiesiog nepamatyti, o per didelė — švaistote laiką, pinigus, o medicinos tyrimuose tai ir etikos klausimas: kam tirti daugiau žmonių, nei būtina?
 
+Jei reikia tik skaičiaus, jį duos [nemokama imties skaičiuoklė](../../imtis/) — ji apima grupių palyginimus, [anketines apklausas](../../imtis/#apklausa), A/B testus ir bioekvivalentiškumo tyrimus. Šiame straipsnyje — kas slypi už to skaičiaus ir kaip jį gauti su R.
+
 # Keturi ingredientai
 
 Imties dydžio skaičiavimui reikia keturių dalykų:
@@ -94,6 +96,10 @@ ggplot(scenarijai, aes(x = n, y = galia, color = efektas)) +
 ```
 
 Dideliam efektui aptikti užtenka ~26 tiriamųjų grupėje, vidutiniam — ~64, o mažam reikia jau beveik 400. Todėl „paimsiu 30, nes taip visi daro" nėra imties dydžio skaičiavimas.
+
+Tuos pačius skaičiavimus galite atlikti ir be R: skaičiuoklė parodys kelis scenarijus ir parengs metodikos pastraipą su šaltiniais.
+
+[Apskaičiuoti savo tyrimo imtį →](../../imtis/#grupes){.btn-blue}
 
 # Keli praktiniai patarimai
 
