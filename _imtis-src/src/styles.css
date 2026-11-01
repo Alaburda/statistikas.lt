@@ -584,4 +584,13 @@ table.groups tfoot td {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
+  .cta-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cta-art {
+    display: none;
+  }
+  .cta-body {
+    padding: 22px 18px;
+  }
 }
