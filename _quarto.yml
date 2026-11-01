@@ -8,9 +8,12 @@ project:
     - analize/**
     # Nemokamas planavimo įrankis: _planavimas-src/ sukompiliuojamas į planavimas/
     - planavimas/**
+    # Nemokama imties skaičiuoklė: _imtis-src/ sukompiliuojamas į imtis/
+    - imtis/**
   pre-render:
     - scripts/build-analize.ts
     - scripts/build-planavimas.ts
+    - scripts/build-imtis.ts
   post-render: scripts/sitemap-analize.ts
 
 lang: lt

@@ -1,9 +1,9 @@
-// Quarto post-render step: adds the free apps (/analize/, /planavimas/) to
+// Quarto post-render step: adds the free apps (/analize/, /planavimas/, /imtis/) to
 // sitemap.xml. Quarto only lists pages it renders itself, and the apps are
 // copied in as resources.
 const outDir = Deno.env.get("QUARTO_PROJECT_OUTPUT_DIR") ?? "docs";
 const sitemap = `${outDir}/sitemap.xml`;
-const urls = ["https://statistikas.lt/analize/", "https://statistikas.lt/planavimas/"];
+const urls = ["https://statistikas.lt/analize/", "https://statistikas.lt/planavimas/", "https://statistikas.lt/imtis/"];
 
 let xml: string;
 try {

@@ -11,7 +11,10 @@
     "analize:video": "node scripts/record-analize.mjs",
     "planavimas:dev": "npm --prefix _planavimas-src run dev",
     "planavimas:test": "npm --prefix _planavimas-src test",
-    "planavimas:build": "npm --prefix _planavimas-src run build"
+    "planavimas:build": "npm --prefix _planavimas-src run build",
+    "imtis:dev": "npm --prefix _imtis-src run dev",
+    "imtis:test": "npm --prefix _imtis-src test",
+    "imtis:build": "npm --prefix _imtis-src run build"
   },
   "repository": {
     "type": "git",

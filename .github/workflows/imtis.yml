@@ -1,0 +1,27 @@
+# Type-checks, tests and builds the free sample size calculator (_imtis-src/) on every
+# change to it. Publishing is still `quarto render` + commit + push, which
+# rebuilds the app into docs/imtis/ via scripts/build-imtis.ts.
+name: Imtis
+
+on:
+  push:
+    paths: ["_imtis-src/**", ".github/workflows/imtis.yml"]
+  pull_request:
+    paths: ["_imtis-src/**", ".github/workflows/imtis.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: _imtis-src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: _imtis-src/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

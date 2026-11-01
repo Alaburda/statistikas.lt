@@ -1,0 +1,587 @@
+/* The calculator. Shared chrome (top bar, buttons, tables, CTA, footer) is in base.css. */
+
+.app {
+  max-width: 1040px;
+}
+
+.title {
+  margin: 28px 0 16px;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+/* ---- Choosing the kind of study ---- */
+.choose {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border: 2px solid var(--ink);
+}
+.choose button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  border: 0;
+  border-right: 2px solid var(--ink);
+  padding: 14px 16px;
+  background: var(--paper);
+  min-width: 0;
+}
+.choose button:last-child {
+  border-right: 0;
+}
+.choose button b {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.choose button span {
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.choose button:hover:not(.on) {
+  background: var(--paper-2);
+}
+.choose button.on {
+  background: var(--blue);
+  color: #fff;
+}
+.choose button.on span {
+  color: #fff;
+}
+
+/* ---- Inputs beside the answer ---- */
+.calc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 24px;
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.field label,
+.field-label {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--ink-3);
+  background: var(--paper);
+}
+.input-wrap:focus-within {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+.input-wrap input,
+.input-wrap select {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  font-family: var(--font-mono);
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+}
+.input-wrap select {
+  font-family: var(--font-sans);
+}
+.input-wrap input::placeholder {
+  color: var(--ink-3);
+}
+.suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border-left: 1px solid var(--line);
+}
+.hint {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.field-error {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--red-text);
+}
+.has-error .input-wrap {
+  border-color: var(--red);
+  box-shadow: inset 3px 0 0 var(--red);
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.segmented button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--ink-3);
+  background: var(--paper);
+}
+.segmented button.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14.5px;
+  cursor: pointer;
+}
+.check input {
+  margin-top: 4px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue);
+}
+
+.more {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.more .more {
+  border: 1px solid var(--line);
+  padding: 0 12px;
+}
+.more summary {
+  padding: 10px 0;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--blue);
+}
+.more-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0 16px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chips button {
+  padding: 6px 10px;
+  font-size: 13.5px;
+}
+.chips button.on {
+  background: var(--paper-2);
+  border-color: var(--ink);
+}
+.sd-result {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+.sd-result button {
+  margin-left: 8px;
+  padding: 3px 10px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+}
+.sd-result .hint {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-sans);
+}
+
+.peek {
+  display: none;
+}
+
+/* ---- The answer ---- */
+.result {
+  position: sticky;
+  top: 80px;
+  min-width: 0;
+  padding: 22px 24px 24px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: inset 0 8px 0 var(--yellow);
+}
+.result .eyebrow {
+  margin-top: 6px;
+}
+.big {
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(52px, 8vw, 76px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--blue);
+  overflow-wrap: anywhere;
+}
+.big-text {
+  font-size: clamp(28px, 4.5vw, 38px);
+  letter-spacing: -0.02em;
+}
+.big-unit {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+.result-line {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 16px;
+}
+.result-line b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 18px;
+}
+.result-alt {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.result-empty {
+  margin: 0;
+  color: var(--ink-2);
+}
+.stale {
+  opacity: 0.5;
+}
+
+.notice {
+  margin-top: 14px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  border-left: 4px solid var(--red);
+  background: rgba(194, 59, 42, 0.07);
+}
+.notice.info {
+  border-left-color: var(--blue);
+  background: var(--paper-2);
+}
+.notice strong {
+  font-weight: 600;
+}
+button.link {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--blue);
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+/* ---- Sections under the calculator ---- */
+.block {
+  margin-top: 40px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+}
+.block h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.block h3 {
+  margin: 24px 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.block-lead {
+  margin: 0 0 12px;
+  max-width: 46rem;
+  font-size: 15.5px;
+  color: var(--ink-2);
+}
+.honest p {
+  max-width: 46rem;
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.table-scroll {
+  overflow-x: auto;
+}
+table.scenarios td,
+table.scenarios th {
+  white-space: nowrap;
+}
+table.scenarios td.current,
+table.scenarios tr.current-row td {
+  background: rgba(233, 185, 58, 0.3);
+  font-weight: 600;
+}
+table.groups input {
+  width: 100%;
+  min-width: 130px;
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 15px;
+}
+table.groups input.num {
+  min-width: 80px;
+  width: 90px;
+  text-align: right;
+  font-family: var(--font-mono);
+}
+table.groups tfoot td {
+  font-weight: 600;
+  border-top: 2px solid var(--ink);
+}
+.row-x {
+  padding: 4px 8px;
+  font-size: 13px;
+  border-color: transparent;
+}
+.row-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.block .check {
+  margin-bottom: 12px;
+}
+
+.tolerance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border: 1px solid var(--line);
+}
+.tolerance div {
+  padding: 12px 14px;
+  border-right: 1px solid var(--line);
+}
+.tolerance div:last-child {
+  border-right: 0;
+}
+.tolerance dt {
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.tolerance dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* ---- Power curve ---- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.curve-frame {
+  position: relative;
+}
+.curve-frame > svg {
+  display: block;
+  max-width: none;
+  touch-action: pan-y;
+}
+.tick {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--ink-2);
+}
+.tick.strong {
+  fill: var(--ink);
+}
+.curve-tip {
+  position: absolute;
+  top: 8px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.tip-n {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.tip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-2);
+}
+.tip-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ---- Report ---- */
+.report-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.report-tabs button {
+  padding: 5px 12px;
+  font-size: 14px;
+}
+.report-tabs button.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.report-text {
+  margin: 0;
+  padding: 14px 16px;
+  max-width: 50rem;
+  background: var(--paper-2);
+  border-left: 4px solid var(--blue);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+.report-refs {
+  margin: 10px 0 0;
+  padding-left: 22px;
+  max-width: 50rem;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.code {
+  margin: 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+/* ---- Verified ---- */
+.verified-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 14px;
+}
+.verified-grid p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.verified-grid .stat {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+@media (max-width: 820px) {
+  /* Two rows of header would take a seventh of a phone screen. */
+  .topbar {
+    position: static;
+  }
+  .peek {
+    display: block;
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin: 0 -16px;
+    padding: 8px 16px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 14px;
+  }
+  .peek b {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 500;
+  }
+  table.scenarios th,
+  table.scenarios td {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .calc {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .result {
+    position: static;
+    order: -1;
+  }
+  .choose {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .choose button {
+    border-right: 0;
+    border-bottom: 2px solid var(--ink);
+    padding: 10px 14px;
+  }
+  .choose button:last-child {
+    border-bottom: 0;
+  }
+  .verified-grid,
+  .tolerance {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .verified-grid {
+    gap: 14px;
+  }
+  .tolerance div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
