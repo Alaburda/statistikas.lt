@@ -1,0 +1,51 @@
+---
+title: "Koreliacijų matrica pagal APA: kaip ją sudaryti baigiamajam darbui"
+description: "Kaip sudaryti APA stiliaus koreliacijų lentelę su vidurkiais, standartiniais nuokrypiais ir reikšmingumo žvaigždutėmis – be SPSS ir rankinio formatavimo."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, koreliacija, APA]
+toc: true
+---
+
+# Kam reikalinga koreliacijų matrica?
+
+Kai tyrime yra kelios skalės (pvz., stresas, pasitenkinimas studijomis, miego trukmė, studijų vidurkis), skaitytojui svarbu matyti visus jų tarpusavio ryšius vienoje vietoje. Todėl beveik kiekviename kiekybiniame baigiamajame darbe yra lentelė su:
+
+- kiekvieno kintamojo **vidurkiu (M)** ir **standartiniu nuokrypiu (SN)**;
+- visomis kintamųjų porų **koreliacijomis** apatiniame trikampyje;
+- **žvaigždutėmis**, žyminčiomis reikšmingumą, ir pastaba po lentele.
+
+# Kaip ji atrodo
+
+| Kintamasis | M | SN | 1 | 2 |
+|---|---|---|---|---|
+| 1. Miego trukmė | 7,15 | 0,98 | — | |
+| 2. Studijų vidurkis | 7,93 | 0,91 | 0,14\* | — |
+| 3. Savijauta prieš programą | 57,74 | 10,47 | 0,18\* | 0,20\*\* |
+
+*Pastaba.* n = 192–196. \* p < 0,05; \*\* p < 0,01; \*\*\* p < 0,001.
+
+Keli APA principai:
+
+- Pateikiamas tik **apatinis trikampis** – viršutinis jį kartotų.
+- Paskutinis stulpelis praleidžiamas, nes jame būtų tik brūkšnys.
+- Jei skirtingoms poroms trūksta skirtingų reikšmių (šalinama poromis), pastaboje nurodomas n intervalas.
+
+# Kaip sudaryti nemokamai
+
+SPSS tokią lentelę tenka perrašinėti rankomis iš kelių išvesties langų. [Nemokamame analizės įrankyje](../../analize/):
+
+1. Pasirinkite **„Koreliacijų matrica“**.
+2. Pažymėkite kintamuosius (eilės tvarka lentelėje sutaps su sąrašo tvarka).
+3. Pasirinkite koeficientą: **Pirsono r** kiekybiniams, apytiksliai normaliems kintamiesiems arba **[Spirmeno ρ](../spirmeno-koreliacija/spirmeno-koreliacija.qmd)** – ranginiams.
+4. Atsisiųskite Word ataskaitą – lentelė jau bus APA formato, su pastaba.
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=cormatrix){.btn-blue}
+
+Jei kintamieji – skalių balai, pirmiausia juos apskaičiuokite skiltyje „Duomenų paruošimas“ ir patikrinkite skalių [patikimumą (Cronbacho α)](../kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.qmd).
+
+# Kaip aprašyti tekste
+
+Nereikia kartoti visos lentelės – aptarkite svarbiausius ryšius:
+
+> Kintamųjų tarpusavio koreliacijos pateiktos 2 lentelėje. Savijauta prieš programą silpnai, bet statistiškai reikšmingai koreliavo su studijų vidurkiu (r = 0,20, p < 0,01) ir miego trukme (r = 0,18, p < 0,05).

@@ -1,0 +1,63 @@
+---
+title: "Nemokama SPSS alternatyva baigiamajam darbui"
+pagetitle: "Nemokama SPSS alternatyva – statistinė analizė naršyklėje"
+description: "Atlikite baigiamojo darbo statistinę analizę nemokamai: atidarykite SPSS (.sav) failą, apskaičiuokite Cronbacho α, palyginkite grupes ir atsisiųskite APA lenteles į Word. Lietuviškai, be diegimo."
+toc: true
+---
+
+SPSS licencija brangi, o išmokti ją naudoti – dar brangiau, ypač kai darbo pateikimo terminas jau artėja. [Statistikas.lt Analizė](analize/) – **nemokamas, lietuviškas įrankis**, skirtas būtent tam, ko reikia daugumai bakalauro ir magistro darbų su klausimynu: nuo duomenų failo iki APA lentelių ir parašyto metodų aprašo.
+
+[Pradėti analizę nemokamai →](analize/){.btn-blue}
+
+# Visas baigiamojo darbo kelias
+
+1. **Įkelkite duomenis** – CSV, Excel (.xlsx) arba **SPSS (.sav)** failą. Iš .sav failo perkeliami kintamųjų pavadinimai, reikšmių etiketės (1 = „Vyras“) ir trūkstamų reikšmių kodai.
+2. **Paruoškite duomenis** – perkoduokite atvirkštinius teiginius, apskaičiuokite skalių balus, sugrupuokite amžių, atrinkite atvejus. Kiekvienas žingsnis aprašomas sakiniu, kuris pateks į metodų dalį.
+3. **Patikrinkite skalių patikimumą** – [Cronbacho α](posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.qmd) su teiginių statistika. Neperkoduotą teiginį įrankis pastebės pats ir pasiūlys jį perkoduoti.
+4. **Aprašykite imtį** – „1 lentelė“ su demografija pagal grupes.
+5. **Atlikite testus** – grupių palyginimus, koreliacijas, regresiją. Prielaidos tikrinamos automatiškai, o netinkant – pasiūlomas tinkamesnis testas.
+6. **Atsisiųskite Word ataskaitą** – APA lentelės, diagramos, rezultatų aprašai ir vientisas **„Duomenų analizės“ skyrius** su literatūros sąrašu.
+
+# Ką galima atlikti
+
+| Užduotis | Metodai |
+|---|---|
+| Aprašyti imtį | „1 lentelė“, aprašomoji statistika, dažnių lentelės |
+| Skalių patikimumas | Cronbacho α, standartizuotas α, teiginio ir skalės koreliacijos, α pašalinus teiginį |
+| Palyginti dvi grupes | Nepriklausomų imčių (Welch'o) t testas, Mann–Whitney U testas |
+| Palyginti du matavimus | [Priklausomų imčių t testas](posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.qmd), [Wilcoxono ženklų rangų testas](posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.qmd) |
+| Palyginti 3+ grupes | ANOVA su [Tukey HSD / Games–Howell](posts/post-hoc-testai-po-anova/post-hoc-testai-po-anova.qmd), Kruskal–Wallis su Dunno testu |
+| Ryšiai | Pirsono ir [Spirmeno](posts/spirmeno-koreliacija/spirmeno-koreliacija.qmd) koreliacija, [APA koreliacijų matrica](posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.qmd), chi kvadrato testas |
+| Prognozavimas | Tiesinė ir daugialypė regresija, logistinė regresija |
+
+# Kuo skiriasi nuo SPSS
+
+| | SPSS | Statistikas.lt Analizė |
+|---|---|---|
+| Kaina | Mokama licencija | Nemokamai |
+| Diegimas | Programa kompiuteryje | Veikia naršyklėje |
+| Kalba | Anglų (dalinis vertimas) | Lietuvių |
+| Duomenų privatumas | Duomenys jūsų kompiuteryje | Duomenys lieka jūsų naršyklėje – niekur nesiunčiami |
+| Rezultatai | Lentelės, kurias reikia perrašyti | APA lentelės Word faile ir rezultatų aprašai sakiniais |
+| Metodų aprašas | Rašote patys | Sugeneruojamas pagal atliktas analizes |
+| Testo pasirinkimas | Turite žinoti patys | Pagalbininkas „Padėkite pasirinkti“ ir automatinė prielaidų patikra |
+| Metodų pasirinkimas | Labai platus | Dažniausi baigiamųjų darbų metodai |
+
+Būkime sąžiningi: SPSS moka daug daugiau. Jei jūsų darbui reikia faktorinės analizės, pakartotinių matavimų ANOVA, mediacijos ar kitų sudėtingesnių modelių, šiame įrankyje jų (kol kas) nėra – tokiu atveju [parašykite](kontaktai.qmd), padėsiu.
+
+# Ar rezultatais galima pasitikėti?
+
+Kiekvieno testo rezultatai automatiškai tikrinami su R statistikos programa – standartinėmis funkcijomis (`t.test`, `aov`, `TukeyHSD`, `kruskal.test`, `cor.test` ir kt.) apskaičiuotos reikšmės turi sutapti bent iki keturių skaitmenų po kablelio. Kai metodas turi kelis variantus (pvz., p reikšmės aproksimacija), pasirinktas variantas nurodomas rezultatuose ir metodų dalyje.
+
+# Dažni klausimai
+
+**Ar galiu atidaryti SPSS failą, kurį gavau iš vadovo?**
+Taip – įkelkite .sav failą. Palaikomi įprasti ir suspausti .sav failai; .zsav failus SPSS programoje išsaugokite kaip įprastą .sav. Norite pirmiausia išbandyti? Atsisiųskite [pavyzdinį .sav failą](analize/samples/apklausa.sav) (sintetinė 200 studentų apklausa).
+
+**Ar mano duomenys kur nors siunčiami?**
+Ne. Visi skaičiavimai vyksta jūsų naršyklėje. Neužbaigtas darbas automatiškai išsaugomas tik šioje naršyklėje, o mygtuku „Išsaugoti projektą“ galite atsisiųsti failą ir vėliau tęsti kitame kompiuteryje.
+
+**Kaip cituoti įrankį?**
+Citata automatiškai įtraukiama į Word ataskaitos literatūros sąrašą: *Statistikas.lt. (2026). Statistikas.lt Analizė: nemokama statistinė analizė naršyklėje [Kompiuterinė programa]. https://statistikas.lt/analize/*
+
+[Pradėti analizę nemokamai →](analize/){.btn-blue}

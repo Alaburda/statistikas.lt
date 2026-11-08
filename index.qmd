@@ -172,7 +172,7 @@ listing:
           <li>Klinikinių ir stebėjimo tyrimų duomenys</li>
           <li>Atsakymai į recenzentų pastabas</li>
         </ul>
-        <p class="aud-foot">Rašote baigiamąjį darbą? Pradėkite nuo <a href="straipsniai.html">straipsnių</a>, išbandykite <a href="analize/">nemokamą analizės įrankį</a> arba užsisakykite <a href="kontaktai.html?tema=konsultacija">konsultaciją</a>.</p>
+        <p class="aud-foot">Rašote baigiamąjį darbą? Pradėkite nuo <a href="straipsniai.html">straipsnių</a>, apskaičiuokite <a href="imtis/">imties dydį</a>, išbandykite <a href="analize/">nemokamą analizės įrankį</a> arba užsisakykite <a href="kontaktai.html?tema=konsultacija">konsultaciją</a>.</p>
       </div>
     </div>
   </div>
@@ -225,7 +225,44 @@ listing:
   </div>
 </section>
 
-<section class="band band-alt">
+<section id="imtis" class="band band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Nemokama skaičiuoklė</span>
+        <h2>Kiek tiriamųjų jums reikia?</h2>
+      </div>
+      <p>Apskaičiuokite imtį prieš renkant duomenis. Be registracijos, lietuviškai, su tekstu metodikos skyriui ir R kodu.</p>
+    </div>
+
+    <div class="audience">
+      <div class="aud aud-primary">
+        <span class="eyebrow">Statistikas.lt Imtis</span>
+        <h3>Pasirinkite, ką planuojate.</h3>
+        <ul class="dash-list">
+          <li><a href="imtis/#apklausa" style="color:#fff">Apklausa</a>: kiek žmonių apklausti ir kiek kvietimų išsiųsti</li>
+          <li><a href="imtis/#grupes" style="color:#fff">Eksperimentas</a>: kiek tiriamųjų reikia kiekvienai grupei</li>
+          <li><a href="imtis/#grupes&amp;design=ab" style="color:#fff">A/B testas</a>: kiek lankytojų ir dienų reikia</li>
+          <li><a href="imtis/#be" style="color:#fff">Bioekvivalentiškumas</a>: tikslus TOST ir EMA ABEL</li>
+        </ul>
+        <p class="aud-foot"><a href="imtis/" class="btn-yellow">Apskaičiuoti imtį →</a></p>
+      </div>
+      <div class="aud">
+        <span class="eyebrow">Kai skaičiaus neužtenka</span>
+        <h3>Imtį reikės apginti?</h3>
+        <p>Skaičiuoklė duos skaičių, bet nepasakys, ar prielaidos tinka jūsų tyrimui.</p>
+        <ul class="dash-list">
+          <li>Efekto dydžio pagrindimas</li>
+          <li>Imties skyrius protokolui ar bioetikos komitetui</li>
+          <li>Kartotiniai matavimai ir klasterizuoti tyrimai</li>
+        </ul>
+        <p class="aud-foot"><a href="kontaktai.html?tema=konsultacija&amp;saltinis=pagrindinis-imtis">Paklauskite statistiko →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
   <div class="wrap">
     <div class="section-head">
       <div>

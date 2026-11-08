@@ -1,0 +1,23 @@
+---
+pagetitle: "Puslapis nerastas"
+description: "Tokio puslapio Statistikas.lt svetainėje neradome."
+toc: false
+page-layout: custom
+section-divs: false
+---
+
+```{=html}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Klaida 404</span>
+    <h1>Tokio puslapio neradome.</h1>
+    <p class="lede">Galbūt nuoroda pasenusi arba adrese įsivėlė klaida. Pradėkite nuo vieno iš šių puslapių.</p>
+    <nav class="tier-nav" aria-label="Svetainės puslapiai">
+      <a href="/index.html" class="btn-blue">Į pradžią →</a>
+      <a href="/straipsniai.html" class="btn-line">Straipsniai</a>
+      <a href="/analize/" class="btn-line">Nemokama analizė</a>
+      <a href="/kontaktai.html" class="btn-line">Susisiekti</a>
+    </nav>
+  </div>
+</section>
+```

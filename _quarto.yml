@@ -1,9 +1,14 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    # Juodraštis: be šios išimties Quarto paskelbia tuščią puslapį
+    - "!posts/kada-atlikti-p-reiksmiu-korekcija/"
   resources:
     - .nojekyll
     - CNAME
+    - theme/main.js
     # Nemokamas analizės įrankis: _analize-src/ sukompiliuojamas į analize/ (žr. pre-render)
     - analize/**
     # Nemokamas planavimo įrankis: _planavimas-src/ sukompiliuojamas į planavimas/
@@ -85,7 +90,7 @@ format:
     css: theme/styles.css
     include-after-body: 
       - text: |
-          <script src="theme/main.js"></script>
+          <script src="/theme/main.js"></script>
     toc: false
     canonical-url: true
     page-layout: full

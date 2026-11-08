@@ -1,0 +1,42 @@
+---
+title: "Spirmeno koreliacija: kada rinktis ρ vietoje Pirsono r"
+description: "Spirmeno ranginė koreliacija tinka Likerto skalėms ir nenormaliems duomenims. Kada ją taikyti, kaip interpretuoti ir aprašyti."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, koreliacija, neparametriniai-testai]
+toc: true
+---
+
+# Pirsonas ar Spirmenas?
+
+Abu koeficientai rodo dviejų kintamųjų ryšio stiprumą ir kryptį (nuo −1 iki 1), bet matuoja skirtingus dalykus:
+
+- **Pirsono r** – *tiesinį* ryšį tarp kiekybinių kintamųjų. Jautrus kraštutinėms reikšmėms.
+- **Spirmeno ρ** (ro) – *monotoninį* ryšį: ar didėjant vienam kintamajam kitas nuosekliai didėja (ar mažėja), nebūtinai tiesiškai. Skaičiuojamas iš rangų, todėl atsparus išskirtims.
+
+::: {.callout-tip}
+## Rinkitės Spirmeno ρ, kai
+- bent vienas kintamasis **ranginis** – pvz., atsakymas į Likerto teiginį;
+- duomenys **aiškiai nenormalūs** arba yra kraštutinių reikšmių;
+- ryšys monotoninis, bet **netiesinis** (pvz., pradžioje greitai didėja, vėliau išsilygina).
+:::
+
+Kai abu kintamieji – iš kelių teiginių sudaryti skalių balai, dažniausiai tinka ir Pirsono r. Abejojant naudinga apskaičiuoti abu: jei rezultatai panašūs, išvada patikima.
+
+# Kaip interpretuoti
+
+Stiprumas vertinamas pagal absoliučią reikšmę: iki 0,1 – nereikšmingas, 0,1–0,3 – silpnas, 0,3–0,5 – vidutinis, 0,5–0,7 – stiprus, virš 0,7 – labai stiprus ryšys. Ženklas rodo kryptį: neigiamas ρ reiškia, kad didėjant vienam kintamajam, kitas mažėja.
+
+Koreliacija **nerodo priežastingumo** – tik tai, kad kintamieji kinta kartu.
+
+# Kaip apskaičiuoti nemokamai
+
+[Nemokamame analizės įrankyje](../../analize/) pasirinkite **„Spirmeno koreliacija“** ir du kintamuosius. Jei reikia daug porų iš karto, rinkitės **„Koreliacijų matrica“** ir koeficientą „Spirmeno ρ“ – gausite visą [APA koreliacijų lentelę](../koreliaciju-matrica-apa/koreliaciju-matrica-apa.qmd).
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=spearman){.btn-blue}
+
+# Kaip aprašyti rezultatus
+
+> Tarp nuovargio dėl studijų ir pasitenkinimo studijų programa nustatytas silpnas neigiamas statistiškai reikšmingas ryšys: Spirmeno ρ = −0,24, p < 0,001, n = 200.
+
+p reikšmė apskaičiuojama naudojant t aproksimaciją su n − 2 laisvės laipsniais – tai įprastas būdas, kai yra daug susietųjų rangų (Likerto duomenyse jų beveik visada daug).

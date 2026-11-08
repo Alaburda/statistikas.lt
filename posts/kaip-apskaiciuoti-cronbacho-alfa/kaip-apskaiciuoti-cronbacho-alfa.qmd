@@ -1,0 +1,64 @@
+---
+title: "Kaip apskaičiuoti Cronbacho alfa (α)?"
+description: "Cronbacho α parodo, ar klausimyno skalės teiginiai matuoja tą patį. Kaip jį apskaičiuoti be SPSS, kaip interpretuoti ir kaip aprašyti baigiamajame darbe."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, klausimynai, patikimumas]
+toc: true
+---
+
+# Kas yra Cronbacho α?
+
+Jei jūsų klausimyne yra skalė – pavyzdžiui, šeši teiginiai apie stresą, vertinami nuo 1 („visiškai nesutinku“) iki 5 („visiškai sutinku“) – prieš skaičiuodami skalės balą turite parodyti, kad teiginiai **matuoja tą patį**. Tam skirtas Cronbacho alfa (α) koeficientas – skalės vidinio suderinamumo (patikimumo) rodiklis.
+
+α svyruoja nuo 0 iki 1 (gali būti ir neigiamas – tai beveik visada reiškia klaidą duomenyse). Kuo teiginiai labiau koreliuoja tarpusavyje, tuo α didesnis.
+
+::: {.callout-tip}
+## Kaip interpretuoti α (George ir Mallery, 2003)
+- **≥ 0,90** – puikus
+- **≥ 0,80** – geras
+- **≥ 0,70** – priimtinas (dažniausiai naudojama riba)
+- **≥ 0,60** – abejotinas
+- **< 0,60** – prastas
+:::
+
+# Dažniausia klaida: atvirkštiniai teiginiai
+
+Klausimynuose dalis teiginių suformuluojami atvirkščiai, pvz., streso skalėje „Jaučiuosi ramus prieš egzaminus“. Didelis sutikimas su juo reiškia *mažą* stresą. Jei tokio teiginio neperkoduosite (1 ↔ 5, 2 ↔ 4), jis koreliuos su likusia skale neigiamai, o α smarkiai sumažės – kartais net taps neigiamas.
+
+Todėl visada pažiūrėkite į **pataisytą teiginio ir skalės koreliaciją** (angl. *corrected item–total correlation*). Neigiama reikšmė – beveik visada neperkoduotas teiginys. Reikšmė, mažesnė nei 0,30, rodo, kad teiginys silpnai dera su kitais.
+
+# Kaip apskaičiuoti α nemokamai
+
+Mūsų [nemokamame analizės įrankyje](../../analize/) α apskaičiuojamas be programų diegimo – duomenys niekur nesiunčiami:
+
+1. Įkelkite CSV, Excel arba SPSS (.sav) failą.
+2. Pridėkite analizės bloką **„Skalės patikimumas (Cronbacho α)“** ir pažymėkite skalės teiginius.
+3. Jei kuris nors teiginys koreliuoja neigiamai, įrankis tai pažymės ir pasiūlys jį **perkoduoti vienu paspaudimu** – perkodavimas atsiras skiltyje „Duomenų paruošimas“ ir bus aprašytas ataskaitoje.
+4. Skiltyje „Duomenų paruošimas“ apskaičiuokite skalės balą (teiginių vidurkį) – jį galėsite naudoti tolesnėse analizėse.
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=cronbach){.btn-blue}
+
+Pavyzdyje streso skalės teiginiai S3 ir S5 suformuluoti atvirkščiai. Neperkodavus α = −0,26; perkodavus – α = 0,89.
+
+# Kaip aprašyti rezultatus
+
+Metodų skyriuje:
+
+> Skalių vidiniam suderinamumui įvertinti apskaičiuoti Cronbacho alfa (α) koeficientai; α ≥ 0,70 laikytas priimtinu. Teiginiai S3 ir S5 prieš analizę perkoduoti atvirkščiai.
+
+Rezultatų skyriuje:
+
+> Streso skalės (6 teiginiai) vidinis suderinamumas buvo geras: Cronbacho α = 0,89 (n = 196). Pataisytos teiginių ir skalės koreliacijos svyravo nuo 0,66 iki 0,75; pašalinus bet kurį teiginį, α nepadidėtų.
+
+# Ko α nepasako
+
+- **α nėra vienmatiškumo įrodymas.** Aukštas α galimas ir tada, kai skalė matuoja du susijusius dalykus. Struktūrai patikrinti naudojama faktorinė analizė.
+- **α priklauso nuo teiginių skaičiaus.** Ilga skalė turės aukštą α net esant vidutinėms koreliacijoms, o dviejų teiginių skalei geriau pateikti jų tarpusavio koreliaciją.
+- **Per aukštas α (> 0,95)** gali reikšti, kad teiginiai beveik pažodžiui kartoja vienas kitą.
+
+# Literatūra
+
+Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. *Psychometrika, 16*(3), 297–334. https://doi.org/10.1007/BF02310555
+
+George, D., & Mallery, P. (2003). *SPSS for Windows step by step: A simple guide and reference* (4th ed.). Allyn & Bacon.

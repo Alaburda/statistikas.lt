@@ -1,0 +1,47 @@
+---
+title: "Priklausomų imčių t testas: kaip palyginti matavimus prieš ir po"
+description: "Kada taikyti priklausomų (porinių) imčių t testą, kaip patikrinti prielaidas, apskaičiuoti efekto dydį ir aprašyti rezultatus pagal APA."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, t-testas, palyginimas]
+toc: true
+---
+
+# Kada jį taikyti?
+
+Priklausomų imčių (porinis) t testas lygina **du tų pačių žmonių matavimus**: savijautą prieš ir po programos, žinias prieš ir po mokymų, kraujospūdį prieš ir po vaisto. Svarbiausia – kiekvienam žmogui turite dvi reikšmes.
+
+Jei lyginate **skirtingų** žmonių grupes (pvz., vyrus ir moteris), reikia [nepriklausomų imčių t testo](../kada-rinktis-t-testa/kada-rinktis-t-testa.qmd).
+
+Testas iš esmės paprastas: kiekvienam žmogui apskaičiuojamas pokytis (po − prieš) ir tikrinama, ar vidutinis pokytis skiriasi nuo nulio.
+
+::: {.callout-tip}
+## Prielaidos
+- Matavimai **kiekybiniai** (balai, svoris, laikas).
+- **Skirtumai** (ne patys matavimai!) pasiskirstę apytiksliai normaliai. Kai imtis didesnė nei ~30, testas atsparus nedideliems nukrypimams.
+- Jei skirtumai aiškiai nenormalūs arba duomenys ranginiai (Likerto teiginiai), rinkitės [Wilcoxono ženklų rangų testą](../wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.qmd).
+:::
+
+# Efekto dydis: Coheno d_z
+
+p reikšmė pasako, ar pokytis statistiškai reikšmingas, bet ne – ar jis didelis. Poriniam testui efekto dydis skaičiuojamas kaip vidutinis pokytis, padalytas iš pokyčių standartinio nuokrypio (Coheno d_z). Orientyrai: 0,2 – mažas, 0,5 – vidutinis, 0,8 – didelis efektas.
+
+# Kaip atlikti testą nemokamai
+
+1. Įkelkite duomenis į [nemokamą analizės įrankį](../../analize/) – kiekvienas matavimas turi būti atskiras stulpelis (pvz., `savijauta_pries` ir `savijauta_po`).
+2. Pasirinkite **„Priklausomų imčių t testas“** ir abu matavimus.
+3. Įrankis automatiškai patikrins skirtumų normalumą; jei prielaida netenkinama, pasiūlys vienu paspaudimu pereiti prie Wilcoxono testo – ir tai bus paminėta ataskaitos metodų dalyje.
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=paired_ttest){.btn-blue}
+
+# Kaip aprašyti rezultatus
+
+> Priklausomų imčių t testas parodė, kad savijautos balas po programos (M = 62,38; SN = 12,02) buvo statistiškai reikšmingai aukštesnis nei prieš programą (M = 57,90; SN = 10,37): vidutinis pokytis 4,47 (95 % PI [3,52; 5,43]), t(195) = 9,23, p < 0,001, d_z = 0,66.
+
+Atkreipkite dėmesį: laisvės laipsnių skaičius lygus porų skaičiui minus vienas (čia 196 − 1 = 195). Jei kai kurie respondentai neturi vieno iš matavimų, jie į analizę neįtraukiami.
+
+# Dažnos klaidos
+
+- **Naudoti nepriklausomų imčių testą poriniams duomenims.** Toks testas ignoruoja, kad matavimai susiję, ir dažniausiai „nemato“ realaus pokyčio.
+- **Tikrinti kiekvieno matavimo normalumą atskirai.** Prielaida taikoma skirtumams.
+- **Pranešti tik p reikšmę.** Pateikite vidurkius, pokytį su pasikliautinuoju intervalu ir efekto dydį.

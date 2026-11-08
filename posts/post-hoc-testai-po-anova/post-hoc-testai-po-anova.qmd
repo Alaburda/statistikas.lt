@@ -1,0 +1,42 @@
+---
+title: "Post-hoc testai po ANOVA: Tukey HSD ar Games–Howell?"
+description: "ANOVA pasako, kad grupės skiriasi, bet ne kurios. Kaip pasirinkti post-hoc testą (Tukey HSD, Games–Howell, Dunn) ir aprašyti porinius palyginimus."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, ANOVA, post-hoc]
+toc: true
+---
+
+# Kam reikalingi post-hoc testai?
+
+[Vienfaktorė ANOVA](../kada-rinktis-anova/kada-rinktis-anova.qmd) atsako į vieną klausimą: ar *bent dvi* grupės skiriasi? Jei rezultatas reikšmingas, natūralus kitas klausimas – **kurios būtent**. Lyginti visas poras atskirais t testais negalima: su keturiomis grupėmis būtų šeši testai, o tikimybė bent kartą gauti klaidingai reikšmingą rezultatą išaugtų nuo 5 % iki ~26 %. Post-hoc testai palygina visas poras ir **pakoreguoja p reikšmes** daugybiniams palyginimams.
+
+# Kurį testą rinktis?
+
+::: {.callout-tip}
+## Paprasta taisyklė
+- **Tukey HSD** – kai grupių dispersijos panašios (Levene testas p ≥ 0,05). Tinka ir nevienodo dydžio grupėms (Tukey–Kramer variantas).
+- **Games–Howell** – kai dispersijos skiriasi (Levene p < 0,05), ypač jei skiriasi ir grupių dydžiai.
+- **Dunno testas** – po neparametrinio [Kruskal–Wallis testo](../kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.qmd); p reikšmės koreguojamos (pvz., Holmo metodu).
+:::
+
+Games–Howell nereikalauja vienodų dispersijų, todėl kai kurie autoriai rekomenduoja jį naudoti visada. Kai dispersijos iš tiesų panašios, abiejų testų rezultatai beveik sutampa.
+
+# Kaip atlikti nemokamai
+
+[Nemokamame analizės įrankyje](../../analize/) post-hoc testas pridedamas **automatiškai**, kai ANOVA lyginamos trys ar daugiau grupių:
+
+- įrankis atlieka Levene (Brown–Forsythe) testą;
+- pagal jo rezultatą parenka Tukey HSD arba Games–Howell;
+- pateikia lentelę su vidurkių skirtumais, 95 % pasikliautinaisiais intervalais ir pakoreguotomis p reikšmėmis;
+- jei duomenys nenormalūs, pasiūlo pereiti prie Kruskal–Wallis testo, kuris pateikia Dunno porinius palyginimus.
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=anova){.btn-blue}
+
+# Kaip aprašyti rezultatus
+
+> Vienfaktorė ANOVA parodė, kad nuovargis dėl studijų statistiškai reikšmingai skyrėsi tarp studijų sričių, F(3, 196) = 3,23, p = 0,024, η² = 0,05. Tukey HSD porinis palyginimas atskleidė, kad sveikatos mokslų studentai (M = 3,27; SN = 1,20) jautėsi labiau pervargę nei socialinių mokslų studentai (M = 2,71; SN = 1,14; p = 0,044). Kiti skirtumai tarp grupių porų nebuvo statistiškai reikšmingi.
+
+# Kai ANOVA reikšminga, o nė viena pora – ne
+
+Taip nutinka, ypač kai grupių daug, o skirtumai nedideli: bendras testas „sujungia“ visų grupių informaciją, o poriniai palyginimai su pataisa yra konservatyvesni. Tokiu atveju sąžiningai parašykite, kad bendras skirtumas nustatytas, bet konkrečių porų išskirti nepavyko – ir nurodykite didžiausią skirtumą su jo pasikliautinuoju intervalu.

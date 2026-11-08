@@ -1,0 +1,48 @@
+---
+title: "Wilcoxono ženklų rangų testas: neparametrinis porinis palyginimas"
+description: "Kada vietoje priklausomų imčių t testo rinktis Wilcoxono ženklų rangų testą, kaip jį atlikti ir aprašyti su efekto dydžiu r."
+date: "2026-10-20"
+author: "Paulius Alaburda"
+categories: [statistika, neparametriniai-testai, palyginimas]
+toc: true
+---
+
+# Kada jį taikyti?
+
+Wilcoxono ženklų rangų testas – neparametrinė [priklausomų imčių t testo](../priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.qmd) alternatyva. Jis taip pat lygina **du tų pačių žmonių matavimus**, bet nereikalauja, kad skirtumai būtų pasiskirstę normaliai.
+
+::: {.callout-tip}
+## Rinkitės Wilcoxono testą, kai
+- duomenys **ranginiai** – pvz., atsakymai į Likerto teiginius (1–5);
+- skirtumai **aiškiai nenormalūs** arba yra kraštutinių reikšmių;
+- imtis **maža** ir normalumo patikrinti neįmanoma.
+:::
+
+# Kaip jis veikia?
+
+1. Kiekvienam žmogui apskaičiuojamas skirtumas (antrasis matavimas − pirmasis).
+2. Nuliniai skirtumai (niekas nepasikeitė) pašalinami.
+3. Likę skirtumai surikiuojami pagal absoliutų dydį ir jiems suteikiami rangai.
+4. Atskirai sumuojami teigiamų ir neigiamų skirtumų rangai. Jei pokyčio nėra, abi sumos turėtų būti panašios.
+
+Testo statistika paverčiama į z reikšmę (su pataisa susietiesiems rangams – Likerto duomenyse jų labai daug). Efekto dydis skaičiuojamas kaip r = |z| / √n: 0,1 – mažas, 0,3 – vidutinis, 0,5 – didelis.
+
+# Kaip atlikti testą nemokamai
+
+1. Įkelkite duomenis į [nemokamą analizės įrankį](../../analize/), kur kiekvienas matavimas yra atskiras stulpelis.
+2. Pasirinkite **„Wilcoxono ženklų rangų testas“** ir abu matavimus.
+3. Gausite rangų lentelę (kiek žmonių rezultatas padidėjo, sumažėjo ir nepakito), z, p ir r.
+
+[Išbandyti su pavyzdiniais duomenimis →](../../analize/?demo=apklausa&test=wilcoxon){.btn-blue}
+
+# Kaip aprašyti rezultatus
+
+Pateikite medianas (ne vidurkius) ir testo statistiką:
+
+> Wilcoxono ženklų rangų testas parodė, kad savijautos balas po programos (Mdn = 62) buvo statistiškai reikšmingai aukštesnis nei prieš programą (Mdn = 59): z = 7,72, p < 0,001, r = 0,56. Savijauta pagerėjo 140 respondentų, pablogėjo 47, nepakito 9.
+
+Kaip šiame pavyzdyje, naudinga paminėti ir kryptį: kiek respondentų rezultatas pagerėjo, kiek pablogėjo ir kiek nepakito.
+
+# Wilcoxono ar t testas?
+
+Jei skirtumai pasiskirstę apytiksliai normaliai, t testas yra šiek tiek galingesnis ir jo rezultatus (vidurkių skirtumą) lengviau interpretuoti. Jei abejojate, galite atlikti abu – kai išvados sutampa, rezultatai patikimi. Svarbu tik testą pasirinkti iš anksto pagal duomenų pobūdį, o ne pagal tai, kuris duoda „geresnę“ p reikšmę.
