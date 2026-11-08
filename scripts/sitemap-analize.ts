@@ -3,7 +3,12 @@
 // copied in as resources.
 const outDir = Deno.env.get("QUARTO_PROJECT_OUTPUT_DIR") ?? "docs";
 const sitemap = `${outDir}/sitemap.xml`;
-const urls = ["https://statistikas.lt/analize/", "https://statistikas.lt/planavimas/", "https://statistikas.lt/imtis/"];
+const urls = [
+  "https://statistikas.lt/analize/",
+  "https://statistikas.lt/planavimas/",
+  "https://statistikas.lt/imtis/",
+  "https://statistikas.lt/imtis/en/",
+];
 
 let xml: string;
 try {

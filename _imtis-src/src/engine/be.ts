@@ -19,6 +19,7 @@ export type DesignId =
 
 export interface Design {
   label: string;
+  labelEn: string;
   /** Error degrees of freedom. */
   df: (n: number) => number;
   /** Subjects must be a multiple of this (sequences or groups). */
@@ -30,18 +31,18 @@ export interface Design {
 }
 
 export const DESIGNS: Record<DesignId, Design> = {
-  "2x2": { label: "2×2×2 kryžminis", df: (n) => n - 2, steps: 2, bk: 2, bkni: 1 / 2 },
-  parallel: { label: "Dvi lygiagrečios grupės", df: (n) => n - 2, steps: 2, bk: 4, bkni: 1 },
-  paired: { label: "Poriniai matavimai", df: (n) => n - 1, steps: 1, bk: 2, bkni: 2 },
-  "2x2x3": { label: "2×2×3 pilnas replikatas", df: (n) => 2 * n - 3, steps: 2, bk: 1.5, bkni: 3 / 8 },
-  "2x2x4": { label: "2×2×4 pilnas replikatas", df: (n) => 3 * n - 4, steps: 2, bk: 1, bkni: 1 / 4 },
-  "2x3x3": { label: "2×3×3 dalinis replikatas", df: (n) => 2 * n - 3, steps: 3, bk: 1.5, bkni: 1 / 6 },
-  "2x4x2": { label: "2×4×2 Balaam", df: (n) => n - 2, steps: 4, bk: 8, bkni: 1 / 2 },
-  "2x4x4": { label: "2×4×4 pilnas replikatas", df: (n) => 3 * n - 4, steps: 4, bk: 1, bkni: 1 / 16 },
-  "2x2x2r": { label: "2×2×2 kartotinis (Liu)", df: (n) => 3 * n - 2, steps: 2, bk: 1, bkni: 1 / 4 },
-  "3x3": { label: "3×3 Lotynų kvadratas", df: (n) => 2 * n - 4, steps: 3, bk: 2, bkni: 2 / 9 },
-  "3x6x3": { label: "3×6×3 Williams", df: (n) => 2 * n - 4, steps: 6, bk: 2, bkni: 1 / 18 },
-  "4x4": { label: "4×4 Williams", df: (n) => 3 * n - 6, steps: 4, bk: 2, bkni: 1 / 8 },
+  "2x2": { label: "2×2×2 kryžminis", labelEn: "2×2×2 crossover", df: (n) => n - 2, steps: 2, bk: 2, bkni: 1 / 2 },
+  parallel: { label: "Dvi lygiagrečios grupės", labelEn: "Two parallel groups", df: (n) => n - 2, steps: 2, bk: 4, bkni: 1 },
+  paired: { label: "Poriniai matavimai", labelEn: "Paired", df: (n) => n - 1, steps: 1, bk: 2, bkni: 2 },
+  "2x2x3": { label: "2×2×3 pilnas replikatas", labelEn: "2×2×3 full replicate", df: (n) => 2 * n - 3, steps: 2, bk: 1.5, bkni: 3 / 8 },
+  "2x2x4": { label: "2×2×4 pilnas replikatas", labelEn: "2×2×4 full replicate", df: (n) => 3 * n - 4, steps: 2, bk: 1, bkni: 1 / 4 },
+  "2x3x3": { label: "2×3×3 dalinis replikatas", labelEn: "2×3×3 partial replicate", df: (n) => 2 * n - 3, steps: 3, bk: 1.5, bkni: 1 / 6 },
+  "2x4x2": { label: "2×4×2 Balaam", labelEn: "2×4×2 Balaam", df: (n) => n - 2, steps: 4, bk: 8, bkni: 1 / 2 },
+  "2x4x4": { label: "2×4×4 pilnas replikatas", labelEn: "2×4×4 full replicate", df: (n) => 3 * n - 4, steps: 4, bk: 1, bkni: 1 / 16 },
+  "2x2x2r": { label: "2×2×2 kartotinis (Liu)", labelEn: "2×2×2 repeated (Liu)", df: (n) => 3 * n - 2, steps: 2, bk: 1, bkni: 1 / 4 },
+  "3x3": { label: "3×3 Lotynų kvadratas", labelEn: "3×3 Latin square", df: (n) => 2 * n - 4, steps: 3, bk: 2, bkni: 2 / 9 },
+  "3x6x3": { label: "3×6×3 Williams", labelEn: "3×6×3 Williams", df: (n) => 2 * n - 4, steps: 6, bk: 2, bkni: 1 / 18 },
+  "4x4": { label: "4×4 Williams", labelEn: "4×4 Williams", df: (n) => 3 * n - 6, steps: 4, bk: 2, bkni: 1 / 8 },
 };
 
 export interface BeInput {

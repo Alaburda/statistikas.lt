@@ -1,4 +1,5 @@
 import { useId, type ReactNode } from "react";
+import { PCT } from "../i18n";
 
 /** Text input for numbers: type="number" rejects the decimal comma on many phones. */
 export function NumField({
@@ -42,6 +43,51 @@ export function NumField({
   );
 }
 
+/** A percentage dragged rather than typed, for rough guesses. The value stays in the URL as text. */
+export function SliderField({
+  label,
+  hint,
+  value,
+  onChange,
+  min = 1,
+  max = 100,
+  error,
+}: {
+  label: string;
+  hint?: ReactNode;
+  value: string;
+  onChange: (v: string) => void;
+  min?: number;
+  max?: number;
+  error?: string | null;
+}) {
+  const id = useId();
+  const n = Number(value.replace(",", "."));
+  return (
+    <div className={`field ${error ? "has-error" : ""}`}>
+      <div className="slider-head">
+        <label htmlFor={id}>{label}</label>
+        <output htmlFor={id}>
+          {value}
+          {PCT}
+        </output>
+      </div>
+      <input
+        id={id}
+        className="slider"
+        type="range"
+        min={min}
+        max={max}
+        step={1}
+        value={Number.isFinite(n) ? n : min}
+        aria-valuetext={`${value}${PCT}`}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {error ? <p className="field-error">{error}</p> : hint ? <p className="hint">{hint}</p> : null}
+    </div>
+  );
+}
+
 export function TextField({
   label,
   hint,
@@ -74,16 +120,17 @@ export function Segmented<T extends string>({
 }: {
   label: string;
   hint?: ReactNode;
-  options: { value: T; label: string }[];
+  options: { value: T; label: string; icon?: ReactNode }[];
   value: T;
   onChange: (v: T) => void;
 }) {
+  const withIcons = options.some((o) => o.icon);
   return (
     <div className="field">
       <span className="field-label" id={`seg-${label}`}>
         {label}
       </span>
-      <div className="segmented" role="radiogroup" aria-label={label}>
+      <div className={`segmented ${withIcons ? "with-icons" : ""}`} role="radiogroup" aria-label={label}>
         {options.map((o) => (
           <button
             key={o.value}
@@ -93,7 +140,8 @@ export function Segmented<T extends string>({
             className={o.value === value ? "on" : ""}
             onClick={() => onChange(o.value)}
           >
-            {o.label}
+            {o.icon}
+            <span>{o.label}</span>
           </button>
         ))}
       </div>

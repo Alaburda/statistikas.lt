@@ -19,12 +19,14 @@ import {
   type Test,
 } from "../engine/compare";
 import { qchisq } from "../engine/dist";
-import { fmtInt, fmtNum, fmtPct, fmtShort, ltPlural, parseNum } from "../format";
+import { fmtInput, fmtInt, fmtNum, fmtPct, fmtShort, parseNum } from "../format";
+import { L, PCT, plural } from "../i18n";
+import { DESIGN_ICONS } from "./DesignIcons";
 import { compareReport } from "../report";
 import { useForm } from "../url";
 import { Check, More, NumField, Notice, Peek, Segmented, TextField } from "./Fields";
 import { PowerCurve, type CurveSeries } from "./PowerCurve";
-import { ReportBlock } from "./ReportBlock";
+import { ReportBlock, StatementBox } from "./ReportBlock";
 
 const DEFAULTS = {
   design: "means",
@@ -60,9 +62,35 @@ const DEFAULTS = {
 type Design = "means" | "paired" | "props" | "ab" | "anova" | "corr";
 type Form = typeof DEFAULTS;
 
-const SUBJECTS: [string, string, string] = ["tiriamasis", "tiriamieji", "tiriamųjų"];
-const VISITORS: [string, string, string] = ["lankytojas", "lankytojai", "lankytojų"];
-const PAIRS: [string, string, string] = ["pora matavimų", "poros matavimų", "porų matavimų"];
+type Unit = { lt: [string, string, string]; en: [string, string] };
+const SUBJECTS: Unit = { lt: ["tiriamasis", "tiriamieji", "tiriamųjų"], en: ["participant", "participants"] };
+const VISITORS: Unit = { lt: ["lankytojas", "lankytojai", "lankytojų"], en: ["visitor", "visitors"] };
+const PAIRS: Unit = { lt: ["pora matavimų", "poros matavimų", "porų matavimų"], en: ["pair of measurements", "pairs of measurements"] };
+/** "With n …" needs the Lithuanian instrumental. */
+const SUBJECTS_WITH: Unit = { lt: ["tiriamuoju", "tiriamaisiais", "tiriamųjų"], en: SUBJECTS.en };
+const VISITORS_WITH: Unit = { lt: ["lankytoju", "lankytojais", "lankytojų"], en: VISITORS.en };
+const PAIRS_WITH: Unit = { lt: ["pora matavimų", "poromis matavimų", "porų matavimų"], en: PAIRS.en };
+const word = (n: number, u: Unit) => plural(n, u.lt, u.en);
+
+/** What each design is, shown under the picker. */
+const DESIGN_NOTES: Record<Design, string> = L(
+  {
+    means: "Dvi atskiros grupės (pvz., gydymas ir kontrolė), kiekvienas tiriamasis matuojamas kartą; lyginami vidurkiai.",
+    paired: "Tie patys žmonės matuojami du kartus (prieš ir po) arba sudarytos poros; vertinamas pokytis.",
+    props: "Dvi grupės, rezultatas taip / ne (pvz., pasveiko ar ne); lyginamos dalys. Tinka ir atvejo–kontrolės tyrimui.",
+    ab: "Dvi svetainės ar laiško versijos, lankytojai paskirstomi atsitiktinai; lyginama konversija.",
+    anova: "Trys ar daugiau atskirų grupių; lyginami vidurkiai (vienfaktorė ANOVA).",
+    corr: "Viena grupė, du kiekybiniai matavimai kiekvienam; ar jie susiję (Pirsono r).",
+  },
+  {
+    means: "Two separate groups (e.g. treatment and control), each person measured once; the means are compared.",
+    paired: "The same people measured twice (before and after), or matched pairs; the change is assessed.",
+    props: "Two groups with a yes/no outcome (e.g. recovered or not); the proportions are compared. Also for case–control studies.",
+    ab: "Two versions of a page or an email, visitors split at random; the conversion rates are compared.",
+    anova: "Three or more separate groups; the means are compared (one-way ANOVA).",
+    corr: "One group, two numeric measurements per person; are they related (Pearson's r)?",
+  },
+);
 
 function buildSpec(f: Form): Spec | null {
   const design = f.design as Design;
@@ -114,14 +142,14 @@ function buildSpec(f: Form): Spec | null {
 function effectText(spec: Spec, e: number): string {
   switch (spec.kind) {
     case "means":
-      return `${fmtShort(e, 3)} vnt. (d = ${fmtNum(e / spec.sd)})`;
+      return `${fmtShort(e, 3)} ${L("vnt.", "units")} (d = ${fmtNum(e / spec.sd)})`;
     case "paired":
-      return `${fmtShort(e, 3)} vnt. (dz = ${fmtNum(e / spec.sdDiff)})`;
+      return `${fmtShort(e, 3)} ${L("vnt.", "units")} (dz = ${fmtNum(e / spec.sdDiff)})`;
     case "props": {
       const at = propsAt(spec, e);
       return spec.fixed === "p2"
-        ? `${fmtPct(at.p1, 2)} prieš ${fmtPct(at.p2, 2)} kontrolėje`
-        : `nuo ${fmtPct(at.p1, 2)} iki ${fmtPct(at.p2, 2)}`;
+        ? L(`${fmtPct(at.p1, 2)} prieš ${fmtPct(at.p2, 2)} kontrolėje`, `${fmtPct(at.p1, 2)} vs ${fmtPct(at.p2, 2)} in controls`)
+        : L(`nuo ${fmtPct(at.p1, 2)} iki ${fmtPct(at.p2, 2)}`, `from ${fmtPct(at.p1, 2)} to ${fmtPct(at.p2, 2)}`);
     }
     case "anova":
       return `f = ${fmtNum(e, 3)}`;
@@ -144,55 +172,64 @@ function SdFinder({ form, set }: { form: Form; set: (p: Partial<Form>) => void }
   const fromIqr = b > a ? sdFromIqr(a, b) : NaN;
   const pilot = a > 0 && b >= 3 ? sdUpper(a, b - 1, 0.8, qchisq) : NaN;
   const kind = form.find;
-  const use = (v: number) => set({ sd: fmtShort(v, 2).replace(/\s/g, "") });
+  const use = (v: number) => set({ sd: fmtInput(v, 2) });
   const pick = (find: string) => set({ find, h1: "", h2: "", h3: "", h4: "" });
   return (
-    <More title="Neturite standartinio nuokrypio?">
-      <p className="hint">Straipsnyje dažnai būna ne SD, o kas nors kita. Pasirinkite, ką turite:</p>
+    <More title={L("Neturite standartinio nuokrypio?", "No standard deviation?")}>
+      <p className="hint">{L("Straipsnyje dažnai būna ne SD, o kas nors kita. Pasirinkite, ką turite:", "Papers often report something other than the SD. Pick what you have:")}</p>
       <div className="chips">
         <button type="button" className={kind === "ci" ? "on" : ""} onClick={() => pick("ci")}>
-          95 % PI
+          95{PCT} {L("PI", "CI")}
         </button>
         <button type="button" className={kind === "iqr" ? "on" : ""} onClick={() => pick("iqr")}>
-          Kvartiliai
+          {L("Kvartiliai", "Quartiles")}
         </button>
         <button type="button" className={kind === "two" ? "on" : ""} onClick={() => pick("two")}>
-          Dviejų grupių SD
+          {L("Dviejų grupių SD", "SDs of two groups")}
         </button>
         <button type="button" className={kind === "pilot" ? "on" : ""} onClick={() => pick("pilot")}>
-          Pilotinis tyrimas
+          {L("Pilotinis tyrimas", "A pilot study")}
         </button>
       </div>
       {kind === "ci" && (
         <>
-          <NumField label="PI apatinė riba" value={form.h1} onChange={(h1) => set({ h1 })} />
-          <NumField label="PI viršutinė riba" value={form.h2} onChange={(h2) => set({ h2 })} />
-          <NumField label="Tiriamųjų toje grupėje" value={form.h3} onChange={(h3) => set({ h3 })} decimal={false} />
+          <NumField label={L("PI apatinė riba", "Lower CI limit")} value={form.h1} onChange={(h1) => set({ h1 })} />
+          <NumField label={L("PI viršutinė riba", "Upper CI limit")} value={form.h2} onChange={(h2) => set({ h2 })} />
+          <NumField label={L("Tiriamųjų toje grupėje", "Participants in that group")} value={form.h3} onChange={(h3) => set({ h3 })} decimal={false} />
           {Number.isFinite(fromCi) && <SdResult value={fromCi} use={use} />}
         </>
       )}
       {kind === "iqr" && (
         <>
-          <NumField label="1 kvartilis (Q1)" value={form.h1} onChange={(h1) => set({ h1 })} />
-          <NumField label="3 kvartilis (Q3)" value={form.h2} onChange={(h2) => set({ h2 })} />
-          {Number.isFinite(fromIqr) && <SdResult value={fromIqr} use={use} note="Tinka apytiksliai simetriškiems duomenims." />}
+          <NumField label={L("1 kvartilis (Q1)", "First quartile (Q1)")} value={form.h1} onChange={(h1) => set({ h1 })} />
+          <NumField label={L("3 kvartilis (Q3)", "Third quartile (Q3)")} value={form.h2} onChange={(h2) => set({ h2 })} />
+          {Number.isFinite(fromIqr) && (
+            <SdResult value={fromIqr} use={use} note={L("Tinka apytiksliai simetriškiems duomenims.", "For roughly symmetric data.")} />
+          )}
         </>
       )}
       {kind === "two" && (
         <>
-          <NumField label="1 grupės SD" value={form.h1} onChange={(h1) => set({ h1 })} />
-          <NumField label="1 grupės n" value={form.h2} onChange={(h2) => set({ h2 })} decimal={false} />
-          <NumField label="2 grupės SD" value={form.h3} onChange={(h3) => set({ h3 })} />
-          <NumField label="2 grupės n" value={form.h4} onChange={(h4) => set({ h4 })} decimal={false} />
+          <NumField label={L("1 grupės SD", "Group 1 SD")} value={form.h1} onChange={(h1) => set({ h1 })} />
+          <NumField label={L("1 grupės n", "Group 1 n")} value={form.h2} onChange={(h2) => set({ h2 })} decimal={false} />
+          <NumField label={L("2 grupės SD", "Group 2 SD")} value={form.h3} onChange={(h3) => set({ h3 })} />
+          <NumField label={L("2 grupės n", "Group 2 n")} value={form.h4} onChange={(h4) => set({ h4 })} decimal={false} />
           {Number.isFinite(fromTwo) && <SdResult value={fromTwo} use={use} />}
         </>
       )}
       {kind === "pilot" && (
         <>
-          <NumField label="Piloto SD" value={form.h1} onChange={(h1) => set({ h1 })} />
-          <NumField label="Piloto n" value={form.h2} onChange={(h2) => set({ h2 })} decimal={false} />
+          <NumField label={L("Piloto SD", "Pilot SD")} value={form.h1} onChange={(h1) => set({ h1 })} />
+          <NumField label={L("Piloto n", "Pilot n")} value={form.h2} onChange={(h2) => set({ h2 })} decimal={false} />
           {Number.isFinite(pilot) && (
-            <SdResult value={pilot} use={use} note="Viršutinė 80 % riba: mažo piloto SD dažnai būna per optimistiškas (Browne, 1995)." />
+            <SdResult
+              value={pilot}
+              use={use}
+              note={L(
+                "Viršutinė 80 % riba: mažo piloto SD dažnai būna per optimistiškas (Browne, 1995).",
+                "The upper 80% limit: the SD of a small pilot is often too optimistic (Browne, 1995).",
+              )}
+            />
           )}
         </>
       )}
@@ -205,7 +242,7 @@ function SdResult({ value, use, note }: { value: number; use: (v: number) => voi
     <p className="sd-result">
       SD ≈ <b>{fmtShort(value, 2)}</b>{" "}
       <button type="button" onClick={() => use(value)}>
-        Naudoti
+        {L("Naudoti", "Use")}
       </button>
       {note && <span className="hint"> {note}</span>}
     </p>
@@ -218,6 +255,7 @@ export function CompareTab({ active }: { active: boolean }) {
   const isAb = design === "ab";
   const solve = form.solve as "n" | "power" | "effect";
   const unit = isAb ? VISITORS : design === "paired" ? PAIRS : SUBJECTS;
+  const unitWith = isAb ? VISITORS_WITH : design === "paired" ? PAIRS_WITH : SUBJECTS_WITH;
 
   const spec = useMemo(() => buildSpec(form), [form]);
   const alphaPlain = parseNum(form.alpha);
@@ -269,9 +307,9 @@ export function CompareTab({ active }: { active: boolean }) {
   const curve = useMemo(() => {
     if (!usable || !spec || planned === null) return null;
     const lines: { k: number; label: string; color: string; dash?: string }[] = [
-      { k: 1, label: "Planuojamas efektas", color: "#1F45A0" },
-      { k: 0.8, label: "20 % mažesnis", color: "#C23B2A", dash: "7 5" },
-      { k: 1.2, label: "20 % didesnis", color: "#6B675F", dash: "2 4" },
+      { k: 1, label: L("Planuojamas efektas", "Planned effect"), color: "#1F45A0" },
+      { k: 0.8, label: L("20 % mažesnis", "20% smaller"), color: "#C23B2A", dash: "7 5" },
+      { k: 1.2, label: L("20 % didesnis", "20% larger"), color: "#6B675F", dash: "2 4" },
     ];
     const maxN = Math.max(Math.ceil(planned * 2), 8);
     const lo = spec.kind === "corr" ? 5 : 3;
@@ -317,54 +355,58 @@ export function CompareTab({ active }: { active: boolean }) {
       <div className="calc">
         <form className="inputs" onSubmit={(e) => e.preventDefault()}>
           <Segmented
-            label="Ką lyginate?"
+            label={L("Ką lyginate?", "What are you comparing?")}
             value={design}
             onChange={(d) => set({ design: d, ratio: "1" })}
+            hint={<span className="design-note">{DESIGN_NOTES[design]}</span>}
             options={[
-              { value: "means", label: "Dvi grupės, vidurkiai" },
-              { value: "paired", label: "Prieš ir po" },
-              { value: "props", label: "Dvi grupės, dalys" },
-              { value: "ab", label: "A/B testas" },
-              { value: "anova", label: "3+ grupės" },
-              { value: "corr", label: "Koreliacija" },
+              { value: "means", label: L("Dvi grupės, vidurkiai", "Two groups, means"), icon: DESIGN_ICONS.means },
+              { value: "paired", label: L("Prieš ir po", "Before and after"), icon: DESIGN_ICONS.paired },
+              { value: "props", label: L("Dvi grupės, dalys", "Two groups, proportions"), icon: DESIGN_ICONS.props },
+              { value: "ab", label: L("A/B testas", "A/B test"), icon: DESIGN_ICONS.ab },
+              { value: "anova", label: L("3+ grupės", "3+ groups"), icon: DESIGN_ICONS.anova },
+              { value: "corr", label: L("Koreliacija", "Correlation"), icon: DESIGN_ICONS.corr },
             ]}
           />
           <Segmented
-            label="Ko ieškote?"
+            label={L("Ko ieškote?", "What do you need?")}
             value={solve}
             onChange={(s) => set({ solve: s })}
-            hint={solve === "n" ? undefined : "Kai imties dydį lemia aplinkybės: tiek pacientų, kiek yra."}
+            hint={solve === "n" ? undefined : L("Kai imties dydį lemia aplinkybės: tiek pacientų, kiek yra.", "When circumstances set the sample: as many patients as there are.")}
             options={[
-              { value: "n", label: "Imties" },
-              { value: "power", label: "Turiu n: kokia galia?" },
-              { value: "effect", label: "Turiu n: ką aptiksiu?" },
+              { value: "n", label: L("Imties", "Sample size") },
+              { value: "power", label: L("Turiu n: kokia galia?", "I have n: what power?") },
+              { value: "effect", label: L("Turiu n: ką aptiksiu?", "I have n: what can I detect?") },
             ]}
           />
           {solve !== "n" && (
             <NumField
-              label={design === "paired" || design === "corr" ? "Turima imtis" : "Turima imtis vienoje grupėje"}
+              label={design === "paired" || design === "corr" ? L("Turima imtis", "Available sample") : L("Turima imtis vienoje grupėje", "Available sample per group")}
               value={form.n}
               onChange={(n) => set({ n })}
               decimal={false}
-              error={inputN >= 2 ? null : "Įveskite bent 2."}
+              error={inputN >= 2 ? null : L("Įveskite bent 2.", "Enter at least 2.")}
             />
           )}
 
           {(design === "means" || design === "paired") && (
             <>
               <NumField
-                label={design === "paired" ? "Mažiausias svarbus pokytis" : "Mažiausias svarbus skirtumas"}
-                hint="Kokį skirtumą būtų gaila praleisti? Jūsų matavimo vienetais: balais, mmHg, kg."
+                label={design === "paired" ? L("Mažiausias svarbus pokytis", "Smallest important change") : L("Mažiausias svarbus skirtumas", "Smallest important difference")}
+                hint={L(
+                  "Kokį skirtumą būtų gaila praleisti? Jūsų matavimo vienetais: balais, mmHg, kg.",
+                  "What difference would be a shame to miss? In your own units: points, mmHg, kg.",
+                )}
                 value={form.delta}
                 onChange={(delta) => set({ delta })}
-                error={parseNum(form.delta) > 0 ? null : "Įveskite teigiamą skaičių."}
+                error={parseNum(form.delta) > 0 ? null : L("Įveskite teigiamą skaičių.", "Enter a positive number.")}
               />
               <NumField
-                label={design === "paired" ? "Skirtumų standartinis nuokrypis" : "Standartinis nuokrypis"}
+                label={design === "paired" ? L("Skirtumų standartinis nuokrypis", "SD of the differences") : L("Standartinis nuokrypis", "Standard deviation")}
                 hint={spec && spec.kind === "means" ? `Cohen d = ${fmtNum(spec.delta / spec.sd)}` : spec && spec.kind === "paired" ? `Cohen dz = ${fmtNum(spec.delta / spec.sdDiff)}` : undefined}
                 value={form.sd}
                 onChange={(sd) => set({ sd })}
-                error={parseNum(form.sd) > 0 || parseNum(form.pre) > 0 ? null : "Įveskite teigiamą skaičių."}
+                error={parseNum(form.sd) > 0 || parseNum(form.pre) > 0 ? null : L("Įveskite teigiamą skaičių.", "Enter a positive number.")}
               />
               {design === "means" && <SdFinder form={form} set={set} />}
             </>
@@ -372,221 +414,305 @@ export function CompareTab({ active }: { active: boolean }) {
           {design === "props" && (
             <>
               <Segmented
-                label="Efektą žinau kaip"
+                label={L("Efektą žinau kaip", "I know the effect as")}
                 value={form.entry as "two" | "or"}
                 onChange={(entry) => set({ entry })}
-                hint={form.entry === "or" ? "Atvejo–kontrolės tyrimams: ekspozicijos dalis kontrolinėje grupėje ir laukiamas šansų santykis." : undefined}
+                hint={
+                  form.entry === "or"
+                    ? L(
+                        "Atvejo–kontrolės tyrimams: ekspozicijos dalis kontrolinėje grupėje ir laukiamas šansų santykis.",
+                        "For case–control studies: the share exposed among controls and the expected odds ratio.",
+                      )
+                    : undefined
+                }
                 options={[
-                  { value: "two", label: "Dvi dalys" },
-                  { value: "or", label: "Šansų santykį" },
+                  { value: "two", label: L("Dvi dalys", "Two proportions") },
+                  { value: "or", label: L("Šansų santykį", "An odds ratio") },
                 ]}
               />
-              <NumField label={form.entry === "or" ? "Dalis kontrolinėje grupėje" : "1 grupė"} value={form.p1} onChange={(p1) => set({ p1 })} suffix="%" />
+              <NumField
+                label={form.entry === "or" ? L("Dalis kontrolinėje grupėje", "Share among controls") : L("1 grupė", "Group 1")}
+                value={form.p1}
+                onChange={(p1) => set({ p1 })}
+                suffix="%"
+              />
               {form.entry === "or" ? (
                 <NumField
-                  label="Šansų santykis (OR)"
-                  hint={spec?.kind === "props" ? `Tai atitinka ${fmtPct(spec.p1, 1)} atvejų grupėje.` : undefined}
+                  label={L("Šansų santykis (OR)", "Odds ratio (OR)")}
+                  hint={spec?.kind === "props" ? L(`Tai atitinka ${fmtPct(spec.p1, 1)} atvejų grupėje.`, `That means ${fmtPct(spec.p1, 1)} among cases.`) : undefined}
                   value={form.or}
                   onChange={(or) => set({ or })}
                 />
               ) : (
-                <NumField label="2 grupė" value={form.p2} onChange={(p2) => set({ p2 })} suffix="%" />
+                <NumField label={L("2 grupė", "Group 2")} value={form.p2} onChange={(p2) => set({ p2 })} suffix="%" />
               )}
             </>
           )}
           {isAb && (
             <>
-              <NumField label="Dabartinė konversija" value={form.base} onChange={(base) => set({ base })} suffix="%" />
+              <NumField label={L("Dabartinė konversija", "Current conversion rate")} value={form.base} onChange={(base) => set({ base })} suffix="%" />
               <NumField
-                label="Mažiausias svarbus santykinis pokytis"
-                hint={spec?.kind === "props" ? `Nuo ${fmtPct(spec.p1, 2)} iki ${fmtPct(spec.p2, 2)}.` : undefined}
+                label={L("Mažiausias svarbus santykinis pokytis", "Smallest important relative lift")}
+                hint={spec?.kind === "props" ? L(`Nuo ${fmtPct(spec.p1, 2)} iki ${fmtPct(spec.p2, 2)}.`, `From ${fmtPct(spec.p1, 2)} to ${fmtPct(spec.p2, 2)}.`) : undefined}
                 value={form.lift}
                 onChange={(lift) => set({ lift })}
                 suffix="%"
               />
-              <NumField label="Lankytojų per dieną, abiem versijoms kartu" value={form.daily} onChange={(daily) => set({ daily })} decimal={false} />
+              <NumField label={L("Lankytojų per dieną, abiem versijoms kartu", "Visitors per day, both versions together")} value={form.daily} onChange={(daily) => set({ daily })} decimal={false} />
             </>
           )}
           {design === "anova" && (
             <>
               <TextField
-                label="Laukiami grupių vidurkiai"
-                hint={spec?.kind === "anova" ? `${spec.groups} grupės, Cohen f = ${fmtNum(spec.f, 3)}. Atskirkite kabliataškiu.` : "Atskirkite kabliataškiu."}
+                label={L("Laukiami grupių vidurkiai", "Expected group means")}
+                hint={
+                  spec?.kind === "anova"
+                    ? L(`${spec.groups} grupės, Cohen f = ${fmtNum(spec.f, 3)}. Atskirkite kabliataškiu.`, `${spec.groups} groups, Cohen's f = ${fmtNum(spec.f, 3)}. Separate with semicolons.`)
+                    : L("Atskirkite kabliataškiu.", "Separate with semicolons.")
+                }
                 value={form.means}
                 onChange={(means) => set({ means })}
               />
-              <NumField label="Standartinis nuokrypis grupėje" value={form.sd} onChange={(sd) => set({ sd })} />
+              <NumField label={L("Standartinis nuokrypis grupėje", "Standard deviation within a group")} value={form.sd} onChange={(sd) => set({ sd })} />
               <SdFinder form={form} set={set} />
             </>
           )}
-          {design === "corr" && <NumField label="Mažiausia svarbi koreliacija (r)" value={form.corr} onChange={(corr) => set({ corr })} />}
+          {design === "corr" && (
+            <NumField label={L("Mažiausia svarbi koreliacija (r)", "Smallest important correlation (r)")} value={form.corr} onChange={(corr) => set({ corr })} />
+          )}
 
           <Segmented
-            label="Statistinė galia"
-            hint="Tikimybė pamatyti efektą, jei jis tikrai yra."
+            label={L("Statistinė galia", "Statistical power")}
+            hint={L("Tikimybė pamatyti efektą, jei jis tikrai yra.", "The chance of seeing the effect if it is really there.")}
             value={form.power as "80" | "90" | "95"}
             onChange={(p) => set({ power: p })}
             options={[
-              { value: "80", label: "80 %" },
-              { value: "90", label: "90 %" },
-              { value: "95", label: "95 %" },
+              { value: "80", label: `80${PCT}` },
+              { value: "90", label: `90${PCT}` },
+              { value: "95", label: `95${PCT}` },
             ]}
           />
           {solve === "n" && !isAb && (
-            <NumField label="Numatomas nubyrėjimas" hint="Kiek tiriamųjų neužbaigs tyrimo?" value={form.drop} onChange={(drop) => set({ drop })} suffix="%" />
+            <NumField
+              label={L("Numatomas nubyrėjimas", "Expected dropout")}
+              hint={L("Kiek tiriamųjų neužbaigs tyrimo?", "How many participants will not finish the study?")}
+              value={form.drop}
+              onChange={(drop) => set({ drop })}
+              suffix="%"
+            />
           )}
 
-          <More title="Daugiau nustatymų">
-            <NumField label="Reikšmingumo lygis α" value={form.alpha} onChange={(alpha) => set({ alpha })} />
+          <More title={L("Daugiau nustatymų", "More settings")}>
+            <NumField label={L("Reikšmingumo lygis α", "Significance level α")} value={form.alpha} onChange={(alpha) => set({ alpha })} />
             {design !== "anova" && (
               <Segmented
-                label="Testas"
+                label={L("Testas", "Test")}
                 value={form.sides as "1" | "2"}
                 onChange={(sides) => set({ sides })}
                 options={[
-                  { value: "2", label: "Dvipusis" },
-                  { value: "1", label: "Vienpusis" },
+                  { value: "2", label: L("Dvipusis", "Two-sided") },
+                  { value: "1", label: L("Vienpusis", "One-sided") },
                 ]}
               />
             )}
             {hasRatio && (
               <NumField
-                label={design === "props" && form.entry === "or" ? "Kiek kontrolių vienam atvejui?" : "Kiek kartų 2 grupė didesnė?"}
-                hint="1 = lygios grupės."
+                label={
+                  design === "props" && form.entry === "or"
+                    ? L("Kiek kontrolių vienam atvejui?", "How many controls per case?")
+                    : L("Kiek kartų 2 grupė didesnė?", "How many times larger is group 2?")
+                }
+                hint={L("1 = lygios grupės.", "1 = equal groups.")}
                 value={form.ratio}
                 onChange={(ratio) => set({ ratio })}
               />
             )}
             <NumField
-              label="Kiek palyginimų darysite?"
-              hint="Daugiau nei 1 mažina α pagal Bonferroni."
+              label={L("Kiek palyginimų darysite?", "How many comparisons will you make?")}
+              hint={L("Daugiau nei 1 mažina α pagal Bonferroni.", "More than 1 lowers α by Bonferroni.")}
               value={form.m}
               onChange={(m) => set({ m })}
               decimal={false}
             />
             {(design === "means" || design === "paired" || design === "anova") && (
               <Check
-                label="Duomenys nenormalūs: planuoju Mann-Whitney, Wilcoxon ar Kruskal-Wallis (+16 %)"
+                label={L(
+                  "Duomenys nenormalūs: planuoju Mann-Whitney, Wilcoxon ar Kruskal-Wallis (+16 %)",
+                  "Data not normal: I plan Mann-Whitney, Wilcoxon or Kruskal-Wallis (+16%)",
+                )}
                 checked={form.rank === "1"}
                 onChange={(v) => set({ rank: v ? "1" : "0" })}
               />
             )}
             {design === "paired" && (
               <>
-                <p className="hint">Neturite skirtumų SD? Jį galima apskaičiuoti:</p>
-                <NumField label="Vieno matavimo SD" value={form.pre} onChange={(pre) => set({ pre })} placeholder="neprivaloma" />
-                <NumField label="Koreliacija tarp matavimų" value={form.r} onChange={(r) => set({ r })} />
+                <p className="hint">{L("Neturite skirtumų SD? Jį galima apskaičiuoti:", "No SD of the differences? It can be worked out:")}</p>
+                <NumField label={L("Vieno matavimo SD", "SD of one measurement")} value={form.pre} onChange={(pre) => set({ pre })} placeholder={L("neprivaloma", "optional")} />
+                <NumField label={L("Koreliacija tarp matavimų", "Correlation between measurements")} value={form.r} onChange={(r) => set({ r })} />
               </>
             )}
           </More>
           {calc?.groups && (
             <Peek
               value={solve === "n" ? fmtInt(total) : solve === "power" ? fmtPct(calc.achieved, 0) : spec && calc.effect !== null ? effectText(spec, calc.effect) : "–"}
-              label={solve === "n" ? ltPlural(total, unit) : solve === "power" ? "galia" : "aptiksite"}
+              label={solve === "n" ? word(total, unit) : solve === "power" ? L("galia", "power") : L("aptiksite", "detectable")}
             />
           )}
         </form>
 
         <div className="result" aria-live="polite">
           {!calc ? (
-            <p className="result-empty">Užpildykite pažymėtus laukus.</p>
+            <p className="result-empty">{L("Užpildykite pažymėtus laukus.", "Fill in the marked fields.")}</p>
           ) : solve === "n" ? (
             calc.groups ? (
               <>
-                <span className="eyebrow">Atsakymas</span>
+                <span className="eyebrow">{L("Rezultatas", "Result")}</span>
                 <p className="big">{fmtInt(total)}</p>
                 <p className="big-unit">
-                  {ltPlural(total, unit)}
+                  {word(total, unit)}
                   {calc.groups.length > 1 &&
                     (calc.groups.every((g) => g === calc.groups![0])
-                      ? ` (po ${fmtInt(calc.groups[0])} ${isAb ? "versijai" : "grupėje"})`
+                      ? L(` (po ${fmtInt(calc.groups[0])} ${isAb ? "versijai" : "grupėje"})`, ` (${fmtInt(calc.groups[0])} per ${isAb ? "version" : "group"})`)
                       : ` (${calc.groups.map(fmtInt).join(" + ")})`)}
                 </p>
-                {days !== null && Number.isFinite(days) && (
-                  <p className="result-line">
-                    Testas turi trukti bent <b>{fmtInt(days)}</b> {ltPlural(days, ["dieną", "dienas", "dienų"])}
-                    {days < 7 ? ", bet ne trumpiau nei savaitę dėl savaitės dienų skirtumų" : days > 56 ? ". Tai ilgiau nei paprastai verta: ieškokite didesnio efekto ar srauto" : ""}.
-                  </p>
-                )}
-                {!isAb && dropout > 0 && (
-                  <p className="result-line">
-                    Įtraukite <b>{fmtInt(enrolledTotal)}</b>, nes {fmtPct(dropout, 0)} nubyrės.
-                  </p>
-                )}
-                <p className="result-alt">Faktinė galia {fmtPct(calc.achieved)}</p>
+                <p className="result-brief">
+                  {L(
+                    <>
+                      Jei tikrasis efektas toks, kokį numatėte, {isAb ? "testas" : "tyrimas"} jį aptiks <b>{fmtPct(calc.achieved)}</b> tikimybe.
+                    </>,
+                    <>
+                      If the true effect is as large as you assumed, the {isAb ? "test" : "study"} will detect it with <b>{fmtPct(calc.achieved)}</b>{" "}
+                      probability.
+                    </>,
+                  )}
+                  {days !== null && Number.isFinite(days) && (
+                    <>
+                      {" "}
+                      {L("Testas turi trukti bent", "Run the test for at least")} <b>{fmtInt(days)}</b> {plural(days, ["dieną", "dienas", "dienų"], ["day", "days"])}
+                      {days < 7
+                        ? L(", bet ne trumpiau nei savaitę dėl savaitės dienų skirtumų", ", but no less than a week, because weekdays differ")
+                        : days > 56
+                          ? L(". Tai ilgiau nei paprastai verta: ieškokite didesnio efekto ar srauto", ". That is longer than usually worth it: look for a larger effect or more traffic")
+                          : ""}
+                      .
+                    </>
+                  )}
+                  {!isAb && dropout > 0 && (
+                    <>
+                      {" "}
+                      {L("Įtraukite", "Enrol")} <b>{fmtInt(enrolledTotal)}</b>
+                      {L(`, nes ${fmtPct(dropout, 0)} nubyrės.`, `, as ${fmtPct(dropout, 0)} will drop out.`)}
+                    </>
+                  )}
+                </p>
                 {fall && (
-                  <Notice kind="info" title="Patikrinkite prielaidą.">
-                    Jei tikrasis efektas {fall.k === 0.8 ? "20" : "15"} % mažesnis, su šia imtimi galia kris iki {fmtPct(fall.power, 0)}.
+                  <Notice kind="info" title={L("Patikrinkite prielaidą.", "Check the assumption.")}>
+                    {L(
+                      `Jei tikrasis efektas ${fall.k === 0.8 ? "20" : "15"} % mažesnis, su šia imtimi galia kris iki ${fmtPct(fall.power, 0)}.`,
+                      `If the true effect is ${fall.k === 0.8 ? "20" : "15"}% smaller, power with this sample drops to ${fmtPct(fall.power, 0)}.`,
+                    )}
                   </Notice>
                 )}
+                {report && <StatementBox statement={report.statement} />}
               </>
             ) : (
-              <Notice title="Tokio efekto realia imtimi neaptiksite.">Padidinkite efektą arba sumažinkite galią.</Notice>
+              <Notice title={L("Tokio efekto realia imtimi neaptiksite.", "No realistic sample will detect this effect.")}>
+                {L("Padidinkite efektą arba sumažinkite galią.", "Increase the effect or lower the power.")}
+              </Notice>
             )
           ) : solve === "power" ? (
             <>
-              <span className="eyebrow">Galia</span>
+              <span className="eyebrow">{L("Galia", "Power")}</span>
               <p className="big">{fmtPct(calc.achieved, 0)}</p>
-              <p className="big-unit">su {fmtInt(total)} {ltPlural(total, unit)}</p>
+              <p className="big-unit">
+                {L("su", "with")} {fmtInt(total)} {word(total, unitWith)}
+              </p>
               <p className="result-line">
-                Jei efektas tikrai toks, iš 100 tokių tyrimų jį aptiktų maždaug <b>{fmtInt(Math.round(calc.achieved * 100))}</b>.
+                {L(
+                  "Jei efektas tikrai toks, iš 100 tokių tyrimų jį aptiktų maždaug",
+                  "If the effect is really this large, out of 100 such studies about",
+                )}{" "}
+                <b>{fmtInt(Math.round(calc.achieved * 100))}</b>
+                {L(".", " would detect it.")}
               </p>
               {calc.achieved < 0.5 && (
-                <Notice title="Daugiau tikėtina nieko nerasti nei rasti.">Nereikšmingas rezultatas čia nerodys, kad skirtumo nėra.</Notice>
+                <Notice title={L("Daugiau tikėtina nieko nerasti nei rasti.", "Finding nothing is more likely than finding it.")}>
+                  {L("Nereikšmingas rezultatas čia nerodys, kad skirtumo nėra.", "A non-significant result here will not show that there is no difference.")}
+                </Notice>
               )}
             </>
           ) : (
             <>
-              <span className="eyebrow">Aptiksite</span>
+              <span className="eyebrow">{L("Aptiksite", "You can detect")}</span>
               {calc.effect !== null && spec ? (
                 <>
                   <p className="big big-text">{effectText(spec, calc.effect)}</p>
                   <p className="big-unit">
-                    ar didesnį efektą, su {fmtPct(target, 0)} galia ir {fmtInt(total)} {ltPlural(total, unit)}
+                    {L(
+                      `ar didesnį efektą, su ${fmtPct(target, 0)} galia ir ${fmtInt(total)} ${word(total, unitWith)}`,
+                      `or a larger effect, with ${fmtPct(target, 0)} power and ${fmtInt(total)} ${word(total, unitWith)}`,
+                    )}
                   </p>
-                  <p className="result-line">Mažesni efektai gali likti nepastebėti. Ar toks skirtumas apskritai realus jūsų srityje?</p>
+                  <p className="result-line">
+                    {L(
+                      "Mažesni efektai gali likti nepastebėti. Ar toks skirtumas apskritai realus jūsų srityje?",
+                      "Smaller effects may go unnoticed. Is a difference this large realistic in your field at all?",
+                    )}
+                  </p>
                 </>
               ) : (
-                <Notice title="Su tokia imtimi šios galios nepasieksite." />
+                <Notice title={L("Su tokia imtimi šios galios nepasieksite.", "This sample cannot reach that power.")} />
               )}
             </>
           )}
-          {smallForProps && <Notice title="Maža imtis.">Laukiama mažiau nei 5 įvykių grupėje: planuokite Fišerio tikslųjį testą ir imties atsargą.</Notice>}
+          {smallForProps && (
+            <Notice title={L("Maža imtis.", "Small sample.")}>
+              {L(
+                "Laukiama mažiau nei 5 įvykių grupėje: planuokite Fišerio tikslųjį testą ir imties atsargą.",
+                "Fewer than 5 events are expected in a group: plan Fisher's exact test and a margin in the sample.",
+              )}
+            </Notice>
+          )}
         </div>
       </div>
 
       {curve && planned !== null && (
         <section className="block" aria-labelledby="curve-title">
-          <h2 id="curve-title">Kaip galia priklauso nuo imties</h2>
+          <h2 id="curve-title">{L("Kaip galia priklauso nuo imties", "How power depends on sample size")}</h2>
           <PowerCurve
             xs={curve.xs}
             series={curve.series}
             target={target}
             mark={planned}
-            xTitle={design === "paired" || design === "corr" ? "Imtis" : "Imtis 1 grupėje"}
-            ariaLabel={`Statistinė galia pagal imties dydį trims efekto dydžiams. Su ${planned} galia ${fmtPct(calc?.achieved ?? 0, 0)}.`}
+            xTitle={design === "paired" || design === "corr" ? L("Imtis", "Sample size") : L("Imtis 1 grupėje", "Sample size in group 1")}
+            ariaLabel={L(
+              `Statistinė galia pagal imties dydį trims efekto dydžiams. Su ${planned} galia ${fmtPct(calc?.achieved ?? 0, 0)}.`,
+              `Statistical power by sample size for three effect sizes. With ${planned}, power is ${fmtPct(calc?.achieved ?? 0, 0)}.`,
+            )}
           />
         </section>
       )}
 
       {scenarios.length > 0 && (
         <section className="block" aria-labelledby="scen2-title">
-          <h2 id="scen2-title">Kas, jeigu efektas kitoks?</h2>
-          <p className="block-lead">Efektas yra prielaida, todėl verta matyti, kas nutiktų, jei ji neišsipildytų.</p>
+          <h2 id="scen2-title">{L("Kas, jeigu efektas kitoks?", "What if the effect were different?")}</h2>
+          <p className="block-lead">
+            {L("Efektas yra prielaida, todėl verta matyti, kas nutiktų, jei ji neišsipildytų.", "The effect is an assumption, so it pays to see what happens if it does not hold.")}
+          </p>
           <div className="table-scroll">
             <table className="scenarios">
               <thead>
                 <tr>
-                  <th>Tikrasis efektas</th>
-                  <th className="cell-num">Tada reikėtų, iš viso</th>
-                  <th className="cell-num">Jūsų imties galia</th>
+                  <th>{L("Tikrasis efektas", "True effect")}</th>
+                  <th className="cell-num">{L("Tada reikėtų, iš viso", "Total needed then")}</th>
+                  <th className="cell-num">{L("Jūsų imties galia", "Power of your sample")}</th>
                 </tr>
               </thead>
               <tbody>
                 {scenarios.map((s) => (
                   <tr key={s.k} className={s.k === 1 ? "current-row" : ""}>
                     <td>{s.label}</td>
-                    <td className="cell-num">{s.n === null ? "per daug" : fmtInt(s.n)}</td>
+                    <td className="cell-num">{s.n === null ? L("per daug", "too many") : fmtInt(s.n)}</td>
                     <td className="cell-num">{fmtPct(s.power, 0)}</td>
                   </tr>
                 ))}

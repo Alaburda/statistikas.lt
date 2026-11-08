@@ -1,5 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { allocate, cochranN, designEffect, invitations, marginOf, meanN, nonresponseBounds, paniottoN } from "./survey";
+import {
+  allocate,
+  cochranN,
+  designEffect,
+  estimateMargin,
+  estimateN,
+  invitations,
+  jointConfidence,
+  marginOf,
+  meanN,
+  nonresponseBounds,
+  paniottoN,
+  plannedShare,
+  wilson,
+  type Estimate,
+} from "./survey";
 
 const base = { population: null, margin: 0.05, confidence: 0.95, p: 0.5, deff: 1 };
 
@@ -35,6 +50,52 @@ describe("survey sample size", () => {
   it("inflates for clustering", () => {
     expect(designEffect(20, 0.05)).toBeCloseTo(1.95, 10);
     expect(cochranN({ ...base, deff: 2 })).toBe(769);
+  });
+  it("applies the design effect to Paniotto as well", () => {
+    expect(paniottoN(0.05, null, 2)).toBe(800);
+    // n = 2 / (0.05² + 2/1200) = 480, and Cochran with z = 2 and p = 0.5 agrees before its n0 - 1.
+    expect(paniottoN(0.05, 1200, 2)).toBe(480);
+    expect(paniottoN(0.05, 1200, 1)).toBe(300);
+    expect(paniottoN(0.05, 100, 50)).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("estimating the expected share", () => {
+  it("matches the Wilson interval of prop.test without continuity correction", () => {
+    const [lo, hi] = wilson(12, 60, 0.95);
+    expect(lo).toBeCloseTo(0.11829, 4);
+    expect(hi).toBeCloseTo(0.31782, 4);
+  });
+  it("plans with the end nearest 50 %", () => {
+    expect(plannedShare(12, 60, 0.95)).toBeCloseTo(0.31782, 4);
+    expect(plannedShare(48, 60, 0.95)).toBeCloseTo(1 - 0.31782, 4);
+  });
+  it("falls back to 50 % when a pilot cannot rule it out", () => {
+    expect(plannedShare(4, 10, 0.95)).toBe(0.5);
+  });
+});
+
+describe("several key estimates", () => {
+  const ctx = { population: 1200, confidence: 0.95, deff: 1, formula: "cochran" as const };
+  const share: Estimate = { name: "Pasitenkinimas", kind: "share", value: 0.5, margin: 0.05 };
+  const rare: Estimate = { name: "Traumos", kind: "share", value: 0.1, margin: 0.02 };
+  const score: Estimate = { name: "Balas", kind: "mean", value: 15, margin: 2 };
+  it("sizes each one on its own terms", () => {
+    expect(estimateN(share, ctx)).toBe(292);
+    expect(estimateN(rare, ctx)).toBe(503);
+    expect(estimateN(score, ctx)).toBe(184);
+  });
+  it("keeps means on Cochran's formula under Paniotto", () => {
+    expect(estimateN(share, { ...ctx, formula: "paniotto" })).toBe(300);
+    expect(estimateN(score, { ...ctx, formula: "paniotto" })).toBe(184);
+  });
+  it("inverts into a margin", () => {
+    expect(estimateMargin(rare, 503, ctx)).toBeLessThanOrEqual(0.02);
+    expect(estimateMargin(score, 184, ctx)).toBeLessThanOrEqual(2);
+  });
+  it("tightens each level so all hold jointly", () => {
+    expect(jointConfidence(0.95, 3)).toBeCloseTo(0.98333, 4);
+    expect(estimateN(share, { ...ctx, confidence: jointConfidence(0.95, 3) })).toBe(389);
   });
 });
 

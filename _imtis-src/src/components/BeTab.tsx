@@ -12,12 +12,13 @@ import {
   type BeInput,
   type DesignId,
 } from "../engine/be";
-import { fmtInt, fmtNum, fmtPct, fmtShort, ltPlural, parseNum } from "../format";
+import { fmtInt, fmtNum, fmtPct, fmtShort, parseNum } from "../format";
+import { EN, L, PCT, plural } from "../i18n";
 import { beReport } from "../report";
 import { useForm } from "../url";
 import { More, NumField, Notice, Peek, Segmented } from "./Fields";
 import { PowerCurve } from "./PowerCurve";
-import { ReportBlock } from "./ReportBlock";
+import { ReportBlock, StatementBox } from "./ReportBlock";
 
 const DEFAULTS = {
   solve: "n",
@@ -33,6 +34,10 @@ const DEFAULTS = {
   n: "24",
   pilot: "",
 };
+
+const designLabel = (d: DesignId) => (EN ? DESIGNS[d].labelEn : DESIGNS[d].label);
+const evaluableWord = (n: number) =>
+  plural(n, ["vertinamas tiriamasis", "vertinami tiriamieji", "vertinamų tiriamųjų"], ["evaluable subject", "evaluable subjects"]);
 
 const ORDER: DesignId[] = ["2x2", "parallel", "2x2x4", "2x2x3", "2x3x3", "2x4x4", "2x4x2", "2x2x2r", "3x3", "3x6x3", "4x4", "paired"];
 const LIMITS = {
@@ -86,11 +91,14 @@ export function BeTab({ active }: { active: boolean }) {
   const steps = DESIGNS[design].steps;
 
   const errors = {
-    cv: cv > 0 && cv < 5 ? null : "CV turi būti teigiamas.",
+    cv: cv > 0 && cv < 5 ? null : L("CV turi būti teigiamas.", "The CV must be positive."),
     gmr: !(theta0 > (abel ? 0.8 : theta1) && theta0 < (abel ? 1.25 : theta2))
-      ? `Santykis turi būti griežtai tarp ${fmtShort((abel ? 0.8 : theta1) * 100)} ir ${fmtShort((abel ? 1.25 : theta2) * 100)} %.`
+      ? L(
+          `Santykis turi būti griežtai tarp ${fmtShort((abel ? 0.8 : theta1) * 100)} ir ${fmtShort((abel ? 1.25 : theta2) * 100)} %.`,
+          `The ratio must be strictly between ${fmtShort((abel ? 0.8 : theta1) * 100)} and ${fmtShort((abel ? 1.25 : theta2) * 100)}%.`,
+        )
       : null,
-    n: inputN >= 2 * steps ? null : `Įveskite bent ${2 * steps}.`,
+    n: inputN >= 2 * steps ? null : L(`Įveskite bent ${2 * steps}.`, `Enter at least ${2 * steps}.`),
   };
   const ok = !errors.cv && !errors.gmr && (solveN || !errors.n) && alpha > 0 && alpha < 0.5 && dropout >= 0 && dropout < 1;
   const input: BeInput = { alpha, theta0, theta1, theta2, cv, design };
@@ -128,9 +136,9 @@ export function BeTab({ active }: { active: boolean }) {
     const other = theta0 === 1 ? 0.95 : 1;
     const worse = theta0 <= 1 ? Math.max(theta0 - 0.05, (theta1 + theta0) / 2) : Math.min(theta0 + 0.05, (theta2 + theta0) / 2);
     const lines = [
-      { t: theta0, label: `GMR ${fmtShort(theta0 * 100)} %`, color: "#1F45A0" },
-      { t: worse, label: `GMR ${fmtShort(worse * 100)} %`, color: "#C23B2A", dash: "7 5" },
-      { t: other, label: `GMR ${fmtShort(other * 100)} %`, color: "#6B675F", dash: "2 4" },
+      { t: theta0, label: `GMR ${fmtShort(theta0 * 100)}${PCT}`, color: "#1F45A0" },
+      { t: worse, label: `GMR ${fmtShort(worse * 100)}${PCT}`, color: "#C23B2A", dash: "7 5" },
+      { t: other, label: `GMR ${fmtShort(other * 100)}${PCT}`, color: "#6B675F", dash: "2 4" },
     ];
     return {
       xs: all,
@@ -162,26 +170,30 @@ export function BeTab({ active }: { active: boolean }) {
       <div className="calc">
         <form className="inputs" onSubmit={(e) => e.preventDefault()}>
           <Segmented
-            label="Ko ieškote?"
+            label={L("Ko ieškote?", "What do you need?")}
             value={form.solve as "n" | "power"}
             onChange={(solve) => set({ solve })}
             options={[
-              { value: "n", label: "Imties" },
-              { value: "power", label: "Turiu n: kokia galia?" },
+              { value: "n", label: L("Imties", "Sample size") },
+              { value: "power", label: L("Turiu n: kokia galia?", "I have n: what power?") },
             ]}
           />
           <Segmented
-            label="Vertinimas"
+            label={L("Vertinimas", "Assessment")}
             value={form.method as "abe" | "abel"}
             onChange={(method) => set({ method, gmr: method === "abel" ? "90" : "95" })}
-            hint={abel ? "EMA išplečiamos ribos didelio kintamumo vaistams. Galia simuliuojama." : undefined}
+            hint={
+              abel
+                ? L("EMA išplečiamos ribos didelio kintamumo vaistams. Galia simuliuojama.", "EMA expanding limits for highly variable drugs. Power is simulated.")
+                : undefined
+            }
             options={[
-              { value: "abe", label: "Vidutinis BE (TOST)" },
+              { value: "abe", label: L("Vidutinis BE (TOST)", "Average BE (TOST)") },
               { value: "abel", label: "ABEL (EMA)" },
             ]}
           />
           <div className="field">
-            <label htmlFor="be-design">Tyrimo dizainas</label>
+            <label htmlFor="be-design">{L("Tyrimo dizainas", "Study design")}</label>
             <div className="input-wrap">
               <select
                 id="be-design"
@@ -190,24 +202,28 @@ export function BeTab({ active }: { active: boolean }) {
               >
                 {(abel ? (["2x3x3", "2x2x4", "2x2x3"] as DesignId[]) : ORDER).map((d) => (
                   <option key={d} value={d}>
-                    {DESIGNS[d].label}
+                    {designLabel(d)}
                   </option>
                 ))}
               </select>
             </div>
           </div>
-          {!solveN && <NumField label="Vertinamų tiriamųjų" value={form.n} onChange={(n) => set({ n })} decimal={false} error={errors.n} />}
+          {!solveN && <NumField label={L("Vertinamų tiriamųjų", "Evaluable subjects")} value={form.n} onChange={(n) => set({ n })} decimal={false} error={errors.n} />}
           <NumField
-            label={design === "parallel" ? "Bendras CV" : "Intrasubjektinis CV"}
-            hint="Iš ankstesnio tyrimo, pagal jautriausią parametrą (dažniausiai Cmax)."
+            label={design === "parallel" ? L("Bendras CV", "Total CV") : L("Intrasubjektinis CV", "Intra-subject CV")}
+            hint={L("Iš ankstesnio tyrimo, pagal jautriausią parametrą (dažniausiai Cmax).", "From an earlier study, for the most variable parameter (usually Cmax).")}
             value={form.cv}
             onChange={(v) => set({ cv: v })}
             suffix="%"
             error={errors.cv}
           />
           <NumField
-            label="Tikėtinas T/R santykis (GMR)"
-            hint={abel ? "EMA simuliacijoms įprasta 90 %." : "95 % yra įprasta atsargi prielaida; 100 % beveik visada per optimistiška."}
+            label={L("Tikėtinas T/R santykis (GMR)", "Expected T/R ratio (GMR)")}
+            hint={
+              abel
+                ? L("EMA simuliacijoms įprasta 90 %.", "90% is usual for EMA simulations.")
+                : L("95 % yra įprasta atsargi prielaida; 100 % beveik visada per optimistiška.", "95% is the usual cautious assumption; 100% is almost always too optimistic.")
+            }
             value={form.gmr}
             onChange={(gmr) => set({ gmr })}
             suffix="%"
@@ -215,91 +231,124 @@ export function BeTab({ active }: { active: boolean }) {
           />
           {!abel && (
             <Segmented
-              label="Bioekvivalentiškumo ribos"
+              label={L("Bioekvivalentiškumo ribos", "Acceptance limits")}
               value={form.limits as "std" | "nti"}
               onChange={(limits) => set({ limits, gmr: limits === "nti" && form.gmr === "95" ? "97.5" : form.gmr })}
               options={[
-                { value: "std", label: "80–125 %" },
-                { value: "nti", label: "90–111,11 % (siauras TI)" },
+                { value: "std", label: `80–125${PCT}` },
+                { value: "nti", label: L("90–111,11 % (siauras TI)", "90–111.11% (narrow TI)") },
               ]}
             />
           )}
           {solveN && (
             <Segmented
-              label="Statistinė galia"
+              label={L("Statistinė galia", "Statistical power")}
               value={form.power as "80" | "90"}
               onChange={(power) => set({ power })}
               options={[
-                { value: "80", label: "80 %" },
-                { value: "90", label: "90 %" },
+                { value: "80", label: `80${PCT}` },
+                { value: "90", label: `90${PCT}` },
               ]}
             />
           )}
-          {solveN && <NumField label="Numatomas pasitraukimas" value={form.drop} onChange={(drop) => set({ drop })} suffix="%" />}
-          <More title="Daugiau nustatymų">
-            <NumField label="Reikšmingumo lygis α" hint="0,05 atitinka 90 % PI." value={form.alpha} onChange={(alpha) => set({ alpha })} />
+          {solveN && <NumField label={L("Numatomas pasitraukimas", "Expected dropout")} value={form.drop} onChange={(drop) => set({ drop })} suffix="%" />}
+          <More title={L("Daugiau nustatymų", "More settings")}>
+            <NumField
+              label={L("Reikšmingumo lygis α", "Significance level α")}
+              hint={L("0,05 atitinka 90 % PI.", "0.05 corresponds to a 90% CI.")}
+              value={form.alpha}
+              onChange={(alpha) => set({ alpha })}
+            />
             {!abel && (
               <NumField
-                label="CV gautas tyrime su tiek tiriamųjų"
-                hint="Mažo tyrimo CV nepatikimas. Parodysime atsargesnį variantą."
+                label={L("CV gautas tyrime su tiek tiriamųjų", "The CV came from a study with this many subjects")}
+                hint={L("Mažo tyrimo CV nepatikimas. Parodysime atsargesnį variantą.", "The CV of a small study is unreliable. We will show a more cautious option.")}
                 value={form.pilot}
                 onChange={(pilot) => set({ pilot })}
                 decimal={false}
-                placeholder="neprivaloma"
+                placeholder={L("neprivaloma", "optional")}
               />
             )}
           </More>
           {ok && evaluable !== null && (
-            <Peek
-              value={solveN ? fmtInt(evaluable) : fmtPct(achieved, 1)}
-              label={solveN ? ltPlural(evaluable, ["vertinamas tiriamasis", "vertinami tiriamieji", "vertinamų tiriamųjų"]) : "galia"}
-            />
+            <Peek value={solveN ? fmtInt(evaluable) : fmtPct(achieved, 1)} label={solveN ? evaluableWord(evaluable) : L("galia", "power")} />
           )}
         </form>
 
         <div className="result" aria-live="polite">
           {!ok ? (
-            <p className="result-empty">Pataisykite pažymėtus laukus.</p>
+            <p className="result-empty">{L("Pataisykite pažymėtus laukus.", "Fix the marked fields.")}</p>
           ) : abel && !abelFresh ? (
-            <p className="result-empty">Simuliuojama…</p>
+            <p className="result-empty">{L("Simuliuojama…", "Simulating…")}</p>
           ) : solveN ? (
             evaluable !== null ? (
               <div className={busy && abel ? "stale" : ""}>
-                <span className="eyebrow">Atsakymas</span>
+                <span className="eyebrow">{L("Rezultatas", "Result")}</span>
                 <p className="big">{fmtInt(evaluable)}</p>
-                <p className="big-unit">
-                  {ltPlural(evaluable, ["vertinamas tiriamasis", "vertinami tiriamieji", "vertinamų tiriamųjų"])}, galia{" "}
-                  {fmtPct(raisedToMinimum && !abel ? powerTOST(input, evaluable) : achieved)}
+                <p className="big-unit">{evaluableWord(evaluable)}</p>
+                <p className="result-brief">
+                  {L(
+                    `Jei tikrasis GMR ${fmtShort(theta0 * 100)} %, o CV ${fmtPct(cv)}, tyrimas bioekvivalentiškumą parodys `,
+                    `If the true GMR is ${fmtShort(theta0 * 100)}% and the CV ${fmtPct(cv)}, the study will show bioequivalence with `,
+                  )}
+                  <b>{fmtPct(raisedToMinimum && !abel ? powerTOST(input, evaluable) : achieved)}</b> {L("tikimybe.", "probability.")}
+                  {dropout > 0 && enrolled !== null && (
+                    <>
+                      {" "}
+                      {L("Įtraukite", "Dose")} <b>{fmtInt(enrolled)}</b> {plural(enrolled, ["tiriamąjį", "tiriamuosius", "tiriamųjų"], ["subject", "subjects"])}
+                      {L(`, nes ${fmtPct(dropout, 0)} pasitrauks.`, `, as ${fmtPct(dropout, 0)} will drop out.`)}
+                    </>
+                  )}
                 </p>
-                {dropout > 0 && enrolled !== null && (
-                  <p className="result-line">
-                    Įtraukite <b>{fmtInt(enrolled)}</b> {ltPlural(enrolled, ["tiriamąjį", "tiriamuosius", "tiriamųjų"])}, nes {fmtPct(dropout, 0)} pasitrauks.
-                  </p>
-                )}
                 {abel && (
                   <p className="result-alt">
-                    Ribos su CV {fmtPct(cv, 0)}: {fmtShort(theta1 * 100)}–{fmtShort(theta2 * 100)} %. Taškinis įvertis turi likti 80–125 %.
+                    {L(
+                      `Ribos su CV ${fmtPct(cv, 0)}: ${fmtShort(theta1 * 100)}–${fmtShort(theta2 * 100)} %. Taškinis įvertis turi likti 80–125 %.`,
+                      `Limits at a CV of ${fmtPct(cv, 0)}: ${fmtShort(theta1 * 100)}–${fmtShort(theta2 * 100)}%. The point estimate must stay within 80–125%.`,
+                    )}
                   </p>
                 )}
-                {raisedToMinimum && <Notice kind="info" title={`Skaičiavimas davė ${fmtInt(n!)}, bet EMA reikalauja bent 12 vertinamų tiriamųjų.`} />}
+                {raisedToMinimum && (
+                  <Notice
+                    kind="info"
+                    title={L(
+                      `Skaičiavimas davė ${fmtInt(n!)}, bet EMA reikalauja bent 12 vertinamų tiriamųjų.`,
+                      `The calculation gave ${fmtInt(n!)}, but the EMA requires at least 12 evaluable subjects.`,
+                    )}
+                  />
+                )}
                 {!abel && cv > ABEL_SWITCH_CV && form.limits === "std" && (
-                  <Notice kind="info" title="CV viršija 30 %.">
-                    Jei tai referencinio vaisto kintamumas, replikatų dizainas su ABEL gali gerokai sumažinti imtį.{" "}
+                  <Notice kind="info" title={L("CV viršija 30 %.", "The CV exceeds 30%.")}>
+                    {L(
+                      "Jei tai referencinio vaisto kintamumas, replikatų dizainas su ABEL gali gerokai sumažinti imtį.",
+                      "If this is the variability of the reference product, a replicate design with ABEL can cut the sample considerably.",
+                    )}{" "}
                     <button type="button" className="link" onClick={() => set({ method: "abel", gmr: "90" })}>
-                      Perjungti į ABEL
+                      {L("Perjungti į ABEL", "Switch to ABEL")}
                     </button>
                   </Notice>
                 )}
+                {report && <StatementBox statement={report.statement} />}
               </div>
             ) : (
-              <Notice title="Tinkamos imties rasti nepavyko." />
+              <Notice title={L("Tinkamos imties rasti nepavyko.", "No suitable sample size was found.")} />
             )
           ) : (
             <div className={busy && abel ? "stale" : ""}>
-              <span className="eyebrow">Galia</span>
+              <span className="eyebrow">{L("Galia", "Power")}</span>
               <p className="big">{fmtPct(achieved, 1)}</p>
-              <p className="big-unit">su {fmtInt(inputN)} {ltPlural(inputN, ["vertinamu tiriamuoju", "vertinamais tiriamaisiais", "vertinamų tiriamųjų"])}</p>
-              {inputN % steps !== 0 && <p className="result-alt">Sekos nesubalansuotos: {steps} sekos, {fmtInt(inputN)} tiriamųjų.</p>}
+              <p className="big-unit">
+                {L("su", "with")} {fmtInt(inputN)}{" "}
+                {plural(inputN, ["vertinamu tiriamuoju", "vertinamais tiriamaisiais", "vertinamų tiriamųjų"], ["evaluable subject", "evaluable subjects"])}
+              </p>
+              {inputN % steps !== 0 && (
+                <p className="result-alt">
+                  {L(
+                    `Sekos nesubalansuotos: ${steps} sekos, ${fmtInt(inputN)} tiriamųjų.`,
+                    `Unbalanced sequences: ${steps} sequences, ${fmtInt(inputN)} subjects.`,
+                  )}
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -307,19 +356,24 @@ export function BeTab({ active }: { active: boolean }) {
 
       {tol && evaluable !== null && (
         <section className="block" aria-labelledby="tol-title">
-          <h2 id="tol-title">Kiek planas atlaiko?</h2>
-          <p className="block-lead">Su {fmtInt(evaluable)} vertinamais tiriamaisiais galia liks bent 70 %, jei kiekvienas dydis atskirai pakis ne daugiau nei taip:</p>
+          <h2 id="tol-title">{L("Kiek planas atlaiko?", "How much can the plan take?")}</h2>
+          <p className="block-lead">
+            {L(
+              `Su ${fmtInt(evaluable)} vertinamais tiriamaisiais galia liks bent 70 %, jei kiekvienas dydis atskirai pakis ne daugiau nei taip:`,
+              `With ${fmtInt(evaluable)} evaluable subjects, power stays at 70% or more as long as each quantity, on its own, moves no further than this:`,
+            )}
+          </p>
           <dl className="tolerance">
             <div>
-              <dt>CV iki</dt>
+              <dt>{L("CV iki", "CV up to")}</dt>
               <dd>{fmtPct(tol.cvMax)}</dd>
             </div>
             <div>
-              <dt>GMR {theta0 <= 1 ? "nuo" : "iki"}</dt>
+              <dt>GMR {theta0 <= 1 ? L("nuo", "down to") : L("iki", "up to")}</dt>
               <dd>{fmtPct(tol.gmrWorst)}</dd>
             </div>
             <div>
-              <dt>Vertinamų bent</dt>
+              <dt>{L("Vertinamų bent", "Evaluable, at least")}</dt>
               <dd>{fmtInt(tol.nMin)}</dd>
             </div>
           </dl>
@@ -327,13 +381,24 @@ export function BeTab({ active }: { active: boolean }) {
       )}
 
       {Number.isFinite(safeCv) && safeN !== undefined && (
-        <Notice kind="info" title={`Atsargesnis variantas: viršutinė 80 % CV riba ${fmtPct(safeCv)}, tada reikėtų ${fmtInt(safeN)} tiriamųjų.`} />
+        <Notice
+          kind="info"
+          title={L(
+            `Atsargesnis variantas: viršutinė 80 % CV riba ${fmtPct(safeCv)}, tada reikėtų ${fmtInt(safeN)} tiriamųjų.`,
+            `A more cautious option: the upper 80% CV limit is ${fmtPct(safeCv)}, which would need ${fmtInt(safeN)} subjects.`,
+          )}
+        />
       )}
 
       {grid && (
         <section className="block" aria-labelledby="grid-title">
-          <h2 id="grid-title">Kas, jeigu CV ar GMR kitokie?</h2>
-          <p className="block-lead">Vertinamų tiriamųjų skaičius, {DESIGNS[design].label}, galia {fmtPct(target, 0)}.</p>
+          <h2 id="grid-title">{L("Kas, jeigu CV ar GMR kitokie?", "What if the CV or GMR were different?")}</h2>
+          <p className="block-lead">
+            {L(
+              `Vertinamų tiriamųjų skaičius, ${designLabel(design)}, galia ${fmtPct(target, 0)}.`,
+              `Evaluable subjects, ${designLabel(design)}, ${fmtPct(target, 0)} power.`,
+            )}
+          </p>
           <div className="table-scroll">
             <table className="scenarios">
               <thead>
@@ -365,18 +430,20 @@ export function BeTab({ active }: { active: boolean }) {
 
       {abel && abelFresh && abelResult.scenarios.length > 0 && (
         <section className={`block ${busy ? "stale" : ""}`} aria-labelledby="abel-title">
-          <h2 id="abel-title">Kas, jeigu CV ar GMR kitokie?</h2>
+          <h2 id="abel-title">{L("Kas, jeigu CV ar GMR kitokie?", "What if the CV or GMR were different?")}</h2>
           <p className="block-lead">
-            Vertinamų tiriamųjų skaičius, {DESIGNS[design].label}, simuliacija. Imtis nebūtinai didėja kartu su CV: kol CV mažesnis
-            už 50 %, ribos plečiasi kartu su juo.
+            {L(
+              `Vertinamų tiriamųjų skaičius, ${designLabel(design)}, simuliacija. Imtis nebūtinai didėja kartu su CV: kol CV mažesnis už 50 %, ribos plečiasi kartu su juo.`,
+              `Evaluable subjects, ${designLabel(design)}, simulated. The sample need not grow with the CV: below a CV of 50%, the limits widen with it.`,
+            )}
           </p>
           <div className="table-scroll">
             <table className="scenarios">
               <thead>
                 <tr>
                   <th>CV</th>
-                  <th className="cell-num">GMR 90 %</th>
-                  <th className="cell-num">GMR 95 %</th>
+                  <th className="cell-num">GMR 90{PCT}</th>
+                  <th className="cell-num">GMR 95{PCT}</th>
                 </tr>
               </thead>
               <tbody>
@@ -401,14 +468,17 @@ export function BeTab({ active }: { active: boolean }) {
 
       {curve && evaluable !== null && (
         <section className="block" aria-labelledby="becurve-title">
-          <h2 id="becurve-title">Kaip galia priklauso nuo imties</h2>
+          <h2 id="becurve-title">{L("Kaip galia priklauso nuo imties", "How power depends on sample size")}</h2>
           <PowerCurve
             xs={curve.xs}
             series={curve.series}
             target={target}
             mark={evaluable}
-            xTitle="Vertinamų tiriamųjų"
-            ariaLabel={`TOST galia pagal imties dydį trims GMR reikšmėms. Su ${evaluable} tiriamųjų galia ${fmtNum(achieved * 100, 1)} procento.`}
+            xTitle={L("Vertinamų tiriamųjų", "Evaluable subjects")}
+            ariaLabel={L(
+              `TOST galia pagal imties dydį trims GMR reikšmėms. Su ${evaluable} tiriamųjų galia ${fmtNum(achieved * 100, 1)} procento.`,
+              `TOST power by sample size for three GMR values. With ${evaluable} subjects, power is ${fmtNum(achieved * 100, 1)} per cent.`,
+            )}
           />
         </section>
       )}

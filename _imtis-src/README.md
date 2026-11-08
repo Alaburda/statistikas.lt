@@ -7,18 +7,30 @@ Projektas or Konsultacija conversation (contact links use
 
 Everything runs client-side in plain TypeScript. `~/repos/powr` proved the idea with
 real R through webR, but its ~30 MB first load is wrong for a phone inside the
-Facebook in-app browser, so the algorithms are ported here and tested against R. UI
-is Lithuanian only; the methods paragraph comes in Lithuanian and English.
+Facebook in-app browser, so the algorithms are ported here and tested against R.
+
+## Languages
+
+Lithuanian at `/imtis/`, English at `/imtis/en/` (`en/index.html`, with its own
+title, description and hreflang links). Both load the same bundle; `src/i18n.ts`
+reads `<html lang>` once, and every UI string is written in place as
+`L("lietuviškai", "in English")`. The LT/EN button in the top bar is a page load
+that keeps the hash, so a calculation keeps its inputs. Numbers follow the page
+(`fmt*` in `format.ts`); the methods paragraphs always come in both languages and
+call `lt*`/`en*` directly. The English page says Yamane where the Lithuanian one
+says Paniotto (same formula), and its contact links write an email, because the
+site's contact form is Lithuanian only.
 
 ## What it does
 
 | Tab | Features | Code |
 |-----|----------|------|
-| Apklausa | Cochran with finite population correction, Paniotto/Yamane, share or mean, design effect, invitations from a response rate (and a warning when even a census can't reach the target), margin from answers already collected, proportional or per-group allocation, worst-case nonresponse bounds | `engine/survey.ts` |
-| Palyginimas | Two means, paired, two proportions (also from an odds ratio, for case-control), A/B test with duration, one-way ANOVA, correlation. Solves n, power or smallest detectable effect. Dropout, allocation ratio, Bonferroni, rank test inflation, SD recovered from a CI, quartiles, two SDs or a pilot | `engine/compare.ts` |
-| Bioekvivalentiškumas | Exact TOST power (Owen's Q) for all 12 PowerTOST designs, n or power, 80–125 and NTI limits, EMA minimum of 12, dosed subjects, tolerance as in `pa.ABE`, upper CV limit, EMA ABEL simulated in a Web Worker | `engine/be.ts`, `engine/abel.ts` |
+| Imtis apklausoms | Cochran with finite population correction, Paniotto/Yamane, share or mean, design effect on both formulas, expected share from a pilot (Wilson limit nearest 50 %), several key estimates with optional Bonferroni, margin of a finished survey, invitations from a response rate (and a warning when even a census can't reach the target), margin from answers already collected, proportional or per-group allocation, worst-case nonresponse bounds | `engine/survey.ts` |
+| Imtis palyginimams | Two means, paired, two proportions (also from an odds ratio, for case-control), A/B test with duration, one-way ANOVA, correlation. Solves n, power or smallest detectable effect. Dropout, allocation ratio, Bonferroni, rank test inflation, SD recovered from a CI, quartiles, two SDs or a pilot | `engine/compare.ts` |
+| Imtis bioekvivalentiškumo tyrimams | Exact TOST power (Owen's Q) for all 12 PowerTOST designs, n or power, 80–125 and NTI limits, EMA minimum of 12, dosed subjects, tolerance as in `pa.ABE`, upper CV limit, EMA ABEL simulated in a Web Worker | `engine/be.ts`, `engine/abel.ts` |
 
-Every result carries a methods paragraph with all inputs spelled out, its references,
+Every result carries a one-sentence statement with an author–year citation (LT/EN, copyable,
+under the number), a methods paragraph with all inputs spelled out, its references,
 R code that reproduces it, G*Power settings where they map cleanly, and a link: all
 inputs live in the URL hash, nothing is stored.
 
@@ -39,9 +51,6 @@ Rscript --vanilla _imtis-src/scripts/reference.R
 - 60 ABEL scenarios: power within 0.4 points, n within one sequence block. Both sides
   are simulations (100,000 runs here, as in `sampleN.scABEL`), so n can legitimately
   differ by a block near the target.
-
-The counts quoted on the page are in `components/Verified.tsx`; `verified.test.ts`
-fails if they drift from the reference data.
 
 ## Development
 
@@ -70,6 +79,7 @@ GA4 (production only), via `src/analytics.ts`. Never send the numbers people typ
 | `imtis_tab` | `tab` |
 | `imtis_copy` | `what` (text-lt, text-en, link, r) |
 | `imtis_cta_click` | `location` |
+| `imtis_lang` | `to` (lt, en) |
 
 ## Known limits / next steps
 

@@ -13,44 +13,89 @@
 }
 
 /* ---- Choosing the kind of study ---- */
+.choose-lead {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
 .choose {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  border: 2px solid var(--ink);
+  gap: 12px;
 }
+/* Separate cards with a raised edge read as three things to press, not as one banner. */
 .choose button {
   display: flex;
   flex-direction: column;
   gap: 4px;
   text-align: left;
-  border: 0;
-  border-right: 2px solid var(--ink);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
   padding: 14px 16px;
   background: var(--paper);
   min-width: 0;
+  position: relative;
+  overflow: hidden;
 }
-.choose button:last-child {
-  border-right: 0;
+.choose button > :not(.choose-art) {
+  position: relative;
 }
 .choose button b {
+  padding-right: 48px;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+/* A faint drawing of the study in the corner: clipboard, flasks, PK curves. */
+.choose-art {
+  position: absolute;
+  right: -10px;
+  bottom: -12px;
+  width: 112px;
+  height: 112px;
+  color: var(--blue);
+  opacity: 0.18;
+  pointer-events: none;
+  transform: rotate(-6deg);
+}
+.choose button:hover:not(.on) .choose-art {
+  color: var(--ink);
+  opacity: 0.16;
+}
+.choose button.on .choose-art {
+  color: #fff;
+  opacity: 0.22;
 }
 .choose button span {
+  flex: 1;
   font-size: 13.5px;
   line-height: 1.35;
   color: var(--ink-2);
 }
+.choose button i {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--blue);
+}
 .choose button:hover:not(.on) {
-  background: var(--paper-2);
+  background: var(--yellow);
+}
+.choose button:hover:not(.on) span,
+.choose button:hover:not(.on) i {
+  color: var(--ink);
 }
 .choose button.on {
   background: var(--blue);
   color: #fff;
+  box-shadow: none;
+  transform: translate(4px, 4px);
 }
-.choose button.on span {
+.choose button.on span,
+.choose button.on i {
   color: #fff;
 }
 
@@ -121,6 +166,25 @@
   background: var(--paper-2);
   border-left: 1px solid var(--line);
 }
+.slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.slider-head output {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+}
+.slider {
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
 .hint {
   margin: 0;
   font-size: 13.5px;
@@ -153,6 +217,58 @@
   background: var(--ink);
   border-color: var(--ink);
   color: #fff;
+}
+/* Study designs: a small drawing over each label, in an even grid. */
+.segmented.with-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+}
+.segmented.with-icons button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px 9px;
+  line-height: 1.25;
+  text-align: center;
+}
+.seg-icon {
+  display: block;
+  color: var(--blue);
+}
+.segmented button.on .seg-icon {
+  color: #fff;
+}
+.design-note {
+  display: block;
+  padding: 8px 10px;
+  background: var(--paper-2);
+  border-left: 3px solid var(--blue);
+  color: var(--ink);
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.lang-switch:hover {
+  border-color: var(--ink);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .check {
@@ -256,16 +372,89 @@
   font-size: 16px;
   font-weight: 500;
 }
-.result-line {
+.result-line,
+.result-brief {
   margin: 14px 0 0;
   padding-top: 12px;
   border-top: 1px solid var(--line);
   font-size: 16px;
 }
-.result-line b {
+.result-brief {
+  line-height: 1.5;
+}
+.result-line b,
+.result-brief b {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 17px;
+}
+
+.report-block {
+  scroll-margin-top: 90px;
+}
+
+/* The formal sentence to paste into a paper or protocol. */
+.statement {
+  margin-top: 18px;
+  border: 1px solid var(--ink);
+  background: var(--paper-2);
+}
+.statement-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 6px 6px 12px;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+}
+.statement-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.statement-lang {
+  display: flex;
+}
+.statement-lang button {
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border: 1px solid var(--ink-3);
+  background: var(--paper);
+}
+.statement-lang button + button {
+  border-left: 0;
+}
+.statement-lang button.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.statement-text {
+  margin: 0;
+  padding: 12px 12px 4px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.statement-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 8px 12px 12px;
+}
+.statement-actions button:not(.link) {
+  padding: 5px 12px;
+  font-size: 14px;
+}
+.statement-actions .link {
+  font-size: 14px;
 }
 .result-alt {
   margin: 8px 0 0;
@@ -340,6 +529,7 @@ table.scenarios th {
   white-space: nowrap;
 }
 table.scenarios td.current,
+table.keys td.current,
 table.scenarios tr.current-row td {
   background: rgba(233, 185, 58, 0.3);
   font-weight: 600;
@@ -351,6 +541,18 @@ table.groups input {
   padding: 6px 8px;
   font: inherit;
   font-size: 15px;
+}
+table.groups select {
+  border: 1px solid var(--line);
+  padding: 6px 4px;
+  font: inherit;
+  font-size: 14px;
+  background: var(--paper);
+  color: var(--ink);
+}
+table.groups input:disabled {
+  background: var(--paper-2);
+  color: var(--ink-3);
 }
 table.groups input.num {
   min-width: 80px;
@@ -508,26 +710,6 @@ table.groups tfoot td {
   line-height: 1.5;
 }
 
-/* ---- Verified ---- */
-.verified-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  margin-bottom: 14px;
-}
-.verified-grid p {
-  margin: 0;
-  font-size: 15px;
-  color: var(--ink-2);
-}
-.verified-grid .stat {
-  font-family: var(--font-mono);
-  font-size: 40px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-}
-
 @media (max-width: 820px) {
   /* Two rows of header would take a seventh of a phone screen. */
   .topbar {
@@ -566,23 +748,66 @@ table.groups tfoot td {
     grid-template-columns: minmax(0, 1fr);
   }
   .choose button {
-    border-right: 0;
-    border-bottom: 2px solid var(--ink);
     padding: 10px 14px;
   }
-  .choose button:last-child {
-    border-bottom: 0;
+  .choose-art {
+    width: 88px;
+    height: 88px;
+    bottom: -8px;
   }
-  .verified-grid,
   .tolerance {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .verified-grid {
-    gap: 14px;
   }
   .tolerance div {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+  /* Five inputs do not fit across a phone: each estimate becomes a labelled card. */
+  table.keys,
+  table.keys tbody,
+  table.keys td {
+    display: block;
+  }
+  table.keys thead {
+    display: none;
+  }
+  table.keys tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  table.keys tr td,
+  table.keys tr:last-child td {
+    padding: 0;
+    border: 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  table.keys td:first-child {
+    grid-column: 1 / -1;
+    padding-right: 36px;
+  }
+  table.keys td:last-child {
+    position: absolute;
+    top: 14px;
+    right: 0;
+  }
+  table.keys td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+  table.keys input,
+  table.keys input.num,
+  table.keys select {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
   }
   .cta-panel {
     grid-template-columns: minmax(0, 1fr);

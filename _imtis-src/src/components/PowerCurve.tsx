@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { fmtInt, fmtPct } from "../format";
+import { L, PCT } from "../i18n";
 
 // Power against sample size in plain SVG. Colour is never the only channel: every
 // line also has its own dash pattern, a legend entry and a direct label.
@@ -117,7 +118,8 @@ export function PowerCurve({
             <g key={y}>
               <line x1={M.left} x2={W - M.right} y1={py(y)} y2={py(y)} stroke="var(--line)" strokeWidth="1" />
               <text x={M.left - 8} y={py(y) + 4} textAnchor="end" className="tick">
-                {y * 100} %
+                {y * 100}
+                {PCT}
               </text>
             </g>
           ))}
@@ -131,7 +133,7 @@ export function PowerCurve({
           </text>
           <line x1={M.left} x2={W - M.right} y1={py(target)} y2={py(target)} stroke="var(--ink-2)" strokeWidth="1" />
           <text x={M.left + 6} y={py(target) - 6} className="tick strong">
-            tikslas {fmtPct(target, 0)}
+            {L("tikslas", "target")} {fmtPct(target, 0)}
           </text>
           {series.map((s) => (
             <polyline
