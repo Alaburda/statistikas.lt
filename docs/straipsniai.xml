@@ -677,7 +677,504 @@ Verslui: klientų išlaikymas
   <category>R</category>
   <guid>https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html</guid>
   <pubDate>Sat, 24 Oct 2026 21:00:00 GMT</pubDate>
-  <media:content url="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png" medium="image" type="image/png" height="90" width="144"/>
+  <media:content url="https://statistikas.lt/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize_files/figure-html/km-lytis-1.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Kaip apskaičiuoti Cronbacho alfa (α)?</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kas-yra-cronbacho-α" class="level2">
+<h2 class="anchored" data-anchor-id="kas-yra-cronbacho-α">Kas yra Cronbacho α?</h2>
+<p>Jei jūsų klausimyne yra skalė – pavyzdžiui, šeši teiginiai apie stresą, vertinami nuo 1 („visiškai nesutinku“) iki 5 („visiškai sutinku“) – prieš skaičiuodami skalės balą turite parodyti, kad teiginiai <strong>matuoja tą patį</strong>. Tam skirtas Cronbacho alfa (α) koeficientas – skalės vidinio suderinamumo (patikimumo) rodiklis.</p>
+<p>α svyruoja nuo 0 iki 1 (gali būti ir neigiamas – tai beveik visada reiškia klaidą duomenyse). Kuo teiginiai labiau koreliuoja tarpusavyje, tuo α didesnis.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kaip interpretuoti α (George ir Mallery, 2003)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>≥ 0,90</strong> – puikus</li>
+<li><strong>≥ 0,80</strong> – geras</li>
+<li><strong>≥ 0,70</strong> – priimtinas (dažniausiai naudojama riba)</li>
+<li><strong>≥ 0,60</strong> – abejotinas</li>
+<li><strong>&lt; 0,60</strong> – prastas</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="dažniausia-klaida-atvirkštiniai-teiginiai" class="level2">
+<h2 class="anchored" data-anchor-id="dažniausia-klaida-atvirkštiniai-teiginiai">Dažniausia klaida: atvirkštiniai teiginiai</h2>
+<p>Klausimynuose dalis teiginių suformuluojami atvirkščiai, pvz., streso skalėje „Jaučiuosi ramus prieš egzaminus“. Didelis sutikimas su juo reiškia <em>mažą</em> stresą. Jei tokio teiginio neperkoduosite (1 ↔︎ 5, 2 ↔︎ 4), jis koreliuos su likusia skale neigiamai, o α smarkiai sumažės – kartais net taps neigiamas.</p>
+<p>Todėl visada pažiūrėkite į <strong>pataisytą teiginio ir skalės koreliaciją</strong> (angl. <em>corrected item–total correlation</em>). Neigiama reikšmė – beveik visada neperkoduotas teiginys. Reikšmė, mažesnė nei 0,30, rodo, kad teiginys silpnai dera su kitais.</p>
+</section>
+<section id="kaip-apskaičiuoti-α-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-apskaičiuoti-α-nemokamai">Kaip apskaičiuoti α nemokamai</h2>
+<p>Mūsų <a href="../../analize/">nemokamame analizės įrankyje</a> α apskaičiuojamas be programų diegimo – duomenys niekur nesiunčiami:</p>
+<ol type="1">
+<li>Įkelkite CSV, Excel arba SPSS (.sav) failą.</li>
+<li>Pridėkite analizės bloką <strong>„Skalės patikimumas (Cronbacho α)“</strong> ir pažymėkite skalės teiginius.</li>
+<li>Jei kuris nors teiginys koreliuoja neigiamai, įrankis tai pažymės ir pasiūlys jį <strong>perkoduoti vienu paspaudimu</strong> – perkodavimas atsiras skiltyje „Duomenų paruošimas“ ir bus aprašytas ataskaitoje.</li>
+<li>Skiltyje „Duomenų paruošimas“ apskaičiuokite skalės balą (teiginių vidurkį) – jį galėsite naudoti tolesnėse analizėse.</li>
+</ol>
+<p><a href="../../analize/?demo=apklausa&amp;test=cronbach" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+<p>Pavyzdyje streso skalės teiginiai S3 ir S5 suformuluoti atvirkščiai. Neperkodavus α = −0,26; perkodavus – α = 0,89.</p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<p>Metodų skyriuje:</p>
+<blockquote class="blockquote">
+<p>Skalių vidiniam suderinamumui įvertinti apskaičiuoti Cronbacho alfa (α) koeficientai; α ≥ 0,70 laikytas priimtinu. Teiginiai S3 ir S5 prieš analizę perkoduoti atvirkščiai.</p>
+</blockquote>
+<p>Rezultatų skyriuje:</p>
+<blockquote class="blockquote">
+<p>Streso skalės (6 teiginiai) vidinis suderinamumas buvo geras: Cronbacho α = 0,89 (n = 196). Pataisytos teiginių ir skalės koreliacijos svyravo nuo 0,66 iki 0,75; pašalinus bet kurį teiginį, α nepadidėtų.</p>
+</blockquote>
+</section>
+<section id="ko-α-nepasako" class="level2">
+<h2 class="anchored" data-anchor-id="ko-α-nepasako">Ko α nepasako</h2>
+<ul>
+<li><strong>α nėra vienmatiškumo įrodymas.</strong> Aukštas α galimas ir tada, kai skalė matuoja du susijusius dalykus. Struktūrai patikrinti naudojama faktorinė analizė.</li>
+<li><strong>α priklauso nuo teiginių skaičiaus.</strong> Ilga skalė turės aukštą α net esant vidutinėms koreliacijoms, o dviejų teiginių skalei geriau pateikti jų tarpusavio koreliaciją.</li>
+<li><strong>Per aukštas α (&gt; 0,95)</strong> gali reikšti, kad teiginiai beveik pažodžiui kartoja vienas kitą.</li>
+</ul>
+</section>
+<section id="literatūra" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="literatūra">Literatūra</h2>
+<p>Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <em>Psychometrika, 16</em>(3), 297–334. https://doi.org/10.1007/BF02310555</p>
+<p>George, D., &amp; Mallery, P. (2003). <em>SPSS for Windows step by step: A simple guide and reference</em> (4th ed.). Allyn &amp; Bacon.</p>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>klausimynai</category>
+  <category>patikimumas</category>
+  <guid>https://statistikas.lt/posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Koreliacijų matrica pagal APA: kaip ją sudaryti baigiamajam darbui</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kam-reikalinga-koreliacijų-matrica" class="level2">
+<h2 class="anchored" data-anchor-id="kam-reikalinga-koreliacijų-matrica">Kam reikalinga koreliacijų matrica?</h2>
+<p>Kai tyrime yra kelios skalės (pvz., stresas, pasitenkinimas studijomis, miego trukmė, studijų vidurkis), skaitytojui svarbu matyti visus jų tarpusavio ryšius vienoje vietoje. Todėl beveik kiekviename kiekybiniame baigiamajame darbe yra lentelė su:</p>
+<ul>
+<li>kiekvieno kintamojo <strong>vidurkiu (M)</strong> ir <strong>standartiniu nuokrypiu (SN)</strong>;</li>
+<li>visomis kintamųjų porų <strong>koreliacijomis</strong> apatiniame trikampyje;</li>
+<li><strong>žvaigždutėmis</strong>, žyminčiomis reikšmingumą, ir pastaba po lentele.</li>
+</ul>
+</section>
+<section id="kaip-ji-atrodo" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-ji-atrodo">Kaip ji atrodo</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Kintamasis</th>
+<th>M</th>
+<th>SN</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Miego trukmė</td>
+<td>7,15</td>
+<td>0,98</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2. Studijų vidurkis</td>
+<td>7,93</td>
+<td>0,91</td>
+<td>0,14*</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>3. Savijauta prieš programą</td>
+<td>57,74</td>
+<td>10,47</td>
+<td>0,18*</td>
+<td>0,20**</td>
+</tr>
+</tbody>
+</table>
+<p><em>Pastaba.</em> n = 192–196. * p &lt; 0,05; ** p &lt; 0,01; *** p &lt; 0,001.</p>
+<p>Keli APA principai:</p>
+<ul>
+<li>Pateikiamas tik <strong>apatinis trikampis</strong> – viršutinis jį kartotų.</li>
+<li>Paskutinis stulpelis praleidžiamas, nes jame būtų tik brūkšnys.</li>
+<li>Jei skirtingoms poroms trūksta skirtingų reikšmių (šalinama poromis), pastaboje nurodomas n intervalas.</li>
+</ul>
+</section>
+<section id="kaip-sudaryti-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-sudaryti-nemokamai">Kaip sudaryti nemokamai</h2>
+<p>SPSS tokią lentelę tenka perrašinėti rankomis iš kelių išvesties langų. <a href="../../analize/">Nemokamame analizės įrankyje</a>:</p>
+<ol type="1">
+<li>Pasirinkite <strong>„Koreliacijų matrica“</strong>.</li>
+<li>Pažymėkite kintamuosius (eilės tvarka lentelėje sutaps su sąrašo tvarka).</li>
+<li>Pasirinkite koeficientą: <strong>Pirsono r</strong> kiekybiniams, apytiksliai normaliems kintamiesiems arba <strong><a href="../../posts/spirmeno-koreliacija/spirmeno-koreliacija.html">Spirmeno ρ</a></strong> – ranginiams.</li>
+<li>Atsisiųskite Word ataskaitą – lentelė jau bus APA formato, su pastaba.</li>
+</ol>
+<p><a href="../../analize/?demo=apklausa&amp;test=cormatrix" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+<p>Jei kintamieji – skalių balai, pirmiausia juos apskaičiuokite skiltyje „Duomenų paruošimas“ ir patikrinkite skalių <a href="../../posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html">patikimumą (Cronbacho α)</a>.</p>
+</section>
+<section id="kaip-aprašyti-tekste" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-tekste">Kaip aprašyti tekste</h2>
+<p>Nereikia kartoti visos lentelės – aptarkite svarbiausius ryšius:</p>
+<blockquote class="blockquote">
+<p>Kintamųjų tarpusavio koreliacijos pateiktos 2 lentelėje. Savijauta prieš programą silpnai, bet statistiškai reikšmingai koreliavo su studijų vidurkiu (r = 0,20, p &lt; 0,01) ir miego trukme (r = 0,18, p &lt; 0,05).</p>
+</blockquote>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>koreliacija</category>
+  <category>APA</category>
+  <guid>https://statistikas.lt/posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Post-hoc testai po ANOVA: Tukey HSD ar Games–Howell?</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/post-hoc-testai-po-anova/post-hoc-testai-po-anova.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kam-reikalingi-post-hoc-testai" class="level2">
+<h2 class="anchored" data-anchor-id="kam-reikalingi-post-hoc-testai">Kam reikalingi post-hoc testai?</h2>
+<p><a href="../../posts/kada-rinktis-anova/kada-rinktis-anova.html">Vienfaktorė ANOVA</a> atsako į vieną klausimą: ar <em>bent dvi</em> grupės skiriasi? Jei rezultatas reikšmingas, natūralus kitas klausimas – <strong>kurios būtent</strong>. Lyginti visas poras atskirais t testais negalima: su keturiomis grupėmis būtų šeši testai, o tikimybė bent kartą gauti klaidingai reikšmingą rezultatą išaugtų nuo 5 % iki ~26 %. Post-hoc testai palygina visas poras ir <strong>pakoreguoja p reikšmes</strong> daugybiniams palyginimams.</p>
+</section>
+<section id="kurį-testą-rinktis" class="level2">
+<h2 class="anchored" data-anchor-id="kurį-testą-rinktis">Kurį testą rinktis?</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Paprasta taisyklė
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Tukey HSD</strong> – kai grupių dispersijos panašios (Levene testas p ≥ 0,05). Tinka ir nevienodo dydžio grupėms (Tukey–Kramer variantas).</li>
+<li><strong>Games–Howell</strong> – kai dispersijos skiriasi (Levene p &lt; 0,05), ypač jei skiriasi ir grupių dydžiai.</li>
+<li><strong>Dunno testas</strong> – po neparametrinio <a href="../../posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html">Kruskal–Wallis testo</a>; p reikšmės koreguojamos (pvz., Holmo metodu).</li>
+</ul>
+</div>
+</div>
+<p>Games–Howell nereikalauja vienodų dispersijų, todėl kai kurie autoriai rekomenduoja jį naudoti visada. Kai dispersijos iš tiesų panašios, abiejų testų rezultatai beveik sutampa.</p>
+</section>
+<section id="kaip-atlikti-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-nemokamai">Kaip atlikti nemokamai</h2>
+<p><a href="../../analize/">Nemokamame analizės įrankyje</a> post-hoc testas pridedamas <strong>automatiškai</strong>, kai ANOVA lyginamos trys ar daugiau grupių:</p>
+<ul>
+<li>įrankis atlieka Levene (Brown–Forsythe) testą;</li>
+<li>pagal jo rezultatą parenka Tukey HSD arba Games–Howell;</li>
+<li>pateikia lentelę su vidurkių skirtumais, 95 % pasikliautinaisiais intervalais ir pakoreguotomis p reikšmėmis;</li>
+<li>jei duomenys nenormalūs, pasiūlo pereiti prie Kruskal–Wallis testo, kuris pateikia Dunno porinius palyginimus.</li>
+</ul>
+<p><a href="../../analize/?demo=apklausa&amp;test=anova" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<blockquote class="blockquote">
+<p>Vienfaktorė ANOVA parodė, kad nuovargis dėl studijų statistiškai reikšmingai skyrėsi tarp studijų sričių, F(3, 196) = 3,23, p = 0,024, η² = 0,05. Tukey HSD porinis palyginimas atskleidė, kad sveikatos mokslų studentai (M = 3,27; SN = 1,20) jautėsi labiau pervargę nei socialinių mokslų studentai (M = 2,71; SN = 1,14; p = 0,044). Kiti skirtumai tarp grupių porų nebuvo statistiškai reikšmingi.</p>
+</blockquote>
+</section>
+<section id="kai-anova-reikšminga-o-nė-viena-pora-ne" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kai-anova-reikšminga-o-nė-viena-pora-ne">Kai ANOVA reikšminga, o nė viena pora – ne</h2>
+<p>Taip nutinka, ypač kai grupių daug, o skirtumai nedideli: bendras testas „sujungia“ visų grupių informaciją, o poriniai palyginimai su pataisa yra konservatyvesni. Tokiu atveju sąžiningai parašykite, kad bendras skirtumas nustatytas, bet konkrečių porų išskirti nepavyko – ir nurodykite didžiausią skirtumą su jo pasikliautinuoju intervalu.</p>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>ANOVA</category>
+  <category>post-hoc</category>
+  <guid>https://statistikas.lt/posts/post-hoc-testai-po-anova/post-hoc-testai-po-anova.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Priklausomų imčių t testas: kaip palyginti matavimus prieš ir po</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kada-jį-taikyti" class="level2">
+<h2 class="anchored" data-anchor-id="kada-jį-taikyti">Kada jį taikyti?</h2>
+<p>Priklausomų imčių (porinis) t testas lygina <strong>du tų pačių žmonių matavimus</strong>: savijautą prieš ir po programos, žinias prieš ir po mokymų, kraujospūdį prieš ir po vaisto. Svarbiausia – kiekvienam žmogui turite dvi reikšmes.</p>
+<p>Jei lyginate <strong>skirtingų</strong> žmonių grupes (pvz., vyrus ir moteris), reikia <a href="../../posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html">nepriklausomų imčių t testo</a>.</p>
+<p>Testas iš esmės paprastas: kiekvienam žmogui apskaičiuojamas pokytis (po − prieš) ir tikrinama, ar vidutinis pokytis skiriasi nuo nulio.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prielaidos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Matavimai <strong>kiekybiniai</strong> (balai, svoris, laikas).</li>
+<li><strong>Skirtumai</strong> (ne patys matavimai!) pasiskirstę apytiksliai normaliai. Kai imtis didesnė nei ~30, testas atsparus nedideliems nukrypimams.</li>
+<li>Jei skirtumai aiškiai nenormalūs arba duomenys ranginiai (Likerto teiginiai), rinkitės <a href="../../posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.html">Wilcoxono ženklų rangų testą</a>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="efekto-dydis-coheno-d_z" class="level2">
+<h2 class="anchored" data-anchor-id="efekto-dydis-coheno-d_z">Efekto dydis: Coheno d_z</h2>
+<p>p reikšmė pasako, ar pokytis statistiškai reikšmingas, bet ne – ar jis didelis. Poriniam testui efekto dydis skaičiuojamas kaip vidutinis pokytis, padalytas iš pokyčių standartinio nuokrypio (Coheno d_z). Orientyrai: 0,2 – mažas, 0,5 – vidutinis, 0,8 – didelis efektas.</p>
+</section>
+<section id="kaip-atlikti-testą-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-testą-nemokamai">Kaip atlikti testą nemokamai</h2>
+<ol type="1">
+<li>Įkelkite duomenis į <a href="../../analize/">nemokamą analizės įrankį</a> – kiekvienas matavimas turi būti atskiras stulpelis (pvz., <code>savijauta_pries</code> ir <code>savijauta_po</code>).</li>
+<li>Pasirinkite <strong>„Priklausomų imčių t testas“</strong> ir abu matavimus.</li>
+<li>Įrankis automatiškai patikrins skirtumų normalumą; jei prielaida netenkinama, pasiūlys vienu paspaudimu pereiti prie Wilcoxono testo – ir tai bus paminėta ataskaitos metodų dalyje.</li>
+</ol>
+<p><a href="../../analize/?demo=apklausa&amp;test=paired_ttest" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<blockquote class="blockquote">
+<p>Priklausomų imčių t testas parodė, kad savijautos balas po programos (M = 62,38; SN = 12,02) buvo statistiškai reikšmingai aukštesnis nei prieš programą (M = 57,90; SN = 10,37): vidutinis pokytis 4,47 (95 % PI [3,52; 5,43]), t(195) = 9,23, p &lt; 0,001, d_z = 0,66.</p>
+</blockquote>
+<p>Atkreipkite dėmesį: laisvės laipsnių skaičius lygus porų skaičiui minus vienas (čia 196 − 1 = 195). Jei kai kurie respondentai neturi vieno iš matavimų, jie į analizę neįtraukiami.</p>
+</section>
+<section id="dažnos-klaidos" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="dažnos-klaidos">Dažnos klaidos</h2>
+<ul>
+<li><strong>Naudoti nepriklausomų imčių testą poriniams duomenims.</strong> Toks testas ignoruoja, kad matavimai susiję, ir dažniausiai „nemato“ realaus pokyčio.</li>
+<li><strong>Tikrinti kiekvieno matavimo normalumą atskirai.</strong> Prielaida taikoma skirtumams.</li>
+<li><strong>Pranešti tik p reikšmę.</strong> Pateikite vidurkius, pokytį su pasikliautinuoju intervalu ir efekto dydį.</li>
+</ul>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>t-testas</category>
+  <category>palyginimas</category>
+  <guid>https://statistikas.lt/posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Spirmeno koreliacija: kada rinktis ρ vietoje Pirsono r</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/spirmeno-koreliacija/spirmeno-koreliacija.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="pirsonas-ar-spirmenas" class="level2">
+<h2 class="anchored" data-anchor-id="pirsonas-ar-spirmenas">Pirsonas ar Spirmenas?</h2>
+<p>Abu koeficientai rodo dviejų kintamųjų ryšio stiprumą ir kryptį (nuo −1 iki 1), bet matuoja skirtingus dalykus:</p>
+<ul>
+<li><strong>Pirsono r</strong> – <em>tiesinį</em> ryšį tarp kiekybinių kintamųjų. Jautrus kraštutinėms reikšmėms.</li>
+<li><strong>Spirmeno ρ</strong> (ro) – <em>monotoninį</em> ryšį: ar didėjant vienam kintamajam kitas nuosekliai didėja (ar mažėja), nebūtinai tiesiškai. Skaičiuojamas iš rangų, todėl atsparus išskirtims.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Rinkitės Spirmeno ρ, kai
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>bent vienas kintamasis <strong>ranginis</strong> – pvz., atsakymas į Likerto teiginį;</li>
+<li>duomenys <strong>aiškiai nenormalūs</strong> arba yra kraštutinių reikšmių;</li>
+<li>ryšys monotoninis, bet <strong>netiesinis</strong> (pvz., pradžioje greitai didėja, vėliau išsilygina).</li>
+</ul>
+</div>
+</div>
+<p>Kai abu kintamieji – iš kelių teiginių sudaryti skalių balai, dažniausiai tinka ir Pirsono r. Abejojant naudinga apskaičiuoti abu: jei rezultatai panašūs, išvada patikima.</p>
+</section>
+<section id="kaip-interpretuoti" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-interpretuoti">Kaip interpretuoti</h2>
+<p>Stiprumas vertinamas pagal absoliučią reikšmę: iki 0,1 – nereikšmingas, 0,1–0,3 – silpnas, 0,3–0,5 – vidutinis, 0,5–0,7 – stiprus, virš 0,7 – labai stiprus ryšys. Ženklas rodo kryptį: neigiamas ρ reiškia, kad didėjant vienam kintamajam, kitas mažėja.</p>
+<p>Koreliacija <strong>nerodo priežastingumo</strong> – tik tai, kad kintamieji kinta kartu.</p>
+</section>
+<section id="kaip-apskaičiuoti-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-apskaičiuoti-nemokamai">Kaip apskaičiuoti nemokamai</h2>
+<p><a href="../../analize/">Nemokamame analizės įrankyje</a> pasirinkite <strong>„Spirmeno koreliacija“</strong> ir du kintamuosius. Jei reikia daug porų iš karto, rinkitės <strong>„Koreliacijų matrica“</strong> ir koeficientą „Spirmeno ρ“ – gausite visą <a href="../../posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.html">APA koreliacijų lentelę</a>.</p>
+<p><a href="../../analize/?demo=apklausa&amp;test=spearman" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<blockquote class="blockquote">
+<p>Tarp nuovargio dėl studijų ir pasitenkinimo studijų programa nustatytas silpnas neigiamas statistiškai reikšmingas ryšys: Spirmeno ρ = −0,24, p &lt; 0,001, n = 200.</p>
+</blockquote>
+<p>p reikšmė apskaičiuojama naudojant t aproksimaciją su n − 2 laisvės laipsniais – tai įprastas būdas, kai yra daug susietųjų rangų (Likerto duomenyse jų beveik visada daug).</p>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>koreliacija</category>
+  <category>neparametriniai-testai</category>
+  <guid>https://statistikas.lt/posts/spirmeno-koreliacija/spirmeno-koreliacija.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Wilcoxono ženklų rangų testas: neparametrinis porinis palyginimas</title>
+  <dc:creator>Paulius Alaburda</dc:creator>
+  <link>https://statistikas.lt/posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kada-jį-taikyti" class="level2">
+<h2 class="anchored" data-anchor-id="kada-jį-taikyti">Kada jį taikyti?</h2>
+<p>Wilcoxono ženklų rangų testas – neparametrinė <a href="../../posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.html">priklausomų imčių t testo</a> alternatyva. Jis taip pat lygina <strong>du tų pačių žmonių matavimus</strong>, bet nereikalauja, kad skirtumai būtų pasiskirstę normaliai.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Rinkitės Wilcoxono testą, kai
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>duomenys <strong>ranginiai</strong> – pvz., atsakymai į Likerto teiginius (1–5);</li>
+<li>skirtumai <strong>aiškiai nenormalūs</strong> arba yra kraštutinių reikšmių;</li>
+<li>imtis <strong>maža</strong> ir normalumo patikrinti neįmanoma.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="kaip-jis-veikia" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-jis-veikia">Kaip jis veikia?</h2>
+<ol type="1">
+<li>Kiekvienam žmogui apskaičiuojamas skirtumas (antrasis matavimas − pirmasis).</li>
+<li>Nuliniai skirtumai (niekas nepasikeitė) pašalinami.</li>
+<li>Likę skirtumai surikiuojami pagal absoliutų dydį ir jiems suteikiami rangai.</li>
+<li>Atskirai sumuojami teigiamų ir neigiamų skirtumų rangai. Jei pokyčio nėra, abi sumos turėtų būti panašios.</li>
+</ol>
+<p>Testo statistika paverčiama į z reikšmę (su pataisa susietiesiems rangams – Likerto duomenyse jų labai daug). Efekto dydis skaičiuojamas kaip r = |z| / √n: 0,1 – mažas, 0,3 – vidutinis, 0,5 – didelis.</p>
+</section>
+<section id="kaip-atlikti-testą-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-atlikti-testą-nemokamai">Kaip atlikti testą nemokamai</h2>
+<ol type="1">
+<li>Įkelkite duomenis į <a href="../../analize/">nemokamą analizės įrankį</a>, kur kiekvienas matavimas yra atskiras stulpelis.</li>
+<li>Pasirinkite <strong>„Wilcoxono ženklų rangų testas“</strong> ir abu matavimus.</li>
+<li>Gausite rangų lentelę (kiek žmonių rezultatas padidėjo, sumažėjo ir nepakito), z, p ir r.</li>
+</ol>
+<p><a href="../../analize/?demo=apklausa&amp;test=wilcoxon" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<p>Pateikite medianas (ne vidurkius) ir testo statistiką:</p>
+<blockquote class="blockquote">
+<p>Wilcoxono ženklų rangų testas parodė, kad savijautos balas po programos (Mdn = 62) buvo statistiškai reikšmingai aukštesnis nei prieš programą (Mdn = 59): z = 7,72, p &lt; 0,001, r = 0,56. Savijauta pagerėjo 140 respondentų, pablogėjo 47, nepakito 9.</p>
+</blockquote>
+<p>Kaip šiame pavyzdyje, naudinga paminėti ir kryptį: kiek respondentų rezultatas pagerėjo, kiek pablogėjo ir kiek nepakito.</p>
+</section>
+<section id="wilcoxono-ar-t-testas" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="wilcoxono-ar-t-testas">Wilcoxono ar t testas?</h2>
+<p>Jei skirtumai pasiskirstę apytiksliai normaliai, t testas yra šiek tiek galingesnis ir jo rezultatus (vidurkių skirtumą) lengviau interpretuoti. Jei abejojate, galite atlikti abu – kai išvados sutampa, rezultatai patikimi. Svarbu tik testą pasirinkti iš anksto pagal duomenų pobūdį, o ne pagal tai, kuris duoda „geresnę“ p reikšmę.</p>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+ ]]></description>
+  <category>statistika</category>
+  <category>neparametriniai-testai</category>
+  <category>palyginimas</category>
+  <guid>https://statistikas.lt/posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.html</guid>
+  <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>5 dalykai apie p reikšmę, kurių nepasako vadovėlis</title>
@@ -1198,7 +1695,7 @@ font-style: inherit;">13</span>)</span></code></pre></div>
 </tr>
 </tbody>
 </table>
-<p>Svarbu ir tai, kad net smailėje prie nulio yra klaidingų atradimų. Šiame pavyzdyje iš 1831 testų su p &lt; 0,05 417 yra nuliniai, tai yra 23 % „atradimų”. Todėl atliekant daug testų reikia p reikšmių korekcijos.</p>
+<p>Svarbu ir tai, kad net smailėje prie nulio yra klaidingų atradimų. Šiame pavyzdyje iš 1831 testų su p &lt; 0,05 417 yra nuliniai, tai yra 23 % „atradimų”. Todėl atliekant daug testų reikia <a href="../kada-atlikti-p-reiksmiu-korekcija/kada-atlikti-p-reiksmiu-korekcija.qmd">p reikšmių korekcijos</a>.</p>
 </section>
 <section id="p-reikšmę-lengviau-suprasti-kaip-nuostabą" class="level2">
 <h2 class="anchored" data-anchor-id="p-reikšmę-lengviau-suprasti-kaip-nuostabą">4. p reikšmę lengviau suprasti kaip „nuostabą”</h2>
@@ -1717,6 +2214,7 @@ Vis dar abejojate?
 
 
 <p>„Kiek tiriamųjų man reikia?” — klausimas, kurį verta užduoti <em>prieš</em> renkant duomenis, o ne po to. Per maža imtis reiškia, kad realiai egzistuojančio skirtumo galite tiesiog nepamatyti, o per didelė — švaistote laiką, pinigus, o medicinos tyrimuose tai ir etikos klausimas: kam tirti daugiau žmonių, nei būtina?</p>
+<p>Jei reikia tik skaičiaus, jį duos <a href="../../imtis/">nemokama imties skaičiuoklė</a> — ji apima grupių palyginimus, <a href="../../imtis/#apklausa">anketines apklausas</a>, A/B testus ir bioekvivalentiškumo tyrimus. Šiame straipsnyje — kas slypi už to skaičiaus ir kaip jį gauti su R.</p>
 <section id="keturi-ingredientai" class="level2">
 <h2 class="anchored" data-anchor-id="keturi-ingredientai">Keturi ingredientai</h2>
 <p>Imties dydžio skaičiavimui reikia keturių dalykų:</p>
@@ -2040,6 +2538,8 @@ font-style: inherit;">13</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Dideliam efektui aptikti užtenka ~26 tiriamųjų grupėje, vidutiniam — ~64, o mažam reikia jau beveik 400. Todėl „paimsiu 30, nes taip visi daro” nėra imties dydžio skaičiavimas.</p>
+<p>Tuos pačius skaičiavimus galite atlikti ir be R: skaičiuoklė parodys kelis scenarijus ir parengs metodikos pastraipą su šaltiniais.</p>
+<p><a href="../../imtis/#grupes" class="btn-blue">Apskaičiuoti savo tyrimo imtį →</a></p>
 </section>
 </section>
 <section id="keli-praktiniai-patarimai" class="level2">

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="lt" xml:lang="lt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.52">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulius Alaburda">
+<meta name="description" content="Cronbacho α parodo, ar klausimyno skalės teiginiai matuoja tą patį. Kaip jį apskaičiuoti be SPSS, kaip interpretuoti ir kaip aprašyti baigiamajame darbe.">
+
+<title>Kaip apskaičiuoti Cronbacho alfa (α)? – Statistikas.lt</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "Nėra rezultatų",
+    "search-matching-documents-text": "atitinkančių dokumentų",
+    "search-copy-link-title": "Kopijuoti nuorodą į paiešką",
+    "search-hide-matches-text": "Slėpti kitus atitikimus",
+    "search-more-match-text": "daugiau atitikimų šiame dokumente",
+    "search-more-matches-text": "daugiau atitikimų šiame dokumente",
+    "search-clear-button-title": "Išvalyti",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Atšaukti",
+    "search-submit-button-title": "Pateikti",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DT3Y3KGPJQ"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-DT3Y3KGPJQ', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../theme/styles.css">
+<meta property="og:title" content="Kaip apskaičiuoti Cronbacho alfa (α)? – Statistikas.lt">
+<meta property="og:description" content="Cronbacho α parodo, ar klausimyno skalės teiginiai matuoja tą patį. Kaip jį apskaičiuoti be SPSS, kaip interpretuoti ir kaip aprašyti baigiamajame darbe.">
+<meta property="og:image" content="https://statistikas.lt/posts/kaip-apskaiciuoti-cronbacho-alfa/images/card.png">
+<meta property="og:site_name" content="Statistikas.lt">
+<meta name="twitter:title" content="Kaip apskaičiuoti Cronbacho alfa (α)? – Statistikas.lt">
+<meta name="twitter:description" content="Cronbacho α parodo, ar klausimyno skalės teiginiai matuoja tą patį. Kaip jį apskaičiuoti be SPSS, kaip interpretuoti ir kaip aprašyti baigiamajame darbe.">
+<meta name="twitter:image" content="https://statistikas.lt/posts/kaip-apskaiciuoti-cronbacho-alfa/images/card.png">
+<meta name="twitter:creator" content="@p_alab">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://statistikas.lt/posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html">
+</head>
+
+<body class="nav-fixed post">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/mark.svg" alt="Statistikas.lt" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Statistikas.lt</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Rodyti/Slėpti navigaciją" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html"> 
+<span class="menu-text">Paslaugos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html"> 
+<span class="menu-text">Pavyzdžiai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html"> 
+<span class="menu-text">Straipsniai</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html"> 
+<span class="menu-text">Nemokama analizė</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Apie</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/pauliusalaburda/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../kontaktai.html"> 
+<span class="menu-text">Susisiekti</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Šiame tinklalapyje</h2>
+   
+  <ul>
+  <li><a href="#kas-yra-cronbacho-α" id="toc-kas-yra-cronbacho-α" class="nav-link active" data-scroll-target="#kas-yra-cronbacho-α">Kas yra Cronbacho α?</a></li>
+  <li><a href="#dažniausia-klaida-atvirkštiniai-teiginiai" id="toc-dažniausia-klaida-atvirkštiniai-teiginiai" class="nav-link" data-scroll-target="#dažniausia-klaida-atvirkštiniai-teiginiai">Dažniausia klaida: atvirkštiniai teiginiai</a></li>
+  <li><a href="#kaip-apskaičiuoti-α-nemokamai" id="toc-kaip-apskaičiuoti-α-nemokamai" class="nav-link" data-scroll-target="#kaip-apskaičiuoti-α-nemokamai">Kaip apskaičiuoti α nemokamai</a></li>
+  <li><a href="#kaip-aprašyti-rezultatus" id="toc-kaip-aprašyti-rezultatus" class="nav-link" data-scroll-target="#kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</a></li>
+  <li><a href="#ko-α-nepasako" id="toc-ko-α-nepasako" class="nav-link" data-scroll-target="#ko-α-nepasako">Ko α nepasako</a></li>
+  <li><a href="#literatūra" id="toc-literatūra" class="nav-link" data-scroll-target="#literatūra">Literatūra</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Kaip apskaičiuoti Cronbacho alfa (α)?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistika</div>
+    <div class="quarto-category">klausimynai</div>
+    <div class="quarto-category">patikimumas</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Cronbacho α parodo, ar klausimyno skalės teiginiai matuoja tą patį. Kaip jį apskaičiuoti be SPSS, kaip interpretuoti ir kaip aprašyti baigiamajame darbe.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autorius</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulius Alaburda </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Paskelbta</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026 m. spalio 20 d.</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="kas-yra-cronbacho-α" class="level2">
+<h2 class="anchored" data-anchor-id="kas-yra-cronbacho-α">Kas yra Cronbacho α?</h2>
+<p>Jei jūsų klausimyne yra skalė – pavyzdžiui, šeši teiginiai apie stresą, vertinami nuo 1 („visiškai nesutinku“) iki 5 („visiškai sutinku“) – prieš skaičiuodami skalės balą turite parodyti, kad teiginiai <strong>matuoja tą patį</strong>. Tam skirtas Cronbacho alfa (α) koeficientas – skalės vidinio suderinamumo (patikimumo) rodiklis.</p>
+<p>α svyruoja nuo 0 iki 1 (gali būti ir neigiamas – tai beveik visada reiškia klaidą duomenyse). Kuo teiginiai labiau koreliuoja tarpusavyje, tuo α didesnis.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kaip interpretuoti α (George ir Mallery, 2003)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>≥ 0,90</strong> – puikus</li>
+<li><strong>≥ 0,80</strong> – geras</li>
+<li><strong>≥ 0,70</strong> – priimtinas (dažniausiai naudojama riba)</li>
+<li><strong>≥ 0,60</strong> – abejotinas</li>
+<li><strong>&lt; 0,60</strong> – prastas</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="dažniausia-klaida-atvirkštiniai-teiginiai" class="level2">
+<h2 class="anchored" data-anchor-id="dažniausia-klaida-atvirkštiniai-teiginiai">Dažniausia klaida: atvirkštiniai teiginiai</h2>
+<p>Klausimynuose dalis teiginių suformuluojami atvirkščiai, pvz., streso skalėje „Jaučiuosi ramus prieš egzaminus“. Didelis sutikimas su juo reiškia <em>mažą</em> stresą. Jei tokio teiginio neperkoduosite (1 ↔︎ 5, 2 ↔︎ 4), jis koreliuos su likusia skale neigiamai, o α smarkiai sumažės – kartais net taps neigiamas.</p>
+<p>Todėl visada pažiūrėkite į <strong>pataisytą teiginio ir skalės koreliaciją</strong> (angl. <em>corrected item–total correlation</em>). Neigiama reikšmė – beveik visada neperkoduotas teiginys. Reikšmė, mažesnė nei 0,30, rodo, kad teiginys silpnai dera su kitais.</p>
+</section>
+<section id="kaip-apskaičiuoti-α-nemokamai" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-apskaičiuoti-α-nemokamai">Kaip apskaičiuoti α nemokamai</h2>
+<p>Mūsų <a href="../../analize/">nemokamame analizės įrankyje</a> α apskaičiuojamas be programų diegimo – duomenys niekur nesiunčiami:</p>
+<ol type="1">
+<li>Įkelkite CSV, Excel arba SPSS (.sav) failą.</li>
+<li>Pridėkite analizės bloką <strong>„Skalės patikimumas (Cronbacho α)“</strong> ir pažymėkite skalės teiginius.</li>
+<li>Jei kuris nors teiginys koreliuoja neigiamai, įrankis tai pažymės ir pasiūlys jį <strong>perkoduoti vienu paspaudimu</strong> – perkodavimas atsiras skiltyje „Duomenų paruošimas“ ir bus aprašytas ataskaitoje.</li>
+<li>Skiltyje „Duomenų paruošimas“ apskaičiuokite skalės balą (teiginių vidurkį) – jį galėsite naudoti tolesnėse analizėse.</li>
+</ol>
+<p><a href="../../analize/?demo=apklausa&amp;test=cronbach" class="btn-blue">Išbandyti su pavyzdiniais duomenimis →</a></p>
+<p>Pavyzdyje streso skalės teiginiai S3 ir S5 suformuluoti atvirkščiai. Neperkodavus α = −0,26; perkodavus – α = 0,89.</p>
+</section>
+<section id="kaip-aprašyti-rezultatus" class="level2">
+<h2 class="anchored" data-anchor-id="kaip-aprašyti-rezultatus">Kaip aprašyti rezultatus</h2>
+<p>Metodų skyriuje:</p>
+<blockquote class="blockquote">
+<p>Skalių vidiniam suderinamumui įvertinti apskaičiuoti Cronbacho alfa (α) koeficientai; α ≥ 0,70 laikytas priimtinu. Teiginiai S3 ir S5 prieš analizę perkoduoti atvirkščiai.</p>
+</blockquote>
+<p>Rezultatų skyriuje:</p>
+<blockquote class="blockquote">
+<p>Streso skalės (6 teiginiai) vidinis suderinamumas buvo geras: Cronbacho α = 0,89 (n = 196). Pataisytos teiginių ir skalės koreliacijos svyravo nuo 0,66 iki 0,75; pašalinus bet kurį teiginį, α nepadidėtų.</p>
+</blockquote>
+</section>
+<section id="ko-α-nepasako" class="level2">
+<h2 class="anchored" data-anchor-id="ko-α-nepasako">Ko α nepasako</h2>
+<ul>
+<li><strong>α nėra vienmatiškumo įrodymas.</strong> Aukštas α galimas ir tada, kai skalė matuoja du susijusius dalykus. Struktūrai patikrinti naudojama faktorinė analizė.</li>
+<li><strong>α priklauso nuo teiginių skaičiaus.</strong> Ilga skalė turės aukštą α net esant vidutinėms koreliacijoms, o dviejų teiginių skalei geriau pateikti jų tarpusavio koreliaciją.</li>
+<li><strong>Per aukštas α (&gt; 0,95)</strong> gali reikšti, kad teiginiai beveik pažodžiui kartoja vienas kitą.</li>
+</ul>
+</section>
+<section id="literatūra" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="literatūra">Literatūra</h2>
+<p>Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <em>Psychometrika, 16</em>(3), 297–334. https://doi.org/10.1007/BF02310555</p>
+<p>George, D., &amp; Mallery, P. (2003). <em>SPSS for Windows step by step: A simple guide and reference</em> (4th ed.). Allyn &amp; Bacon.</p>
+
+
+<aside class="post-cta">
+  <p class="post-cta-title">Reikia pagalbos su savo duomenimis?</p>
+  <p>Padėsiu pasirinkti tinkamą metodą, atlikti analizę ir aiškiai pateikti rezultatus — verslo sprendimui ar publikacijai. Pirmas pokalbis nemokamas.</p>
+  <p class="post-cta-actions">
+    <a class="btn-blue" href="../../kontaktai.html">Susisiekti</a>
+    <a class="text-link" href="../../analize/">Išbandyti nemokamą analizę</a>
+  </p>
+</aside>
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Nukopijuota!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Nukopijuota!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/statistikas\.lt");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© <span class="footer-year">2026</span> Statistikas.lt · Paulius Alaburda</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../paslaugos.html">
+<p>Paslaugos</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../pavyzdziai.html">
+<p>Pavyzdžiai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../straipsniai.html">
+<p>Straipsniai</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../analize/index.html">
+<p>Nemokama analizė</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+<p>Apie</p>
+</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:info@statistikas.lt">
+<p>info@statistikas.lt</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script src="../../theme/main.js"></script>
+
+
+
+
+</body></html>

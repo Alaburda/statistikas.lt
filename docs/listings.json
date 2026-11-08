@@ -1,8 +1,39 @@
 [
   {
+    "listing": "/index.html",
+    "items": [
+      "/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html",
+      "/posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html",
+      "/posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.html",
+      "/posts/post-hoc-testai-po-anova/post-hoc-testai-po-anova.html",
+      "/posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.html",
+      "/posts/spirmeno-koreliacija/spirmeno-koreliacija.html",
+      "/posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.html",
+      "/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html",
+      "/posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html",
+      "/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html",
+      "/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.html",
+      "/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html",
+      "/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html",
+      "/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html",
+      "/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html",
+      "/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html",
+      "/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html",
+      "/posts/kada-rinktis-anova/kada-rinktis-anova.html",
+      "/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html",
+      "/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html"
+    ]
+  },
+  {
     "listing": "/straipsniai.html",
     "items": [
       "/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html",
+      "/posts/kaip-apskaiciuoti-cronbacho-alfa/kaip-apskaiciuoti-cronbacho-alfa.html",
+      "/posts/koreliaciju-matrica-apa/koreliaciju-matrica-apa.html",
+      "/posts/post-hoc-testai-po-anova/post-hoc-testai-po-anova.html",
+      "/posts/priklausomu-imciu-t-testas/priklausomu-imciu-t-testas.html",
+      "/posts/spirmeno-koreliacija/spirmeno-koreliacija.html",
+      "/posts/wilcoxono-zenklu-rangu-testas/wilcoxono-zenklu-rangu-testas.html",
       "/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html",
       "/posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html",
       "/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html",
@@ -22,25 +53,6 @@
     "listing": "/pavyzdziai.html",
     "items": [
       "/pavyzdziai/ist-1/index.html"
-    ]
-  },
-  {
-    "listing": "/index.html",
-    "items": [
-      "/posts/kaip-atlikti-isgyvenamumo-analize/kaip-atlikti-isgyvenamumo-analize.html",
-      "/posts/ko-nepasako-p-reiksme/ko-nepasako-p-reiksme.html",
-      "/posts/ar-ai-gali-atlikti-statistine-analize/ar-ai-gali-atlikti-statistine-analize.html",
-      "/posts/kaip-pasirinkti-statistini-testa/kaip-pasirinkti-statistini-testa.html",
-      "/posts/kaip-apskaiciuoti-imties-dydi/kaip-apskaiciuoti-imties-dydi.html",
-      "/posts/ka-reiskia-p-reiksme/ka-reiskia-p-reiksme.html",
-      "/posts/kaip-sukurti-boxplot-r/kaip-sukurti-boxplot-r.html",
-      "/posts/kada-rinktis-kruskal-wallis/kada-rinktis-kruskal-wallis.html",
-      "/posts/kaip-atlikti-chi-kvadrato-testa/kaip-atlikti-chi-kvadrato-testa.html",
-      "/posts/kada-rinktis-t-testa/kada-rinktis-t-testa.html",
-      "/posts/kada-rinktis-mann-whitney/kada-rinktis-mann-whitney.html",
-      "/posts/kada-rinktis-anova/kada-rinktis-anova.html",
-      "/posts/kaip-patikrinti-tolydzius-duomenis/kaip-patikrinti-tolydzius-duomenis.html",
-      "/posts/kaip-koduoti-duomenis/kaip-koduoti-duomenis.html"
     ]
   }
 ]
