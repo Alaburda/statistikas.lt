@@ -111,21 +111,22 @@ export function betai(a: number, b: number, x: number): number {
 
 /** Standard normal CDF. */
 export function normalCdf(z: number): number {
-  return 0.5 * (1 + erf(z / Math.SQRT2));
+  return 1 - normalUpper(z);
 }
 
-/** Error function (Abramowitz & Stegun 7.1.26). */
+/** Error function via the incomplete gamma function: erf(x) = P(½, x²). */
 export function erf(x: number): number {
   const sign = x < 0 ? -1 : 1;
-  const ax = Math.abs(x);
-  const t = 1 / (1 + 0.3275911 * ax);
-  const y =
-    1 -
-    ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t +
-      0.254829592) *
-      t *
-      Math.exp(-ax * ax);
-  return sign * y;
+  return sign * gammp(0.5, x * x);
+}
+
+/** Upper-tail standard normal probability P(Z > z), accurate far into the tail. */
+function normalUpper(z: number): number {
+  if (z < 0) return 1 - normalUpper(-z);
+  if (z === 0) return 0.5;
+  const x = (z * z) / 2;
+  // Q(½, x) directly avoids cancellation in 1 − P for large |z|.
+  return 0.5 * (x < 1.5 ? 1 - gammpSeries(0.5, x) : gammqContinued(0.5, x));
 }
 
 /** Two-tailed p-value for Student's t with df degrees of freedom. */
@@ -148,7 +149,7 @@ export function chiSquareUpperP(x: number, df: number): number {
 
 /** Two-tailed p-value for a standard normal z statistic. */
 export function zTwoTailedP(z: number): number {
-  return 2 * (1 - normalCdf(Math.abs(z)));
+  return Math.min(1, 2 * normalUpper(Math.abs(z)));
 }
 
 /** Inverse standard normal CDF (Acklam's algorithm) — used for CI multipliers. */
@@ -217,6 +218,140 @@ export function tQuantile(p: number, df: number): number {
   for (let i = 0; i < 200; i++) {
     const mid = (lo + hi) / 2;
     if (tCdf(mid, df) < p) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+// ---------- Studentized range distribution (Tukey HSD, Games–Howell) ----------
+// Port of R's ptukey.c (Copenhaver & Holland, 1988, J. Statist. Comput. Simul. 30, 1–15):
+// Gauss–Legendre quadrature over Hartley's form of the range distribution.
+
+const XLEG = [
+  0.98156063424671925069, 0.904117256370474856678, 0.769902674194304687037,
+  0.587317954286617447297, 0.367831498998180193753, 0.125233408511468915472,
+];
+const ALEG = [
+  0.047175336386511827195, 0.106939325995318430960, 0.160078328543346226335,
+  0.203167426723065921749, 0.233492536538354808761, 0.249147045813402785001,
+];
+
+/** P(range of cc standard normals < w), raised to rr (rr = 1 here). */
+function wprob(w: number, rr: number, cc: number): number {
+  const nleg = 12;
+  const ihalf = 6;
+  const C1 = -30;
+  const C2 = -50;
+  const C3 = 60;
+  const bb = 8;
+  const wlar = 3;
+  const qsqz = w * 0.5;
+  if (qsqz >= bb) return 1;
+  let prW = 2 * normalCdf(qsqz) - 1;
+  prW = prW >= Math.exp(C2 / cc) ? Math.pow(prW, cc) : 0;
+  const wincr = w > wlar ? 2 : 3;
+  let blb = qsqz;
+  const binc = (bb - qsqz) / wincr;
+  let bub = blb + binc;
+  let einsum = 0;
+  const cc1 = cc - 1;
+  for (let wi = 1; wi <= wincr; wi++) {
+    let elsum = 0;
+    const a = 0.5 * (bub + blb);
+    const b = 0.5 * (bub - blb);
+    for (let jj = 1; jj <= nleg; jj++) {
+      let j: number;
+      let xx: number;
+      if (ihalf < jj) {
+        j = nleg - jj + 1;
+        xx = XLEG[j - 1];
+      } else {
+        j = jj;
+        xx = -XLEG[j - 1];
+      }
+      const ac = a + b * xx;
+      const qexpo = ac * ac;
+      if (qexpo > C3) break;
+      const pplus = 2 * normalCdf(ac);
+      const pminus = 2 * normalCdf(ac - w);
+      let rinsum = pplus * 0.5 - pminus * 0.5;
+      if (rinsum >= Math.exp(C1 / cc1)) {
+        rinsum = ALEG[j - 1] * Math.exp(-(0.5 * qexpo)) * Math.pow(rinsum, cc1);
+        elsum += rinsum;
+      }
+    }
+    elsum *= (2 * b * cc) / Math.sqrt(2 * Math.PI);
+    einsum += elsum;
+    blb = bub;
+    bub += binc;
+  }
+  prW += einsum;
+  if (prW <= Math.exp(C1 / rr)) return 0;
+  prW = Math.pow(prW, rr);
+  return prW >= 1 ? 1 : prW;
+}
+
+const XLEGQ = [
+  0.98940093499164993260, 0.944575023073232576078, 0.865631202387831743880,
+  0.755404408355003033895, 0.617876244402643748447, 0.458016777657227386342,
+  0.281603550779258913230, 0.950125098376374401853e-1,
+];
+const ALEGQ = [
+  0.271524594117540948518e-1, 0.622535239386478928628e-1, 0.951585116824927848099e-1,
+  0.124628971255533872052, 0.149595988816576732082, 0.169156519395002538189,
+  0.182603415044923588867, 0.189450610455068496285,
+];
+
+/** Lower-tail CDF of the studentized range: P(Q < q) for nmeans groups and df error df. */
+export function ptukey(q: number, nmeans: number, df: number): number {
+  const rr = 1;
+  const cc = nmeans;
+  if (q <= 0) return 0;
+  if (!Number.isFinite(q)) return 1;
+  if (df > 25000) return wprob(q, rr, cc);
+  const nlegq = 16;
+  const ihalfq = 8;
+  const eps1 = -30;
+  const eps2 = 1e-14;
+  const f2 = df * 0.5;
+  let f2lf = f2 * Math.log(df) - df * Math.LN2 - logGamma(f2);
+  const f21 = f2 - 1;
+  const ff4 = df * 0.25;
+  const ulen = df <= 100 ? 1 : df <= 800 ? 0.5 : df <= 5000 ? 0.25 : 0.125;
+  f2lf += Math.log(ulen);
+  let ans = 0;
+  for (let i = 1; i <= 50; i++) {
+    let otsum = 0;
+    const twa1 = (2 * i - 1) * ulen;
+    for (let jj = 1; jj <= nlegq; jj++) {
+      let j: number;
+      let t1: number;
+      if (ihalfq < jj) {
+        j = jj - ihalfq - 1;
+        t1 = f2lf + f21 * Math.log(twa1 + XLEGQ[j] * ulen) - (XLEGQ[j] * ulen + twa1) * ff4;
+      } else {
+        j = jj - 1;
+        t1 = f2lf + f21 * Math.log(twa1 - XLEGQ[j] * ulen) + (XLEGQ[j] * ulen - twa1) * ff4;
+      }
+      if (t1 >= eps1) {
+        const qsqz =
+          ihalfq < jj ? q * Math.sqrt((XLEGQ[j] * ulen + twa1) * 0.5) : q * Math.sqrt((-(XLEGQ[j] * ulen) + twa1) * 0.5);
+        otsum += wprob(qsqz, rr, cc) * ALEGQ[j] * Math.exp(t1);
+      }
+    }
+    if (i * ulen >= 1 && otsum <= eps2) break;
+    ans += otsum;
+  }
+  return Math.min(ans, 1);
+}
+
+/** Inverse of ptukey by bisection (for Tukey confidence intervals). */
+export function qtukey(p: number, nmeans: number, df: number): number {
+  let lo = 0;
+  let hi = 100;
+  for (let i = 0; i < 80; i++) {
+    const mid = (lo + hi) / 2;
+    if (ptukey(mid, nmeans, df) < p) lo = mid;
     else hi = mid;
   }
   return (lo + hi) / 2;

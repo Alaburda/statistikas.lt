@@ -1,4 +1,4 @@
-import type { AnalysisResult, AssumptionCheck, Dataset, TestDefinition } from "../types";
+import type { AnalysisResult, AssumptionCheck, Dataset, ResultTable, TestDefinition } from "../types";
 import {
   chiSquareUpperP,
   fisherExact2x2,
@@ -8,8 +8,13 @@ import {
   tQuantile,
   zTwoTailedP,
 } from "./distributions";
-import { equalVarianceCheck, normalityCheck } from "./assumptions";
-import { fmt, fmtP, fmtPct, ltPlural, significanceNote } from "./format";
+import { equalVarianceCheck, leveneBF, normalityCheck } from "./assumptions";
+import { computeTable1 } from "./table1";
+import { gamesHowell, kruskal, postHocTable, significantPairs, tukeyHSD } from "./groups";
+import { pairedT, wilcoxon } from "./paired";
+import { corMatrix, spearman } from "./correlations";
+import { cronbach } from "./reliability";
+import { describeR, fmt, fmtP, fmtPct, fmtPInline, ltPlural, significanceNote } from "./format";
 import {
   getVar,
   groupNumeric,
@@ -19,6 +24,7 @@ import {
   numericColumn,
   pairedNumeric,
   quantile,
+  rankWithTies,
   sd,
   variance,
 } from "./helpers";
@@ -68,6 +74,7 @@ const descriptives: TestDefinition = {
         },
       ],
       plot: { kind: "histogram", title: `Kintamojo „${v.label}“ pasiskirstymas`, values: x, xLabel: v.label },
+      stats: { n: x.length, mean: m, sd: s, median: med, q1, q3, min, max },
     };
   },
 };
@@ -167,6 +174,7 @@ const tTest: TestDefinition = {
     };
     return {
       pValue: p,
+      stats: { t, df, p, diff, ciLo, ciHi, d },
       assumptions: [
         normalityCheck(`Normalumas (grupė „${a.label}“)`, a.values, switchMW),
         normalityCheck(`Normalumas (grupė „${b.label}“)`, b.values, switchMW),
@@ -212,7 +220,7 @@ const anova: TestDefinition = {
   id: "anova",
   name: "Vienfaktorė dispersinė analizė (ANOVA)",
   blurb: "Palygina kiekybinio kintamojo vidurkį tarp trijų ar daugiau grupių.",
-  methods: "Grupių vidurkiams palyginti taikyta vienfaktorė dispersinė analizė (ANOVA); efekto dydžiui įvertinti pateiktas eta kvadratas (η²).",
+  methods: "Grupių vidurkiams palyginti taikyta vienfaktorė dispersinė analizė (ANOVA); efekto dydžiui įvertinti pateiktas eta kvadratas (η²). Porinis grupių palyginimas atliktas Tukey HSD testu, o esant nelygioms dispersijoms – Games–Howell testu.",
   guide: {
     title: "Kada rinktis ANOVA?",
     url: "https://statistikas.lt/posts/kada-rinktis-anova/kada-rinktis-anova.html",
@@ -244,18 +252,51 @@ const anova: TestDefinition = {
     const F = msBetween / msWithin;
     const p = fUpperP(F, dfBetween, dfWithin);
     const etaSq = ssBetween / (ssBetween + ssWithin);
+    const switchKW = {
+      testId: "kruskal",
+      picks: { outcome: picks.outcome, group: picks.group },
+      label: "Pereiti prie Kruskal–Wallis testo",
+    };
     const anovaChecks: AssumptionCheck[] = groups.map((g) =>
-      normalityCheck(`Normalumas (grupė „${g.label}“)`, g.values)
+      normalityCheck(`Normalumas (grupė „${g.label}“)`, g.values, switchKW)
     );
     const varCheck = equalVarianceCheck(groups);
     if (varCheck) anovaChecks.push(varCheck);
+
+    // Post-hoc pairs for 3+ groups: Tukey HSD, or Games–Howell when Levene rejects equal variances.
+    const postHoc: ResultTable[] = [];
+    const stats: Record<string, number> = { F, df1: dfBetween, df2: dfWithin, p, eta2: etaSq };
+    let postHocText = "";
+    if (k >= 3) {
+      const lev = leveneBF(groups.map((g) => g.values));
+      const useGH = !!lev && lev.p < 0.05;
+      const comps = useGH ? gamesHowell(groups) : tukeyHSD(groups);
+      comps.forEach((c, i) => (stats[`postP_${i}`] = c.p));
+      postHoc.push(
+        postHocTable(
+          `Porinis palyginimas (${useGH ? "Games–Howell" : "Tukey HSD"})`,
+          comps,
+          (useGH
+            ? "Games–Howell testas pasirinktas, nes grupių dispersijos skiriasi (Levene p < 0,05). "
+            : "Tukey HSD testas (grupių dispersijos panašios). ") + "* p < 0,05; ** p < 0,01; *** p < 0,001."
+        )
+      );
+      if (p < 0.05) {
+        const sig = significantPairs(comps);
+        postHocText = sig
+          ? ` ${useGH ? "Games–Howell" : "Tukey HSD"} porinis palyginimas parodė reikšmingus skirtumus tarp grupių ${sig}.`
+          : " Porinis palyginimas reikšmingų skirtumų tarp atskirų grupių porų neparodė.";
+      }
+    }
     return {
       pValue: p,
+      stats,
       assumptions: anovaChecks,
       description:
         `Vienfaktore dispersine analize (ANOVA) tirta, ar kintamojo „${outVar.label}“ vidurkis skiriasi tarp ` +
         `${k} grupavimo kintamojo „${grpVar.label}“ grupių. Skirtumas yra ${significanceNote(p)}: ` +
-        `F(${dfBetween}; ${dfWithin}) = ${fmt(F)}; p ${fmtPInline(p)}; η² = ${fmt(etaSq)}.`,
+        `F(${dfBetween}; ${dfWithin}) = ${fmt(F)}; p ${fmtPInline(p)}; η² = ${fmt(etaSq)}.` +
+        postHocText,
       tables: [
         {
           title: "Grupių vidurkiai",
@@ -271,6 +312,7 @@ const anova: TestDefinition = {
             ["Iš viso", fmt(ssBetween + ssWithin), N - 1, "", "", ""],
           ],
         },
+        ...postHoc,
       ],
       plot: {
         kind: "boxplot",
@@ -390,6 +432,7 @@ const chiSquare: TestDefinition = {
     contingencyRows.push(["Iš viso",...cols.map((c) => colTot.get(c)!), n]);
     return {
       pValue: p,
+      stats: { chi2, df, p, V: cramersV, n },
       assumptions,
       description:
         `Chi kvadrato (χ²) nepriklausomumo testu tirtas ryšys tarp kintamųjų „${rv.label}“ ir ` +
@@ -452,6 +495,7 @@ const correlation: TestDefinition = {
     const strength = describeR(Math.abs(r));
     return {
       pValue: p,
+      stats: { r, t, df, p, n },
       assumptions: [
         normalityCheck(`Normalumas („${xv.label}“)`, x),
         normalityCheck(`Normalumas („${yv.label}“)`, y),
@@ -530,6 +574,7 @@ const regression: TestDefinition = {
     const tcrit = tQuantile(0.975, dfRes);
     return {
       pValue: pSlope,
+      stats: { intercept, slope, seSlope, t: tSlope, p: pSlope, r2, F },
       assumptions: [
         normalityCheck("Liekanų normalumas", resid),
         {
@@ -598,33 +643,24 @@ const mannWhitney: TestDefinition = {
     const groups = groupNumeric(ds, picks.outcome, picks.group);
     if (groups.length !== 2) throw new Error("Mann–Whitney U testui reikia lygiai 2 grupių.");
     const [a, b] = groups;
-    const combined = [
-      ...a.values.map((v) => ({ v, g: 0 })),
-      ...b.values.map((v) => ({ v, g: 1 })),
-    ].sort((p, q) => p.v - q.v);
-    // Assign ranks with ties averaged.
-    const ranks = new Array(combined.length);
-    let i = 0;
-    while (i < combined.length) {
-      let j = i;
-      while (j + 1 < combined.length && combined[j + 1].v === combined[i].v) j++;
-      const avg = (i + j + 2) / 2; // ranks are 1-based
-      for (let k = i; k <= j; k++) ranks[k] = avg;
-      i = j + 1;
-    }
-    let rankSumA = 0;
-    for (let k = 0; k < combined.length; k++) if (combined[k].g === 0) rankSumA += ranks[k];
+    const { ranks, tieTerm } = rankWithTies([...a.values, ...b.values]);
     const na = a.values.length;
     const nb = b.values.length;
+    const N = na + nb;
+    let rankSumA = 0;
+    for (let k = 0; k < na; k++) rankSumA += ranks[k];
     const uA = rankSumA - (na * (na + 1)) / 2;
     const uB = na * nb - uA;
     const U = Math.min(uA, uB);
     const muU = (na * nb) / 2;
-    const sigmaU = Math.sqrt((na * nb * (na + nb + 1)) / 12);
+    // Tie-corrected variance, no continuity correction (as SPSS; R: correct = FALSE).
+    const sigmaU = Math.sqrt(((na * nb) / 12) * (N + 1 - tieTerm / (N * (N - 1))));
     const z = (U - muU) / sigmaU;
     const p = zTwoTailedP(z);
+    const rEffect = Math.abs(z) / Math.sqrt(N);
     return {
       pValue: p,
+      stats: { U, z, p, r: rEffect },
       assumptions: [
         na < 5 || nb < 5
           ? {
@@ -667,20 +703,6 @@ const mannWhitney: TestDefinition = {
     };
   },
 };
-
-function describeR(absR: number): string {
-  // Feminine nominative singular: agrees with "koreliacija".
-  if (absR < 0.1) return "nereikšminga";
-  if (absR < 0.3) return "silpna";
-  if (absR < 0.5) return "vidutinė";
-  if (absR < 0.7) return "stipri";
-  return "labai stipri";
-}
-
-/** "= 0,034" or "< 0,001" — meant to follow a literal "p ". */
-function fmtPInline(p: number): string {
-  return p < 0.001 ? fmtP(p) : "= " + fmtP(p);
-}
 
 // ---------- Multiple linear regression ----------
 
@@ -817,6 +839,11 @@ const multipleRegression: TestDefinition = {
     const residuals = yArr.map((yi, i) => yi - ols.yHat[i]);
     return {
       pValue: ols.pModel,
+      stats: {
+        r2: ols.r2, adjR2: ols.adjR2, F: ols.F, p: ols.pModel,
+        ...Object.fromEntries(ols.beta.map((b, j) => [`b${j}`, b])),
+        ...Object.fromEntries(ols.se.map((e, j) => [`se${j}`, e])),
+      },
       assumptions: [
         normalityCheck("Liekanų normalumas", residuals),
         {
@@ -1052,6 +1079,11 @@ const logistic: TestDefinition = {
 
     return {
       pValue: fit.pModel,
+      stats: {
+        lrChi2: fit.lrChi2, p: fit.pModel, nagelkerke: fit.nagelkerke, logLik: fit.logLik,
+        ...Object.fromEntries(fit.beta.map((b, j) => [`b${j}`, b])),
+        ...Object.fromEntries(fit.se.map((e, j) => [`se${j}`, e])),
+      },
       assumptions: logisticChecks,
       description:
         (unstable
@@ -1096,14 +1128,38 @@ const logistic: TestDefinition = {
   },
 };
 
-// ---------- Table 1 (custom UI, run is never called) ----------
+// ---------- Table 1 (custom card UI; run() feeds the Word export) ----------
 const table1Stub: TestDefinition = {
   id: "table1",
   name: "Imties charakteristikų lentelė („1 lentelė“)",
   blurb: "Imties charakteristikų lentelė, suskirstyta pagal grupavimo kintamąjį arba bendra.",
+  methods:
+    "Imties charakteristikos pateiktos kaip vidurkiai ir standartiniai nuokrypiai (kiekybiniams kintamiesiems) bei dažniai ir procentai (kategoriniams kintamiesiems).",
   inputs: [],
-  run: () => {
-    throw new Error("„1 lentelė“ atvaizduojama atskirai – run() niekada neturėtų būti kviečiama.");
+  run: (ds, picks): AnalysisResult => {
+    let rowVars: string[] = [];
+    try {
+      rowVars = JSON.parse(picks.rowVars ?? "[]");
+    } catch {
+      rowVars = [];
+    }
+    if (rowVars.length === 0) throw new Error("Pasirinkite bent vieną eilučių kintamąjį.");
+    const groupVar = picks.groupVar || null;
+    const t = computeTable1(ds, groupVar, rowVars, picks.showTotal !== "0");
+    const total = t.nRow[t.nRow.length - 1];
+    return {
+      description: groupVar
+        ? `Imties charakteristikos pagal kintamąjį „${getVar(ds, groupVar).label}“.`
+        : `Imties charakteristikos (${total}).`,
+      tables: [
+        {
+          title: groupVar ? `Imties charakteristikos pagal „${getVar(ds, groupVar).label}“` : "Imties charakteristikos",
+          columns: ["", ...t.groupHeaders],
+          rows: [["", ...t.nRow], ...t.rows.map((r) => [(r.indent ? "    " : "") + r.label, ...r.cells])],
+          note: "Kiekybiniai kintamieji – vidurkis (SN); kategoriniai – n (%).",
+        },
+      ],
+    };
   },
 };
 
@@ -1111,15 +1167,28 @@ export const TESTS: TestDefinition[] = [
   table1Stub,
   descriptives,
   frequencies,
+  cronbach,
   tTest,
+  pairedT,
   anova,
   chiSquare,
   correlation,
+  spearman,
+  corMatrix,
   regression,
   multipleRegression,
   logistic,
   mannWhitney,
+  wilcoxon,
+  kruskal,
 ];
+
+/** True once every variable slot is filled (choice slots always have a default). */
+export function inputsReady(test: TestDefinition, picks: Record<string, string>): boolean {
+  return test.inputs.every((s) =>
+    s.choices ? true : s.multi ? (picks[s.id] ?? "").split(",").filter(Boolean).length > 0 : !!picks[s.id]
+  );
+}
 
 export function getTest(id: string): TestDefinition {
   const t = TESTS.find((x) => x.id === id);

@@ -192,12 +192,13 @@ export function SiteFooter() {
     <footer className="foot">
       <p>
         Duomenys apdorojami tik jūsų naršyklėje ir niekur nesiunčiami. Demonstraciniai duomenys:
-        MASS::birthwt ir AER::CPS1985 (R).
+        MASS::birthwt, AER::CPS1985 (R) ir sintetinė studentų apklausa.
       </p>
       <nav className="foot-links" aria-label="Svetainės nuorodos">
         <OutLink href={SITE_URL}>Statistikas.lt</OutLink>
         <OutLink href={SERVICES_URL}>Paslaugos</OutLink>
         <OutLink href={ARTICLES_URL}>Straipsniai</OutLink>
+        <OutLink href={`${SITE_URL}/spss-alternatyva.html`}>SPSS alternatyva</OutLink>
         <ContactLink source="footer">Susisiekti</ContactLink>
       </nav>
     </footer>

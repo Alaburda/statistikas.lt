@@ -1,4 +1,5 @@
 // Shared types for the dataset model, chunks, and analysis results.
+import type { PrepStep } from "./data/prep";
 
 export type VariableType = "numeric" | "categorical";
 
@@ -29,6 +30,8 @@ export interface InputSlot {
   help?: string;
   /** Allow selecting multiple variables; picks serialized as comma-separated keys. */
   multi?: true;
+  /** A fixed option list instead of variables (e.g. Pearson / Spearman). The first is the default. */
+  choices?: { value: string; label: string }[];
 }
 
 export interface TestDefinition {
@@ -50,6 +53,8 @@ export interface ResultTable {
   title: string;
   columns: string[];
   rows: (string | number)[][];
+  /** APA table note shown under the table ("Pastaba. …"). */
+  note?: string;
 }
 
 export type PlotSpec =
@@ -66,6 +71,8 @@ export interface AssumptionCheck {
   detail: string;
   /** Optional one-click remedy: switch this chunk to a better-suited test. */
   switchTo?: { testId: string; picks: Record<string, string>; label: string };
+  /** Optional one-click remedy: append a data-preparation step (e.g. reverse-code an item). */
+  addPrep?: { step: PrepStep; label: string };
 }
 
 export interface AnalysisResult {
@@ -77,6 +84,8 @@ export interface AnalysisResult {
   pValue?: number;
   /** Automated assumption checks with plain-language guidance. */
   assumptions?: AssumptionCheck[];
+  /** Raw (unrounded) statistics keyed by name – checked against R in reference.test.ts. */
+  stats?: Record<string, number>;
 }
 
 export interface Chunk {
@@ -85,4 +94,6 @@ export interface Chunk {
   picks: Record<string, string>;
   result?: AnalysisResult;
   error?: string;
+  /** Test this chunk was switched away from via an assumption remedy (reported in the methods). */
+  switchedFrom?: string;
 }

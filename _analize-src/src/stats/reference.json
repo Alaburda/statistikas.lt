@@ -1,0 +1,688 @@
+[
+  {
+    "id": "desc-bwt",
+    "test": "descriptives",
+    "dataset": "birthwt",
+    "picks": {
+      "var": "bwt"
+    },
+    "expect": {
+      "n": 189,
+      "mean": 2944.5873015873,
+      "sd": 729.214295216798,
+      "median": 2977,
+      "q1": 2414,
+      "q3": 3487,
+      "min": 709,
+      "max": 4990
+    }
+  },
+  {
+    "id": "desc-miegas",
+    "test": "descriptives",
+    "dataset": "apklausa",
+    "picks": {
+      "var": "miegas"
+    },
+    "expect": {
+      "n": 196,
+      "mean": 7.14591836734694,
+      "sd": 0.981695902295608,
+      "median": 7,
+      "q1": 6.4,
+      "q3": 7.9,
+      "min": 5.1,
+      "max": 9.9
+    }
+  },
+  {
+    "id": "ttest-bwt-smoke",
+    "test": "ttest",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "group": "smoke"
+    },
+    "expect": {
+      "t": 2.72988567598791,
+      "df": 170.100241468548,
+      "p": 0.00700254817307696,
+      "diff": 283.776733254994,
+      "ciLo": 78.5748630640732,
+      "ciHi": 488.978603445915,
+      "d": 0.395353789111493
+    }
+  },
+  {
+    "id": "ttest-wage-gender",
+    "test": "ttest",
+    "dataset": "cps1985",
+    "picks": {
+      "outcome": "wage",
+      "group": "gender"
+    },
+    "expect": {
+      "t": -4.88531570624336,
+      "df": 530.550001296811,
+      "p": 1.36940270428512e-06,
+      "diff": -2.11605635195255,
+      "ciLo": -2.96694856814167,
+      "ciHi": -1.26516413576342,
+      "d": -0.420329645091633
+    }
+  },
+  {
+    "id": "ttest-miegas-dirba",
+    "test": "ttest",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "miegas",
+      "group": "dirba"
+    },
+    "expect": {
+      "t": 2.2944601424177,
+      "df": 166.024930608866,
+      "p": 0.0230165078108933,
+      "diff": 0.323758594346829,
+      "ciLo": 0.0451681853532949,
+      "ciHi": 0.602349003340364,
+      "d": 0.333322999830192
+    }
+  },
+  {
+    "id": "anova-bwt-race",
+    "test": "anova",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "group": "race"
+    },
+    "expect": {
+      "F": 4.91251331864341,
+      "df1": 2,
+      "df2": 186,
+      "p": 0.00833607749454037,
+      "eta2": 0.0501724769606953
+    }
+  },
+  {
+    "id": "anova-vidurkis-sritis",
+    "test": "anova",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "vidurkis",
+      "group": "sritis"
+    },
+    "expect": {
+      "F": 1.59986159396794,
+      "df1": 3,
+      "df2": 192,
+      "p": 0.190813806888906,
+      "eta2": 0.0243881855097549
+    }
+  },
+  {
+    "id": "chisq-low-smoke",
+    "test": "chisq",
+    "dataset": "birthwt",
+    "picks": {
+      "rowVar": "low",
+      "colVar": "smoke"
+    },
+    "expect": {
+      "chi2": 4.92370543436129,
+      "df": 1,
+      "p": 0.0264906425305024,
+      "V": 0.161404310675264,
+      "n": 189
+    }
+  },
+  {
+    "id": "chisq-dirba-kursas",
+    "test": "chisq",
+    "dataset": "apklausa",
+    "picks": {
+      "rowVar": "dirba",
+      "colVar": "kursas"
+    },
+    "expect": {
+      "chi2": 13.4756962062289,
+      "df": 3,
+      "p": 0.00371307955281501,
+      "V": 0.259573652420935,
+      "n": 200
+    }
+  },
+  {
+    "id": "cor-lwt-bwt",
+    "test": "correlation",
+    "dataset": "birthwt",
+    "picks": {
+      "x": "lwt",
+      "y": "bwt"
+    },
+    "expect": {
+      "r": 0.185733284449099,
+      "t": 2.58484017525865,
+      "df": 187,
+      "p": 0.0105041761152076,
+      "n": 189
+    }
+  },
+  {
+    "id": "cor-miegas-vidurkis",
+    "test": "correlation",
+    "dataset": "apklausa",
+    "picks": {
+      "x": "miegas",
+      "y": "vidurkis"
+    },
+    "expect": {
+      "r": 0.144408349594396,
+      "t": 2.01161713976883,
+      "df": 190,
+      "p": 0.0456731394119333,
+      "n": 192
+    }
+  },
+  {
+    "id": "reg-bwt-lwt",
+    "test": "regression",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "predictor": "lwt"
+    },
+    "expect": {
+      "intercept": 2369.623517874,
+      "slope": 4.4291076063507,
+      "seSlope": 1.71349379692596,
+      "t": 2.58484017525865,
+      "p": 0.0105041761152077,
+      "r2": 0.0344968529522499,
+      "F": 6.68139873163117
+    }
+  },
+  {
+    "id": "mreg-bwt",
+    "test": "multiple_regression",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "predictors": "age,lwt"
+    },
+    "expect": {
+      "r2": 0.0378397004178111,
+      "adjR2": 0.0274938907448843,
+      "F": 3.6574904830147,
+      "p": 0.0276701355260891,
+      "b0": 2214.41207507461,
+      "se0": 299.311214741279,
+      "b1": 8.08916907018795,
+      "se1": 10.0626618108615,
+      "b2": 4.17670622598868,
+      "se2": 1.74361950678732
+    }
+  },
+  {
+    "id": "mreg-vidurkis",
+    "test": "multiple_regression",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "vidurkis",
+      "predictors": "miegas,amzius,savijauta_pries"
+    },
+    "expect": {
+      "r2": 0.0554486517492127,
+      "adjR2": 0.0403760238515938,
+      "F": 3.67876472011706,
+      "p": 0.0131403472467609,
+      "b0": 6.55353165743359,
+      "se0": 0.862159221879192,
+      "b1": 0.100408634015278,
+      "se1": 0.0659795413006013,
+      "b2": -0.0123825356266072,
+      "se2": 0.030179932956813,
+      "b3": 0.0160101987101063,
+      "se3": 0.00615523982801546
+    }
+  },
+  {
+    "id": "logit-low",
+    "test": "logistic",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "low",
+      "predictors": "age,lwt,smoke"
+    },
+    "expect": {
+      "lrChi2": 11.7926432177238,
+      "p": 0.00812830700921964,
+      "nagelkerke": 0.0850637355720789,
+      "logLik": -111.439676487747,
+      "b0": 1.36822526850729,
+      "se0": 1.01426161587204,
+      "b1": -0.0389945827434804,
+      "se1": 0.0327261102161635,
+      "b2": -0.012138542338904,
+      "se2": 0.00613486342892793,
+      "b3": 0.670763740745062,
+      "se3": 0.325877763585659
+    }
+  },
+  {
+    "id": "mw-bwt-smoke",
+    "test": "mannwhitney",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "group": "smoke"
+    },
+    "expect": {
+      "U": 3260.5,
+      "z": -2.70942169415507,
+      "p": 0.00674006132235074,
+      "r": 0.197081428619382
+    }
+  },
+  {
+    "id": "mw-S1-lytis",
+    "test": "mannwhitney",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "S1",
+      "group": "lytis"
+    },
+    "expect": {
+      "U": 3876.5,
+      "z": -1.93068714794818,
+      "p": 0.0535217532297012,
+      "r": 0.136520197466387
+    }
+  },
+  {
+    "id": "alpha-stress-raw",
+    "test": "cronbach",
+    "dataset": "apklausa",
+    "picks": {
+      "items": "S1,S2,S3,S4,S5,S6"
+    },
+    "expect": {
+      "alpha": -0.259489091287306,
+      "alphaStd": -0.296893956933524,
+      "n": 196,
+      "k": 6,
+      "rBar": -0.039668001271343,
+      "rDrop_S1": 0.38344357800754,
+      "alphaDrop_S1": -1.04973023692235,
+      "rDrop_S2": 0.416078786917067,
+      "alphaDrop_S2": -1.11811403541838,
+      "rDrop_S3": -0.622595310733775,
+      "alphaDrop_S3": 0.359775885579564,
+      "rDrop_S4": 0.360669703859366,
+      "alphaDrop_S4": -1.0777858039007,
+      "rDrop_S5": -0.689848085473977,
+      "alphaDrop_S5": 0.462748164002922,
+      "rDrop_S6": 0.353045402543354,
+      "alphaDrop_S6": -1.0747617194356
+    }
+  },
+  {
+    "id": "alpha-stress",
+    "test": "cronbach",
+    "dataset": "apklausa",
+    "picks": {
+      "items": "S1,S2,S3,S4,S5,S6"
+    },
+    "expect": {
+      "alpha": 0.88810930247761,
+      "alphaStd": 0.888136072357521,
+      "n": 196,
+      "k": 6,
+      "rBar": 0.569566399725254,
+      "rDrop_S1": 0.683695138796398,
+      "alphaDrop_S1": 0.871783496007099,
+      "rDrop_S2": 0.731881105592664,
+      "alphaDrop_S2": 0.864267724058153,
+      "rDrop_S3": 0.656973968767685,
+      "alphaDrop_S3": 0.875880628698582,
+      "rDrop_S4": 0.682106554827019,
+      "alphaDrop_S4": 0.872291074193568,
+      "rDrop_S5": 0.720584138986636,
+      "alphaDrop_S5": 0.865880213473014,
+      "rDrop_S6": 0.748275163235009,
+      "alphaDrop_S6": 0.861230891347876
+    },
+    "prep": [
+      {
+        "kind": "reverse",
+        "id": "r",
+        "variables": ["S3", "S5"],
+        "min": 1,
+        "max": 5
+      }
+    ]
+  },
+  {
+    "id": "alpha-satisf",
+    "test": "cronbach",
+    "dataset": "apklausa",
+    "picks": {
+      "items": "P1,P2,P3,P4,P5,P6,P7,P8"
+    },
+    "expect": {
+      "alpha": 0.900222249395048,
+      "alphaStd": 0.900306032735603,
+      "n": 196,
+      "k": 8,
+      "rBar": 0.530259983016403,
+      "rDrop_P1": 0.668475290327667,
+      "alphaDrop_P1": 0.88923245738771,
+      "rDrop_P2": 0.635744086955451,
+      "alphaDrop_P2": 0.892214762558989,
+      "rDrop_P3": 0.690275614707933,
+      "alphaDrop_P3": 0.887176139360019,
+      "rDrop_P4": 0.673377173323212,
+      "alphaDrop_P4": 0.888726635307088,
+      "rDrop_P5": 0.698409386460421,
+      "alphaDrop_P5": 0.886589398548262,
+      "rDrop_P6": 0.751291503481053,
+      "alphaDrop_P6": 0.881314718056342,
+      "rDrop_P7": 0.715802765043829,
+      "alphaDrop_P7": 0.884830292309157,
+      "rDrop_P8": 0.657342386157935,
+      "alphaDrop_P8": 0.89013309973964
+    },
+    "prep": [
+      {
+        "kind": "reverse",
+        "id": "r",
+        "variables": ["P2", "P6"],
+        "min": 1,
+        "max": 5
+      }
+    ]
+  },
+  {
+    "id": "spearman-S1-P1",
+    "test": "spearman",
+    "dataset": "apklausa",
+    "picks": {
+      "x": "S1",
+      "y": "P1"
+    },
+    "expect": {
+      "rho": -0.244505696334893,
+      "p": 0.000484340602988923,
+      "n": 200,
+      "df": 198,
+      "t": -3.548195454069
+    }
+  },
+  {
+    "id": "spearman-age-bwt",
+    "test": "spearman",
+    "dataset": "birthwt",
+    "picks": {
+      "x": "age",
+      "y": "bwt"
+    },
+    "expect": {
+      "rho": 0.0612337564968654,
+      "p": 0.402577869877325,
+      "n": 189,
+      "df": 187,
+      "t": 0.838933324185433
+    }
+  },
+  {
+    "id": "cormatrix-pearson",
+    "test": "cormatrix",
+    "dataset": "apklausa",
+    "picks": {
+      "vars": "miegas,vidurkis,savijauta_pries,amzius",
+      "method": "pearson"
+    },
+    "expect": {
+      "r_vidurkis_miegas": 0.144408349594396,
+      "p_vidurkis_miegas": 0.0456731394119333,
+      "r_savijauta_pries_miegas": 0.180618877464078,
+      "p_savijauta_pries_miegas": 0.0112974637678933,
+      "r_savijauta_pries_vidurkis": 0.197770262819984,
+      "p_savijauta_pries_vidurkis": 0.0054598479392162,
+      "r_amzius_miegas": -0.0396909233772986,
+      "p_amzius_miegas": 0.580717916372273,
+      "r_amzius_vidurkis": -0.0425563384291433,
+      "p_amzius_vidurkis": 0.553685694981618,
+      "r_amzius_savijauta_pries": 0.0106846931363534,
+      "p_amzius_savijauta_pries": 0.880637171997338
+    }
+  },
+  {
+    "id": "cormatrix-spearman",
+    "test": "cormatrix",
+    "dataset": "apklausa",
+    "picks": {
+      "vars": "S1,S2,P1,P4,miegas",
+      "method": "spearman"
+    },
+    "expect": {
+      "r_S2_S1": 0.559359749583161,
+      "p_S2_S1": 7.35766821536513e-18,
+      "r_P1_S1": -0.244505696334893,
+      "p_P1_S1": 0.000484340602988923,
+      "r_P1_S2": -0.286984077065762,
+      "p_P1_S2": 3.78656684520916e-05,
+      "r_P4_S1": -0.31731241038653,
+      "p_P4_S1": 4.68951265935774e-06,
+      "r_P4_S2": -0.329470830075815,
+      "p_P4_S2": 1.89883850229658e-06,
+      "r_P4_P1": 0.485748244945516,
+      "p_P4_P1": 3.08217687801496e-13,
+      "r_miegas_S1": -0.303609312129314,
+      "p_miegas_S1": 1.51912879268405e-05,
+      "r_miegas_S2": -0.313293240277113,
+      "p_miegas_S2": 7.78075663012381e-06,
+      "r_miegas_P1": 0.216862972563717,
+      "p_miegas_P1": 0.00226506444346454,
+      "r_miegas_P4": 0.140957681765093,
+      "p_miegas_P4": 0.0487656212195242
+    }
+  },
+  {
+    "id": "paired-savijauta",
+    "test": "paired_ttest",
+    "dataset": "apklausa",
+    "picks": {
+      "first": "savijauta_pries",
+      "second": "savijauta_po"
+    },
+    "expect": {
+      "t": 9.22751106152888,
+      "df": 195,
+      "p": 4.65919573847307e-17,
+      "meanDiff": 4.47448979591837,
+      "ciLo": 3.51815315822407,
+      "ciHi": 5.43082643361267,
+      "dz": 0.659107932966348,
+      "n": 196
+    }
+  },
+  {
+    "id": "paired-S1-S2",
+    "test": "paired_ttest",
+    "dataset": "apklausa",
+    "picks": {
+      "first": "S1",
+      "second": "S2"
+    },
+    "expect": {
+      "t": 0.545908164848056,
+      "df": 199,
+      "p": 0.58574051319928,
+      "meanDiff": 0.04,
+      "ciLo": -0.104489983570816,
+      "ciHi": 0.184489983570816,
+      "dz": 0.0386015365269164,
+      "n": 200
+    }
+  },
+  {
+    "id": "wilcoxon-savijauta",
+    "test": "wilcoxon",
+    "dataset": "apklausa",
+    "picks": {
+      "first": "savijauta_pries",
+      "second": "savijauta_po"
+    },
+    "expect": {
+      "V": 14503.5,
+      "z": 7.71728624660877,
+      "p": 1.18832579687877e-14,
+      "r": 0.564343862124056,
+      "n": 187
+    }
+  },
+  {
+    "id": "wilcoxon-S1-S2",
+    "test": "wilcoxon",
+    "dataset": "apklausa",
+    "picks": {
+      "first": "S1",
+      "second": "S2"
+    },
+    "expect": {
+      "V": 4099,
+      "z": 0.597858350633257,
+      "p": 0.549934452353633,
+      "r": 0.0536892648173578,
+      "n": 124
+    }
+  },
+  {
+    "id": "kruskal-S1-sritis",
+    "test": "kruskal",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "S1",
+      "group": "sritis"
+    },
+    "expect": {
+      "H": 8.95065054052716,
+      "df": 3,
+      "p": 0.0299542611837231,
+      "eps2": 0.0449781434197344,
+      "dunnZ_0": -0.795783614871592,
+      "dunnP_0": 1,
+      "dunnZ_1": -2.50457764640305,
+      "dunnP_1": 0.0735586154882946,
+      "dunnZ_2": -2.49751920526558,
+      "dunnP_2": 0.0735586154882946,
+      "dunnZ_3": -0.799151856605764,
+      "dunnP_3": 1,
+      "dunnZ_4": -0.986952454509145,
+      "dunnP_4": 1,
+      "dunnZ_5": -0.34011302904561,
+      "dunnP_5": 1
+    }
+  },
+  {
+    "id": "kruskal-bwt-race",
+    "test": "kruskal",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "group": "race"
+    },
+    "expect": {
+      "H": 8.51987975902028,
+      "df": 2,
+      "p": 0.0141231514754257,
+      "eps2": 0.0453185093564909,
+      "dunnZ_0": 2.36783576628783,
+      "dunnP_0": 0.0536774293295224,
+      "dunnZ_1": 2.33116116661927,
+      "dunnP_1": 0.0536774293295224,
+      "dunnZ_2": -0.659533212043419,
+      "dunnP_2": 0.509553426197937
+    }
+  },
+  {
+    "id": "kruskal-vidurkis-dirba",
+    "test": "kruskal",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "vidurkis",
+      "group": "dirba"
+    },
+    "expect": {
+      "H": 2.66168957142609,
+      "df": 1,
+      "p": 0.102791494492255,
+      "eps2": 0.0136496901098774
+    }
+  },
+  {
+    "id": "posthoc-bwt-race",
+    "test": "anova",
+    "dataset": "birthwt",
+    "picks": {
+      "outcome": "bwt",
+      "group": "race"
+    },
+    "expect": {
+      "F": 4.91251331864341,
+      "p": 0.00833607749454037,
+      "postP_0": 0.0428037135734387,
+      "postP_1": 0.0260123761613373,
+      "postP_2": 0.862437156837495
+    }
+  },
+  {
+    "id": "posthoc-vidurkis-sritis",
+    "test": "anova",
+    "dataset": "apklausa",
+    "picks": {
+      "outcome": "vidurkis",
+      "group": "sritis"
+    },
+    "expect": {
+      "F": 1.59986159396794,
+      "p": 0.190813806888906,
+      "postP_0": 0.190001571722148,
+      "postP_1": 0.996983265181198,
+      "postP_2": 0.960607365274658,
+      "postP_3": 0.154806383877873,
+      "postP_4": 0.422919669723249,
+      "postP_5": 0.914060750579126
+    }
+  },
+  {
+    "id": "posthoc-wage-occupation",
+    "test": "anova",
+    "dataset": "cps1985",
+    "picks": {
+      "outcome": "wage",
+      "group": "occupation"
+    },
+    "expect": {
+      "F": 23.223918389003,
+      "p": 4.12174206344214e-21,
+      "postP_0": 7.25410734957466e-05,
+      "postP_1": 0.00103935920113329,
+      "postP_2": 5.17638259256437e-06,
+      "postP_3": 0.986212896335726,
+      "postP_4": 0.00234789017608406,
+      "postP_5": 0.999905941000598,
+      "postP_6": 0.458978635530332,
+      "postP_7": 7.89461829242555e-11,
+      "postP_8": 0.198926633698359,
+      "postP_9": 0.770022263481427,
+      "postP_10": 4.58174425170821e-05,
+      "postP_11": 0.884089708583121,
+      "postP_12": 1.70885527950304e-12,
+      "postP_13": 0.00574830877035137,
+      "postP_14": 1.67012028551294e-06
+    }
+  }
+]

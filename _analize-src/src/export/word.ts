@@ -16,7 +16,8 @@ import { saveAs } from "file-saver";
 import type { Chunk, Dataset, ResultTable } from "../types";
 import { getTest } from "../stats/tests";
 import { renderPlotSvg, PLOT_HEIGHT, PLOT_WIDTH } from "../charts/svg";
-import { CONTACT_EMAIL, SITE_URL } from "../site";
+import { CONTACT_EMAIL } from "../site";
+import { buildMethodsParagraph, buildReferences } from "./methods";
 
 // Site ink tones (hex without #, as docx expects).
 const INK_2 = "4A4741";
@@ -105,16 +106,12 @@ function dateStamp(d: Date): string {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-export async function exportToWord(dataset: Dataset, chunks: Chunk[]): Promise<void> {
+export async function exportToWord(dataset: Dataset, chunks: Chunk[], prepSentences: string[] = []): Promise<void> {
   const children: (Paragraph | Table)[] = [];
   const now = new Date();
   const year = now.getFullYear();
 
-  const usedTests = [
-    ...new Map(
-      chunks.filter((c) => c.result).map((c) => [c.testId, getTest(c.testId)])
-    ).values(),
-  ];
+  const methodsText = buildMethodsParagraph(chunks, prepSentences, year);
 
   // --- Title block ---
   children.push(
@@ -141,25 +138,10 @@ export async function exportToWord(dataset: Dataset, chunks: Chunk[]): Promise<v
   );
 
   // --- Methods (before results) ---
-  if (usedTests.length > 0) {
-    const methodsSentences = usedTests
-      .map((t) => t.methods)
-      .filter(Boolean)
-      .join(" ");
-
+  if (methodsText) {
     children.push(
-      new Paragraph({ text: "Metodai", heading: HeadingLevel.HEADING_1 }),
-      new Paragraph({
-        children: [
-          new TextRun({
-            text:
-              `Statistinė analizė atlikta naudojant Statistikas.lt Analizė (Statistikas.lt, ${year}). ` +
-              methodsSentences +
-              " Visų testų reikšmingumo lygmuo – α = 0,05.",
-          }),
-        ],
-        spacing: { after: 160 },
-      }),
+      new Paragraph({ text: "Duomenų analizė", heading: HeadingLevel.HEADING_1 }),
+      new Paragraph({ children: [new TextRun({ text: methodsText })], spacing: { after: 160 } }),
       new Paragraph({ text: "" })
     );
   }
@@ -208,7 +190,15 @@ export async function exportToWord(dataset: Dataset, chunks: Chunk[]): Promise<v
           keepNext: true,
         }),
         buildTable(table),
-        new Paragraph({ text: "" })
+        table.note
+          ? new Paragraph({
+              children: [
+                new TextRun({ text: "Pastaba. ", italics: true, size: 20 }),
+                new TextRun({ text: table.note, size: 20 }),
+              ],
+              spacing: { before: 60, after: 120 },
+            })
+          : new Paragraph({ text: "" })
       );
     }
 
@@ -262,11 +252,8 @@ export async function exportToWord(dataset: Dataset, chunks: Chunk[]): Promise<v
   }
 
   // --- References (end of document) ---
-  if (usedTests.length > 0) {
-    const refs = [
-      `Statistikas.lt. (${year}). Statistikas.lt Analizė: nemokama statistinė analizė naršyklėje [Kompiuterinė programa]. ${SITE_URL}/analize/`,
-      ...usedTests.map((t) => t.apa).filter((a): a is string => !!a),
-    ];
+  if (methodsText) {
+    const refs = buildReferences(chunks, year);
     children.push(
       new Paragraph({ text: "Literatūra", heading: HeadingLevel.HEADING_1 }),
       ...refs.map(

@@ -1,17 +1,30 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import type { Chunk, Dataset } from "./types";
 import { DEMOS, getDemo } from "./data/demos";
 import type { Demo } from "./data/demos";
 import { datasetFromCsv } from "./data/csv";
-import { getTest } from "./stats/tests";
+import { getTest, inputsReady } from "./stats/tests";
 import { ChunkCard } from "./components/ChunkCard";
 import { ChunkToc } from "./components/ChunkToc";
 import { DataPreview } from "./components/DataPreview";
 import { VariableEditor } from "./components/VariableEditor";
+import { PrepPanel } from "./components/PrepPanel";
+import { MethodsPanel } from "./components/MethodsPanel";
+import { applyPrep, type PrepStep } from "./data/prep";
 import { ContactLink, CtaPanel, ExportToast, IntroPanel, OutLink, SiteFooter } from "./components/Funnel";
 import { readShareFromUrl, buildShareUrl, applyShareToVariables } from "./share";
 import type { ShareState } from "./share";
 import { SITE_URL } from "./site";
+import {
+  PROJECT_EXT,
+  clearAutosave,
+  downloadProject,
+  loadAutosave,
+  makeProject,
+  parseProject,
+  saveAutosave,
+  type Project,
+} from "./project";
 import { track } from "./analytics";
 
 let counter = 0;
@@ -23,6 +36,9 @@ function seedChunks(demo: Demo): Chunk[] {
 }
 
 function runChunk(chunk: Chunk, dataset: Dataset): Chunk {
+  // An empty Table 1 is just unfinished, not an error.
+  if (chunk.testId === "table1" && (chunk.picks.rowVars ?? "[]") === "[]")
+    return { ...chunk, result: undefined, error: undefined };
   try {
     const test = getTest(chunk.testId);
     const result = test.run(dataset, chunk.picks);
@@ -33,7 +49,11 @@ function runChunk(chunk: Chunk, dataset: Dataset): Chunk {
 }
 
 export function App() {
-  const [dataset, setDataset] = useState<Dataset>(DEMOS[0].dataset);
+  // The loaded data (with variable-editor changes); the prep steps derive what analyses see.
+  const [rawDataset, setRawDataset] = useState<Dataset>(DEMOS[0].dataset);
+  const [prepSteps, setPrepSteps] = useState<PrepStep[]>([]);
+  const prep = useMemo(() => applyPrep(rawDataset, prepSteps), [rawDataset, prepSteps]);
+  const dataset = prep.dataset;
   const [chunks, setChunks] = useState<Chunk[]>(() =>
     seedChunks(DEMOS[0]).map((c) => runChunk(c, DEMOS[0].dataset))
   );
@@ -45,6 +65,8 @@ export function App() {
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [activeChunkId, setActiveChunkId] = useState<string | null>(null);
   const [exportToast, setExportToast] = useState(false);
+  // Work found in the browser autosave, offered for restore on arrival.
+  const [autosaved, setAutosaved] = useState<Project | null>(null);
 
   // Track which chunk is in the top portion of the viewport for the ToC highlight.
   const chunkIds = chunks.map((c) => c.id).join(",");
@@ -65,22 +87,30 @@ export function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chunkIds, handleIntersect]);
 
-  // Read shareable link state from URL hash on first load.
+  // Read shareable link state from URL hash on first load; otherwise a deep link
+  // (?demo=apklausa&test=cronbach, used by blog posts) or a previous autosave.
   useEffect(() => {
     const state = readShareFromUrl();
-    if (state) setPendingRestore(state);
+    if (state) {
+      setPendingRestore(state);
+      return;
+    }
+    const q = new URLSearchParams(window.location.search);
+    const linkDemo = q.get("demo");
+    const linkTest = q.get("test");
+    if (linkDemo || linkTest) {
+      openDeepLink(linkDemo, linkTest);
+      return;
+    }
+    const saved = loadAutosave();
+    if (saved) setAutosaved(saved);
   }, []);
 
   // Reactive: every change to a chunk (test or variable picks) recomputes it
   // immediately once all its inputs are filled — no "Run" button needed.
   const changeChunk = (next: Chunk) => {
-    // Table 1 manages its own output reactively inside Table1Card.
-    if (next.testId === "table1") {
-      setChunks((cs) => cs.map((c) => (c.id === next.id ? next : c)));
-      return;
-    }
     const test = getTest(next.testId);
-    const ready = test.inputs.every((s) => next.picks[s.id]);
+    const ready = inputsReady(test, next.picks);
     const computed = ready ? runChunk(next, dataset) : { ...next, result: undefined, error: undefined };
     setChunks((cs) => cs.map((c) => (c.id === computed.id ? computed : c)));
   };
@@ -90,24 +120,78 @@ export function App() {
     setChunks((cs) => [...cs, { id: newId(), testId: "descriptives", picks: {} }]);
   };
 
-  // Editing variables (rename / recode / retype) re-runs any chunk that already ran,
-  // so descriptions and labels stay in sync with the new metadata.
-  const updateDataset = (next: Dataset) => {
-    setDataset(next);
-    setChunks((cs) => cs.map((c) => (c.result || c.error ? runChunk(c, next) : c)));
+  // Any change to the analysed data (variable edits, prep steps) re-runs every chunk
+  // that already ran, so results, descriptions and labels stay in sync.
+  useEffect(() => {
+    setChunks((cs) => cs.map((c) => (c.result || c.error ? runChunk(c, dataset) : c)));
+  }, [dataset]);
+
+  // Keep the user's own work in the browser (demos are always one click away).
+  useEffect(() => {
+    if (demoId !== null) return;
+    const t = setTimeout(() => saveAutosave(makeProject(rawDataset, prepSteps, chunks)), 800);
+    return () => clearTimeout(t);
+  }, [demoId, rawDataset, prepSteps, chunks]);
+
+  const openProject = (p: Project) => {
+    const derived = applyPrep(p.dataset, p.prep).dataset;
+    setRawDataset(p.dataset);
+    setPrepSteps(p.prep);
+    setDemoId(null);
+    setAutosaved(null);
+    setChunks(p.chunks.map((c) => runChunk({ id: newId(), ...c }, derived)));
   };
+
+  const saveProject = () => {
+    downloadProject(makeProject(rawDataset, prepSteps, chunks));
+    track("analize_project_save");
+  };
+
+  function openDeepLink(demoParam: string | null, testParam: string | null) {
+    const demo = demoParam ? getDemo(demoParam) : DEMOS[0];
+    let test: ReturnType<typeof getTest> | null = null;
+    try {
+      test = testParam ? getTest(testParam) : null;
+    } catch {
+      test = null;
+    }
+    const seeded = seedChunks(demo);
+    // Put the linked test first: the blog post's example, else its demo seed, else an empty block.
+    const example = test ? demo.examples?.[test.id] : undefined;
+    const seededLinked = test ? seeded.find((c) => c.testId === test!.id) : undefined;
+    const linked = test
+      ? example
+        ? { id: newId(), testId: test.id, picks: example }
+        : seededLinked ?? { id: newId(), testId: test.id, picks: {} }
+      : null;
+    const ordered = linked ? [linked, ...seeded.filter((c) => c !== linked)] : seeded;
+    setDemoId(demo.id);
+    setRawDataset(demo.dataset);
+    setPrepSteps([]);
+    setChunks(ordered.map((c) => runChunk(c, demo.dataset)));
+    track("analize_deep_link", { dataset: demo.id, test_id: test?.id ?? "" });
+  }
 
   const onUpload = async (file: File) => {
     try {
+      if (file.name.toLowerCase().endsWith(PROJECT_EXT)) {
+        openProject(parseProject(await file.text()));
+        track("analize_project_load");
+        return;
+      }
       if (/\.xls$/i.test(file.name))
         throw new Error(
           "Senieji .xls failai nepalaikomi – atidarykite failą programoje Excel ir išsaugokite kaip .xlsx."
         );
-      const baseName = file.name.replace(/\.(csv|xlsx)$/i, "");
-      const isXlsx = /\.xlsx$/i.test(file.name);
-      let ds = isXlsx
-        ? await (await import("./data/xlsx")).datasetFromXlsx(await file.arrayBuffer(), baseName)
-        : datasetFromCsv(await file.text(), baseName);
+      const baseName = file.name.replace(/\.(csv|xlsx|sav)$/i, "");
+      const fileType = /\.xlsx$/i.test(file.name) ? "xlsx" : /\.sav$/i.test(file.name) ? "sav" : "csv";
+      let ds =
+        fileType === "xlsx"
+          ? await (await import("./data/xlsx")).datasetFromXlsx(await file.arrayBuffer(), baseName)
+          : fileType === "sav"
+            ? (await import("./data/sav")).datasetFromSav(await file.arrayBuffer(), baseName)
+            : datasetFromCsv(await file.text(), baseName);
+      let steps: PrepStep[] = [];
       let nextChunks: Chunk[];
 
       if (pendingRestore) {
@@ -117,6 +201,7 @@ export function App() {
           description: pendingRestore.datasetDesc ?? ds.description,
           variables: applyShareToVariables(ds.variables, pendingRestore.variables),
         };
+        steps = pendingRestore.prep ?? [];
         nextChunks = pendingRestore.chunks.map((c) => ({
           id: newId(),
           testId: c.testId,
@@ -128,12 +213,14 @@ export function App() {
         nextChunks = [{ id: newId(), testId: "descriptives", picks: {} }];
       }
 
-      setDataset(ds);
+      setRawDataset(ds);
+      setPrepSteps(steps);
       setDemoId(null);
-      setChunks(nextChunks.map((c) => runChunk(c, ds)));
+      setChunks(nextChunks.map((c) => runChunk(c, applyPrep(ds, steps).dataset)));
       // Only coarse counts — never file names, column names or values.
+      if (fileType === "sav") track("analize_sav_import", { rows: ds.rows.length, cols: ds.variables.length });
       track("analize_upload", {
-        file_type: isXlsx ? "xlsx" : "csv",
+        file_type: fileType,
         rows: ds.rows.length,
         cols: ds.variables.length,
       });
@@ -146,7 +233,8 @@ export function App() {
     const demo = getDemo(id);
     track("analize_demo", { dataset: demo.id });
     setDemoId(demo.id);
-    setDataset(demo.dataset);
+    setRawDataset(demo.dataset);
+    setPrepSteps([]);
     setChunks(seedChunks(demo).map((c) => runChunk(c, demo.dataset)));
   };
 
@@ -154,7 +242,7 @@ export function App() {
     const state: ShareState = {
       datasetName: dataset.name,
       datasetDesc: dataset.description,
-      variables: dataset.variables.map(({ key, label, type, valueLabels, unit }) => ({
+      variables: rawDataset.variables.map(({ key, label, type, valueLabels, unit }) => ({
         key,
         label,
         type,
@@ -162,6 +250,7 @@ export function App() {
         ...(unit ? { unit } : {}),
       })),
       chunks: chunks.map(({ testId, picks }) => ({ testId, picks })),
+      ...(prepSteps.length ? { prep: prepSteps } : {}),
     };
     const url = buildShareUrl(state);
     navigator.clipboard.writeText(url).then(() => {
@@ -179,7 +268,7 @@ export function App() {
     try {
       // Loaded on demand: the docx library is the bulk of the bundle.
       const { exportToWord } = await import("./export/word");
-      await exportToWord(dataset, chunks);
+      await exportToWord(dataset, chunks, prep.sentences.filter(Boolean));
       track("analize_export_word", { chunks: completed });
       setExportToast(true);
     } catch (e) {
@@ -231,11 +320,11 @@ export function App() {
             <span className="tagline">Nemokama statistinė analizė naršyklėje</span>
           </div>
           <div className="top-actions">
-            <label className="ghost-btn">
-              Įkelti CSV / Excel
+            <label className="ghost-btn" title="CSV, Excel (.xlsx), SPSS (.sav) arba išsaugotas projektas (.statistikas)">
+              Įkelti CSV / Excel / SPSS
               <input
                 type="file"
-                accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                accept={`.csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.sav,${PROJECT_EXT}`}
                 hidden
                 onChange={(e) => {
                   const f = e.target.files?.[0];
@@ -263,6 +352,13 @@ export function App() {
                 ))}
               </select>
             </label>
+            <button
+              className="ghost-btn"
+              onClick={saveProject}
+              title="Atsisiųsti duomenis, paruošimo žingsnius ir analizės blokus vienu failu – vėliau jį galite vėl įkelti"
+            >
+              Išsaugoti projektą
+            </button>
             <button className="ghost-btn" onClick={copyLink}>
               {copied ? "✓ Nukopijuota" : "Kopijuoti nuorodą"}
             </button>
@@ -282,11 +378,28 @@ export function App() {
             <strong>{dataset.name}</strong>
             <p className="dataset-desc">{dataset.description}</p>
           </div>
-          <VariableEditor dataset={dataset} onChange={updateDataset} />
+          <VariableEditor dataset={rawDataset} onChange={setRawDataset} />
           <DataPreview dataset={dataset} />
         </div>
 
+        <PrepPanel key={demoId ?? rawDataset.name} raw={rawDataset} steps={prepSteps} onChange={setPrepSteps} />
+
         <main className={`chunks${anyDragging ? " is-dragging" : ""}`}>
+          {autosaved && (
+            <div className="restore-banner">
+              <span className="restore-icon" aria-hidden="true">↺</span>
+              <div>
+                <strong>Rasta neužbaigta analizė</strong> – „{autosaved.dataset.name}“,{" "}
+                {new Date(autosaved.savedAt).toLocaleString("lt-LT")} (saugoma tik šioje naršyklėje).
+                <button className="restore-dismiss" onClick={() => { openProject(autosaved); track("analize_project_load", { from: "autosave" }); }}>
+                  Tęsti
+                </button>
+                <button className="restore-dismiss" onClick={() => { clearAutosave(); setAutosaved(null); }}>
+                  Ištrinti
+                </button>
+              </div>
+            </div>
+          )}
           {pendingRestore && (
             <div className="restore-banner">
               <span className="restore-icon" aria-hidden="true">↗</span>
@@ -305,6 +418,10 @@ export function App() {
               index={i}
               dataset={dataset}
               onChange={changeChunk}
+              onAddPrep={(step) => {
+                track("analize_prep_step", { step_type: step.kind, from: "prielaidos" });
+                setPrepSteps((ps) => [...ps, step]);
+              }}
               onRemove={remove}
               dragOverPos={dragOver?.idx === i ? dragOver.pos : null}
               onDragStart={() => { dragSrcIdx.current = i; setAnyDragging(true); }}
@@ -317,6 +434,8 @@ export function App() {
             + Pridėti analizės bloką
           </button>
         </main>
+
+        <MethodsPanel chunks={chunks} prepSentences={prep.sentences.filter(Boolean)} />
 
         <CtaPanel />
 

@@ -1,5 +1,6 @@
 import type { Variable } from "./types";
 import type { VariableType } from "./types";
+import type { PrepStep } from "./data/prep";
 
 export interface SavedVariable {
   key: string;
@@ -14,6 +15,7 @@ export interface ShareState {
   datasetDesc?: string;
   variables: SavedVariable[];
   chunks: { testId: string; picks: Record<string, string> }[];
+  prep?: PrepStep[];
 }
 
 function toBase64url(state: ShareState): string {

@@ -96,6 +96,27 @@ export function quantile(sorted: number[], q: number): number {
   return sorted[base];
 }
 
+/**
+ * Mid-ranks (1-based, ties averaged) in the input order, plus the tie term
+ * Σ(t³ − t) over tie groups used by rank-test variance corrections.
+ */
+export function rankWithTies(values: number[]): { ranks: number[]; tieTerm: number } {
+  const order = values.map((v, i) => ({ v, i })).sort((p, q) => p.v - q.v);
+  const ranks = new Array<number>(values.length);
+  let tieTerm = 0;
+  let i = 0;
+  while (i < order.length) {
+    let j = i;
+    while (j + 1 < order.length && order[j + 1].v === order[i].v) j++;
+    const avg = (i + j + 2) / 2;
+    for (let k = i; k <= j; k++) ranks[order[k].i] = avg;
+    const t = j - i + 1;
+    tieTerm += t * t * t - t;
+    i = j + 1;
+  }
+  return { ranks, tieTerm };
+}
+
 export function median(a: number[]): number {
   return quantile([...a].sort((x, y) => x - y), 0.5);
 }

@@ -52,3 +52,22 @@ export function ltPlural(n: number, forms: [string, string, string] | readonly [
   if (m10 >= 2 && m10 <= 9 && !(m100 >= 12 && m100 <= 19)) return forms[1];
   return forms[2];
 }
+
+/** "= 0,034" or "< 0,001" — meant to follow a literal "p ". */
+export function fmtPInline(p: number): string {
+  return p < 0.001 ? fmtP(p) : "= " + fmtP(p);
+}
+
+/** Correlation strength, feminine nominative singular (agrees with "koreliacija"). */
+export function describeR(absR: number): string {
+  if (absR < 0.1) return "nereikšminga";
+  if (absR < 0.3) return "silpna";
+  if (absR < 0.5) return "vidutinė";
+  if (absR < 0.7) return "stipri";
+  return "labai stipri";
+}
+
+/** APA significance stars: * p < .05, ** p < .01, *** p < .001. */
+export function stars(p: number): string {
+  return p < 0.001 ? "***" : p < 0.01 ? "**" : p < 0.05 ? "*" : "";
+}

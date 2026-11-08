@@ -173,20 +173,24 @@ function scatter(spec: Extract<PlotSpec, { kind: "scatter" }>, t: PlotTheme): st
 
 function bar(spec: Extract<PlotSpec, { kind: "bar" }>, t: PlotTheme): string {
   const cats = spec.series[0]?.values.map((v) => v.x) ?? [];
-  const maxY = Math.max(1, ...spec.series.flatMap((s) => s.values.map((v) => v.y)));
+  const ys = spec.series.flatMap((s) => s.values.map((v) => v.y));
+  // Bars grow from zero; the axis extends below zero only when a value is negative.
+  const minY = Math.min(0, ...ys);
+  const maxY = Math.max(minY < 0 ? 0 : 1, ...ys);
   const nCat = cats.length;
   const slot = PLOT_W / nCat;
   const nSeries = spec.series.length;
   const groupW = slot * 0.7;
   const barW = groupW / nSeries;
-  const sy = (y: number) => M.top + PLOT_H - (y / maxY) * PLOT_H;
+  const sy = (y: number) => M.top + PLOT_H - ((y - minY) / (maxY - minY)) * PLOT_H;
   let body = "";
   cats.forEach((cat, ci) => {
     const x0 = M.left + slot * ci + (slot - groupW) / 2;
     spec.series.forEach((s, si) => {
       const val = s.values[ci]?.y ?? 0;
       const x = x0 + si * barW;
-      body += `<rect x="${x + 1}" y="${sy(val)}" width="${Math.max(0, barW - 2)}" height="${M.top + PLOT_H - sy(val)}" fill="${t.palette[si % t.palette.length]}" opacity="0.85"/>`;
+      const top = sy(Math.max(val, 0));
+      body += `<rect x="${x + 1}" y="${top}" width="${Math.max(0, barW - 2)}" height="${Math.abs(sy(Math.min(val, 0)) - top)}" fill="${t.palette[si % t.palette.length]}" opacity="0.85"/>`;
     });
     body += `<text x="${M.left + slot * ci + slot / 2}" y="${M.top + PLOT_H + 18}" text-anchor="middle" font-size="11" fill="${t.axis}">${esc(cat)}</text>`;
   });
@@ -198,8 +202,8 @@ function bar(spec: Extract<PlotSpec, { kind: "bar" }>, t: PlotTheme): string {
       legend += `<text x="${lx + 16}" y="${M.top - 6}" font-size="11" fill="${t.text}">${esc(s.label)}</text>`;
     });
   }
-  const axisLine = `<line x1="${M.left}" y1="${M.top + PLOT_H}" x2="${M.left + PLOT_W}" y2="${M.top + PLOT_H}" stroke="${t.axis}"/>`;
-  return svgWrap(yAxis(0, maxY, spec.yLabel, t) + body + legend + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);
+  const axisLine = `<line x1="${M.left}" y1="${sy(0)}" x2="${M.left + PLOT_W}" y2="${sy(0)}" stroke="${t.axis}"/>`;
+  return svgWrap(yAxis(minY, maxY, spec.yLabel, t) + body + legend + axisLine + xAxisLabel(spec.xLabel, t), spec.title, t);
 }
 
 export function renderPlotSvg(spec: PlotSpec, theme: PlotTheme = PLOT_THEME): string {

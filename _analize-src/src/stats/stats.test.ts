@@ -128,6 +128,16 @@ describe("cps1985 sanity checks vs R", () => {
   });
 });
 
+describe("demo deep-link examples", () => {
+  for (const demo of DEMOS) {
+    for (const [testId, picks] of Object.entries(demo.examples ?? {})) {
+      it(`${demo.id}: ${testId} example runs`, () => {
+        expect(() => getTest(testId).run(demo.dataset, picks)).not.toThrow();
+      });
+    }
+  }
+});
+
 describe("demo seeds", () => {
   for (const demo of DEMOS) {
     it(`${demo.id}: every seeded chunk runs without error`, () => {

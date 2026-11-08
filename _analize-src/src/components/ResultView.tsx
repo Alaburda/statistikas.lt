@@ -3,7 +3,8 @@ import { Plot } from "./Plot";
 
 function isNum(v: string | number): boolean {
   if (typeof v === "number") return true;
-  const s = String(v).trim();
+  // Trailing significance stars ("0,14**") still count as numbers.
+  const s = String(v).trim().replace(/\*+$/, "");
   if (/^[<>≤≥]\s*[.,]?\d/.test(s)) return true; // < 0,001, > 0,05 etc.
   // Lithuanian numbers: decimal comma, optional (no-break/thin) space as thousands separator, U+2212 minus.
   const n = s.replace(/[\s  ]/g, "").replace("−", "-").replace(",", ".");
@@ -41,6 +42,11 @@ export function ResultView({ result }: { result: AnalysisResult }) {
                 </tbody>
               </table>
             </div>
+            {t.note && (
+              <p className="table-note">
+                <em>Pastaba.</em> {t.note}
+              </p>
+            )}
           </div>
         );
       })}

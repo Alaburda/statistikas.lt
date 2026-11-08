@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import type { Chunk, Dataset } from "../types";
-import { TESTS, getTest } from "../stats/tests";
+import type { PrepStep } from "../data/prep";
+import { TESTS, getTest, inputsReady } from "../stats/tests";
 import { ResultView } from "./ResultView";
 import { Table1Card } from "./Table1Card";
+import { TestWizard } from "./TestWizard";
 import { ContactLink, OutLink } from "./Funnel";
 import { typeLabel } from "./labels";
 import { track } from "../analytics";
@@ -12,6 +14,7 @@ interface Props {
   index: number;
   dataset: Dataset;
   onChange: (next: Chunk) => void;
+  onAddPrep: (step: PrepStep) => void;
   onRemove: (id: string) => void;
   dragOverPos: "before" | "after" | null;
   onDragStart: () => void;
@@ -20,24 +23,21 @@ interface Props {
   onDragEnd: () => void;
 }
 
-export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverPos, onDragStart, onDragOver, onDrop, onDragEnd }: Props) {
+export function ChunkCard({ chunk, index, dataset, onChange, onAddPrep, onRemove, dragOverPos, onDragStart, onDragOver, onDrop, onDragEnd }: Props) {
   const test = getTest(chunk.testId);
   const canDrag = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [wizard, setWizard] = useState(false);
 
   const setTest = (testId: string) => {
     track("analize_test_selected", { test_id: testId });
-    onChange({ ...chunk, testId, picks: {}, result: undefined, error: undefined });
+    onChange({ ...chunk, testId, picks: {}, result: undefined, error: undefined, switchedFrom: undefined });
   };
   const setPick = (slotId: string, value: string) => {
     onChange({ ...chunk, picks: { ...chunk.picks, [slotId]: value }, error: undefined });
   };
 
-  const allPicked = test.inputs.every((s) =>
-    s.multi
-      ? (chunk.picks[s.id] ?? "").split(",").filter(Boolean).length > 0
-      : !!chunk.picks[s.id]
-  );
+  const allPicked = inputsReady(test, chunk.picks);
 
   const dragProps = {
     draggable: true,
@@ -82,10 +82,28 @@ export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverP
           </option>
         ))}
       </select>
+      <button
+        className={`wizard-btn${wizard ? " is-open" : ""}`}
+        onClick={() => setWizard((w) => !w)}
+        aria-expanded={wizard}
+        title="Atsakykite į 2–3 klausimus ir pasiūlysime tinkamą testą"
+      >
+        Padėkite pasirinkti
+      </button>
       <button className="icon-btn" title="Pašalinti analizės bloką" aria-label="Pašalinti analizės bloką" onClick={() => onRemove(chunk.id)}>
         ✕
       </button>
     </div>
+  );
+
+  const wizardPanel = wizard && (
+    <TestWizard
+      onClose={() => setWizard(false)}
+      onPick={(testId) => {
+        setWizard(false);
+        if (testId !== chunk.testId) setTest(testId);
+      }}
+    />
   );
 
   const cls = [
@@ -98,6 +116,7 @@ export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverP
     return (
       <div id={chunk.id} className={cls} {...dragProps}>
         {chunkHead}
+        {wizardPanel}
         <Table1Card chunk={chunk} dataset={dataset} onChange={onChange} />
       </div>
     );
@@ -106,6 +125,7 @@ export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverP
   return (
     <div id={chunk.id} className={cls} {...dragProps}>
       {chunkHead}
+      {wizardPanel}
       <p className="chunk-blurb">
         {test.blurb}
         {test.guide && (
@@ -125,6 +145,23 @@ export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverP
               ? dataset.variables
               : dataset.variables.filter((v) => v.type === slot.accepts);
           const acceptsLabel = typeLabel(slot.accepts);
+          if (slot.choices) {
+            return (
+              <label className="pick" key={slot.id}>
+                <span>{slot.label}</span>
+                <select
+                  value={chunk.picks[slot.id] ?? slot.choices[0].value}
+                  onChange={(e) => setPick(slot.id, e.target.value)}
+                >
+                  {slot.choices.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            );
+          }
           if (slot.multi) {
             const selected = new Set((chunk.picks[slot.id] ?? "").split(",").filter(Boolean));
             const toggle = (key: string, on: boolean) => {
@@ -197,12 +234,18 @@ export function ChunkCard({ chunk, index, dataset, onChange, onRemove, dragOverP
                         ...chunk,
                         testId: a.switchTo!.testId,
                         picks: a.switchTo!.picks,
+                        switchedFrom: chunk.testId,
                         result: undefined,
                         error: undefined,
                       })
                     }
                   >
                     {a.switchTo.label} →
+                  </button>
+                )}
+                {a.addPrep && (
+                  <button className="assumption-switch" onClick={() => onAddPrep(a.addPrep!.step)}>
+                    {a.addPrep.label} →
                   </button>
                 )}
               </span>
