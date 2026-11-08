@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K · Klausimai — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FFFFFF;--ink:#1F1C19;--ink-2:#544E47;--ink-3:#8D857C;--line:#ECE7E0;--red:#B3362B;
+  --serif:'Playfair Display',Georgia,serif;--sans:'Source Sans 3',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;--hand:'Caveat',cursive;
+  --tex:url("https://images.unsplash.com/photo-1601662528567-526cd06f6582?w=900&q=60&auto=format")}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+
+nav{position:absolute;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 34px;pointer-events:none}
+nav>*{pointer-events:auto}
+.brand{font:500 1.35rem var(--serif);text-decoration:none}
+.brand i{color:var(--red)}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:8px 18px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);border-radius:999px;font-size:.98rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--red)}
+
+/* the light table */
+.table{position:relative;height:max(100vh,820px);overflow:hidden;user-select:none}
+.sheet{position:absolute;margin:0;cursor:grab;touch-action:none;
+  transform:translate(var(--dx,0px),var(--dy,0px)) rotate(calc(var(--r,0deg) + var(--tilt,0deg))) scale(var(--s,1));
+  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),box-shadow .3s;
+  box-shadow:0 1px 1px rgba(0,0,0,.12),0 8px 14px -6px rgba(40,30,20,.28),0 28px 40px -24px rgba(40,30,20,.35);background:#fff}
+.sheet img{display:block;width:100%;height:auto;pointer-events:none}
+.sheet.print{padding:10px 10px 12px}
+.sheet.lift{cursor:grabbing;--s:1.035;transition:box-shadow .3s;box-shadow:0 2px 2px rgba(0,0,0,.1),0 22px 30px -10px rgba(40,30,20,.32),0 60px 70px -30px rgba(40,30,20,.4)}
+.sheet .tag{position:absolute;left:12px;bottom:-14px;transform:translateY(100%) rotate(1.5deg);background:#FFFDF6;background-image:var(--tex);background-size:400px;padding:10px 14px 12px;width:max(240px,70%);
+  font:400 .86rem/1.4 var(--sans);color:var(--ink-2);box-shadow:0 6px 14px -6px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:2}
+.sheet .tag b{display:block;font:500 .74rem var(--mono);letter-spacing:.06em;color:var(--red);margin-bottom:3px}
+.sheet:hover .tag{opacity:1;transform:translateY(100%) rotate(0deg)}
+.tape{position:absolute;width:96px;height:26px;top:-12px;left:calc(50% - 48px);background:rgba(240,232,205,.72);transform:rotate(-3deg);
+  clip-path:polygon(2% 0,98% 6%,100% 52%,97% 100%,1% 94%,0 44%);box-shadow:0 1px 2px rgba(0,0,0,.1);z-index:2}
+
+.title{position:absolute;left:50%;top:50%;transform:translate(-50%,-48%);width:min(820px,86vw);text-align:center;z-index:20;pointer-events:none}
+.title>*{pointer-events:auto}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:400 clamp(2.6rem,5.2vw,4.7rem)/1.04 var(--serif);letter-spacing:-.015em;margin:16px 0 22px;text-wrap:balance}
+h1 em{color:var(--red)}
+.title p{font-size:1.2rem;color:var(--ink-2);max-width:36em;margin:0 auto 28px;text-wrap:pretty}
+.title::before{content:"";position:absolute;inset:-60px -90px;background:radial-gradient(closest-side,rgba(255,255,255,.96) 62%,rgba(255,255,255,0));z-index:-1}
+.btn{display:inline-block;font:600 1.02rem var(--sans);padding:14px 26px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.hint{display:block;margin-top:18px;font:600 1.25rem var(--hand);color:var(--ink-3)}
+
+/* index of questions */
+.index{max-width:1100px;margin:0 auto;padding:110px 34px 40px}
+.index h2{font:400 clamp(2.1rem,3.8vw,3.2rem)/1.08 var(--serif);text-align:center;margin:12px 0 60px;text-wrap:balance}
+.index h2 em{color:var(--red)}
+.q{display:grid;grid-template-columns:90px 1fr 120px;gap:28px;align-items:center;padding:26px 0;border-top:1px solid var(--line)}
+.q:last-child{border-bottom:1px solid var(--line)}
+.q .yr{font:400 1.6rem var(--serif);color:var(--ink-3)}
+.q .ask{font:italic 400 1.55rem/1.3 var(--serif)}
+.q .who{display:block;font:500 .78rem var(--mono);color:var(--ink-3);letter-spacing:.05em;margin-top:6px;font-style:normal}
+.q img{width:120px;height:80px;object-fit:cover;transform:rotate(var(--r));box-shadow:0 6px 14px -6px rgba(0,0,0,.35);border:5px solid #fff}
+.q.you .ask{color:var(--red)}
+.q.you .box{width:120px;height:80px;border:1.5px dashed var(--ink-3);display:grid;place-items:center;font:600 1.3rem var(--hand);color:var(--ink-3);transform:rotate(-2deg)}
+
+/* price list as a physical sheet */
+.services{position:relative;padding:60px 34px 120px;display:flex;justify-content:center}
+.pricelist{position:relative;width:min(760px,100%);background:#FFFEFA;background-image:var(--tex);background-size:700px;padding:56px 64px 50px;transform:rotate(-1.2deg);
+  box-shadow:0 1px 1px rgba(0,0,0,.1),0 18px 30px -12px rgba(40,30,20,.3),0 50px 70px -40px rgba(40,30,20,.35)}
+.pricelist h2{font:400 2.4rem var(--serif);margin:6px 0 30px}
+.pricelist .row{display:grid;grid-template-columns:1fr auto;gap:20px;padding:20px 0;border-top:1px solid rgba(0,0,0,.12)}
+.pricelist .row h3{font:500 1.5rem var(--serif);margin:0 0 4px}
+.pricelist .row p{margin:0;color:var(--ink-2);font-size:1rem}
+.pricelist .row .pr{font:500 .9rem var(--mono);text-align:right;white-space:nowrap}
+.pricelist .row .pr a{display:block;margin-top:6px;color:var(--red);text-decoration:none;font-weight:400}
+.pricelist .stamp{position:absolute;right:46px;top:44px;font:600 1.4rem var(--hand);color:var(--red);transform:rotate(-8deg);border:2px solid var(--red);border-radius:50%;width:120px;height:120px;display:grid;place-items:center;text-align:center;line-height:1.05;opacity:.85}
+.pricelist .foot{font:600 1.3rem var(--hand);color:var(--ink-3);margin-top:22px}
+.clip{position:absolute;top:-22px;left:60px;width:30px;height:76px;border:3px solid #A9AEB2;border-radius:15px;border-bottom-color:transparent;transform:rotate(4deg)}
+
+.cta{text-align:center;padding:30px 34px 110px}
+.cta h2{font:400 clamp(2.1rem,3.8vw,3.2rem)/1.08 var(--serif);margin:12px 0 16px}
+.cta p{color:var(--ink-2);margin:0 auto 28px;max-width:32em}
+.mail{display:block;margin-top:16px;font:400 .9rem var(--mono);color:var(--ink-2)}
+footer{border-top:1px solid var(--line);padding:30px 34px 50px;font:400 .74rem/1.7 var(--mono);color:var(--ink-3);text-align:center}
+@media (max-width:900px){nav ul{display:none}.q{grid-template-columns:60px 1fr}.q img,.q .box{display:none}.pricelist{padding:40px 28px}.pricelist .stamp{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#kontaktai">Susisiekti</a></li></ul>
+</nav>
+
+<header class="table" id="table">
+  <div class="title">
+    <span class="kicker">Statistikos konsultacijos įmonėms ir tyrėjams</span>
+    <h1>Kiekvienas geras grafikas prasidėjo nuo <em>klausimo apie pasaulį.</em></h1>
+    <p>Florence Nightingale klausė, kodėl miršta kariai. John Snow — iš kur atkeliauja cholera. Aš klausiu, ką iš tikrųjų rodo jūsų duomenys.</p>
+    <a class="btn" href="#kontaktai">Užduokite savo klausimą →</a>
+    <span class="hint">pastumdykite lapus — jie tikri</span>
+  </div>
+</header>
+
+<section class="index">
+  <span class="kicker" style="display:block;text-align:center">Klausimai, kurie pakeitė sprendimus</span>
+  <h2>Grafikas niekada nebuvo tikslas. <em>Atsakymas — buvo.</em></h2>
+  <div id="qs"></div>
+</section>
+
+<section class="services" id="paslaugos">
+  <div class="pricelist">
+    <span class="clip"></span>
+    <span class="kicker">Kainoraštis · 2026</span>
+    <h2>Kaip galime dirbti</h2>
+    <div class="stamp">pirmas<br>pokalbis<br>nemokamas</div>
+    <div class="row"><div><h3>Konsultacija</h3><p>Antra nuomonė apie tyrimo dizainą, metodą, rezultatų interpretaciją ar R / Python kodą.</p></div><div class="pr">nuo 50 € / val.<a href="#">plačiau →</a></div></div>
+    <div class="row"><div><h3>Projektas</h3><p>Imties dydis, statistinė analizė, apklausos ar A/B testai — su ataskaita, kurią suprasite.</p></div><div class="pr">fiksuota, nuo 50 €<a href="#">plačiau →</a></div></div>
+    <div class="row"><div><h3>Partnerystė</h3><p>Periodinės ataskaitos, rodiklių sistemos ir statistikas jūsų komandai kiekvieną mėnesį.</p></div><div class="pr">mėnesinis mokestis<a href="#">plačiau →</a></div></div>
+    <div class="foot">tikslią kainą sutariame prieš pradedant — be netikėtumų</div>
+  </div>
+</section>
+
+<section class="cta" id="kontaktai">
+  <span class="kicker">Susisiekite</span>
+  <h2>Koks jūsų klausimas?</h2>
+  <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+  <a class="btn" href="#">Aptarkime projektą →</a>
+  <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+</section>
+<footer id="credits">Prototipas K · Klausimai<br></footer>
+
+<script>
+(() => {
+  const C = (name, w = 1100) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(name)}?width=${w}`;
+  const ITEMS = [
+    { src: C('Nightingale-mortality.jpg'), x: 3, y: 9, w: 30, r: -7, yr: '1858', who: 'Florence Nightingale', q: 'Kodėl kariai miršta ligoninėse?', cap: 'Daugiau karių mirė nuo ligų nei nuo žaizdų. Ši diagrama pakeitė ligoninių higieną.' },
+    { src: C('Minard.png'), x: 62, y: 5, w: 36, r: 5, yr: '1869', who: 'Charles Minard', q: 'Kiek kainavo žygis į Maskvą?', cap: 'Napoleono kariuomenė: iš 422 000 karių grįžo 10 000. Viename lape — atstumas, laikas, šaltis ir žmonės.' },
+    { src: C('Snow-cholera-map.jpg', 900), x: 75, y: 50, w: 22, r: -4, yr: '1854', who: 'John Snow', q: 'Iš kur atkeliauja cholera?', cap: 'Mirtys Londone susitelkė aplink vieną vandens pompą Broad Street gatvėje.' },
+    { src: C('1786 Playfair - 1 Chart of all the import and exports to and from England from the year 1700 to 1782.jpg'), x: -4, y: 58, w: 30, r: 4, yr: '1786', who: 'William Playfair', q: 'Ar Anglija daugiau perka, ar parduoda?', cap: 'Vienas pirmųjų laiko eilučių grafikų: importas ir eksportas 1700–1782 m.' },
+    { src: C('The Georgia Negro LCCN2013650424.jpg', 800), x: 27, y: 66, w: 13, r: -9, yr: '1900', who: 'W. E. B. Du Bois', q: 'Kaip iš tikrųjų gyvena žmonės?', cap: 'Ranka pieštos diagramos Paryžiaus pasaulinei parodai apie afroamerikiečių gyvenimą Džordžijoje.' },
+    { src: C('Galton box 1.jpg', 700), x: 63, y: 67, w: 10, r: 8, print: true, yr: '1873', who: 'Francis Galton', q: 'Ar atsitiktinumas turi formą?', cap: 'Galtono lenta: kiekvienas rutuliukas krenta savaip, bet visi kartu sudaro normalųjį skirstinį.' },
+    { src: C('Card puncher - NARA - 513295.jpg', 800), x: 43, y: 82, w: 15, r: 3, print: true, yr: 'XX a.', sort: 1940, who: 'JAV surašymo biuras', q: 'Kiek mūsų yra?', cap: 'Kortelių perforatorius: kiekviena skylutė — vieno žmogaus atsakymas.' },
+    { src: C('Vilnia, Łukiski. Вільня, Лукіскі (S. Fleury, 1900-03).jpg', 800), x: 37, y: -5, w: 14, r: -3, print: true, tape: true, yr: '1900', who: 'Vilnius, Lukiškės · fot. S. Fleury', q: 'Kas čia pirko ir kodėl?', cap: 'Duomenys visada prasideda nuo žmonių. Čia — Vilnius prieš 125 metus.' },
+  ];
+  const table = document.getElementById('table'); let Z = 30;
+  ITEMS.forEach((it, i) => {
+    const f = document.createElement('figure');
+    f.className = 'sheet' + (it.print ? ' print' : '');
+    f.style.cssText = `left:${it.x}%;top:${it.y}%;width:${it.w}%;--r:${it.r}deg;z-index:${i + 1}`;
+    f.innerHTML = `${it.tape ? '<span class="tape"></span>' : ''}<img src="${it.src}" alt="${it.who}, ${it.yr}" loading="eager"><figcaption class="tag"><b>${it.yr} · ${it.who}</b>${it.cap}</figcaption>`;
+    table.appendChild(f); drag(f);
+  });
+  function drag(el) {
+    let sx, sy, ox, oy, on = false, lastX = 0;
+    el.addEventListener('pointerdown', e => {
+      on = true; el.setPointerCapture(e.pointerId); sx = e.clientX; sy = e.clientY; lastX = e.clientX;
+      ox = parseFloat(el.style.getPropertyValue('--dx')) || 0; oy = parseFloat(el.style.getPropertyValue('--dy')) || 0;
+      el.style.zIndex = ++Z; el.classList.add('lift');
+    });
+    el.addEventListener('pointermove', e => {
+      if (!on) return;
+      el.style.setProperty('--dx', ox + e.clientX - sx + 'px'); el.style.setProperty('--dy', oy + e.clientY - sy + 'px');
+      el.style.setProperty('--tilt', Math.max(-7, Math.min(7, (e.clientX - lastX) * .8)) + 'deg'); lastX = e.clientX;
+    });
+    const up = () => { on = false; el.classList.remove('lift'); el.style.setProperty('--tilt', '0deg'); };
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+  }
+  // index of questions
+  const qs = document.getElementById('qs');
+  [...ITEMS].sort((a, b) => (a.sort || +a.yr) - (b.sort || +b.yr)).forEach((it, i) => {
+    qs.insertAdjacentHTML('beforeend', `<div class="q"><span class="yr">${it.yr}</span><span class="ask">„${it.q}“<span class="who">${it.who}</span></span><img src="${it.src}" alt="" style="--r:${i % 2 ? 2 : -2}deg"></div>`);
+  });
+  qs.insertAdjacentHTML('beforeend', `<div class="q you"><span class="yr">2026</span><span class="ask">„Kodėl mūsų klientai negrįžta?“<span class="who">jūs</span></span><span class="box">jūsų grafikas</span></div>`);
+  document.getElementById('credits').insertAdjacentHTML('beforeend', 'Vaizdai: Wikimedia Commons (viešasis domenas) — F. Nightingale, C. Minard, J. Snow, W. Playfair, W. E. B. Du Bois / Library of Congress, Galton box, NARA 513295, S. Fleury. Popieriaus tekstūra: Unsplash.');
+})();
+</script>
+</body>
+</html>

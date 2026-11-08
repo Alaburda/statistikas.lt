@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D · Lupa — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#2A2622; --ink-2:#57514A; --ink-3:#8C857C; --line:#ECE8E2; --soft:#F7F5F1;
+  --terra:#C8553D; --blue:#3D6B8C; --ochre:#D29B2E;
+  --display:'Instrument Serif',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.05rem/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+
+nav{position:fixed;inset:0 0 auto 0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:18px 32px;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-bottom:1px solid transparent;transition:border-color .3s}
+nav.scrolled{border-color:var(--line)}
+.brand{font:400 1.55rem var(--display);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand svg{width:22px;height:22px}
+nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:.95rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--terra)}
+.nav-cta{font:500 .9rem var(--sans);padding:9px 18px;border-radius:999px;border:1px solid var(--ink);text-decoration:none}
+.nav-cta:hover{background:var(--ink);color:#fff}
+
+/* hero: scroll-driven */
+.stage{position:relative;height:200vh}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#field{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:none}
+.copy{position:absolute;left:max(32px,calc((100vw - 1200px)/2 + 32px));top:50%;transform:translateY(-46%);max-width:520px;z-index:2;pointer-events:none}
+.copy>*{pointer-events:auto}
+.copy::before{content:"";position:absolute;inset:-60px -80px -60px -200px;background:radial-gradient(closest-side,rgba(255,255,255,.97) 55%,rgba(255,255,255,0));z-index:-1;pointer-events:none}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:400 clamp(3rem,5.6vw,4.8rem)/1 var(--display);letter-spacing:-.01em;margin:16px 0 22px}
+h1 em{color:var(--terra)}
+.lede{font-size:1.14rem;color:var(--ink-2);margin:0 0 30px;max-width:29em}
+.actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.btn{font:500 1rem var(--sans);padding:14px 24px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;transition:background .2s}
+.btn:hover{background:var(--terra)}
+.hint{font:400 .8rem var(--mono);color:var(--ink-3)}
+.phase{position:absolute;right:32px;bottom:28px;font:400 .74rem/1.6 var(--mono);color:var(--ink-3);text-align:right;z-index:2}
+.phase b{color:var(--ink);font-weight:500}
+.legend-dots{display:flex;gap:14px;justify-content:flex-end;margin-top:4px;opacity:0;transition:opacity .4s}
+.legend-dots.on{opacity:1}
+.legend-dots i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0}
+
+/* sections */
+section{padding:110px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
+h2{font:400 clamp(2.3rem,4vw,3.4rem)/1.05 var(--display);margin:12px 0 0}
+h2 em{color:var(--terra)}
+.head p{margin:0;color:var(--ink-2)}
+
+.levels{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.lvl{padding:28px 28px 32px 0;border-right:1px solid var(--line);margin-right:28px}
+.lvl:last-child{border-right:0;margin-right:0}
+.lvl .zoom{display:flex;justify-content:space-between;font:400 .74rem var(--mono);color:var(--ink-3);letter-spacing:.06em}
+.lvl .zoom b{color:var(--terra);font-weight:500}
+.lvl svg{display:block;width:100%;height:150px;margin:20px 0 22px;background:var(--soft);border-radius:10px}
+.lvl h3{font:400 2rem/1.1 var(--display);margin:0 0 8px}
+.lvl .when{color:var(--ink-2);margin:0 0 18px}
+.lvl ul{list-style:none;margin:0 0 22px;padding:0;font-size:.97rem}
+.lvl li{padding:8px 0;border-top:1px solid var(--line)}
+.lvl .price{display:flex;justify-content:space-between;font:400 .85rem var(--mono)}
+.lvl .price a{color:var(--terra);text-decoration:none}
+
+/* footnotes */
+.report{display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:start}
+.excerpt{font:400 clamp(1.6rem,2.6vw,2.15rem)/1.4 var(--display);margin:0;padding:34px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.fn{font:500 .62em var(--mono);color:var(--terra);vertical-align:super;cursor:pointer;padding:0 3px;border-radius:4px;transition:background .2s}
+.fn:hover,.fn.on{background:rgba(200,85,61,.12)}
+.excerpt mark{background:none;color:inherit;background-image:linear-gradient(rgba(210,155,46,.28),rgba(210,155,46,.28));background-size:0 40%;background-repeat:no-repeat;background-position:0 88%;transition:background-size .5s}
+.excerpt mark.on{background-size:100% 40%}
+.notes{list-style:none;margin:0;padding:0;counter-reset:n}
+.notes li{padding:18px 0 18px 36px;border-top:1px solid var(--line);position:relative;color:var(--ink-3);transition:color .3s;font-size:.98rem}
+.notes li::before{content:attr(data-n);position:absolute;left:0;top:19px;font:500 .78rem var(--mono);color:var(--terra)}
+.notes li.on{color:var(--ink)}
+.notes li b{font-weight:500;color:var(--ink)}
+.cap{font:400 .78rem var(--mono);color:var(--ink-3);margin-top:14px}
+
+.cta{background:var(--soft);border-radius:28px;padding:72px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;position:relative;overflow:hidden}
+.cta canvas{position:absolute;right:0;top:0;width:50%;height:100%}
+.cta>div{position:relative;z-index:1}
+.cta p{color:var(--ink-2);margin:18px 0 28px}
+.mail{display:block;margin-top:16px;font:400 .9rem var(--mono);color:var(--ink-2)}
+footer{padding:40px 0 60px;text-align:center;font:400 .75rem var(--mono);color:var(--ink-3)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s,transform .9s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){
+  .head,.report,.cta{grid-template-columns:1fr}.levels{grid-template-columns:1fr}.lvl{border-right:0;margin-right:0}
+  nav ul{display:none}.cta{padding:40px 28px}.cta canvas{opacity:.35;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="brand" href="#"><svg viewBox="0 0 22 22"><circle cx="9" cy="9" r="7" fill="none" stroke="#2A2622" stroke-width="1.6"/><path d="M14 14 L20 20" stroke="#2A2622" stroke-width="2.2" stroke-linecap="round"/><circle cx="7" cy="9" r="1.4" fill="#C8553D"/><circle cx="11" cy="7" r="1.4" fill="#3D6B8C"/><circle cx="10" cy="11.5" r="1.4" fill="#D29B2E"/></svg>statistikas.lt</a>
+  <ul><li><a href="#lygiai">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#kontaktai">Susisiekti</a>
+</nav>
+
+<div class="stage" id="stage">
+  <div class="sticky">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="copy">
+      <span class="kicker">Statistikos konsultacijos</span>
+      <h1>Pažiūrėkime <em>atidžiau.</em></h1>
+      <p class="lede">Iš toli duomenys atrodo kaip triukšmas. Iš arti juose matyti grupės, tendencijos ir klaidos. Padedu įmonėms ir tyrėjams jas pamatyti ir priimti sprendimus, kuriais galima pasitikėti.</p>
+      <div class="actions"><a class="btn" href="#kontaktai">Aptarkime jūsų projektą →</a><span class="hint">vedžiokite pelę · slinkite žemyn</span></div>
+    </div>
+    <div class="phase"><span id="phaseTxt"><b>2 400 stebėjimų</b> · kol kas — triukšmas</span>
+      <div class="legend-dots" id="legend"><span><i style="background:#C8553D"></i>nauji</span><span><i style="background:#3D6B8C"></i>grįžtantys</span><span><i style="background:#D29B2E"></i>lojalūs</span></div></div>
+  </div>
+</div>
+
+<section id="lygiai">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Paslaugos</span><h2>Trys <em>priartinimo</em> lygiai</h2></div>
+      <p>Kartais užtenka pažiūrėti iš šono, kartais reikia išnarstyti kiekvieną stebėjimą. Pradėkite nuo mažo žingsnio.</p>
+    </div>
+    <div class="levels reveal">
+      <article class="lvl">
+        <div class="zoom"><span>01 — Konsultacija</span><b>×1</b></div>
+        <svg viewBox="0 0 300 150" id="z1"></svg>
+        <h3>Antra nuomonė</h3>
+        <p class="when">Žinote, ką norite daryti, bet reikia žmogaus, kuris parodytų kryptį.</p>
+        <ul><li>Tyrimo ar eksperimento dizaino peržiūra</li><li>Metodo pasirinkimas ir interpretacija</li><li>R / Python kodo peržiūra</li></ul>
+        <div class="price"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div>
+      </article>
+      <article class="lvl">
+        <div class="zoom"><span>02 — Projektas</span><b>×10</b></div>
+        <svg viewBox="0 0 300 150" id="z2"></svg>
+        <h3>Visa analizė</h3>
+        <p class="when">Konkretus rezultatas per sutartą laiką ir už sutartą kainą.</p>
+        <ul><li>Imties dydžio skaičiavimas ir pagrindimas</li><li>Statistinė analizė ir ataskaita</li><li>Apklausų ir A/B testų analizė</li></ul>
+        <div class="price"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div>
+      </article>
+      <article class="lvl">
+        <div class="zoom"><span>03 — Partnerystė</span><b>nuolat</b></div>
+        <svg viewBox="0 0 300 150" id="z3"></svg>
+        <h3>Nuolatinis stebėjimas</h3>
+        <p class="when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p>
+        <ul><li>Ataskaitos, kurios atsinaujina pačios</li><li>Rodiklių (KPI) sistemos ir stebėsena</li><li>Statistikas pagal poreikį komandai</li></ul>
+        <div class="price"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:40px">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Smulkus šriftas</span><h2>Vienas sakinys, <em>trys išnašos</em></h2></div>
+      <p>Taip atrodo sakinys iš mano ataskaitos. Užveskite pelę ant išnašų: kiekviena jų yra sprendimas, kurį priėmiau už jus ir kurį galite patikrinti.</p>
+    </div>
+    <div class="report reveal">
+      <div>
+        <p class="excerpt">Po kainų pakeitimo <mark data-k="1">vidutinė krepšelio vertė išaugo 12&nbsp;%</mark><span class="fn" data-k="1">1</span> <mark data-k="2">(95&nbsp;% PI: 4–20&nbsp;%)</mark><span class="fn" data-k="2">2</span>, tačiau <mark data-k="3">tik naujiems klientams</mark><span class="fn" data-k="3">3</span>.</p>
+        <div class="cap">Iliustracinis pavyzdys · taip rašau išvadas ataskaitose</div>
+      </div>
+      <ol class="notes">
+        <li data-n="1" data-k="1"><b>Kodėl ne paprastas vidurkis.</b> Krepšelio vertės skirstinys asimetriškas, todėl lyginau geometrinius vidurkius (log skalė) ir pateikiau procentinį pokytį.</li>
+        <li data-n="2" data-k="2"><b>Kiek galime būti tikri.</b> Intervalas apskaičiuotas bootstrap būdu (10 000 kartojimų), nes klasikinės prielaidos čia netenkinamos.</li>
+        <li data-n="3" data-k="3"><b>Kur slypi efektas.</b> Sąveika su kliento tipu: grįžtančių klientų krepšelis praktiškai nepakito. Bendras vidurkis to nerodytų.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="kontaktai" style="padding-top:40px">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div>
+        <span class="kicker">Susisiekite</span>
+        <h2>Ką pamatytume <em>jūsų</em> duomenyse?</h2>
+        <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį. Pirmas 30 min. pokalbis — nemokamas.</p>
+        <a class="btn" href="#">Aptarkime projektą →</a>
+        <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+      </div>
+      <canvas id="ctaField" aria-hidden="true"></canvas>
+    </div>
+  </div>
+</section>
+<footer>Prototipas D · Lupa</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let s = 11; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const COLORS = ['#C8553D', '#3D6B8C', '#D29B2E'];
+
+  // ---------- hero field ----------
+  const cv = document.getElementById('field'), ctx = cv.getContext('2d'), stage = document.getElementById('stage');
+  const phaseTxt = document.getElementById('phaseTxt'), legend = document.getElementById('legend');
+  const N = 2400; let W, H, dpr, dots = [];
+  const groupMeans = [3.2, 5.0, 7.1], groupSd = [.8, .9, .7];
+  for (let i = 0; i < N; i++) {
+    const g = i % 7 < 3 ? 0 : i % 7 < 5 ? 1 : 2;
+    dots.push({ g, nx: rnd(), ny: rnd(), v: groupMeans[g] + gauss() * groupSd[g], jitter: rnd(), phase: rnd() * 6.28 });
+  }
+  function layout() {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // target: dot histogram (stacked) per group on the right half
+    const left = W * (W > 900 ? .52 : .08), right = W - 40, base = H * .82, bw = 7;
+    const bins = new Map();
+    const order = dots.map((d, i) => i).sort((a, b) => dots[a].g - dots[b].g || dots[a].jitter - dots[b].jitter);
+    order.forEach(i => {
+      const d = dots[i], x = Math.max(0, Math.min(10, d.v)), bx = Math.round(x / 10 * (right - left) / bw);
+      const key = bx; const c = bins.get(key) || 0; bins.set(key, c + 1);
+      d.tx = left + bx * bw; d.ty = base - c * 3.4;
+    });
+  }
+  layout(); addEventListener('resize', layout);
+  const LENS0 = () => ({ x: W * .68, y: H * .5 });
+
+  const lens = { x: LENS0().x, y: LENS0().y, tx: LENS0().x, ty: LENS0().y, user: false, idle: 0, r: 120 };
+  cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); lens.tx = e.clientX - r.left; lens.ty = e.clientY - r.top; lens.user = true; lens.idle = performance.now(); });
+  cv.addEventListener('pointerleave', () => lens.user = false);
+  let progress = 0;
+  const onScroll = () => {
+    const r = stage.getBoundingClientRect(); progress = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+    document.getElementById('nav').classList.toggle('scrolled', scrollY > 10);
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  function frame(t) {
+    if (!lens.user || t - lens.idle > 4000) { lens.tx = W * (.68 + .16 * Math.sin(t / 5200)); lens.ty = H * (.5 + .22 * Math.sin(t / 3700)); }
+    lens.x += (lens.tx - lens.x) * .09; lens.y += (lens.ty - lens.y) * .09;
+    const p = ease(progress);
+    ctx.clearRect(0, 0, W, H);
+    const pos = dots.map(d => {
+      const wob = reduce ? 0 : Math.sin(t / 1400 + d.phase) * 1.2;
+      const x = (d.nx * W) * (1 - p) + d.tx * p + wob * (1 - p), y = (d.ny * H) * (1 - p) + d.ty * p + Math.cos(t / 1600 + d.phase) * 1.2 * (1 - p);
+      return [x, y];
+    });
+    // outside lens: grey, colour fades in with progress
+    for (let i = 0; i < N; i++) {
+      const [x, y] = pos[i]; const d = dots[i];
+      ctx.fillStyle = p > .02 ? mix('#C9C2B8', COLORS[d.g], p) : '#C9C2B8';
+      ctx.beginPath(); ctx.arc(x, y, 1.5, 0, 6.283); ctx.fill();
+    }
+    // lens
+    const R = lens.r, Z = 2.4; let inside = [0, 0, 0], sum = 0, cnt = 0;
+    ctx.save(); ctx.beginPath(); ctx.arc(lens.x, lens.y, R, 0, 6.283); ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.fill(); ctx.clip();
+    for (let i = 0; i < N; i++) {
+      const [x, y] = pos[i], dx = x - lens.x, dy = y - lens.y;
+      if (dx * dx + dy * dy > (R / Z + 6) ** 2) continue;
+      const d = dots[i]; inside[d.g]++; sum += d.v; cnt++;
+      ctx.fillStyle = COLORS[d.g]; ctx.beginPath(); ctx.arc(lens.x + dx * Z, lens.y + dy * Z, 3.6, 0, 6.283); ctx.fill();
+    }
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(lens.x, lens.y, R, 0, 6.283); ctx.strokeStyle = '#2A2622'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(lens.x, lens.y, R + 5, -.4, .9); ctx.strokeStyle = 'rgba(42,38,34,.25)'; ctx.lineWidth = 3; ctx.stroke();
+    const ang = Math.PI / 4, hx = lens.x + Math.cos(ang) * (R + 2), hy = lens.y + Math.sin(ang) * (R + 2);
+    ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx + 46, hy + 46); ctx.strokeStyle = '#2A2622'; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.stroke();
+    // readout
+    if (cnt) {
+      const txt = `n = ${cnt} · x̄ = ${(sum / cnt).toFixed(1).replace('.', ',')}`;
+      ctx.font = '500 11px JetBrains Mono, monospace'; const tw = ctx.measureText(txt).width;
+      const above = lens.y - R - 34 > 76, rx = lens.x - tw / 2 - 10, ry = above ? lens.y - R - 34 : lens.y + R + 28;
+      ctx.fillStyle = '#2A2622'; roundRect(rx, ry, tw + 20, 22, 11); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.fillText(txt, rx + 10, ry + 15);
+      const bw = 56, bx = lens.x - bw / 2, by = above ? lens.y + R + 14 : lens.y - R - 16; let off = 0;
+      inside.forEach((c, g) => { const w = bw * c / cnt; ctx.fillStyle = COLORS[g]; ctx.fillRect(bx + off, by, w, 5); off += w; });
+    }
+    phaseTxt.innerHTML = progress < .35 ? '<b>2 400 stebėjimų</b> · kol kas — triukšmas' : progress < .85 ? '<b>rikiuojame</b> · pagal krepšelio vertę' : '<b>trys grupės</b> · trys skirtingos istorijos';
+    legend.classList.toggle('on', progress > .6);
+    requestAnimationFrame(frame);
+  }
+  function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mixCache = {};
+  function mix(a, b, t) { const k = a + b + Math.round(t * 30); if (mixCache[k]) return mixCache[k]; const A = hex(a), B = hex(b); return mixCache[k] = `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * Math.round(t * 30) / 30)).join(',')})`; }
+  requestAnimationFrame(frame);
+
+  // ---------- level illustrations ----------
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (svg, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const z1 = document.getElementById('z1'), z2 = document.getElementById('z2'), z3 = document.getElementById('z3');
+  const pts = Array.from({ length: 60 }, () => { const x = rnd(); return [20 + x * 260, 130 - (x * 80 + gauss() * 14)]; });
+  pts.forEach(([x, y]) => add(z1, 'circle', { cx: x, cy: y, r: 2.6, fill: '#B9B2A8' }));
+  add(z1, 'circle', { cx: 210, cy: 40, r: 3.2, fill: '#C8553D' });
+  add(z1, 'circle', { cx: 210, cy: 40, r: 14, fill: 'none', stroke: '#2A2622', 'stroke-width': 1.3 });
+  add(z1, 'path', { d: 'M220 50 L234 64', stroke: '#2A2622', 'stroke-width': 3, 'stroke-linecap': 'round' });
+  // z2: fit + CI band
+  add(z2, 'path', { d: 'M20 124 C 100 110, 180 70, 280 40 L 280 62 C 180 92, 100 128, 20 140 Z', fill: 'rgba(61,107,140,.15)' });
+  pts.forEach(([x, y]) => add(z2, 'circle', { cx: x, cy: y, r: 2.2, fill: '#3D6B8C', 'fill-opacity': .55 }));
+  add(z2, 'path', { d: 'M20 132 C 100 119, 180 81, 280 51', fill: 'none', stroke: '#2A2622', 'stroke-width': 1.6 });
+  add(z2, 'text', { x: 24, y: 22, 'font-family': 'JetBrains Mono', 'font-size': 9, fill: '#57514A' }).textContent = 'β = 0,82 (0,61–1,03)';
+  // z3: live monitor
+  const series = Array.from({ length: 40 }, (_, i) => 75 + Math.sin(i / 4) * 12 + gauss() * 6);
+  add(z3, 'rect', { x: 0, y: 46, width: 300, height: 40, fill: 'rgba(210,155,46,.13)' });
+  const line = add(z3, 'path', { fill: 'none', stroke: '#2A2622', 'stroke-width': 1.6, 'stroke-linejoin': 'round' });
+  const head = add(z3, 'circle', { r: 4, fill: '#C8553D' });
+  add(z3, 'text', { x: 296, y: 42, 'text-anchor': 'end', 'font-family': 'JetBrains Mono', 'font-size': 9, fill: '#8C857C' }).textContent = 'tikslas';
+  let k = 0;
+  const tick = () => {
+    series.shift(); series.push(75 + Math.sin(k++ / 4) * 12 + gauss() * 6);
+    line.setAttribute('d', series.map((v, i) => `${i ? 'L' : 'M'}${(i * 300 / 39).toFixed(1)} ${v.toFixed(1)}`).join(''));
+    head.setAttribute('cx', 300); head.setAttribute('cy', series[39]);
+  };
+  tick(); if (!reduce) setInterval(tick, 700);
+
+  // ---------- footnotes ----------
+  const fns = document.querySelectorAll('[data-k]');
+  const on = k => fns.forEach(e => e.classList.toggle('on', e.dataset.k === k));
+  document.querySelectorAll('.fn, .notes li').forEach(e => { e.addEventListener('mouseenter', () => on(e.dataset.k)); e.addEventListener('click', () => on(e.dataset.k)); });
+
+  // ---------- CTA field: drifting dots ----------
+  const cc = document.getElementById('ctaField'), c2 = cc.getContext('2d');
+  const cd = Array.from({ length: 140 }, () => ({ x: rnd(), y: rnd(), g: Math.floor(rnd() * 3), v: rnd() * 6.28 }));
+  const drawCta = t => {
+    const r = cc.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+    if (cc.width !== Math.round(r.width * d)) { cc.width = r.width * d; cc.height = r.height * d; }
+    c2.setTransform(d, 0, 0, d, 0, 0); c2.clearRect(0, 0, r.width, r.height);
+    cd.forEach(p => { c2.fillStyle = COLORS[p.g]; c2.globalAlpha = .7; c2.beginPath(); c2.arc(p.x * r.width + Math.sin(t / 2000 + p.v) * 8, p.y * r.height + Math.cos(t / 2600 + p.v) * 8, 3, 0, 6.283); c2.fill(); });
+    if (!reduce) requestAnimationFrame(drawCta);
+  };
+  requestAnimationFrame(drawCta);
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L · Pasaulis — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1E1B18;--ink-2:#4F4942;--ink-3:#8A8279;--red:#A8382B;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Karla',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;--hand:'Caveat',cursive;
+  --tex:url("https://images.unsplash.com/photo-1601662528567-526cd06f6582?w=900&q=60&auto=format")}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 1.06rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+nav{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 30px;pointer-events:none}
+nav>*{pointer-events:auto}
+.brand{font:500 1.5rem var(--serif);text-decoration:none;background:#fff;padding:6px 14px;box-shadow:0 6px 16px -8px rgba(0,0,0,.4);transform:rotate(-1.5deg)}
+.brand i{color:var(--red)}
+nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+nav ul a{display:block;text-decoration:none;font:500 .92rem var(--sans);background:#fff;padding:7px 12px;box-shadow:0 6px 14px -8px rgba(0,0,0,.45)}
+nav ul li:nth-child(odd) a{transform:rotate(1deg)}nav ul li:nth-child(even) a{transform:rotate(-1.2deg)}
+nav ul a:hover{background:var(--ink);color:#fff}
+
+/* stacked photographic scenes */
+.scene{position:sticky;top:0;height:100vh;min-height:640px;overflow:hidden;background:#222 center/cover no-repeat}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 50%,rgba(0,0,0,.35));pointer-events:none}
+.scene .credit{position:absolute;right:16px;bottom:12px;z-index:3;font:400 .68rem var(--mono);color:rgba(255,255,255,.78);text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.spacer{height:40vh}
+
+/* paper things */
+.paper{position:absolute;z-index:2;background:#FFFEF9;background-image:var(--tex);background-size:600px;
+  box-shadow:0 1px 1px rgba(0,0,0,.15),0 12px 24px -8px rgba(0,0,0,.45),0 40px 60px -30px rgba(0,0,0,.5);
+  transform:translateY(40px) rotate(calc(var(--r) - 6deg));opacity:0;transition:transform 1s cubic-bezier(.2,.9,.25,1.15),opacity .6s}
+.in .paper{transform:rotate(var(--r));opacity:1}
+.in .paper:nth-of-type(2){transition-delay:.15s}.in .paper:nth-of-type(3){transition-delay:.3s}.in .paper:nth-of-type(4){transition-delay:.45s}
+.tape{position:absolute;width:110px;height:30px;background:rgba(238,228,198,.78);clip-path:polygon(2% 0,98% 6%,100% 52%,97% 100%,1% 94%,0 44%);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.kicker{font:500 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+/* hero strip */
+.strip{left:50%;top:50%;width:min(980px,88vw);padding:40px 56px 44px;margin-left:calc(min(980px,88vw) / -2);margin-top:-150px}
+.strip h1{font:500 clamp(2.8rem,5.6vw,5.2rem)/.98 var(--serif);letter-spacing:-.01em;margin:12px 0 18px;text-wrap:balance}
+.strip h1 em{color:var(--red)}
+.strip p{font-size:1.15rem;color:var(--ink-2);max-width:40em;margin:0 0 24px}
+.strip .tape.a{left:-30px;top:18px;transform:rotate(-38deg)}.strip .tape.b{right:-30px;bottom:22px;transform:rotate(-34deg)}
+.btn{display:inline-block;font:600 1rem var(--sans);padding:13px 24px;background:var(--ink);color:#fff;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.hand{font:600 1.35rem var(--hand);color:var(--red)}
+
+/* notes */
+.note{width:min(420px,84vw);padding:30px 32px 30px}
+.note .tape{top:-15px;left:calc(50% - 55px);transform:rotate(-3deg)}
+.note h2{font:500 2.3rem/1.02 var(--serif);margin:10px 0 12px}
+.note p{margin:0;color:var(--ink-2)}
+.note .hand{display:block;margin-top:14px}
+.card{background-image:var(--tex),repeating-linear-gradient(transparent 0 29px,rgba(90,140,170,.28) 29px 30px);background-blend-mode:multiply;padding-top:44px}
+.card::before{content:"";position:absolute;left:0;right:0;top:40px;height:1.5px;background:rgba(168,56,43,.5)}
+.tagnote{width:300px;padding:26px 26px 26px 58px;clip-path:polygon(16% 0,100% 0,100% 100%,16% 100%,0 50%)}
+.tagnote::before{content:"";position:absolute;left:24px;top:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);box-shadow:inset 0 2px 2px rgba(0,0,0,.6)}
+.tagnote .big{font:600 3rem/1 var(--serif);color:var(--red)}
+.polaroid{padding:12px 12px 46px;width:300px;background:#fff}
+.polaroid img{display:block;width:100%;height:auto}
+.polaroid span{position:absolute;left:16px;bottom:10px;font:600 1.3rem var(--hand);color:var(--ink-2)}
+
+/* services slips on the last photo */
+.slips{position:absolute;z-index:2;left:50%;bottom:8vh;transform:translateX(-50%);display:flex;gap:22px;width:min(1100px,92vw)}
+.slip{position:relative;flex:1;padding:24px 24px 20px;transform:translateY(60px) rotate(calc(var(--r) - 4deg));opacity:0;left:auto;top:auto}
+.in .slip{transform:rotate(var(--r));opacity:1}
+.slip h3{font:600 1.7rem var(--serif);margin:4px 0 4px}
+.slip p{margin:0 0 12px;color:var(--ink-2);font-size:.97rem}
+.slip .pr{font:500 .82rem var(--mono);display:flex;justify-content:space-between}
+.slip .pr a{color:var(--red);text-decoration:none}
+.ask{left:50%;top:14vh;width:min(640px,88vw);margin-left:calc(min(640px,88vw) / -2);padding:34px 40px;text-align:center}
+.ask h2{font:500 clamp(2.4rem,4.4vw,3.6rem)/1 var(--serif);margin:8px 0 12px}
+.ask p{color:var(--ink-2);margin:0 0 20px}
+.ask .mail{display:block;margin-top:12px;font:400 .85rem var(--mono);color:var(--ink-2)}
+footer{position:relative;z-index:5;background:#fff;padding:30px;text-align:center;font:400 .72rem/1.7 var(--mono);color:var(--ink-3)}
+@media (max-height:780px){.ask{top:9vh;padding:22px 30px}.ask p{display:none}.slip p{display:none}.slips{bottom:4vh}}
+@media (max-width:900px){nav ul{display:none}.slips{flex-direction:column;bottom:3vh;gap:10px}.slip p{display:none}.strip{padding:28px 26px}}
+@media (prefers-reduced-motion:reduce){.paper,.slip{transition:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#paslaugos">Susisiekti</a></li></ul>
+</nav>
+
+<section class="scene" data-img="C:Vilnia, Łukiski. Вільня, Лукіскі (S. Fleury, 1900-03).jpg" style="background-position:center 35%">
+  <div class="paper strip" style="--r:-1.5deg">
+    <span class="tape a"></span><span class="tape b"></span>
+    <span class="kicker">Statistikos konsultacijos · Vilnius</span>
+    <h1>Duomenys nėra skaičiai. <em>Tai žmonės, kurie kažką darė.</em></h1>
+    <p>Pirko, sirgo, atsakė į klausimą, grįžo ar negrįžo. Padedu įmonėms ir tyrėjams pamatyti juos savo duomenyse ir priimti sprendimus, kuriais galima pasitikėti.</p>
+    <a class="btn" href="#paslaugos">Aptarkime jūsų projektą →</a> &nbsp; <span class="hand">pirmas pokalbis — nemokamas</span>
+  </div>
+  <span class="credit">Lukiškės, Vilnius, 1900 m. · fot. S. Fleury · Wikimedia Commons</span>
+</section>
+
+<section class="scene" data-img="C:Card puncher - NARA - 513295.jpg">
+  <div class="paper note card" style="--r:2.5deg;right:7vw;top:16vh"><span class="tape"></span>
+    <span class="kicker">01 · žmonės</span><h2>Kiekviena skylutė — vieno žmogaus atsakymas.</h2>
+    <p>Surašymai, apklausos, klientų bazės. Prieš skaičiuodamas visada klausiu: kas tie žmonės ir kas į duomenis nepateko?</p>
+    <span class="hand">atrankos šališkumas — dažniausia klaida</span></div>
+  <div class="paper polaroid" style="--r:-6deg;right:24vw;bottom:9vh"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hollerith%20Punched%20Card.jpg?width=700" alt="Perforuota kortelė"><span>viena kortelė = vienas žmogus</span></div>
+  <span class="credit">JAV surašymo biuras, kortelių perforatorius · NARA 513295 · Wikimedia Commons</span>
+</section>
+
+<section class="scene" data-img="U:1629665001701-a232a0ba4eec">
+  <div class="paper note" style="--r:-3deg;left:7vw;top:20vh"><span class="tape"></span>
+    <span class="kicker">02 · detalės</span><h2>Ne kiekvienas rudas grybas — baravykas.</h2>
+    <p>Dvi grupės gali atrodyti vienodai, o skirtumas — tik atsitiktinumas. Arba atvirkščiai. Atskirti panašius yra svarbiausia mano darbo dalis.</p>
+    <span class="hand">koreliacija ≠ priežastis</span></div>
+  <span class="credit">Unsplash</span>
+</section>
+
+<section class="scene" data-img="U:1788507281263-e04f4bfb8f09">
+  <div class="paper tagnote" style="--r:6deg;right:9vw;top:22vh"><span class="kicker">03 · laikas</span><div class="big">−18 %</div><p style="margin:8px 0 0;color:var(--ink-2)">Kodėl penktadienį braškių parduodama mažiau? Pardavimai yra oras, šventės ir algų dienos.</p></div>
+  <div class="paper note" style="--r:-2deg;right:30vw;bottom:12vh;width:340px;padding:22px 26px"><span class="tape"></span><span class="hand" style="margin:0">Pirma atskiriame sezoną, tada vertiname reklamą.</span></div>
+  <span class="credit">Unsplash</span>
+</section>
+
+<section class="scene" id="paslaugos" data-img="U:1660562278746-72e961bb9644">
+  <div class="paper ask" style="--r:-1deg"><span class="tape" style="top:-15px;left:calc(50% - 55px)"></span>
+    <span class="kicker">Susisiekite</span><h2>O ką rodo jūsų duomenys?</h2>
+    <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+    <a class="btn" href="#">Aptarkime projektą →</a><a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a></div>
+  <div class="slips">
+    <div class="paper slip" style="--r:-2deg"><span class="kicker">01</span><h3>Konsultacija</h3><p>Antra nuomonė apie dizainą, metodą ar kodą.</p><div class="pr"><span>nuo 50 € / val.</span><a href="#">plačiau →</a></div></div>
+    <div class="paper slip" style="--r:1.5deg"><span class="kicker">02</span><h3>Projektas</h3><p>Imtis, analizė ir ataskaita už sutartą kainą.</p><div class="pr"><span>fiksuota, nuo 50 €</span><a href="#">plačiau →</a></div></div>
+    <div class="paper slip" style="--r:-1deg"><span class="kicker">03</span><h3>Partnerystė</h3><p>Ataskaitos ir rodikliai, kurie dirba kas mėnesį.</p><div class="pr"><span>mėnesinis mokestis</span><a href="#">plačiau →</a></div></div>
+  </div>
+  <span class="credit">Vilnius · Unsplash</span>
+</section>
+<footer>Prototipas L · Pasaulis · Vaizdai: Wikimedia Commons (viešasis domenas: S. Fleury, NARA, Hollerith card) ir Unsplash (licencija leidžia naudoti nemokamai)</footer>
+
+<script>
+(() => {
+  const url = k => k.startsWith('C:') ? `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(k.slice(2))}?width=2000` : `https://images.unsplash.com/photo-${k.slice(2)}?w=2200&q=80&auto=format&fit=crop`;
+  document.querySelectorAll('.scene').forEach(s => s.style.backgroundImage = `url("${url(s.dataset.img)}")`);
+  const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('in', e.isIntersecting)), { threshold: .55 });
+  document.querySelectorAll('.scene').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>

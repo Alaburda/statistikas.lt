@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G · Metai — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#222823; --ink-2:#50574F; --ink-3:#858C83; --line:#E7EAE4;
+  --pine:#34503D; --hill:#6F8C66; --far:#AFC0BE; --sun:#EBA937; --dusk:#C46A4A;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .25 0 0 0 0 .25 0 0 0 0 .2 0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --serif:'EB Garamond',Georgia,serif; --sans:'Source Sans 3',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+nav{display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 32px;position:relative;z-index:3}
+.brand{font:500 1.5rem var(--serif);text-decoration:none}
+.brand i{color:var(--dusk)}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:1rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--pine)}
+.nav-cta{font:600 .95rem var(--sans);padding:9px 18px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none}
+.nav-cta:hover{background:var(--ink);color:#fff}
+
+.intro{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:end;padding:44px 0 10px}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:400 clamp(2.9rem,5.4vw,4.9rem)/1 var(--serif);letter-spacing:-.015em;margin:14px 0 0}
+h1 em{color:var(--pine)}
+.intro-r p{color:var(--ink-2);margin:0 0 24px}
+.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn{font:600 1rem var(--sans);padding:14px 24px;border-radius:999px;background:var(--pine);color:#fff;text-decoration:none;transition:background .2s,transform .2s}
+.btn:hover{background:var(--ink);transform:translateY(-2px)}
+.note{font:400 .82rem var(--mono);color:var(--ink-3)}
+
+/* landscape */
+.land{position:relative;margin-top:28px}
+.land svg{display:block;width:100%;height:auto}
+.land::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;pointer-events:none}
+.read{position:absolute;pointer-events:none;transform:translate(-50%,-100%);background:#fff;border-radius:10px;padding:8px 12px;font:400 .8rem/1.45 var(--mono);color:var(--ink);box-shadow:0 10px 24px -12px rgba(0,0,0,.35);white-space:nowrap;z-index:2;transition:opacity .2s}
+.read b{font:500 1.05rem var(--serif);display:block}
+.legend{display:flex;justify-content:space-between;gap:20px;font:400 .76rem var(--mono);color:var(--ink-3);padding:10px 0 0}
+.legend i{display:inline-block;width:18px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0}
+
+section{padding:96px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:52px}
+h2{font:400 clamp(2.2rem,3.8vw,3.2rem)/1.06 var(--serif);margin:12px 0 0}
+h2 em{color:var(--pine)}
+.head p{margin:0;color:var(--ink-2)}
+
+.world{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+.w{padding:28px 30px 10px 0;border-right:1px solid var(--line);margin-right:30px}
+.w:last-child{border-right:0;margin-right:0}
+.w q{display:block;font:italic 400 1.65rem/1.25 var(--serif);quotes:none;margin-bottom:14px}
+.w p{color:var(--ink-2);margin:0;font-size:1rem}
+.w small{display:block;margin-top:14px;font:400 .74rem var(--mono);color:var(--ink-3)}
+.w svg{display:block;width:100%;height:46px;margin-bottom:18px}
+
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tier{border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;transition:box-shadow .3s,transform .3s}
+.tier:hover{transform:translateY(-3px);box-shadow:0 22px 40px -28px rgba(34,40,35,.5)}
+.tier .top{display:flex;justify-content:space-between;align-items:center}
+.tier .top span{font:400 .74rem var(--mono);color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.tier svg{width:54px;height:54px}
+.tier h3{font:400 2rem/1.1 var(--serif);margin:16px 0 6px}
+.tier .when{color:var(--ink-2);margin:0 0 16px}
+.tier ul{list-style:none;padding:0;margin:0 0 20px;font-size:1rem}
+.tier li{padding:8px 0;border-top:1px solid var(--line)}
+.tier .pr{margin-top:auto;display:flex;justify-content:space-between;font:500 .85rem var(--mono)}
+.tier .pr a{color:var(--pine);text-decoration:none}
+
+.cta{text-align:center;max-width:760px;margin:0 auto}
+.cta .sunline{font:400 .85rem var(--mono);color:var(--dusk);margin-bottom:16px}
+.cta p{color:var(--ink-2);margin:18px auto 30px;max-width:34em}
+.mail{display:block;margin-top:18px;font:400 .9rem var(--mono);color:var(--ink-2)}
+footer{padding:40px 0 60px;text-align:center;font:400 .75rem var(--mono);color:var(--ink-3)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s,transform .9s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){.intro,.head{grid-template-columns:1fr;gap:20px}.world,.tiers{grid-template-columns:1fr}.w{border-right:0;margin-right:0}nav ul{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#kontaktai">Susisiekti</a>
+</nav>
+
+<header>
+  <div class="wrap intro">
+    <div>
+      <span class="kicker">Statistikos konsultacijos</span>
+      <h1>Duomenys nėra stulpeliai. <em>Tai pasaulis, kurį galima pamatyti.</em></h1>
+    </div>
+    <div class="intro-r">
+      <p>Šis peizažas yra grafikas: kiek šviesos Vilnius gauna kiekvieną metų dieną. Jūsų duomenyse irgi slypi tikri dalykai — pirkiniai, pacientai, atsakymai. Padedu įmonėms ir tyrėjams juos pamatyti.</p>
+      <div class="actions"><a class="btn" href="#kontaktai">Aptarkime jūsų projektą →</a><span class="note">Pirmas pokalbis — nemokamas</span></div>
+    </div>
+  </div>
+  <div class="land" id="land">
+    <svg viewBox="0 0 1440 470" id="scape" preserveAspectRatio="xMidYMax slice" aria-label="Peizažas, kurio kalvos yra dienos ilgumas Vilniuje per metus"></svg>
+    <div class="read" id="read"></div>
+  </div>
+  <div class="wrap legend">
+    <span><i style="background:var(--hill)"></i>dienos ilgumas, val. &nbsp; <i style="background:var(--far)"></i>saulės aukštis vidurdienį</span>
+    <span>Pav. 1 — Vilnius, 54,69° Š · apskaičiuota pagal Saulės padėtį · vedžiokite pelę</span>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Ką iš tikrųjų skaičiuojame</span><h2>Kiekvienas skaičius <em>kažką reiškia</em></h2></div>
+      <p>Grafikas yra tik langas. Svarbu, ką pro jį matome: žmones, įpročius, sezonus ir sprendimus, kuriuos reikės priimti.</p>
+    </div>
+    <div class="world reveal">
+      <div class="w"><svg viewBox="0 0 300 46" data-spark="sales"></svg><q>Pardavimai yra oras, šventės ir algų dienos.</q><p>Prieš ieškodami, ar reklama veikė, pirmiausia atskiriame sezoną ir kalendorių.</p><small>laiko eilutės · sezoniškumas</small></div>
+      <div class="w"><svg viewBox="0 0 300 46" data-spark="survey"></svg><q>Apklausa yra žmonių nuotaika tą savaitę.</q><p>Kas atsakė, o kas ne? Kartais tylintys pasako daugiausia.</p><small>apklausos · atrankos šališkumas</small></div>
+      <div class="w"><svg viewBox="0 0 300 46" data-spark="trial"></svg><q>Tyrimas yra pacientai, laukiantys atsakymo.</q><p>Jų laikas vertas teisingai apskaičiuotos imties ir sąžiningos analizės.</p><small>biostatistika · imties dydis</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="paslaugos" style="padding-top:10px">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Paslaugos</span><h2>Valanda, sezonas <em>ar visi metai</em></h2></div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="tiers reveal">
+      <article class="tier"><div class="top"><span>01 · valanda</span><svg viewBox="0 0 54 54" data-arc="0.004"></svg></div><h3>Konsultacija</h3><p class="when">Žinote, ką norite daryti, bet reikia antros nuomonės.</p><ul><li>Tyrimo ar eksperimento dizaino peržiūra</li><li>Metodo pasirinkimas ir interpretacija</li><li>R / Python kodo peržiūra</li></ul><div class="pr"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="top"><span>02 · kelios savaitės</span><svg viewBox="0 0 54 54" data-arc="0.1"></svg></div><h3>Projektas</h3><p class="when">Konkretus rezultatas per sutartą laiką ir už sutartą kainą.</p><ul><li>Imties dydžio skaičiavimas ir pagrindimas</li><li>Statistinė analizė ir ataskaita</li><li>Apklausų ir A/B testų analizė</li></ul><div class="pr"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="top"><span>03 · visi metai</span><svg viewBox="0 0 54 54" data-arc="1"></svg></div><h3>Partnerystė</h3><p class="when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p><ul><li>Ataskaitos, kurios atsinaujina pačios</li><li>Rodiklių (KPI) sistemos ir stebėsena</li><li>Statistikas pagal poreikį komandai</li></ul><div class="pr"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="kontaktai" style="padding-top:20px">
+  <div class="cta reveal">
+    <div class="sunline" id="sunline"></div>
+    <h2>Pažiūrėkime, ką rodo <em>jūsų</em> duomenys.</h2>
+    <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+    <a class="btn" href="#">Aptarkime projektą →</a>
+    <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+  </div>
+</section>
+<footer>Prototipas G · Metai</footer>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (p, tag, a = {}) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const LAT = 54.687, LON = 25.28, R = Math.PI / 180;
+  const MONTHS = ['sausio', 'vasario', 'kovo', 'balandžio', 'gegužės', 'birželio', 'liepos', 'rugpjūčio', 'rugsėjo', 'spalio', 'lapkričio', 'gruodžio'];
+  const MON_SHORT = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rgp', 'Rgs', 'Spa', 'Lap', 'Gru'];
+  const year = new Date().getFullYear();
+  const NDAYS = 365;
+
+  // NOAA solar approximations
+  function sun(n) {
+    const g = 2 * Math.PI / 365 * (n - 1);
+    const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+    const eot = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+    const cosw = (Math.cos(90.833 * R) - Math.sin(LAT * R) * Math.sin(decl)) / (Math.cos(LAT * R) * Math.cos(decl));
+    const w = Math.acos(Math.max(-1, Math.min(1, cosw))) / R;
+    const len = 2 * w / 15; // hours
+    const date = dateOf(n), dst = isDST(date);
+    const noonMin = 720 - 4 * LON - eot + 60 * (2 + (dst ? 1 : 0)); // local clock minutes
+    return { len, alt: 90 - LAT + decl / R, rise: noonMin - w * 4, set: noonMin + w * 4 };
+  }
+  function dateOf(n) { return new Date(year, 0, n); }
+  function isDST(d) {
+    const lastSun = m => { const x = new Date(year, m + 1, 0); x.setDate(x.getDate() - x.getDay()); return x; };
+    return d >= lastSun(2) && d < lastSun(9);
+  }
+  const dayOfYear = d => Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5);
+  const hm = h => { const t = Math.round(h * 60); return `${Math.floor(t / 60)} val. ${t % 60} min.`; };
+  const clock = m => { const t = Math.round(m); return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`; };
+  const fmtDate = n => { const d = dateOf(n); return `${MONTHS[d.getMonth()]} ${d.getDate()} d.`; };
+
+  const days = Array.from({ length: NDAYS }, (_, i) => ({ n: i + 1, ...sun(i + 1) }));
+  const W = 1440, H = 470, X = n => (n - 1) / (NDAYS - 1) * W;
+  const Yl = h => 430 - (h - 5) / (18 - 5) * 330;  // day length ridge
+  const Ya = a => 330 - (a - 8) / (62 - 8) * 300;  // noon altitude ridge (behind)
+
+  const svg = document.getElementById('scape');
+  svg.innerHTML = `<defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#EEF3F2"/><stop offset=".8" stop-color="#F6E9D6"/><stop offset="1" stop-color="#F3DCC0"/></linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C9A70"/><stop offset="1" stop-color="#4F6D4D"/></linearGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCCBC8"/><stop offset="1" stop-color="#D9E1DC"/></linearGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#F7CF7A" stop-opacity=".9"/><stop offset="1" stop-color="#F7CF7A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#sky)"/>`;
+  const path = (f, base) => 'M0 ' + base + ' ' + days.map(d => `L${X(d.n).toFixed(1)} ${f(d).toFixed(1)}`).join(' ') + ` L${W} ${base} Z`;
+  add(svg, 'path', { d: path(d => Ya(d.alt), H), fill: 'url(#far)' });
+  // equinox line (12 h)
+  add(svg, 'line', { x1: 0, x2: W, y1: Yl(12), y2: Yl(12), stroke: '#fff', 'stroke-width': 1.2, 'stroke-dasharray': '3 6', opacity: .9 });
+  add(svg, 'path', { d: path(d => Yl(d.len), H), fill: 'url(#hill)' });
+
+  // pines standing on the ridge
+  const pines = add(svg, 'g', { fill: '#34503D' });
+  let s = 9; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let x = 14; x < W; x += 16 + rnd() * 34) {
+    const n = Math.round(x / W * (NDAYS - 1)) + 1, y = Yl(days[n - 1].len) + 2, h = 14 + rnd() * 18, w = h * .42;
+    add(pines, 'path', { d: `M${x} ${y - h} L${x + w} ${y - h * .35} L${x + w * .55} ${y - h * .4} L${x + w * 1.2} ${y + 1} L${x - w * 1.2} ${y + 1} L${x - w * .55} ${y - h * .4} L${x - w} ${y - h * .35} Z`, opacity: .75 + rnd() * .25 });
+  }
+  // foreground meadow with month posts
+  add(svg, 'path', { d: `M0 432 Q 360 420 720 430 T 1440 428 L1440 470 L0 470 Z`, fill: '#3F5A45' });
+  MON_SHORT.forEach((m, i) => {
+    const n = dayOfYear(new Date(year, i, 1)), x = X(n);
+    add(svg, 'line', { x1: x, x2: x, y1: 440, y2: 452, stroke: '#CFDCCB', 'stroke-width': 1.2 });
+    const t = add(svg, 'text', { x: x + 6, y: 456, fill: '#CFDCCB', 'font-family': 'IBM Plex Mono', 'font-size': 11 }); t.textContent = m;
+  });
+  // annotations
+  const note = (n, txt, dy = -30) => {
+    const d = days[n - 1], x = X(n), y = Yl(d.len);
+    add(svg, 'line', { x1: x, x2: x, y1: y + dy + 6, y2: y - 4, stroke: '#222823', 'stroke-width': .8 });
+    const t = add(svg, 'text', { x, y: y + dy, 'text-anchor': 'middle', 'font-family': 'EB Garamond', 'font-style': 'italic', 'font-size': 17, fill: '#222823' }); t.textContent = txt;
+  };
+  const longest = days.reduce((a, b) => b.len > a.len ? b : a);
+  note(longest.n, `ilgiausia diena · ${hm(longest.len)}`, -44);
+  note(dayOfYear(new Date(year, 2, 20)), 'lygiadienis', -40);
+  note(dayOfYear(new Date(year, 8, 22)), 'lygiadienis', -40);
+
+  // today: sun above the ridge
+  const today = Math.min(dayOfYear(new Date()), NDAYS), td = days[today - 1], tx = X(today), ty = Yl(td.len);
+  add(svg, 'circle', { cx: tx, cy: ty - 84, r: 46, fill: 'url(#glow)' });
+  add(svg, 'line', { x1: tx, x2: tx, y1: ty - 70, y2: ty, stroke: '#C46A4A', 'stroke-width': 1, 'stroke-dasharray': '2 3' });
+  add(svg, 'circle', { cx: tx, cy: ty - 84, r: 13, fill: '#EBA937' });
+  const tomorrow = days[Math.min(today, NDAYS - 1)];
+  const delta = Math.round((tomorrow.len - td.len) * 60);
+  const right = tx < W - 200; const tl = add(svg, 'text', { x: tx + (right ? 22 : -22), y: ty - 88, 'text-anchor': right ? 'start' : 'end', 'font-family': 'EB Garamond', 'font-size': 19, fill: '#222823' });
+  tl.innerHTML = `<tspan font-style="italic">šiandien</tspan> · ${hm(td.len)}`;
+  const tl2 = add(svg, 'text', { x: tl.getAttribute('x'), y: ty - 69, 'text-anchor': tl.getAttribute('text-anchor'), 'font-family': 'IBM Plex Mono', 'font-size': 11, fill: '#50574F' });
+  tl2.textContent = delta === 0 ? 'beveik nesikeičia' : `${delta > 0 ? 'ilgėja' : 'trumpėja'} ${Math.abs(delta)} min. per parą`;
+
+  // hover readout
+  const land = document.getElementById('land'), read = document.getElementById('read');
+  const cursor = add(svg, 'g', { opacity: 0 });
+  const cl = add(cursor, 'line', { stroke: '#222823', 'stroke-width': 1 });
+  const cd = add(cursor, 'circle', { r: 5, fill: '#fff', stroke: '#222823', 'stroke-width': 1.5 });
+  land.addEventListener('pointermove', e => {
+    const r = svg.getBoundingClientRect(), vbScale = Math.max(r.width / W, r.height / H);
+    const offX = (r.width - W * vbScale) / 2, offY = (r.height - H * vbScale);
+    const vx = (e.clientX - r.left - offX) / vbScale;
+    const n = Math.max(1, Math.min(NDAYS, Math.round(vx / W * (NDAYS - 1)) + 1)), d = days[n - 1];
+    const x = X(n), y = Yl(d.len);
+    cl.setAttribute('x1', x); cl.setAttribute('x2', x); cl.setAttribute('y1', y); cl.setAttribute('y2', 432);
+    cd.setAttribute('cx', x); cd.setAttribute('cy', y); cursor.setAttribute('opacity', 1);
+    read.innerHTML = `<b>${fmtDate(n)}</b>šviesu ${hm(d.len)}<br>saulė ${clock(d.rise)}–${clock(d.set)} · ${Math.round(d.alt)}° vidurdienį`;
+    read.style.left = (x * vbScale + offX) + 'px'; read.style.top = (y * vbScale + offY - 16) + 'px'; read.style.opacity = 1;
+  });
+  land.addEventListener('pointerleave', () => { cursor.setAttribute('opacity', 0); read.style.opacity = 0; });
+  read.style.opacity = 0;
+
+  // CTA: tomorrow's sunrise
+  document.getElementById('sunline').textContent = `Rytoj Vilniuje saulė teka ${clock(tomorrow.rise)}, leidžiasi ${clock(tomorrow.set)}.`;
+
+  // small sparklines that read like horizons
+  const sparks = {
+    sales: i => 24 + Math.sin(i / 52 * 2 * Math.PI * 1) * 8 + (i % 7 === 5 ? -6 : 0) + (i > 46 ? -10 : 0),
+    survey: i => 22 + Math.sin(i / 6) * 4 + Math.cos(i / 2.3) * 2,
+    trial: i => 36 - Math.min(i, 30) * .6 + Math.sin(i / 3) * 1.5,
+  };
+  document.querySelectorAll('[data-spark]').forEach(el => {
+    const f = sparks[el.dataset.spark], N = 52;
+    const pts = Array.from({ length: N }, (_, i) => `${(i / (N - 1) * 300).toFixed(1)} ${f(i).toFixed(1)}`);
+    add(el, 'path', { d: `M0 46 L${pts.join(' L')} L300 46 Z`, fill: '#DCE5D8' });
+    add(el, 'path', { d: `M${pts.join(' L')}`, fill: 'none', stroke: '#34503D', 'stroke-width': 1.5 });
+  });
+  // service arcs: share of a year
+  document.querySelectorAll('[data-arc]').forEach(el => {
+    const f = +el.dataset.arc, r = 22, c = 27;
+    add(el, 'circle', { cx: c, cy: c, r, fill: 'none', stroke: '#E7EAE4', 'stroke-width': 5 });
+    if (f >= 1) add(el, 'circle', { cx: c, cy: c, r, fill: 'none', stroke: '#6F8C66', 'stroke-width': 5 });
+    else if (f < .01) add(el, 'circle', { cx: c, cy: c - r, r: 3.5, fill: '#EBA937' });
+    else { const a = f * 2 * Math.PI - Math.PI / 2; add(el, 'path', { d: `M${c} ${c - r} A ${r} ${r} 0 ${f > .5 ? 1 : 0} 1 ${c + r * Math.cos(a)} ${c + r * Math.sin(a)}`, fill: 'none', stroke: '#C46A4A', 'stroke-width': 5, 'stroke-linecap': 'round' }); }
+  });
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>

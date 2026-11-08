@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M · Tyrimo lenta — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#22201D;--ink-2:#55504A;--red:#B32F27;--type:'Courier Prime',ui-monospace,monospace;--hand:'Caveat',cursive;--sans:'Work Sans',system-ui,sans-serif;
+  --tex:url("https://images.unsplash.com/photo-1601662528567-526cd06f6582?w=900&q=60&auto=format")}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 1rem/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 34px}
+.brand{font:700 1.2rem var(--type);text-decoration:none}
+.brand i{color:var(--red);font-style:normal}
+nav ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font:400 .95rem var(--type)}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--red)}
+
+/* the board: real cork photo in a wooden frame */
+.frame{margin:0 22px;padding:20px;border-radius:6px;background:linear-gradient(135deg,#8C5D36,#6E4524 40%,#8A5A33 70%,#5F3B1E);
+  box-shadow:inset 0 2px 0 rgba(255,220,180,.35),inset 0 -2px 0 rgba(0,0,0,.4),0 20px 50px -20px rgba(40,25,10,.55),0 2px 4px rgba(0,0,0,.2)}
+.board{position:relative;overflow:hidden;border-radius:2px;background:#B08655 url("https://images.unsplash.com/photo-1558051815-0f18e64e6280?w=2000&q=80&auto=format") center/cover;
+  box-shadow:inset 0 6px 14px rgba(0,0,0,.45),inset 0 -2px 8px rgba(0,0,0,.3)}
+.canvas{position:absolute;left:0;top:0;width:1440px;height:1060px;transform-origin:0 0}
+svg.strings{position:absolute;inset:0;width:1440px;height:1060px;pointer-events:none;z-index:500;overflow:visible}
+svg.strings path{fill:none;stroke:#C02A22;stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
+
+.it{position:absolute;cursor:grab;touch-action:none;user-select:none;
+  transform:translate(var(--dx,0px),var(--dy,0px)) rotate(calc(var(--r,0deg) + var(--tilt,0deg)));transition:transform .3s cubic-bezier(.2,.9,.3,1.2);
+  box-shadow:0 1px 1px rgba(0,0,0,.2),0 10px 16px -6px rgba(30,15,5,.45),0 26px 30px -20px rgba(30,15,5,.5)}
+.it.lift{cursor:grabbing;transition:none;box-shadow:0 2px 2px rgba(0,0,0,.15),0 26px 34px -10px rgba(30,15,5,.45),0 50px 60px -30px rgba(30,15,5,.5)}
+.pin{position:absolute;left:50%;top:10px;width:18px;height:18px;margin-left:-9px;border-radius:50%;z-index:3;
+  background:radial-gradient(circle at 35% 30%,#FF9B8E 0 12%,#D7362B 40%,#8E1912 100%);box-shadow:2px 5px 4px rgba(0,0,0,.45)}
+.it img{display:block;width:100%;height:auto;pointer-events:none}
+
+.title{width:560px;background:#FFFEF8;background-image:var(--tex),repeating-linear-gradient(transparent 0 33px,rgba(90,140,170,.3) 33px 34px);background-blend-mode:multiply;padding:48px 44px 34px}
+.title::before{content:"";position:absolute;left:0;right:0;top:44px;height:1.5px;background:rgba(179,47,39,.55)}
+.title .k{font:400 13px var(--type);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.title h1{font:700 42px/1.12 var(--type);margin:14px 0 16px;letter-spacing:-.01em}
+.title p{font:400 17px/34px var(--type);margin:0 0 18px;color:var(--ink-2)}
+.title .btn{display:inline-block;font:700 15px var(--type);text-transform:uppercase;letter-spacing:.06em;padding:12px 18px;background:var(--ink);color:#fff;text-decoration:none}
+.title .hand{display:block;font:600 26px var(--hand);color:var(--red);margin-top:12px}
+
+.polaroid{background:#fff;padding:12px 12px 54px}
+.polaroid .cap{position:absolute;left:14px;right:14px;bottom:10px;font:600 24px/1.05 var(--hand);color:#2F2B27}
+.sticky{width:190px;min-height:170px;padding:30px 18px 18px;font:600 27px/1.08 var(--hand);color:#2B2824;background:#F7E27A;
+  background-image:linear-gradient(170deg,rgba(255,255,255,.35),rgba(0,0,0,.05));box-shadow:0 1px 1px rgba(0,0,0,.15),0 14px 16px -10px rgba(30,15,5,.55)}
+.sticky.pink{background-color:#F6B9C4}.sticky.blue{background-color:#BFE0EC}.sticky.green{background-color:#CDE6B5}
+.sticky a{color:inherit}
+.clipping{background:#fff;padding:8px}
+.clipping .src{position:absolute;left:10px;bottom:-26px;font:400 12px var(--type);color:#2B2824;background:#FFFDF4;padding:3px 7px;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+
+.receipt{width:230px;background:#FBFAF6;background-image:var(--tex);padding:22px 18px 46px;font:400 13px/1.45 var(--type);color:#3A3733;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),95% 100%,90% calc(100% - 8px),85% 100%,80% calc(100% - 8px),75% 100%,70% calc(100% - 8px),65% 100%,60% calc(100% - 8px),55% 100%,50% calc(100% - 8px),45% 100%,40% calc(100% - 8px),35% 100%,30% calc(100% - 8px),25% 100%,20% calc(100% - 8px),15% 100%,10% calc(100% - 8px),5% 100%,0 calc(100% - 8px));
+  box-shadow:none;filter:drop-shadow(0 10px 10px rgba(30,15,5,.4))}
+.receipt .c{text-align:center}.receipt hr{border:0;border-top:1px dashed #9A958E;margin:8px 0}
+.receipt .r{display:flex;justify-content:space-between}
+.receipt .t{font-weight:700;font-size:15px}
+.receipt .circ{position:relative}
+.receipt .circ::after{content:"";position:absolute;inset:-6px -10px;border:2px solid var(--red);border-radius:50%;transform:rotate(-3deg)}
+.receipt .note{position:absolute;right:12px;bottom:12px;font:700 24px var(--hand);color:var(--red);transform:rotate(-8deg)}
+
+.index{width:300px;background:#FFFEF8;background-image:var(--tex),repeating-linear-gradient(transparent 0 25px,rgba(90,140,170,.28) 25px 26px);background-blend-mode:multiply;padding:34px 22px 18px}
+.index::before{content:"";position:absolute;left:0;right:0;top:30px;height:1.5px;background:rgba(179,47,39,.5)}
+.index h3{font:700 22px var(--type);margin:0 0 4px}
+.index p{font:400 14px/26px var(--type);margin:0;color:var(--ink-2)}
+.index .pr{display:flex;justify-content:space-between;font:700 13px/26px var(--type);margin-top:4px}
+.index .pr a{color:var(--red);text-decoration:none}
+
+.below{max-width:900px;margin:0 auto;padding:60px 34px 30px;text-align:center;font:400 13px/1.8 var(--type);color:#8A847B}
+@media (max-width:900px){nav ul{display:none}.frame{margin:0 8px;padding:10px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="mailto:info@statistikas.lt">info@statistikas.lt</a></li></ul>
+</nav>
+
+<div class="frame"><div class="board" id="board"><div class="canvas" id="canvas">
+  <svg class="strings" id="strings"></svg>
+
+  <article class="it title" id="title" style="left:450px;top:70px;--r:-1.2deg"><span class="pin"></span>
+    <div class="k">Statistikos konsultacijos · byla Nr. 214</div>
+    <h1>Kiekvienas atsakymas prasideda nuo gero klausimo.</h1>
+    <p>Šiandienos klausimas: kodėl klientai negrįžta? Taip atrodo mano darbas, kol jis dar nebaigtas: įkalčiai, spėjimai ir patikrinimai. Pastumdykite.</p>
+    <a class="btn" href="mailto:info@statistikas.lt">Užduokite savo klausimą →</a><span class="hand">pirmas pokalbis — nemokamas</span>
+  </article>
+
+  <figure class="it receipt" id="receipt" style="left:110px;top:120px;--r:4deg;margin:0"><span class="pin" style="top:6px"></span>
+    <div class="c">E. PARDUOTUVĖ<br>UŽSAKYMAS 10482</div><hr>
+    <div class="r"><span>Kavos pupelės 1 kg</span><span>18,90</span></div>
+    <div class="r"><span>Sūris</span><span>9,60</span></div>
+    <div class="r"><span>Ruginė duona</span><span>2,90</span></div>
+    <div class="r"><span>Medus</span><span>5,00</span></div>
+    <div class="r"><span class="circ">Pristatymas</span><span>2,00</span></div><hr>
+    <div class="r t"><span>IŠ VISO</span><span>38,40 €</span></div>
+    <div class="c" style="margin-top:8px">pristatyta po 5 d.</div>
+    <span class="note">5 dienos?!</span>
+  </figure>
+
+  <div class="it sticky" id="s62" style="left:150px;top:520px;--r:-5deg"><span class="pin"></span>62 % išėjusių klientų mini pristatymą</div>
+
+  <figure class="it polaroid" id="vilnius" style="left:1110px;top:90px;width:270px;--r:5deg;margin:0"><span class="pin"></span>
+    <img src="https://images.unsplash.com/photo-1660562278746-72e961bb9644?w=700&q=75&auto=format" alt="Vilnius iš viršaus"><span class="cap">Vilnius: 1 d.<br>regionai: 5 d.</span></figure>
+
+  <figure class="it clipping" id="snow" style="left:1060px;top:520px;width:250px;--r:-3deg;margin:0"><span class="pin"></span>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Snow-cholera-map.jpg?width=600" alt="J. Snow choleros žemėlapis"><span class="src">J. Snow, 1854</span></figure>
+  <div class="it sticky blue" id="sSnow" style="left:1250px;top:760px;width:160px;min-height:140px;--r:7deg"><span class="pin"></span>o gal tai vieta, ne žmonės?</div>
+
+  <figure class="it clipping" id="playfair" style="left:560px;top:560px;width:330px;--r:2deg;margin:0"><span class="pin"></span>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/1786%20Playfair%20-%201%20Chart%20of%20all%20the%20import%20and%20exports%20to%20and%20from%20England%20from%20the%20year%201700%20to%201782.jpg?width=700" alt="W. Playfair laiko eilutė"><span class="src">W. Playfair, 1786</span></figure>
+  <div class="it sticky green" id="sTime" style="left:900px;top:470px;width:170px;min-height:150px;--r:-4deg"><span class="pin"></span>pirma — laiko eilutė. gal tai sezonas?</div>
+
+  <figure class="it polaroid" id="galton" style="left:380px;top:560px;width:170px;--r:-7deg;margin:0;padding-bottom:46px"><span class="pin"></span>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Galton%20box%201.jpg?width=400" alt="Galtono lenta"><span class="cap" style="font-size:21px">o gal tik atsitiktinumas?</span></figure>
+
+  <figure class="it clipping" id="card" style="left:70px;top:770px;width:270px;--r:3deg;margin:0"><span class="pin"></span>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hollerith%20Punched%20Card.jpg?width=600" alt="Perforuota kortelė"><span class="src">1 eilutė = 1 klientas</span></figure>
+
+  <article class="it index" id="k1" style="left:420px;top:830px;--r:-2deg"><span class="pin"></span><h3>Konsultacija</h3><p>Antra nuomonė apie dizainą, metodą ar kodą.</p><div class="pr"><span>nuo 50 € / val.</span><a href="#">plačiau →</a></div></article>
+  <article class="it index" id="k2" style="left:740px;top:850px;--r:1.5deg"><span class="pin"></span><h3>Projektas</h3><p>Imtis, analizė ir ataskaita už sutartą kainą.</p><div class="pr"><span>nuo 50 €</span><a href="#">plačiau →</a></div></article>
+  <article class="it index" id="k3" style="left:1060px;top:820px;width:180px;--r:-1deg;padding-right:16px"><span class="pin"></span><h3>Partnerystė</h3><p>Ataskaitos kas mėnesį.</p><div class="pr"><a href="#">plačiau →</a></div></article>
+  <div class="it sticky pink" id="sYou" style="left:1250px;top:350px;width:170px;min-height:150px;--r:-6deg"><span class="pin"></span><a href="mailto:info@statistikas.lt">o koks jūsų klausimas? →</a></div>
+</div></div></div>
+
+<div class="below">Prototipas M · Tyrimo lenta · iliustracinis tyrimas · Vaizdai: Unsplash (kamštis, Vilnius, popierius) ir Wikimedia Commons, viešasis domenas (J. Snow, W. Playfair, Galton box, Hollerith card)</div>
+
+<script>
+(() => {
+  const board = document.getElementById('board'), canvas = document.getElementById('canvas'), svg = document.getElementById('strings');
+  const LINKS = [['title', 'receipt'], ['receipt', 's62'], ['title', 'playfair'], ['playfair', 'sTime'], ['title', 'vilnius'], ['vilnius', 'snow'], ['snow', 'sSnow'], ['s62', 'galton'], ['s62', 'card']];
+  let k = 1;
+  const fit = () => { k = board.clientWidth / 1440; canvas.style.transform = `scale(${k})`; board.style.height = 1060 * k + 'px'; draw(); };
+  const pinOf = id => {
+    const el = document.getElementById(id), p = el.querySelector('.pin').getBoundingClientRect(), b = board.getBoundingClientRect();
+    return [(p.left + p.width / 2 - b.left) / k, (p.top + p.height / 2 - b.top) / k];
+  };
+  function draw() {
+    svg.innerHTML = LINKS.map(([a, b]) => {
+      const [x1, y1] = pinOf(a), [x2, y2] = pinOf(b), d = Math.hypot(x2 - x1, y2 - y1);
+      return `<path d="M${x1} ${y1} Q ${(x1 + x2) / 2} ${(y1 + y2) / 2 + d * .12} ${x2} ${y2}"/>`;
+    }).join('');
+  }
+  let Z = 10;
+  document.querySelectorAll('.it').forEach(el => {
+    let sx, sy, ox, oy, on = false, lx = 0;
+    el.addEventListener('pointerdown', e => {
+      if (e.target.closest('a')) return;
+      on = true; el.setPointerCapture(e.pointerId); sx = e.clientX; sy = e.clientY; lx = e.clientX;
+      ox = parseFloat(el.style.getPropertyValue('--dx')) || 0; oy = parseFloat(el.style.getPropertyValue('--dy')) || 0;
+      el.style.zIndex = ++Z; el.classList.add('lift');
+    });
+    el.addEventListener('pointermove', e => {
+      if (!on) return;
+      el.style.setProperty('--dx', ox + (e.clientX - sx) / k + 'px'); el.style.setProperty('--dy', oy + (e.clientY - sy) / k + 'px');
+      el.style.setProperty('--tilt', Math.max(-8, Math.min(8, (e.clientX - lx) * .9)) + 'deg'); lx = e.clientX; draw();
+    });
+    const up = () => { if (!on) return; on = false; el.classList.remove('lift'); el.style.setProperty('--tilt', '0deg'); setTimeout(draw, 320); };
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+  });
+  addEventListener('resize', fit);
+  document.querySelectorAll('img').forEach(i => i.addEventListener('load', draw));
+  fit(); setTimeout(draw, 400);
+})();
+</script>
+</body>
+</html>

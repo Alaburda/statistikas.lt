@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>H · Galtono lenta — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FFFFFF;--ink:#221E1A;--ink-2:#554D45;--ink-3:#8C837A;--line:#ECE6DF;--wood:#8A5A32;--brass:#B8893A;
+  --serif:'Newsreader',Georgia,serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.14rem/1.6 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+nav{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:22px 32px}
+.brand{font:500 1.4rem var(--serif);text-decoration:none}
+.brand i{color:var(--wood)}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:1.02rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+.nav-cta{font:500 .98rem var(--serif);padding:8px 18px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:20px 0 80px}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:400 clamp(2.8rem,5vw,4.4rem)/1.03 var(--serif);letter-spacing:-.02em;margin:14px 0 22px}
+h1 em{color:var(--wood)}
+.lede{color:var(--ink-2);margin:0 0 30px;max-width:30em;font-size:1.2rem}
+.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn{font:500 1.05rem var(--serif);padding:13px 24px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.note{font:400 .8rem var(--mono);color:var(--ink-3)}
+
+.object{position:relative;margin:0;display:flex;flex-direction:column;align-items:center}
+#board{width:min(100%,480px);height:auto;display:block;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(40,25,10,.25)) drop-shadow(0 28px 34px rgba(60,38,18,.32));touch-action:manipulation}
+.ctl{display:flex;gap:16px;align-items:center;margin-top:22px;font:400 .8rem var(--mono);color:var(--ink-3)}
+.ctl button{font:500 .85rem var(--mono);background:#fff;border:1.5px solid var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.ctl button:hover{background:var(--ink);color:#fff}
+
+section{padding:90px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:48px}
+h2{font:400 clamp(2rem,3.4vw,2.9rem)/1.08 var(--serif);margin:12px 0 0;letter-spacing:-.01em}
+h2 em{color:var(--wood)}
+.head p{margin:0;color:var(--ink-2)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1.5px solid var(--ink)}
+.tier{padding:26px 28px 10px 0;border-right:1px solid var(--line);margin-right:28px}
+.tier:last-child{border-right:0;margin-right:0}
+.tier .t{font:400 .74rem var(--mono);color:var(--ink-3);display:flex;justify-content:space-between;letter-spacing:.06em;text-transform:uppercase}
+.tier h3{font:400 1.8rem var(--serif);margin:12px 0 6px}
+.tier p{color:var(--ink-2);margin:0 0 14px}
+.tier .pr{display:flex;justify-content:space-between;font:500 .85rem var(--mono)}
+.tier .pr a{color:var(--wood);text-decoration:none}
+.cta{text-align:center;max-width:720px;margin:0 auto}
+.cta p{color:var(--ink-2);margin:16px auto 28px}
+.mail{display:block;margin-top:16px;font:400 .9rem var(--mono);color:var(--ink-2)}
+footer{padding:40px 0 60px;text-align:center;font:400 .75rem var(--mono);color:var(--ink-3)}
+@media (max-width:900px){.hero,.head{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}.tier{border-right:0;margin-right:0}nav ul{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#kontaktai">Susisiekti</a>
+</nav>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <span class="kicker">Statistikos konsultacijos</span>
+      <h1>Atsitiktinumas <em>turi formą.</em></h1>
+      <p class="lede">Kiekvienas rutuliukas krenta savaip, bet kartu jie kaskart sudaro tą pačią formą. Padedu įmonėms ir tyrėjams atskirti tikrą dėsningumą nuo atsitiktinumo jų duomenyse.</p>
+      <div class="actions"><a class="btn" href="#kontaktai">Aptarkime jūsų projektą →</a><span class="note">Pirmas 30 min. pokalbis — nemokamas</span></div>
+    </div>
+    <figure class="object">
+      <canvas id="board" width="520" height="760" aria-label="Galtono lenta: plieniniai rutuliukai krenta pro kaištukus ir susiformuoja į normalųjį skirstinį"></canvas>
+      <div class="ctl"><button type="button" id="again">Išpilti ir kartoti</button><span>spustelėkite lentą — pabelsite</span></div>
+    </figure>
+  </div>
+</main>
+
+<section id="paslaugos" style="padding-top:30px">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="kicker">Paslaugos</span><h2>Trys būdai <em>dirbti kartu</em></h2></div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier"><div class="t"><span>01</span><span>~1 val.</span></div><h3>Konsultacija</h3><p>Antra nuomonė apie tyrimo dizainą, metodą ar kodą.</p><div class="pr"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="t"><span>02</span><span>1–6 sav.</span></div><h3>Projektas</h3><p>Imties dydis, analizė ir ataskaita už sutartą kainą.</p><div class="pr"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="t"><span>03</span><span>kas mėnesį</span></div><h3>Partnerystė</h3><p>Ataskaitos ir rodiklių sistemos, kurios dirba kas mėnesį.</p><div class="pr"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div></article>
+    </div>
+  </div>
+</section>
+<section id="kontaktai" style="padding-top:20px">
+  <div class="cta">
+    <span class="kicker">Susisiekite</span>
+    <h2>Kokią formą turi <em>jūsų</em> duomenys?</h2>
+    <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+    <a class="btn" href="#">Aptarkime projektą →</a>
+    <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+  </div>
+</section>
+<footer>Prototipas H · Galtono lenta</footer>
+
+<script>
+(() => {
+  const cv = document.getElementById('board'), ctx = cv.getContext('2d');
+  const W = 520, H = 760, DPR = Math.min(devicePixelRatio || 1, 2);
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const FR = 26;                       // frame thickness
+  const CX = W / 2, ROWS = 12, SP = 26, PEG_TOP = 170, ROW_H = 24, PEG_R = 3.2;
+  const BIN_TOP = PEG_TOP + ROWS * ROW_H + 30, BIN_BOT = H - FR - 34, BALL_R = 3.6, TOTAL = 260;
+  const BINS = ROWS + 1;
+  const binX = j => CX + (j - ROWS / 2) * SP;
+  let s = 3; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+
+  // ---------- static artwork: wood frame, ply back, pegs, dividers ----------
+  const bg = document.createElement('canvas'); bg.width = W * DPR; bg.height = H * DPR;
+  const b = bg.getContext('2d'); b.setTransform(DPR, 0, 0, DPR, 0, 0);
+  function grain(g, x, y, w, h, base, dark, n, vertical) {
+    g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip();
+    g.fillStyle = base; g.fillRect(x, y, w, h);
+    for (let i = 0; i < n; i++) {
+      const p = rnd(), amp = 1 + rnd() * 3, f = .01 + rnd() * .03, ph = rnd() * 6;
+      g.strokeStyle = dark.replace('A', (0.04 + rnd() * .12).toFixed(3)); g.lineWidth = .4 + rnd() * 1.4;
+      g.beginPath();
+      if (!vertical) { const yy = y + p * h; for (let xx = x; xx <= x + w; xx += 6) g.lineTo(xx, yy + Math.sin(xx * f + ph) * amp + Math.sin(xx * f * 3.1) * amp * .3); }
+      else { const xx0 = x + p * w; for (let yy = y; yy <= y + h; yy += 6) g.lineTo(xx0 + Math.sin(yy * f + ph) * amp, yy); }
+      g.stroke();
+    }
+    // a couple of knots
+    for (let k = 0; k < 2; k++) {
+      const kx = x + rnd() * w, ky = y + rnd() * h, r = 4 + rnd() * 6;
+      const gr = g.createRadialGradient(kx, ky, 0, kx, ky, r * 2.4); gr.addColorStop(0, dark.replace('A', '.35')); gr.addColorStop(1, dark.replace('A', '0'));
+      g.fillStyle = gr; g.beginPath(); g.ellipse(kx, ky, r * 2.4, r * (vertical ? 3.4 : 1.4), 0, 0, 7); g.fill();
+    }
+    g.restore();
+  }
+  // back panel (birch ply) with subtle vignette
+  grain(b, FR, FR, W - 2 * FR, H - 2 * FR, '#EADBC2', 'rgba(150,110,60,A)', 160, false);
+  const vg = b.createRadialGradient(CX, H * .45, 80, CX, H * .5, H * .7); vg.addColorStop(0, 'rgba(255,250,240,.0)'); vg.addColorStop(1, 'rgba(90,60,30,.22)');
+  b.fillStyle = vg; b.fillRect(FR, FR, W - 2 * FR, H - 2 * FR);
+  // printed scale on the back panel
+  b.fillStyle = 'rgba(60,40,20,.55)'; b.font = '500 11px IBM Plex Mono, monospace'; b.textAlign = 'center';
+  b.fillText('GALTONO LENTA · 1873', CX, FR + 26);
+  // frame: walnut, with bevel light
+  const frameSides = [[0, 0, W, FR, false], [0, H - FR, W, FR, false], [0, 0, FR, H, true], [W - FR, 0, FR, H, true]];
+  frameSides.forEach(([x, y, w, h, v]) => grain(b, x, y, w, h, '#7A4B28', 'rgba(35,18,6,A)', 70, v));
+  const bevel = (x1, y1, x2, y2, c) => { b.strokeStyle = c; b.lineWidth = 2; b.beginPath(); b.moveTo(x1, y1); b.lineTo(x2, y2); b.stroke(); };
+  bevel(1, 1, W - 1, 1, 'rgba(255,220,180,.35)'); bevel(1, 1, 1, H - 1, 'rgba(255,220,180,.25)');
+  bevel(FR, FR, W - FR, FR, 'rgba(0,0,0,.35)'); bevel(FR, FR, FR, H - FR, 'rgba(0,0,0,.25)');
+  bevel(W - FR, FR, W - FR, H - FR, 'rgba(255,220,180,.2)'); bevel(FR, H - FR, W - FR, H - FR, 'rgba(255,220,180,.25)');
+  // inner shadow under the top frame
+  const ish = b.createLinearGradient(0, FR, 0, FR + 18); ish.addColorStop(0, 'rgba(40,20,5,.35)'); ish.addColorStop(1, 'rgba(40,20,5,0)');
+  b.fillStyle = ish; b.fillRect(FR, FR, W - 2 * FR, 18);
+
+  // hopper (glass funnel outline drawn later on top), pegs
+  const pegs = [];
+  for (let r = 0; r < ROWS; r++) for (let k = 0; k <= r; k++) pegs.push([CX + (k - r / 2) * SP, PEG_TOP + r * ROW_H]);
+  pegs.forEach(([x, y]) => {
+    b.fillStyle = 'rgba(50,30,10,.35)'; b.beginPath(); b.ellipse(x + 1.6, y + 2.2, PEG_R + 1, PEG_R + .6, 0, 0, 7); b.fill();
+    const g = b.createRadialGradient(x - 1, y - 1.2, .3, x, y, PEG_R + .4); g.addColorStop(0, '#FFF1C8'); g.addColorStop(.35, '#D9AE5A'); g.addColorStop(1, '#7A5418');
+    b.fillStyle = g; b.beginPath(); b.arc(x, y, PEG_R, 0, 7); b.fill();
+  });
+  // bin dividers (thin beech strips)
+  const divs = [];
+  for (let j = 0; j <= BINS; j++) divs.push(CX + (j - BINS / 2) * SP);
+  divs.forEach(x => {
+    b.fillStyle = 'rgba(50,30,10,.22)'; b.fillRect(x + 1.5, BIN_TOP + 3, 3, BIN_BOT - BIN_TOP);
+    const g = b.createLinearGradient(x - 1.5, 0, x + 1.5, 0); g.addColorStop(0, '#E9CFA5'); g.addColorStop(1, '#B98A55');
+    b.fillStyle = g; b.fillRect(x - 1.5, BIN_TOP, 3, BIN_BOT - BIN_TOP);
+  });
+  // bin floor
+  grain(b, divs[0] - 2, BIN_BOT, divs[BINS] - divs[0] + 4, 8, '#9A6A3E', 'rgba(35,18,6,A)', 8, false);
+
+  // ---------- sprites ----------
+  const sprite = (r, draw) => { const c = document.createElement('canvas'); c.width = c.height = Math.ceil(r * 2 * DPR + 4); const g = c.getContext('2d'); g.setTransform(DPR, 0, 0, DPR, 0, 0); draw(g, r + 2 / DPR); return c; };
+  const ballSpr = sprite(BALL_R, (g, c) => {
+    const gr = g.createRadialGradient(c - BALL_R * .35, c - BALL_R * .4, .2, c, c, BALL_R);
+    gr.addColorStop(0, '#FFFFFF'); gr.addColorStop(.18, '#E4E7EA'); gr.addColorStop(.55, '#8C949B'); gr.addColorStop(.85, '#3E454B'); gr.addColorStop(1, '#5F676E');
+    g.fillStyle = gr; g.beginPath(); g.arc(c, c, BALL_R, 0, 7); g.fill();
+  });
+  const shSpr = sprite(BALL_R + 1.5, (g, c) => { const gr = g.createRadialGradient(c, c, 0, c, c, BALL_R + 1.5); gr.addColorStop(0, 'rgba(40,25,10,.45)'); gr.addColorStop(1, 'rgba(40,25,10,0)'); g.fillStyle = gr; g.fillRect(0, 0, 40, 40); });
+
+  // ---------- kinematics: one coin flip per peg row, like the real board ----------
+  const G = .0011, HOP = 74, perBin = new Array(BINS).fill(0);
+  const slot = (j, k) => { // hex packing: rows of 3 and 2 balls
+    const pair = Math.floor(k / 5), m = k % 5, d = BALL_R * 2.05;
+    const y = BIN_BOT - BALL_R - (pair * 2 + (m >= 3 ? 1 : 0)) * BALL_R * 1.78;
+    const x = binX(j) + (m < 3 ? (m - 1) * d : (m - 3.5) * d);
+    return [x, y];
+  };
+  let balls = [], released = 0, lastDrop = 0, knock = -1e9;
+  function newBall(t) {
+    const pts = [[CX + (rnd() - .5) * 2, PEG_TOP - 70]];
+    let x = CX, rights = 0;
+    for (let r = 0; r < ROWS; r++) {
+      pts.push([x + (rnd() - .5) * 1.2, PEG_TOP + r * ROW_H - PEG_R - BALL_R]);
+      const dir = rnd() < .5 ? -1 : 1; if (dir > 0) rights++; x += dir * SP / 2;
+    }
+    const j = rights, [sx, sy] = slot(j, perBin[j]++);
+    return { pts, j, sx: sx + (rnd() - .5) * .8, sy, t0: t, x: pts[0][0], y: pts[0][1], done: false, wob: rnd() * 6 };
+  }
+  function drop(t) { if (released >= TOTAL || t - lastDrop < 45) return; lastDrop = t; released++; balls.push(newBall(t)); }
+  function step(b, t) {
+    if (b.done) return;
+    let e = t - b.t0;
+    const [x0, y0] = b.pts[0], [x1, y1] = b.pts[1], f0 = Math.sqrt(2 * (y1 - y0) / G);
+    if (e < f0) { b.x = x0 + (x1 - x0) * e / f0; b.y = y0 + .5 * G * e * e; return; }
+    e -= f0;
+    const seg = Math.floor(e / HOP);
+    if (seg < ROWS - 1) {
+      const u = (e % HOP) / HOP, [ax, ay] = b.pts[seg + 1], [bx, by] = b.pts[seg + 2];
+      b.x = ax + (bx - ax) * u; b.y = ay + (by - ay) * u * u - Math.sin(Math.PI * u) * 5; return;
+    }
+    const [lx, ly] = b.pts[ROWS], ex = binX(b.j);
+    const fe = e - (ROWS - 1) * HOP, fd = Math.sqrt(2 * (b.sy - ly) / G);
+    if (fe < fd) {
+      const u = Math.min(1, fe / 140);
+      b.x = lx + (ex - lx) * u + (b.sx - ex) * Math.max(0, (fe - 140) / Math.max(1, fd - 140));
+      b.y = Math.min(b.sy, ly - Math.sin(Math.PI * u) * 4 + .5 * G * fe * fe); return;
+    }
+    b.x = b.sx; b.y = b.sy; b.done = true;
+  }
+  cv.addEventListener('click', () => { knock = performance.now(); });
+  document.getElementById('again').addEventListener('click', () => { balls = []; released = 0; perBin.fill(0); });
+
+  // ---------- render ----------
+  const binom = j => { let c = 1; for (let i = 0; i < j; i++) c = c * (ROWS - i) / (i + 1); return c / 2 ** ROWS; };
+  let last = performance.now();
+  function frame(t) {
+    const dt = Math.min(1000 / 30, t - last); last = t;
+    drop(t); balls.forEach(bl => step(bl, t));
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(bg, 0, 0, W, H);
+    // reservoir of remaining balls in the hopper
+    const left = TOTAL - released, cols = 22;
+    for (let i = 0; i < Math.min(left, 160); i++) {
+      const row = Math.floor(i / cols), col = i % cols, w = Math.min(cols, 3 + row * 2.4); if (col >= w) continue;
+      const x = CX + (col - (w - 1) / 2) * BALL_R * 2.05, y = PEG_TOP - 70 - row * BALL_R * 1.8;
+      ctx.drawImage(ballSpr, x - BALL_R - 2 / DPR, y - BALL_R - 2 / DPR, ballSpr.width / DPR, ballSpr.height / DPR);
+    }
+    // balls with contact shadows
+    const ke = t - knock, kamp = ke < 900 ? Math.exp(-ke / 260) : 0;
+    const pos = balls.map(bl => bl.done && kamp ? [bl.x + Math.sin(ke / 30 + bl.wob) * kamp * 1.2, bl.y - Math.abs(Math.sin(ke / 45 + bl.wob)) * kamp * 4] : [bl.x, bl.y]);
+    for (const [x, y] of pos) ctx.drawImage(shSpr, x - BALL_R + .4, y - BALL_R + 1.6, shSpr.width / DPR, shSpr.height / DPR);
+    for (const [x, y] of pos) ctx.drawImage(ballSpr, x - BALL_R - 2 / DPR, y - BALL_R - 2 / DPR, ballSpr.width / DPR, ballSpr.height / DPR);
+    // pencil line: theoretical binomial, scaled to balls landed so far
+    const landed = balls.filter(bl => bl.done).length;
+    if (landed > 30) {
+      const rowH = BALL_R * 1.78 * 2 / 5;
+      ctx.strokeStyle = 'rgba(150,40,30,.7)'; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]); ctx.beginPath();
+      for (let j = 0; j < BINS; j++) { const hgt = landed * binom(j) * rowH; const x = binX(j), y = BIN_BOT - hgt; j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    // counts engraved on the bottom frame
+    const counts = new Array(BINS).fill(0);
+    balls.forEach(bl => { if (bl.done) counts[bl.j]++; });
+    ctx.font = '500 10px IBM Plex Mono, monospace'; ctx.textAlign = 'center';
+    counts.forEach((c, j) => { ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillText(c, binX(j), BIN_BOT + 23); ctx.fillStyle = 'rgba(255,225,180,.55)'; ctx.fillText(c, binX(j), BIN_BOT + 22); });
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(60,40,20,.6)'; ctx.fillText(`n = ${landed}`, FR + 10, BIN_TOP - 8);
+    // glass front: soft reflections
+    const gl = ctx.createLinearGradient(0, 0, W, H);
+    gl.addColorStop(0, 'rgba(255,255,255,0)'); gl.addColorStop(.28, 'rgba(255,255,255,0)'); gl.addColorStop(.33, 'rgba(255,255,255,.16)'); gl.addColorStop(.42, 'rgba(255,255,255,0)'); gl.addColorStop(.62, 'rgba(255,255,255,0)'); gl.addColorStop(.65, 'rgba(255,255,255,.1)'); gl.addColorStop(.7, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gl; ctx.fillRect(FR, FR, W - 2 * FR, H - 2 * FR);
+    requestAnimationFrame(frame);
+  }
+  // ?sim — run the whole experiment instantly (for checking the result)
+  if (/sim/.test(location.search)) { for (let i = 0; i < TOTAL; i++) { released++; const bl = newBall(0); bl.x = bl.sx; bl.y = bl.sy; bl.done = true; balls.push(bl); } }
+  // start when visible
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); requestAnimationFrame(frame); } }).observe(cv);
+})();
+</script>
+</body>
+</html>

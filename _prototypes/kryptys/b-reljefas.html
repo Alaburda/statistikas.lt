@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B · Reljefas — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1E2421; --ink-2:#4B534E; --ink-3:#7D857F;
+  --line:#E4E7E3; --forest:#2F5D50; --clay:#C0532F; --sand:#F3EFE6;
+  --display:'Fraunces',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.06rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+
+/* hero / map */
+.map{position:relative;height:min(92vh,820px);min-height:600px;overflow:hidden;border-bottom:1px solid var(--line)}
+#terrain{position:absolute;inset:0;width:100%;height:100%;display:block}
+.map::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 46% 58% at 24% 54%,rgba(255,255,255,.96) 30%,rgba(255,255,255,.72) 60%,rgba(255,255,255,0) 100%)}
+nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:24px 32px}
+.brand{font:400 1.4rem var(--display);text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--forest)}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:6px 14px;background:rgba(255,255,255,.85);backdrop-filter:blur(4px);border-radius:40px;font-size:.95rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--clay)}
+.nav-cta{font:500 .92rem var(--sans);padding:10px 18px;border-radius:40px;background:var(--ink);color:#fff;text-decoration:none}
+.hero-copy{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:9vh 32px 0}
+.hero-copy .inner{max-width:560px}
+.eyebrow{font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--forest);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+h1{font:300 clamp(2.7rem,5vw,4.3rem)/1.04 var(--display);letter-spacing:-.025em;margin:18px 0 22px;font-variation-settings:"opsz" 144}
+h1 em{font-style:italic;color:var(--forest)}
+.lede{font-size:1.15rem;color:var(--ink-2);margin:0 0 32px;max-width:30em}
+.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 1rem var(--sans);padding:14px 22px;border-radius:40px;background:var(--clay);color:#fff;text-decoration:none;box-shadow:0 8px 20px -10px rgba(192,83,47,.8);transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-ghost{font:500 .95rem var(--sans);text-decoration:none;color:var(--ink);border-bottom:1px solid currentColor;padding-bottom:2px}
+.hero-note{font:400 .8rem var(--mono);color:var(--ink-3);margin-top:14px}
+
+/* map furniture */
+.coord{position:absolute;z-index:2;font:400 .7rem var(--mono);color:var(--ink-3);letter-spacing:.04em}
+.coord.tl{top:92px;right:40px;background:rgba(255,255,255,.8);padding:2px 6px}.coord.bl{bottom:20px;left:32px}.coord.br{bottom:20px;right:32px;text-align:right}
+.scale{display:flex;align-items:center;gap:8px}
+.scale i{display:inline-block;width:120px;height:6px;border:1px solid var(--ink-2);background:linear-gradient(90deg,var(--ink-2) 25%,transparent 25% 50%,var(--ink-2) 50% 75%,transparent 75%)}
+.probe{position:absolute;z-index:4;pointer-events:none;font:400 .72rem/1.4 var(--mono);color:var(--ink);background:rgba(255,255,255,.92);border:1px solid var(--line);padding:6px 9px;border-radius:4px;transform:translate(14px,14px);opacity:0;transition:opacity .2s;white-space:nowrap;box-shadow:0 4px 14px -6px rgba(0,0,0,.2)}
+.probe b{color:var(--clay);font-weight:500}
+.compass{position:absolute;z-index:2;right:40px;bottom:64px;width:56px;height:56px}
+
+/* sections */
+section{padding:104px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
+h2{font:300 clamp(2.1rem,3.6vw,3rem)/1.08 var(--display);letter-spacing:-.02em;margin:14px 0 0}
+h2 em{font-style:italic;color:var(--forest)}
+.head p{color:var(--ink-2);margin:0}
+
+/* routes */
+.routes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.route{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper);transition:border-color .3s,box-shadow .3s,transform .3s}
+.route:hover{border-color:#cfd5cf;box-shadow:0 22px 44px -28px rgba(30,40,35,.45);transform:translateY(-3px)}
+.route svg{display:block;width:100%;height:170px;background:var(--sand)}
+.route svg .c{fill:none;stroke:rgba(47,93,80,.22);stroke-width:1}
+.route svg .trail{fill:none;stroke:var(--clay);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1 7}
+.route:hover svg .trail{animation:march 1.2s linear infinite}
+@keyframes march{to{stroke-dashoffset:-16}}
+.route svg .wp{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.route svg .end{fill:var(--clay)}
+.route svg text{font:400 9px var(--mono);fill:var(--ink-2)}
+.route .body{padding:24px 26px 26px}
+.route .meta{display:flex;justify-content:space-between;font:400 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.route h3{font:400 1.7rem/1.15 var(--display);margin:12px 0 6px}
+.route .when{color:var(--ink-2);margin:0 0 16px}
+.route ul{list-style:none;padding:0;margin:0 0 20px;font-size:.98rem}
+.route li{padding:7px 0;border-top:1px dashed var(--line);display:flex;gap:10px}
+.route li::before{content:"·";color:var(--clay);font-weight:700}
+.route .foot{display:flex;justify-content:space-between;align-items:center;font:500 .85rem var(--mono)}
+.route .foot a{color:var(--clay);text-decoration:none}
+
+/* legend */
+.legend-band{background:var(--sand);position:relative;overflow:hidden}
+.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(30,36,33,.15)}
+.leg{padding:30px 26px 10px 0;border-right:1px solid rgba(30,36,33,.12);margin-right:26px}
+.leg:last-child{border-right:0}
+.leg svg{width:64px;height:48px;display:block;margin-bottom:18px}
+.leg h3{font:400 1.35rem var(--display);margin:0 0 6px}
+.leg p{margin:0;color:var(--ink-2);font-size:.97rem}
+.leg small{display:block;margin-top:14px;font:400 .72rem var(--mono);color:var(--ink-3);letter-spacing:.04em}
+
+/* cta */
+.cta{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.pinmap{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--sand);border:1px solid var(--line)}
+.pinmap canvas{width:100%;height:100%;display:block}
+.pin{position:absolute;left:52%;top:46%;transform:translate(-50%,-100%);text-align:center;font:500 .75rem var(--mono);color:var(--ink)}
+.pin svg{width:30px;height:40px;display:block;margin:0 auto 4px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2));animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.pin span{background:#fff;padding:3px 8px;border-radius:20px;border:1px solid var(--line)}
+.mail{display:block;margin-top:18px;font:400 .95rem var(--mono);color:var(--ink-2)}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;font:400 .75rem var(--mono);color:var(--ink-3);text-align:center}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){
+  .head,.cta{grid-template-columns:1fr}.routes,.legend{grid-template-columns:1fr}
+  nav ul{display:none}.leg{border-right:0;border-bottom:1px solid rgba(30,36,33,.12)}
+  .map::after{background:linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.7))}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="map" id="map">
+  <canvas id="terrain" aria-hidden="true"></canvas>
+  <nav>
+    <a class="brand" href="#">statistikas<span>.lt</span></a>
+    <ul><li><a href="#marsrutai">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+    <a class="nav-cta" href="#pradzia">Susisiekti</a>
+  </nav>
+  <div class="hero-copy">
+    <div class="inner">
+      <span class="eyebrow">Statistikos konsultacijos</span>
+      <h1>Jūsų duomenys turi reljefą. <em>Išmokime jį skaityti.</em></h1>
+      <p class="lede">Esu statistikas, kuris padeda įmonėms ir tyrėjams rasti kelią per duomenis: nuo vienos konsultacijos iki reguliarių ataskaitų ir duomenų sistemų.</p>
+      <div class="actions">
+        <a class="btn" href="#pradzia">Aptarkime jūsų projektą <span>→</span></a>
+        <a class="btn-ghost" href="#marsrutai">Paslaugos ↓</a>
+      </div>
+      <div class="hero-note">Pirmas 30 min. pokalbis — nemokamas</div>
+    </div>
+  </div>
+  <div class="coord tl">54°41′ Š · 25°17′ R</div>
+  <div class="coord bl"><div class="scale"><i></i><span>1 σ</span></div></div>
+  <div class="coord br">Pav. 1 — bendras dviejų kintamųjų tankis<br>pajudinkite pelę</div>
+  <svg class="compass" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="20" fill="none" stroke="#7D857F" stroke-width=".8"/><path d="M28 6 L32 28 L28 24 L24 28 Z" fill="#1E2421"/><path d="M28 50 L24 28 L28 32 L32 28 Z" fill="none" stroke="#1E2421" stroke-width=".8"/><text x="28" y="4" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E2421">Š</text></svg>
+  <div class="probe" id="probe"></div>
+</header>
+
+<section id="marsrutai">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="eyebrow">Paslaugos</span><h2>Trys maršrutai — <em>pasirinkite atstumą</em></h2></div>
+      <p>Pradėkite nuo trumpo žygio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="routes reveal">
+      <article class="route">
+        <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice" class="mini" data-seed="3">
+          <path class="trail" d="M70 120 C 100 100, 150 110, 200 70"/>
+          <circle class="wp" cx="70" cy="120" r="5"/><circle class="end" cx="200" cy="70" r="6"/>
+          <text x="58" y="140">klausimas</text><text x="190" y="58">kryptis</text>
+        </svg>
+        <div class="body">
+          <div class="meta"><span>Maršrutas 01</span><span>~1 val.</span></div>
+          <h3>Konsultacija</h3>
+          <p class="when">Žinote, ką norite daryti, bet reikia antros nuomonės.</p>
+          <ul><li>Tyrimo ar eksperimento dizaino peržiūra</li><li>Metodo pasirinkimas ir interpretacija</li><li>R / Python kodo peržiūra</li></ul>
+          <div class="foot"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div>
+        </div>
+      </article>
+      <article class="route">
+        <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice" class="mini" data-seed="9">
+          <path class="trail" d="M40 140 C 70 120, 90 70, 130 90 S 180 140, 210 100 S 250 40, 268 36"/>
+          <circle class="wp" cx="40" cy="140" r="5"/><circle class="wp" cx="130" cy="90" r="4"/><circle class="wp" cx="210" cy="100" r="4"/><circle class="end" cx="268" cy="36" r="6"/>
+          <text x="118" y="78">duomenys</text><text x="196" y="122">analizė</text><text x="226" y="24">ataskaita</text>
+        </svg>
+        <div class="body">
+          <div class="meta"><span>Maršrutas 02</span><span>1–6 sav.</span></div>
+          <h3>Projektas</h3>
+          <p class="when">Konkretus rezultatas per sutartą laiką ir už sutartą kainą.</p>
+          <ul><li>Imties dydžio skaičiavimas ir pagrindimas</li><li>Statistinė analizė ir ataskaita</li><li>Apklausų ir A/B testų analizė</li></ul>
+          <div class="foot"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div>
+        </div>
+      </article>
+      <article class="route">
+        <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice" class="mini" data-seed="17">
+          <path class="trail" d="M150 140 C 60 140, 40 60, 110 40 S 250 30, 250 90 S 210 140, 150 140"/>
+          <circle class="end" cx="150" cy="140" r="6"/><circle class="wp" cx="110" cy="40" r="4"/><circle class="wp" cx="250" cy="90" r="4"/>
+          <text x="96" y="28">sausis</text><text x="258" y="94">vasaris</text><text x="162" y="134">kovas…</text>
+        </svg>
+        <div class="body">
+          <div class="meta"><span>Maršrutas 03</span><span>kas mėnesį</span></div>
+          <h3>Partnerystė</h3>
+          <p class="when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p>
+          <ul><li>Ataskaitos, kurios atsinaujina pačios</li><li>Rodiklių (KPI) sistemos ir stebėsena</li><li>Statistikas pagal poreikį komandai</li></ul>
+          <div class="foot"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="legend-band">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="eyebrow">Sutartiniai ženklai</span><h2>Ko ieškau <em>jūsų duomenyse</em></h2></div>
+      <p>Prieš skaičiuodamas bet ką, apžiūriu vietovę. Keturi dalykai, kuriuos dažniausiai randu ir kurie keičia atsakymą.</p>
+    </div>
+    <div class="legend reveal">
+      <div class="leg"><svg viewBox="0 0 64 48"><g fill="none" stroke="#2F5D50" stroke-width="1.2"><ellipse cx="32" cy="26" rx="28" ry="18"/><ellipse cx="33" cy="25" rx="18" ry="11"/><ellipse cx="34" cy="24" rx="8" ry="5"/></g><circle cx="34" cy="24" r="2" fill="#C0532F"/></svg><h3>Viršūnės</h3><p>Kur susitelkę dauguma klientų, atsakymų ar matavimų.</p><small>modos, klasteriai</small></div>
+      <div class="leg"><svg viewBox="0 0 64 48"><g fill="none" stroke="#2F5D50" stroke-width="1.2"><ellipse cx="16" cy="24" rx="13" ry="16"/><ellipse cx="48" cy="24" rx="13" ry="16"/></g><path d="M32 6 V42" stroke="#C0532F" stroke-width="1.4" stroke-dasharray="2 3"/></svg><h3>Slėniai</h3><p>Tarpai tarp grupių — ten, kur vidurkis meluoja.</p><small>bimodalumas, segmentai</small></div>
+      <div class="leg"><svg viewBox="0 0 64 48"><path d="M2 40 C 14 38, 20 10, 32 22 S 50 8, 62 6" fill="none" stroke="#2F5D50" stroke-width="1.6"/><path d="M2 44 C 14 42, 20 14, 32 26 S 50 12, 62 10" fill="none" stroke="#2F5D50" stroke-width=".6"/></svg><h3>Upės</h3><p>Tendencijos laike, sezoniškumas ir lūžio taškai.</p><small>laiko eilutės</small></div>
+      <div class="leg"><svg viewBox="0 0 64 48"><g fill="none" stroke="#2F5D50" stroke-width="1.2"><ellipse cx="30" cy="26" rx="22" ry="14"/></g><path d="M54 8 l4 4 m0 -4 l-4 4" stroke="#C0532F" stroke-width="1.6"/></svg><h3>Pavieniai taškai</h3><p>Išskirtys: įvedimo klaida ar svarbiausias radinys?</p><small>išskirtys, trūkstamos reikšmės</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="pradzia">
+  <div class="wrap cta reveal">
+    <div>
+      <span class="eyebrow">Susisiekite</span>
+      <h2>Kur esate <em>dabar?</em></h2>
+      <p style="color:var(--ink-2);margin:20px 0 28px;max-width:30em">Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+      <a class="btn" href="#">Aptarkime projektą <span>→</span></a>
+      <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+    </div>
+    <div class="pinmap"><canvas id="pinmap"></canvas><div class="pin"><svg viewBox="0 0 30 40"><path d="M15 39 C 15 39, 2 22, 2 14 A 13 13 0 0 1 28 14 C 28 22, 15 39, 15 39 Z" fill="#C0532F"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg><span>jūs esate čia</span></div></div>
+  </div>
+</section>
+<footer>Prototipas B · Reljefas</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- marching-squares contour renderer ----------
+  function contours(ctx, field, cols, rows, cell, levels, style) {
+    for (let li = 0; li < levels.length; li++) {
+      const lv = levels[li];
+      ctx.beginPath();
+      for (let j = 0; j < rows - 1; j++) {
+        for (let i = 0; i < cols - 1; i++) {
+          const a = field[j * cols + i], b = field[j * cols + i + 1], c = field[(j + 1) * cols + i + 1], d = field[(j + 1) * cols + i];
+          let k = 0; if (a > lv) k |= 8; if (b > lv) k |= 4; if (c > lv) k |= 2; if (d > lv) k |= 1;
+          if (k === 0 || k === 15) continue;
+          const x = i * cell, y = j * cell;
+          const t = (p, q) => (lv - p) / (q - p);
+          const T = [x + cell * t(a, b), y], R = [x + cell, y + cell * t(b, c)], B = [x + cell * t(d, c), y + cell], L = [x, y + cell * t(a, d)];
+          const seg = (p, q) => { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
+          switch (k) {
+            case 1: case 14: seg(L, B); break; case 2: case 13: seg(B, R); break;
+            case 3: case 12: seg(L, R); break; case 4: case 11: seg(T, R); break;
+            case 5: seg(L, T); seg(B, R); break; case 6: case 9: seg(T, B); break;
+            case 7: case 8: seg(L, T); break; case 10: seg(T, R); seg(L, B); break;
+          }
+        }
+      }
+      style(ctx, li, lv); ctx.stroke();
+    }
+  }
+
+  // ---------- hero terrain ----------
+  const cv = document.getElementById('terrain'), ctx = cv.getContext('2d'), map = document.getElementById('map'), probe = document.getElementById('probe');
+  const CELL = 12; let W, H, cols, rows, field, dpr;
+  const bumps = [
+    { ax: .78, ay: .42, rx: .10, ry: .14, fx: .00011, fy: .00007, s: .13, h: 1.0 },
+    { ax: .62, ay: .70, rx: .08, ry: .08, fx: .00009, fy: .00013, s: .10, h: .75 },
+    { ax: .90, ay: .78, rx: .06, ry: .10, fx: .00014, fy: .00008, s: .08, h: .6 },
+    { ax: .45, ay: .25, rx: .10, ry: .06, fx: .00006, fy: .00012, s: .11, h: .55 },
+    { ax: .20, ay: .85, rx: .08, ry: .05, fx: .00010, fy: .00009, s: .12, h: .5 },
+    { ax: .88, ay: .15, rx: .05, ry: .07, fx: .00012, fy: .00010, s: .07, h: .5 },
+  ];
+  const mouse = { x: -1, y: -1, tx: -1, ty: -1, k: 0, tk: 0 };
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = map.clientWidth; H = map.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(W / CELL) + 1; rows = Math.ceil(H / CELL) + 1; field = new Float32Array(cols * rows);
+  }
+  function height(px, py, t) {
+    let v = 0; const asp = W / H;
+    for (const b of bumps) {
+      const cx = b.ax + Math.sin(t * b.fx + b.h * 7) * b.rx, cy = b.ay + Math.cos(t * b.fy + b.h * 3) * b.ry;
+      const dx = (px / W - cx) * asp, dy = py / H - cy; v += b.h * Math.exp(-(dx * dx + dy * dy) / (2 * b.s * b.s));
+    }
+    const u = px / W, w = py / H;
+    v += .16 * Math.sin(u * 6.1 + t * .00006) * Math.cos(w * 4.3 - t * .00005) + .1 * Math.sin((u + w) * 9.7 - t * .00004) + .22 * u;
+    if (mouse.k > .01) { const dx = (px - mouse.x) / W * asp, dy = (py - mouse.y) / H; v += .7 * mouse.k * Math.exp(-(dx * dx + dy * dy) / (2 * .045 * .045)); }
+    return v;
+  }
+  const LEVELS = Array.from({ length: 16 }, (_, i) => .06 + i * .065);
+  function frame(t) {
+    mouse.x += (mouse.tx - mouse.x) * .08; mouse.y += (mouse.ty - mouse.y) * .08; mouse.k += (mouse.tk - mouse.k) * .05;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) field[j * cols + i] = height(i * CELL, j * CELL, t);
+    ctx.clearRect(0, 0, W, H);
+    contours(ctx, field, cols, rows, CELL, LEVELS, (c, li) => {
+      const index = li % 4 === 3;
+      c.strokeStyle = li === 9 ? 'rgba(192,83,47,.75)' : index ? 'rgba(47,93,80,.45)' : 'rgba(47,93,80,.2)';
+      c.lineWidth = li === 9 ? 1.4 : index ? 1.1 : .8;
+    });
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  resize(); addEventListener('resize', resize);
+  requestAnimationFrame(frame);
+  map.addEventListener('pointermove', e => {
+    const r = map.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
+    if (mouse.x < 0) { mouse.x = x; mouse.y = y; }
+    mouse.tx = x; mouse.ty = y; mouse.tk = 1;
+    const h = height(x, y, performance.now());
+    probe.innerHTML = `f(x, y) = <b>${h.toFixed(3).replace('.', ',')}</b><br>aukštis ${Math.round(h * 420)} m`;
+    probe.style.left = x + 'px'; probe.style.top = y + 'px'; probe.style.opacity = e.target.closest('a,.hero-copy .inner') ? 0 : 1;
+  });
+  map.addEventListener('pointerleave', () => { mouse.tk = 0; probe.style.opacity = 0; });
+
+  // ---------- mini route maps & pin map: static contours ----------
+  function staticMap(canvasOrSvg, w, h, seed, levels) {
+    let s = seed; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const bs = Array.from({ length: 5 }, () => ({ x: rnd(), y: rnd(), s: .12 + rnd() * .15, h: .4 + rnd() * .6 }));
+    const cell = 6, cols = Math.ceil(w / cell) + 1, rows = Math.ceil(h / cell) + 1, f = new Float32Array(cols * rows);
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) { let v = 0; for (const b of bs) { const dx = (i * cell / w - b.x) * w / h, dy = j * cell / h - b.y; v += b.h * Math.exp(-(dx * dx + dy * dy) / (2 * b.s * b.s)); } f[j * cols + i] = v; }
+    return { f, cols, rows, cell };
+  }
+  document.querySelectorAll('svg.mini').forEach(svg => {
+    const { f, cols, rows, cell } = staticMap(svg, 300, 170, +svg.dataset.seed);
+    const parts = []; const fake = { moveTo: (x, y) => parts.push(`M${x.toFixed(1)} ${y.toFixed(1)}`), lineTo: (x, y) => parts.push(`L${x.toFixed(1)} ${y.toFixed(1)}`), beginPath() {}, stroke() {} };
+    contours(fake, f, cols, rows, cell, Array.from({ length: 9 }, (_, i) => .12 + i * .1), () => {});
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', parts.join('')); p.setAttribute('class', 'c'); svg.insertBefore(p, svg.firstChild);
+  });
+  const pc = document.getElementById('pinmap');
+  const drawPin = () => {
+    const r = pc.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); pc.width = r.width * d; pc.height = r.height * d;
+    const c = pc.getContext('2d'); c.setTransform(d, 0, 0, d, 0, 0);
+    const { f, cols, rows, cell } = staticMap(pc, r.width, r.height, 42);
+    contours(c, f, cols, rows, cell, Array.from({ length: 12 }, (_, i) => .1 + i * .08), (cc, li) => { cc.strokeStyle = li % 4 === 3 ? 'rgba(47,93,80,.45)' : 'rgba(47,93,80,.22)'; cc.lineWidth = li % 4 === 3 ? 1.1 : .8; });
+  };
+  drawPin(); addEventListener('resize', drawPin);
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F · Žmonės — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#24211F; --ink-2:#55504B; --ink-3:#8B857F; --line:#ECE8E3;
+  --pink:#FF48B0; --blue:#0078BF; --yellow:#FFE800; --green:#00A95C; --soft-blue:#9DC9E8;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .2 0 0 0 .14 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --sans:'Jost',Futura,'Century Gothic',sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+nav{display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 32px}
+.brand{font:700 1.3rem var(--sans);text-decoration:none;letter-spacing:.01em;display:flex;align-items:center;gap:8px}
+.brand svg{width:16px;height:26px}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font:500 1rem var(--sans)}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--blue)}
+.nav-cta{font:600 .95rem var(--sans);padding:9px 18px;background:var(--yellow);color:var(--ink);text-decoration:none;mix-blend-mode:multiply}
+
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center;padding:36px 0 80px}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:600 clamp(2.7rem,4.8vw,4.2rem)/1.02 var(--sans);letter-spacing:-.015em;margin:14px 0 22px}
+h1 .ink{position:relative;display:inline-block;z-index:0}
+h1 .ink::before{content:"";position:absolute;left:-.08em;right:-.08em;bottom:.06em;height:.42em;background:var(--pink);mix-blend-mode:multiply;z-index:-1;transform:translate(3px,2px) rotate(-.6deg);opacity:.9}
+.lede{font-size:1.2rem;color:var(--ink-2);margin:0 0 30px;max-width:29em}
+.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn{font:600 1.02rem var(--sans);padding:14px 24px;background:var(--blue);color:#fff;text-decoration:none;display:inline-block;box-shadow:4px 4px 0 var(--pink);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--pink)}
+.note{font:400 .82rem var(--mono);color:var(--ink-3)}
+
+.plate{position:relative;margin:0}
+.qs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.qs button{font:500 .95rem var(--sans);border:1.5px solid var(--ink);background:#fff;padding:7px 14px;cursor:pointer;transition:background .15s}
+.qs button:hover{background:#f4f2ee}
+.qs button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.sheet{position:relative;background:#fff}
+.sheet::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;pointer-events:none}
+.sheet svg{display:block;width:100%;height:auto}
+.p{transition:transform 1.2s cubic-bezier(.65,0,.25,1)}
+.p path,.p circle{transition:fill .8s}
+.lbl{transition:opacity .5s}
+.lbl text{font:600 15px var(--sans);fill:var(--ink)}
+.lbl text.sub{font:400 12px var(--mono);fill:var(--ink-3)}
+.cap{display:flex;justify-content:space-between;font:400 .76rem var(--mono);color:var(--ink-3);margin-top:8px}
+
+section{padding:96px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:52px}
+h2{font:600 clamp(2.1rem,3.6vw,3rem)/1.06 var(--sans);margin:12px 0 0;letter-spacing:-.01em}
+.head p{margin:0;color:var(--ink-2)}
+
+.behind{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.who{border-top:3px solid var(--ink);padding-top:22px}
+.who svg{height:86px;display:block;margin-bottom:16px}
+.who .num{font:600 2.3rem/1 var(--sans)}
+.who .num small{font:400 .85rem var(--mono);color:var(--ink-3);margin-left:8px}
+.who p{margin:10px 0 0;color:var(--ink-2)}
+.who b{font-weight:600;color:var(--ink)}
+
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.tier{position:relative;padding:30px 28px 28px;isolation:isolate}
+.tier::before{content:"";position:absolute;inset:0;z-index:-2;mix-blend-mode:multiply}
+.tier::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);mix-blend-mode:multiply}
+.t1::before{background:#FFE9A6}.t2::before{background:#FFD3EA}.t3::before{background:#CFE6F5}
+.tier .n{font:700 3.2rem/1 var(--sans);opacity:.9}
+.t1 .n{color:#C9A400}.t2 .n{color:var(--pink)}.t3 .n{color:var(--blue)}
+.tier h3{font:600 1.7rem var(--sans);margin:10px 0 4px}
+.tier .when{color:var(--ink-2);margin:0 0 16px}
+.tier ul{list-style:none;padding:0;margin:0 0 22px}
+.tier li{padding:7px 0;border-top:1.5px solid rgba(36,33,31,.15);font-size:1.02rem}
+.tier .pr{display:flex;justify-content:space-between;font:500 .85rem var(--mono)}
+.tier .pr a{text-decoration:none;border-bottom:1.5px solid currentColor}
+
+.cta{position:relative;padding:70px 64px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;isolation:isolate;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;background:var(--blue);z-index:-2}
+.cta::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;z-index:-1}
+.cta, .cta h2{color:#fff}
+.cta p{color:rgba(255,255,255,.86);margin:16px 0 28px}
+.cta .btn{background:var(--yellow);color:var(--ink)}
+.cta svg{width:100%;height:auto}
+.mail{display:block;margin-top:16px;font:400 .9rem var(--mono);color:rgba(255,255,255,.85)}
+footer{padding:40px 0 60px;text-align:center;font:400 .75rem var(--mono);color:var(--ink-3)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s,transform .9s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){.hero,.head,.cta{grid-template-columns:1fr}.behind,.tiers{grid-template-columns:1fr}nav ul{display:none}.cta{padding:40px 26px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="person" viewBox="0 0 24 44"><circle cx="12" cy="6" r="5.4"/><path d="M3.5 14 H20.5 L19 29 H16.6 V43 H12.9 V31 H11.1 V43 H7.4 V29 H5 Z"/></symbol>
+    <filter id="riso" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.4 2.35" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
+  </defs>
+</svg>
+<nav>
+  <a class="brand" href="#"><svg viewBox="0 0 24 44"><use href="#person" fill="#0078BF"/></svg>statistikas.lt</a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#kontaktai">Susisiekti</a>
+</nav>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <span class="kicker">Statistikos konsultacijos</span>
+      <h1>Už kiekvieno taško — <span class="ink">žmogus.</span></h1>
+      <p class="lede">Jūsų duomenyse gyvena klientai, pacientai ir respondentai. Padedu įmonėms ir tyrėjams juos pamatyti ir priimti sprendimus, kuriais galima pasitikėti.</p>
+      <div class="actions"><a class="btn" href="#kontaktai">Aptarkime jūsų projektą →</a><span class="note">Pirmas 30 min. pokalbis — nemokamas</span></div>
+    </div>
+    <figure class="plate">
+      <div class="qs" role="group" aria-label="Klausimai duomenims">
+        <button type="button" data-s="visi" aria-pressed="true">Kas jie?</button>
+        <button type="button" data-s="grizta" aria-pressed="false">Kas grįžta?</button>
+        <button type="button" data-s="pajamos" aria-pressed="false">Kas atneša pajamas?</button>
+        <button type="button" data-s="iseina" aria-pressed="false">Kas išeina?</button>
+      </div>
+      <div class="sheet"><svg viewBox="0 0 620 430" id="crowd" aria-live="polite"></svg></div>
+      <figcaption class="cap"><span>Pav. 1 — 100 el. parduotuvės klientų, iliustraciniai duomenys</span><span>užduokite klausimą</span></figcaption>
+    </figure>
+  </div>
+</main>
+
+<section style="padding-top:40px">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Ką iš tikrųjų skaičiuojame</span><h2>Grafikas nėra tikslas. Tikslas — suprasti, kas už jo.</h2></div>
+      <p>Vidurkis, procentas ar p reikšmė yra tik būdas pažvelgti į tikrus žmones ir tikrus sprendimus. Todėl kiekvieną analizę pradedu nuo klausimo, ką tie skaičiai reiškia jums.</p>
+    </div>
+    <div class="behind reveal">
+      <div class="who"><svg viewBox="0 0 120 86" id="w1"></svg><div class="num">4,2<small>iš 5</small></div><p>Apklausos vidurkis — tai <b>846 žmonės</b>, kurie skyrė minutę jums atsakyti. Ir keli, kurie parašė, kodėl nusivylė.</p></div>
+      <div class="who"><svg viewBox="0 0 120 86" id="w2"></svg><div class="num">38,40 €<small>mediana</small></div><p>Krepšelio vertė — tai <b>duona, kava ir sūris</b>, kuriuos kažkas nupirko antradienio vakarą.</p></div>
+      <div class="who"><svg viewBox="0 0 120 86" id="w3"></svg><div class="num">n = 212<small>imtis</small></div><p>Imties dydis — tai <b>pacientai</b>, kurie sutiko dalyvauti tyrime. Jų laikas vertas teisingo metodo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="paslaugos" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="kicker">Paslaugos</span><h2>Trys būdai dirbti kartu</h2></div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="tiers reveal">
+      <article class="tier t1"><div class="n">01</div><h3>Konsultacija</h3><p class="when">Žinote, ką norite daryti, bet reikia antros nuomonės.</p><ul><li>Tyrimo ar eksperimento dizaino peržiūra</li><li>Metodo pasirinkimas ir interpretacija</li><li>R / Python kodo peržiūra</li></ul><div class="pr"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier t2"><div class="n">02</div><h3>Projektas</h3><p class="when">Konkretus rezultatas per sutartą laiką ir už sutartą kainą.</p><ul><li>Imties dydžio skaičiavimas ir pagrindimas</li><li>Statistinė analizė ir ataskaita</li><li>Apklausų ir A/B testų analizė</li></ul><div class="pr"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier t3"><div class="n">03</div><h3>Partnerystė</h3><p class="when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p><ul><li>Ataskaitos, kurios atsinaujina pačios</li><li>Rodiklių (KPI) sistemos ir stebėsena</li><li>Statistikas pagal poreikį komandai</li></ul><div class="pr"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="kontaktai" style="padding-top:20px">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div>
+        <span class="kicker" style="color:rgba(255,255,255,.75)">Susisiekite</span>
+        <h2>Papasakokite apie savo žmones.</h2>
+        <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+        <a class="btn" href="#">Aptarkime projektą →</a>
+        <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+      </div>
+      <svg viewBox="0 0 300 150" id="pair" aria-hidden="true"></svg>
+    </div>
+  </div>
+</section>
+<footer>Prototipas F · Žmonės</footer>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (p, tag, a = {}) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  let s = 5; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const INK = { blue: '#0078BF', pale: '#9DC9E8', pink: '#FF48B0', yellow: '#F5C400', ink: '#24211F', grey: '#CFCAC4' };
+
+  // 100 customers with consistent attributes
+  const people = Array.from({ length: 100 }, (_, i) => ({ i }));
+  const ids = people.map(p => p.i).sort(() => rnd() - .5);
+  ids.slice(0, 38).forEach(i => people[i].ret = true);
+  ids.slice(0, 17).concat(ids.slice(60, 63)).forEach(i => people[i].top = true);
+  ids.slice(70, 84).forEach(i => people[i].left = true);
+
+  const STATES = {
+    visi: [{ f: () => true, c: 'blue', t: '100 klientų', sub: 'kiekvienas — tikras žmogus su savo istorija' }],
+    grizta: [{ f: p => p.ret, c: 'pink', t: '38 grįžta ir perka vėl', sub: 'ką jie turi bendro?' }, { f: p => !p.ret, c: 'pale', t: '62 nupirko vieną kartą', sub: '' }],
+    pajamos: [{ f: p => p.top, c: 'yellow', t: '20 klientų atneša 61 % pajamų', sub: '17 iš jų — grįžtantys' }, { f: p => !p.top, c: 'pale', t: '80 klientų — likę 39 %', sub: '' }],
+    iseina: [{ f: p => p.left, c: 'ink', t: '14 išėjo per 3 mėnesius', sub: 'kodėl? čia ir pradėtume' }, { f: p => !p.left, c: 'pale', t: '86 liko', sub: '' }],
+  };
+
+  const svg = document.getElementById('crowd');
+  const misreg = add(svg, 'g', { opacity: .35, transform: 'translate(2.2 1.6)', style: 'mix-blend-mode:multiply' });
+  const layer = add(svg, 'g', { filter: 'url(#riso)', style: 'mix-blend-mode:multiply' });
+  const labels = add(svg, 'g');
+  const W = 22, H = 40, PX = 31, PY = 50, PER = 18;
+  people.forEach(p => {
+    p.sh = add(misreg, 'use', { href: '#person', width: W, height: H, class: 'p', fill: INK.pink });
+    p.el = add(layer, 'use', { href: '#person', width: W, height: H, class: 'p', fill: INK.blue });
+    p.jx = (rnd() - .5) * 6; p.jy = (rnd() - .5) * 6;
+  });
+
+  function layout(key) {
+    const groups = STATES[key]; labels.innerHTML = '';
+    let y = 0;
+    if (groups.length === 1) {
+      // crowd: loose 14×~7 field
+      const g = groups[0];
+      const l = add(labels, 'g', { class: 'lbl' }); add(l, 'text', { x: 0, y: 18 }).textContent = g.t; add(l, 'text', { x: 0, y: 36, class: 'sub' }).textContent = g.sub;
+      people.forEach((p, k) => {
+        const col = k % 17, row = Math.floor(k / 17);
+        place(p, 4 + col * 35.5 + p.jx, 56 + row * 61 + p.jy, g.c);
+      });
+      return;
+    }
+    groups.forEach(g => {
+      const members = people.filter(g.f);
+      const l = add(labels, 'g', { class: 'lbl' });
+      add(l, 'text', { x: 0, y: y + 18 }).textContent = g.t;
+      if (g.sub) add(l, 'text', { x: 0, y: y + 36, class: 'sub' }).textContent = g.sub;
+      y += g.sub ? 48 : 30;
+      members.forEach((p, k) => place(p, (k % PER) * PX + 4, y + Math.floor(k / PER) * PY * .86, g.c));
+      y += Math.ceil(members.length / PER) * PY * .86 + 14;
+    });
+  }
+  function place(p, x, y, c) {
+    p.el.style.transform = p.sh.style.transform = `translate(${x}px, ${y}px)`;
+    p.el.setAttribute('fill', INK[c]);
+    p.sh.setAttribute('fill', c === 'pale' ? INK.pale : c === 'ink' ? INK.blue : INK.pink);
+    p.el.style.transitionDelay = p.sh.style.transitionDelay = (p.i % 25) * 0.012 + 's';
+  }
+  layout('visi');
+  const btns = document.querySelectorAll('.qs button');
+  let auto = true;
+  btns.forEach(b => b.addEventListener('click', () => { auto = false; go(b.dataset.s); }));
+  function go(k) { btns.forEach(x => x.setAttribute('aria-pressed', x.dataset.s === k)); layout(k); }
+  const seq = ['visi', 'grizta', 'pajamos', 'iseina']; let si = 0;
+  setInterval(() => { if (auto) go(seq[++si % seq.length]); }, 4200);
+
+  // little scenes under "behind the number"
+  const scene = (id, extra) => {
+    const el = document.getElementById(id);
+    const g = add(el, 'g', { filter: 'url(#riso)', style: 'mix-blend-mode:multiply' });
+    extra(g);
+  };
+  const person = (g, x, y, c, sc = 1) => add(g, 'use', { href: '#person', x, y, width: 22 * sc, height: 40 * sc, fill: c });
+  scene('w1', g => { for (let i = 0; i < 5; i++) person(g, i * 22, 34, i === 4 ? INK.pink : INK.blue, 1.05); add(g, 'path', { d: 'M88 6 h28 v18 h-18 l-6 6 v-6 h-4 z', fill: INK.yellow }); });
+  scene('w2', g => { person(g, 10, 30, INK.blue, 1.3); add(g, 'path', { d: 'M52 50 h34 l-4 34 h-26 z', fill: INK.pink }); add(g, 'path', { d: 'M60 50 q9 -16 18 0', fill: 'none', stroke: INK.pink, 'stroke-width': 3 }); add(g, 'rect', { x: 88, y: 34, width: 10, height: 50, rx: 4, fill: INK.yellow }); });
+  scene('w3', g => { person(g, 10, 30, INK.blue, 1.3); add(g, 'path', { d: 'M74 30 h10 v12 h12 v10 h-12 v12 h-10 v-12 h-12 v-10 h12 z', fill: INK.pink }); add(g, 'rect', { x: 50, y: 74, width: 60, height: 8, fill: INK.yellow }); });
+  // CTA: two people talking
+  const pair = document.getElementById('pair');
+  const pg = add(pair, 'g', { filter: 'url(#riso)' });
+  person(pg, 40, 40, INK.yellow, 2.2); person(pg, 210, 40, INK.pink, 2.2);
+  add(pg, 'path', { d: 'M110 10 h80 v40 h-50 l-12 12 v-12 h-18 z', fill: '#fff' });
+  add(pg, 'g', { fill: '#0078BF' }).innerHTML = '<circle cx="130" cy="30" r="4"/><circle cx="150" cy="30" r="4"/><circle cx="170" cy="30" r="4"/>';
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>

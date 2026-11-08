@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C · Kartoteka — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --card:#FFFEF9; --manila:#EEDFBE; --manila-2:#E4D2A9;
+  --ink:#262321; --ink-2:#55504A; --ink-3:#8A847B; --rule:#D9D2C4;
+  --red:#BF3A2B; --blue:#2E4E86; --cyan:#6FA7B5;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .25 0 0 0 0 .18 0 0 0 .11 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --serif:'Libre Caslon Text',Georgia,serif; --type:'Courier Prime',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.05rem/1.65 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;position:relative}
+
+/* print furniture */
+.crop{position:absolute;width:18px;height:18px;pointer-events:none}
+.crop::before,.crop::after{content:"";position:absolute;background:var(--ink-3)}
+.crop::before{width:18px;height:1px;top:0}.crop::after{width:1px;height:18px;left:0}
+.crop.tl{top:-24px;left:8px}.crop.tr{top:-24px;right:8px;transform:scaleX(-1)}
+.reg{position:absolute;width:22px;height:22px;border:1px solid var(--ink-3);border-radius:50%;pointer-events:none}
+.reg::before,.reg::after{content:"";position:absolute;background:var(--ink-3)}
+.reg::before{left:-6px;right:-6px;top:10px;height:1px}.reg::after{top:-6px;bottom:-6px;left:10px;width:1px}
+
+nav{display:flex;justify-content:space-between;align-items:center;max-width:1180px;margin:0 auto;padding:24px 32px;border-bottom:1px solid var(--rule)}
+.brand{font:700 1.15rem var(--serif);text-decoration:none;letter-spacing:.01em}
+.brand small{font:400 .72rem var(--type);color:var(--ink-3);margin-left:10px;letter-spacing:.05em}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font:400 .92rem var(--type)}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+nav ul a:hover{color:var(--red);text-decoration:underline;text-underline-offset:4px}
+.nav-cta{font:700 .88rem var(--type);padding:8px 14px;border:1.5px solid var(--ink);text-decoration:none;letter-spacing:.04em;text-transform:uppercase}
+.nav-cta:hover{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center;padding:80px 0 110px}
+.label{font:400 .78rem var(--type);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.label b{color:var(--red);font-weight:700}
+h1{font:400 clamp(2.5rem,4.4vw,3.7rem)/1.1 var(--serif);letter-spacing:-.015em;margin:16px 0 22px}
+h1 i{color:var(--red)}
+.lede{font-size:1.15rem;color:var(--ink-2);margin:0 0 30px;max-width:30em}
+.actions{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.btn{font:700 .95rem var(--type);letter-spacing:.05em;text-transform:uppercase;padding:14px 20px;background:var(--ink);color:#fff;text-decoration:none;box-shadow:4px 4px 0 var(--manila-2);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--manila-2)}
+.btn-note{font:italic 400 .98rem var(--serif);color:var(--ink-3)}
+
+/* deck */
+.deck{position:relative;height:410px;perspective:1400px}
+.ic{position:absolute;inset:0;background:var(--grain),var(--card);border:1px solid #E8E1D2;border-radius:3px;padding:22px 26px 20px;
+  box-shadow:0 1px 1px rgba(0,0,0,.05),0 12px 28px -18px rgba(50,35,10,.5);transition:transform .7s cubic-bezier(.5,0,.2,1),opacity .5s;cursor:pointer;
+  background-image:var(--grain),repeating-linear-gradient(transparent 0 27px,rgba(111,167,181,.3) 27px 28px);background-position:0 0,0 74px;background-size:auto,100% calc(100% - 96px);background-repeat:repeat,no-repeat}
+.ic::before{content:"";position:absolute;left:0;right:0;top:72px;height:1.5px;background:rgba(191,58,43,.5)}
+.ic[data-pos="0"]{transform:translate(0,0) rotate(-1deg);z-index:4}
+.ic[data-pos="1"]{transform:translate(14px,-12px) rotate(1.6deg);z-index:3}
+.ic[data-pos="2"]{transform:translate(26px,-22px) rotate(3.2deg);z-index:2}
+.ic[data-pos="3"]{transform:translate(36px,-30px) rotate(4.4deg);z-index:1}
+.ic.leaving{transform:translate(-60px,40px) rotate(-12deg)!important;opacity:0;z-index:5!important}
+.ic-head{display:flex;justify-content:space-between;align-items:baseline;font:400 .78rem var(--type);color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;height:22px}
+.ic h3{font:700 1.15rem var(--type);margin:8px 0 0;line-height:28px;letter-spacing:-.01em}
+.ic .rows{margin-top:16px;font:400 .95rem/28px var(--type);color:var(--ink)}
+.ic .rows div{display:flex;justify-content:space-between;gap:16px}
+.ic .rows span:first-child{color:var(--ink-3)}
+.ic svg.h{display:block;width:100%;height:84px;margin:6px 0 4px}
+.ic .note{font:italic 400 .95rem/28px var(--type);color:var(--blue)}
+.stamp{position:absolute;right:22px;bottom:58px;font:700 1.05rem var(--type);letter-spacing:.14em;color:var(--red);border:2.5px solid var(--red);padding:4px 10px;transform:rotate(-9deg);opacity:.82;
+  --stampmask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.6 2.1'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>");-webkit-mask-image:var(--stampmask);mask-image:var(--stampmask)}
+.deck-ctl{position:absolute;left:0;bottom:-46px;display:flex;gap:16px;align-items:center;font:400 .82rem var(--type);color:var(--ink-3)}
+.deck-ctl button{font:700 .82rem var(--type);background:none;border:1.5px solid var(--ink);padding:6px 12px;cursor:pointer;letter-spacing:.05em}
+.deck-ctl button:hover{background:var(--ink);color:#fff}
+.typed{white-space:pre-wrap}
+.caret{display:inline-block;width:.55em;height:1em;background:var(--ink);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* sections */
+section{padding:96px 0;position:relative}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:46px}
+h2{font:400 clamp(2rem,3.4vw,2.8rem)/1.12 var(--serif);letter-spacing:-.01em;margin:12px 0 0}
+h2 i{color:var(--red)}
+.head p{margin:0;color:var(--ink-2)}
+
+/* folders */
+.cabinet{position:relative}
+.tabs{display:flex;gap:6px;padding-left:20px;position:relative;z-index:2}
+.tab{font:700 .85rem var(--type);letter-spacing:.06em;text-transform:uppercase;padding:12px 26px 10px;background:var(--grain),var(--manila-2);border:0;border-radius:10px 10px 0 0;cursor:pointer;color:var(--ink-2);position:relative;top:4px;transition:top .2s,background-color .2s}
+.tab:hover{top:0}
+.tab[aria-selected="true"]{background:var(--grain),var(--manila);color:var(--ink);top:0}
+.tab small{font-weight:400;color:var(--ink-3);margin-right:8px}
+.folder{background:var(--grain),var(--manila);border-radius:0 6px 6px 6px;padding:14px;box-shadow:0 18px 36px -24px rgba(60,40,10,.6)}
+.sheet{background:var(--grain),var(--card);padding:40px 44px;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;min-height:320px;box-shadow:0 1px 2px rgba(0,0,0,.08);position:relative}
+.sheet[hidden]{display:none}
+.sheet h3{font:400 2rem/1.15 var(--serif);margin:10px 0 12px}
+.sheet .when{font-style:italic;color:var(--ink-2);margin:0 0 22px}
+.sheet dl{margin:0;font:400 .92rem var(--type);display:grid;grid-template-columns:auto 1fr;gap:6px 18px;border-top:1px solid var(--rule);padding-top:16px}
+.sheet dt{color:var(--ink-3)}
+.sheet dd{margin:0}
+.sheet ul{list-style:none;margin:0;padding:0;font:400 1rem/1.5 var(--serif)}
+.sheet li{padding:12px 0;border-bottom:1px dotted var(--rule);display:grid;grid-template-columns:34px 1fr}
+.sheet li::before{content:attr(data-n);font:400 .8rem var(--type);color:var(--red);padding-top:3px}
+.sheet .go{display:inline-block;margin-top:20px;font:700 .9rem var(--type);color:var(--red);text-decoration:none;letter-spacing:.04em}
+.clip{position:absolute;top:-18px;right:60px;width:28px;height:64px;border:3px solid #9AA1A6;border-radius:14px;border-bottom-color:transparent}
+
+/* checklist */
+.checklist{columns:2;column-gap:64px;list-style:none;margin:0;padding:0}
+.checklist li{break-inside:avoid;display:grid;grid-template-columns:36px 1fr;padding:16px 0;border-top:1px solid var(--rule)}
+.box{width:20px;height:20px;border:1.5px solid var(--ink);position:relative;margin-top:4px}
+.box svg{position:absolute;left:-2px;top:-8px;width:28px;height:28px;overflow:visible}
+.box path{fill:none;stroke:var(--blue);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:40;stroke-dashoffset:40;transition:stroke-dashoffset .5s ease}
+.checklist.in li .box path{stroke-dashoffset:0}
+.checklist li q{font:400 1.08rem var(--serif);quotes:none}
+.checklist li span{display:block;font:400 .82rem var(--type);color:var(--ink-3);margin-top:4px}
+
+/* slip */
+.slip{max-width:760px;margin:0 auto;background:var(--grain),var(--card);border:1px solid #E8E1D2;padding:44px 52px 40px;position:relative;box-shadow:0 22px 40px -28px rgba(60,40,10,.6);transform:rotate(.4deg)}
+.slip::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:radial-gradient(circle at 7px 0,var(--paper) 5px,transparent 5.5px) 0 0/14px 14px repeat-x}
+.slip h2{margin-top:6px}
+.slip .field{display:grid;grid-template-columns:150px 1fr;align-items:end;font:400 .95rem var(--type);padding:12px 0 2px;border-bottom:1px solid var(--ink-3)}
+.slip .field span:first-child{color:var(--ink-3);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+.slip .field em{font:italic 400 1rem var(--serif);color:var(--ink-3)}
+.slip .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:32px;gap:20px;flex-wrap:wrap}
+.slip .num{font:400 .8rem var(--type);color:var(--ink-3)}
+footer{padding:40px 0 56px;text-align:center;font:400 .78rem var(--type);color:var(--ink-3)}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){
+  .hero,.head,.sheet{grid-template-columns:1fr}.checklist{columns:1}
+  nav ul{display:none}.tab{padding:10px 12px}.tab small{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">Statistikas.lt<small>KARTOTEKA</small></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#lapelis">Rašyti</a>
+</nav>
+
+<main class="wrap">
+  <span class="reg" style="right:-6px;top:30px"></span>
+  <div class="hero">
+    <div>
+      <span class="label"><b>●</b> Statistikos konsultacijos · nuo 2015</span>
+      <h1>Kiekvienas kintamasis turi savo istoriją. <i>Aš ją perskaitau.</i></h1>
+      <p class="lede">Padedu įmonėms ir tyrėjams priimti sprendimus, kuriais galima pasitikėti: nuo vienos konsultacijos iki reguliarių ataskaitų ir duomenų sistemų.</p>
+      <div class="actions">
+        <a class="btn" href="#lapelis">Aptarkime projektą →</a>
+        <span class="btn-note">Pirmas 30 min. pokalbis — nemokamas</span>
+      </div>
+    </div>
+    <div class="deck" id="deck" aria-label="Kintamųjų kortelės: spustelėkite, kad pamatytumėte kitą">
+      <div class="deck-ctl"><button type="button" id="next">Kita kortelė →</button><span id="count">1 / 4</span></div>
+    </div>
+  </div>
+</main>
+
+<section id="paslaugos">
+  <div class="wrap">
+    <span class="crop tl"></span><span class="crop tr"></span>
+    <div class="head reveal">
+      <div><span class="label">Skyrius II · Paslaugos</span><h2>Trys bylos — <i>pasirinkite savąją</i></h2></div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="cabinet reveal">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-t="0"><small>01</small>Konsultacija</button>
+        <button class="tab" role="tab" aria-selected="false" data-t="1"><small>02</small>Projektas</button>
+        <button class="tab" role="tab" aria-selected="false" data-t="2"><small>03</small>Partnerystė</button>
+      </div>
+      <div class="folder">
+        <div class="sheet" role="tabpanel">
+          <span class="clip"></span>
+          <div><span class="label">Byla Nr. 01</span><h3>Konsultacija</h3><p class="when">Žinote, ką norite daryti, bet norite antros nuomonės ar kryptį rodančio žmogaus.</p>
+            <dl><dt>Trukmė</dt><dd>nuo 1 val.</dd><dt>Kaina</dt><dd>nuo 50 € / val.</dd><dt>Rezultatas</dt><dd>aiški kryptis ir užrašai</dd></dl></div>
+          <div><ul><li data-n="a.">Tyrimo ar eksperimento dizaino peržiūra</li><li data-n="b.">Metodo pasirinkimas ir rezultatų interpretacija</li><li data-n="c.">R / Python kodo ir analizės peržiūra</li><li data-n="d.">Mokymai jūsų komandai</li></ul><a class="go" href="#">Plačiau apie konsultacijas →</a></div>
+        </div>
+        <div class="sheet" role="tabpanel" hidden>
+          <span class="clip"></span>
+          <div><span class="label">Byla Nr. 02</span><h3>Projektas</h3><p class="when">Reikia konkretaus rezultato per sutartą laiką ir už sutartą kainą.</p>
+            <dl><dt>Trukmė</dt><dd>1–6 savaitės</dd><dt>Kaina</dt><dd>fiksuota, nuo 50 €</dd><dt>Rezultatas</dt><dd>ataskaita + R kodas</dd></dl></div>
+          <div><ul><li data-n="a.">Imties dydžio skaičiavimas ir pagrindimas</li><li data-n="b.">Statistinė analizė ir ataskaita</li><li data-n="c.">Apklausų ir A/B testų analizė</li><li data-n="d.">Individualūs įrankiai: skaičiuoklės, aplikacijos</li></ul><a class="go" href="#">Plačiau apie projektus →</a></div>
+        </div>
+        <div class="sheet" role="tabpanel" hidden>
+          <span class="clip"></span>
+          <div><span class="label">Byla Nr. 03</span><h3>Partnerystė</h3><p class="when">Duomenys turi dirbti kiekvieną mėnesį, ne tik vieną kartą.</p>
+            <dl><dt>Trukmė</dt><dd>nuolatinė</dd><dt>Kaina</dt><dd>mėnesinis mokestis</dd><dt>Rezultatas</dt><dd>sistema, kuri veikia be manęs</dd></dl></div>
+          <div><ul><li data-n="a.">Periodinės ataskaitos, kurios atsinaujina pačios</li><li data-n="b.">Rodiklių (KPI) sistemos ir stebėsena</li><li data-n="c.">Duomenų platformos kūrimas ir plėtra</li><li data-n="d.">Statistikas pagal poreikį jūsų komandai</li></ul><a class="go" href="#">Plačiau apie partnerystę →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="label">Skyrius III · Darbo eiga</span><h2>Klausimai, kuriuos užduodu <i>kiekvieniems duomenims</i></h2></div>
+      <p>Smulkmenos, kurias lengva praleisti ir kurios dažniausiai pakeičia išvadą. Juos išsiaiškiname prieš skaičiuodami.</p>
+    </div>
+    <ul class="checklist reveal" id="check">
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Ar 0 reiškia „nėra“, ar „nežinoma“?</q><span>trūkstamų reikšmių kodavimas</span></div></li>
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Kas pateko į imtį, o kas — ne?</q><span>atrankos šališkumas</span></div></li>
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Ar tas pats klientas neužskaitytas du kartus?</q><span>dublikatai ir priklausomi stebėjimai</span></div></li>
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Ar vidurkis apskritai ką nors pasako?</q><span>asimetrija, išskirtys, kelios grupės</span></div></li>
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Ar skirtumas svarbus, ar tik statistiškai reikšmingas?</q><span>efekto dydis ir praktinė reikšmė</span></div></li>
+      <li><span class="box"><svg viewBox="0 0 28 28"><path d="M4 14 L11 21 L26 2"/></svg></span><div><q>Kokį sprendimą priimsite, kai gausite atsakymą?</q><span>klausimas prieš metodą</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section id="lapelis">
+  <div class="wrap">
+    <div class="slip reveal">
+      <span class="label">Užklausos lapelis</span>
+      <h2>Turite duomenų ir <i>klausimą?</i></h2>
+      <div class="field"><span>Kas jūs</span><em>įmonė, komanda ar tyrimo grupė</em></div>
+      <div class="field"><span>Duomenys</span><em>kas tai per duomenys ir kiek jų</em></div>
+      <div class="field"><span>Klausimas</span><em>kokį sprendimą norite priimti</em></div>
+      <div class="bottom"><a class="btn" href="#">Užpildyti lapelį →</a><span class="num">arba tiesiog info@statistikas.lt</span></div>
+    </div>
+  </div>
+</section>
+<footer>Prototipas C · Kartoteka</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // histogram bars as tiny ink rectangles with hand-jitter
+  const hist = (vals, color = '#262321') => {
+    const n = vals.length, w = 300 / n, max = Math.max(...vals);
+    return `<svg class="h" viewBox="0 0 300 84" preserveAspectRatio="none">` + vals.map((v, i) => {
+      const h = (v / max) * 76; return `<rect x="${i * w + 1}" y="${80 - h}" width="${w - 2}" height="${h}" fill="${color}" fill-opacity=".85"/>`;
+    }).join('') + `<path d="M0 80.5 H300" stroke="#8A847B" stroke-width="1"/></svg>`;
+  };
+  const cards = [
+    { no: '0147', src: 'el. parduotuvė', name: 'krepšelio vertė, €', rows: [['n', '12 408'], ['trūksta', '2,1 %'], ['vidurkis / mediana', '38,40 / 24,90']], h: [4, 18, 30, 26, 19, 13, 9, 7, 5, 4, 3, 2, 2, 1, 1, 1, .5, .5, .5, .3], note: 'Dešininė asimetrija — vidurkis klaidina. Lyginsiu medianas arba log skalę.', stamp: 'PERŽIŪRĖTA' },
+    { no: '0148', src: 'klientų apklausa', name: 'pasitenkinimas, 1–5', rows: [['n', '846'], ['trūksta', '0,4 %'], ['„5“ dalis', '61 %']], h: [2, 4, 9, 24, 61], note: 'Lubų efektas: dauguma renkasi „5“. Skalė mažai skiria geriausius nuo vidutinių.', stamp: 'PASTABA' },
+    { no: '0149', src: 'mobilioji programėlė', name: 'apsilankymai per savaitę', rows: [['n', '5 120'], ['nulių', '43 %'], ['dispersija / vidurkis', '4,8']], h: [43, 9, 8, 7, 6, 6, 5, 4, 3, 3, 2, 2, 1, 1], note: 'Daug nulių ir per didelė dispersija — Puasono modelio neužteks.', stamp: 'PERŽIŪRĖTA' },
+    { no: '0150', src: 'klinikinis tyrimas', name: 'AKS pokytis, mmHg', rows: [['n', '212'], ['trūksta', '6,6 %'], ['grupės', '2']], h: [1, 2, 4, 7, 9, 8, 5, 3, 3, 5, 8, 10, 7, 4, 2, 1], note: 'Dvi viršūnės: gal du pacientų pogrupiai? Pirma pasižiūrėsiu, kas juos skiria.', stamp: 'KLAUSIMAS' },
+  ];
+  const deck = document.getElementById('deck'), ctl = deck.querySelector('.deck-ctl'), count = document.getElementById('count');
+  const els = cards.map((c, i) => {
+    const d = document.createElement('article'); d.className = 'ic'; d.dataset.pos = i;
+    d.innerHTML = `<div class="ic-head"><span>Kortelė Nr. ${c.no}</span><span>${c.src}</span></div>
+      <h3>Kintamasis: ${c.name}</h3>
+      <div class="rows">${c.rows.map(r => `<div><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+      ${hist(c.h)}
+      <div class="note"><span class="typed" data-text="${c.note}"></span></div>
+      <span class="stamp">${c.stamp}</span>`;
+    deck.insertBefore(d, ctl); return d;
+  });
+  let top = 0;
+  const type = el => {
+    const s = el.querySelector('.typed'), txt = s.dataset.text; if (reduce) { s.textContent = txt; return; }
+    s.textContent = ''; let k = 0; const caret = document.createElement('span'); caret.className = 'caret'; s.after(caret);
+    const step = () => { s.textContent = txt.slice(0, ++k); if (k < txt.length) setTimeout(step, 22 + Math.random() * 40); else setTimeout(() => caret.remove(), 900); };
+    setTimeout(step, 500);
+  };
+  const advance = () => {
+    const cur = els[top]; cur.classList.add('leaving');
+    setTimeout(() => {
+      cur.classList.remove('leaving'); top = (top + 1) % els.length;
+      els.forEach((e, i) => e.dataset.pos = (i - top + els.length) % els.length);
+      count.textContent = `${top + 1} / ${els.length}`; type(els[top]);
+    }, 420);
+  };
+  els.forEach(e => e.addEventListener('click', () => { if (e.dataset.pos === '0') advance(); }));
+  document.getElementById('next').addEventListener('click', advance);
+  els.slice(1).forEach(e => { const s = e.querySelector('.typed'); s.textContent = s.dataset.text; });
+  type(els[0]);
+
+  // folder tabs
+  const tabs = [...document.querySelectorAll('.tab')], sheets = [...document.querySelectorAll('.folder .sheet')];
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', x === t)); sheets.forEach((s, i) => s.hidden = i !== +t.dataset.t);
+  }));
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .2 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+  document.querySelectorAll('#check li').forEach((li, i) => li.querySelector('path').style.transitionDelay = (0.3 + i * 0.18) + 's');
+})();
+</script>
+</body>
+</html>

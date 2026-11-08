@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J · Stalas — Statistikas.lt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+:root{--paper:#FFFFFF;--ink:#23211F;--ink-2:#57524C;--ink-3:#8C867F;--line:#ECE8E3;--blue:#2B4C8C;--amber:#C98A2E;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.06rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 32px}
+.brand{font:400 1.6rem var(--serif);text-decoration:none}
+.brand i{color:var(--amber)}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:.96rem}
+nav ul a{text-decoration:none;color:var(--ink-2)}
+.nav-cta{font:500 .9rem var(--sans);padding:9px 18px;border:1px solid var(--ink);border-radius:999px;text-decoration:none}
+
+.stage{position:relative;height:min(80vh,720px);min-height:560px;margin-top:-76px}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer;-webkit-mask-image:linear-gradient(transparent,#000 14%,#000 80%,transparent);mask-image:linear-gradient(transparent,#000 14%,#000 80%,transparent)}
+.copy{position:absolute;z-index:2;left:max(32px,calc((100vw - 1240px)/2 + 32px));top:52%;transform:translateY(-50%);max-width:470px;pointer-events:none}
+.copy>*{pointer-events:auto}
+.copy::before{content:"";position:absolute;inset:-70px -110px -70px -160px;background:radial-gradient(closest-side,rgba(255,255,255,.92) 45%,rgba(255,255,255,0));z-index:-1;pointer-events:none}
+.kicker{font:500 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+h1{font:400 clamp(3rem,5.4vw,4.8rem)/1 var(--serif);letter-spacing:-.01em;margin:14px 0 22px}
+h1 em{color:var(--amber)}
+.lede{color:var(--ink-2);margin:0 0 28px;font-size:1.12rem}
+.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn{font:500 1rem var(--sans);padding:14px 24px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.note{font:400 .8rem var(--mono);color:var(--ink-3)}
+.hint{position:absolute;right:32px;bottom:22px;z-index:2;font:400 .76rem var(--mono);color:var(--ink-3)}
+.loading{position:absolute;right:30%;top:50%;font:400 .8rem var(--mono);color:var(--ink-3)}
+
+section{padding:90px 0}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:48px}
+h2{font:400 clamp(2.2rem,3.8vw,3.2rem)/1.05 var(--serif);margin:12px 0 0}
+h2 em{color:var(--amber)}
+.head p{margin:0;color:var(--ink-2)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+.tier{padding:26px 28px 10px 0;border-right:1px solid var(--line);margin-right:28px}
+.tier:last-child{border-right:0;margin-right:0}
+.tier .t{font:400 .74rem var(--mono);color:var(--ink-3);display:flex;justify-content:space-between;letter-spacing:.06em;text-transform:uppercase}
+.tier h3{font:400 2rem var(--serif);margin:12px 0 6px}
+.tier p{color:var(--ink-2);margin:0 0 14px}
+.tier .pr{display:flex;justify-content:space-between;font:500 .85rem var(--mono)}
+.tier .pr a{color:var(--amber);text-decoration:none}
+.cta{text-align:center;max-width:720px;margin:0 auto}
+.cta p{color:var(--ink-2);margin:16px auto 28px}
+.mail{display:block;margin-top:16px;font:400 .9rem var(--mono);color:var(--ink-2)}
+footer{padding:40px 0 60px;text-align:center;font:400 .75rem var(--mono);color:var(--ink-3)}
+@media (max-width:900px){.head{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}.tier{border-right:0;margin-right:0}nav ul{display:none}.copy{top:auto;bottom:30px;transform:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">statistikas<i>.lt</i></a>
+  <ul><li><a href="#paslaugos">Paslaugos</a></li><li><a href="#">Pavyzdžiai</a></li><li><a href="#">Straipsniai</a></li><li><a href="#">Įrankiai</a></li><li><a href="#">Apie</a></li></ul>
+  <a class="nav-cta" href="#kontaktai">Susisiekti</a>
+</nav>
+<div class="stage" id="stage">
+  <canvas id="gl" aria-label="Ant stalo guli atspausdinta ataskaita, pieštukas ir sąvaržėlė; lempa seka pelę"></canvas>
+  <div class="loading" id="loading">ruošiamas stalas…</div>
+  <div class="copy">
+    <span class="kicker">Statistikos konsultacijos</span>
+    <h1>Ataskaita, kurią norisi <em>paimti į rankas.</em></h1>
+    <p class="lede">Analizė baigiasi ne skaičių lentele, o aiškiu dokumentu, kurį galite padėti ant vadovo stalo. Padedu įmonėms ir tyrėjams iki jo nueiti.</p>
+    <div class="actions"><a class="btn" href="#kontaktai">Aptarkime jūsų projektą →</a><span class="note">Pirmas pokalbis — nemokamas</span></div>
+  </div>
+  <div class="hint">pajudinkite lempą · spustelėkite lapą</div>
+</div>
+
+<section id="paslaugos">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="kicker">Paslaugos</span><h2>Trys būdai <em>dirbti kartu</em></h2></div>
+      <p>Pradėkite nuo mažo žingsnio. Dažnas ilgalaikis bendradarbiavimas prasideda nuo vienos konsultacijos.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier"><div class="t"><span>01</span><span>~1 val.</span></div><h3>Konsultacija</h3><p>Antra nuomonė apie tyrimo dizainą, metodą ar kodą.</p><div class="pr"><span>nuo 50 € / val.</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="t"><span>02</span><span>1–6 sav.</span></div><h3>Projektas</h3><p>Imties dydis, analizė ir ataskaita už sutartą kainą.</p><div class="pr"><span>fiksuota, nuo 50 €</span><a href="#">Plačiau →</a></div></article>
+      <article class="tier"><div class="t"><span>03</span><span>kas mėnesį</span></div><h3>Partnerystė</h3><p>Ataskaitos ir rodiklių sistemos, kurios dirba kas mėnesį.</p><div class="pr"><span>mėnesinis mokestis</span><a href="#">Plačiau →</a></div></article>
+    </div>
+  </div>
+</section>
+<section id="kontaktai" style="padding-top:20px">
+  <div class="cta">
+    <span class="kicker">Susisiekite</span>
+    <h2>Kas turėtų būti <em>jūsų</em> ataskaitoje?</h2>
+    <p>Parašykite kelis sakinius apie savo situaciją. Atsakysiu, kaip galiu padėti, ir pasiūlysiu pirmą žingsnį.</p>
+    <a class="btn" href="#">Aptarkime projektą →</a>
+    <a class="mail" href="mailto:info@statistikas.lt">info@statistikas.lt</a>
+  </div>
+</section>
+<footer>Prototipas J · Stalas</footer>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+await Promise.all(['400 60px "Instrument Serif"', 'italic 400 60px "Instrument Serif"', '400 30px "DM Sans"', '500 30px "DM Sans"', '400 24px "IBM Plex Mono"'].map(f => document.fonts.load(f)));
+
+const stage = document.getElementById('stage'), cv = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
+scene.environmentIntensity = .35;
+const camera = new THREE.PerspectiveCamera(28, 1, .1, 100);
+
+let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+const canvasTex = (w, h, draw, srgb = true) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+
+// ---------- table: matte white with a faint coffee ring ----------
+const tableMap = canvasTex(2048, 2048, (g, w, h) => {
+  // pale oak: base tone, long wavy grain, a few medullary flecks
+  g.fillStyle = '#D8C2A0'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 1400; i++) {
+    const y0 = rnd() * h, amp = 2 + rnd() * 10, f = .002 + rnd() * .004, ph = rnd() * 6;
+    g.strokeStyle = rnd() > .3 ? `rgba(120,80,40,${.025 + rnd() * .06})` : `rgba(255,240,215,${.04 + rnd() * .06})`;
+    g.lineWidth = .4 + rnd() * 1.3; g.beginPath();
+    for (let x = 0; x <= w; x += 16) g.lineTo(x, y0 + Math.sin(x * f + ph) * amp + Math.sin(x * f * 4.3 + ph) * amp * .25);
+    g.stroke();
+  }
+  for (let i = 0; i < 260; i++) { g.fillStyle = `rgba(150,105,60,${.06 + rnd() * .08})`; g.fillRect(rnd() * w, rnd() * h, 8 + rnd() * 30, 1.5); }
+  // plank seam
+  g.fillStyle = 'rgba(80,50,25,.35)'; g.fillRect(0, 1340, w, 3); g.fillStyle = 'rgba(255,240,220,.3)'; g.fillRect(0, 1343, w, 2);
+  // faint coffee ring
+  const cx = 1460, cy = 700, r = 110;
+  for (let k = 0; k < 3; k++) { g.strokeStyle = `rgba(90,55,25,${.08 + k * .04})`; g.lineWidth = 6 - k * 2; g.beginPath(); g.ellipse(cx + k, cy, r - k * 2, r - k * 2, 0, .3, 6.0); g.stroke(); }
+});
+const table = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.MeshStandardMaterial({ map: tableMap, roughness: .7 }));
+table.rotation.x = -Math.PI / 2; table.receiveShadow = true; scene.add(table);
+tableMap.repeat.set(1, 1);
+
+// ---------- report pages ----------
+const paperBump = canvasTex(512, 512, (g, w, h) => { const id = g.createImageData(w, h); for (let i = 0; i < id.data.length; i += 4) { const v = 128 + (rnd() - .5) * 50; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; } g.putImageData(id, 0, 0); }, false);
+paperBump.wrapS = paperBump.wrapT = THREE.RepeatWrapping; paperBump.repeat.set(4, 4);
+const PW = 2.1, PH = 2.97, TW = 1240, TH = 1754;
+const ink = '#23211F', grey = '#B9B4AC', blue = '#2B4C8C', amber = '#C98A2E';
+function pageBase(g, title, sub, n) {
+  g.fillStyle = '#FDFCFA'; g.fillRect(0, 0, TW, TH);
+  g.fillStyle = ink; g.font = '500 22px "IBM Plex Mono"'; g.fillText('STATISTIKAS.LT', 110, 120); g.fillStyle = '#8C867F'; g.fillText(sub, 110, 156);
+  g.fillStyle = ink; g.font = '400 76px "Instrument Serif"'; title.split('\n').forEach((l, i) => g.fillText(l, 110, 290 + i * 84));
+  g.fillStyle = '#8C867F'; g.font = '400 22px "IBM Plex Mono"'; g.fillText(`${n} / 8`, TW - 170, TH - 90);
+  g.fillRect(110, TH - 120, TW - 220, 1.5);
+}
+const lines = (g, x, y, w, n, gap = 34) => { for (let i = 0; i < n; i++) { const ww = i === n - 1 ? w * (.4 + rnd() * .3) : w * (.88 + rnd() * .12); g.fillStyle = grey; g.fillRect(x, y + i * gap, ww, 11); } };
+const pageTex = [
+  canvasTex(TW, TH, g => {
+    pageBase(g, 'Kodėl klientai\nnegrįžta?', 'ATASKAITA · 2026 M. LAPKRITIS', 1);
+    g.fillStyle = ink; g.font = '500 28px "DM Sans"'; g.fillText('1. Santrauka', 110, 520); lines(g, 110, 560, TW - 220, 5);
+    g.font = '500 28px "DM Sans"'; g.fillStyle = ink; g.fillText('Pav. 1. Priežastys, kurias nurodė išėję klientai', 110, 800);
+    [['Pristatymo laikas', .62], ['Kaina', .41], ['Asortimentas', .27], ['Aptarnavimas', .14], ['Kita', .08]].forEach(([l, v], i) => {
+      const y = 850 + i * 92; g.font = '400 26px "DM Sans"'; g.fillStyle = '#57524C'; g.fillText(l, 110, y + 40);
+      g.fillStyle = i === 0 ? amber : blue; g.fillRect(420, y + 12, v * 1000, 40);
+      g.fillStyle = ink; g.font = '400 24px "IBM Plex Mono"'; g.fillText(`${Math.round(v * 100)} %`, 430 + v * 1000, y + 42);
+    });
+    g.fillStyle = '#8C867F'; g.font = 'italic 400 30px "Instrument Serif"'; g.fillText('n = 412 · galima nurodyti kelias priežastis', 110, 1360);
+    lines(g, 110, 1420, TW - 220, 4);
+  }),
+  canvasTex(TW, TH, g => {
+    pageBase(g, 'Grįžtamumas\npagal kanalą', 'ATASKAITA · 2. SKYRIUS', 2);
+    g.strokeStyle = '#D9D4CC'; g.lineWidth = 2; for (let i = 0; i <= 4; i++) { g.beginPath(); g.moveTo(110, 560 + i * 120); g.lineTo(TW - 110, 560 + i * 120); g.stroke(); }
+    [[blue, .9], [amber, .55], ['#8C867F', .35]].forEach(([c, k]) => { g.strokeStyle = c; g.lineWidth = 6; g.beginPath(); for (let m = 0; m <= 12; m++) { const x = 110 + m * (TW - 220) / 12, y = 560 + 480 * (1 - Math.exp(-m * .35) * k - (1 - k) * .1); m ? g.lineTo(x, 1040 - (y - 560)) : g.moveTo(x, 1040 - (y - 560)); } g.stroke(); });
+    g.fillStyle = '#8C867F'; g.font = '400 22px "IBM Plex Mono"'; g.fillText('mėnuo po pirmo pirkinio', 110, 1090);
+    lines(g, 110, 1180, TW - 220, 3);
+    g.font = '500 24px "IBM Plex Mono"'; [['kanalas', 'n', 'grįžo', '95 % PI'], ['el. paštas', '1 204', '38 %', '35–41'], ['socialiniai', '2 310', '22 %', '20–24'], ['paieška', '1 876', '17 %', '15–19']].forEach((r, i) => {
+      g.fillStyle = i ? '#57524C' : ink; r.forEach((c, j) => g.fillText(c, 110 + j * 260, 1340 + i * 56)); if (!i) g.fillRect(110, 1356, TW - 220, 2);
+    });
+  }),
+  canvasTex(TW, TH, g => {
+    pageBase(g, 'Metodai', 'ATASKAITA · PRIEDAS', 7);
+    lines(g, 110, 440, TW - 220, 6);
+    g.fillStyle = '#F2EFE9'; g.fillRect(110, 680, TW - 220, 420);
+    g.font = '400 25px "IBM Plex Mono"'; ['fit <- glm(griz ~ kanalas + krepselis,', '           family = binomial,', '           data = klientai)', '', 'broom::tidy(fit, conf.int = TRUE,', '            exponentiate = TRUE)'].forEach((l, i) => { g.fillStyle = i < 3 ? blue : ink; g.fillText(l, 150, 750 + i * 50); });
+    lines(g, 110, 1160, TW - 220, 7);
+  }),
+];
+function pageGeo(lift) {
+  const geo = new THREE.PlaneGeometry(PW, PH, 40, 56); geo.rotateX(-Math.PI / 2);
+  const p = geo.attributes.position;
+  for (let i = 0; i < p.count; i++) { const x = p.getX(i) / PW + .5, z = p.getZ(i) / PH + .5; let y = .012 * Math.sin(Math.PI * x) ; y += lift * Math.max(0, x + (1 - z) - 1.45) ** 2; p.setY(i, y); }
+  geo.computeVertexNormals(); return geo;
+}
+const pages = pageTex.map((t, i) => {
+  const m = new THREE.Mesh(pageGeo(i === 0 ? .32 : .08), new THREE.MeshStandardMaterial({ map: t, roughness: .88, bumpMap: paperBump, bumpScale: .6, side: THREE.DoubleSide }));
+  m.castShadow = true; m.receiveShadow = true; scene.add(m); return m;
+});
+const slots = [{ x: .9, z: .1, r: -.1, y: .03 }, { x: 1.25, z: -.05, r: .06, y: .02 }, { x: 1.55, z: .15, r: .2, y: .01 }];
+let order = [0, 1, 2]; pages.forEach((m, i) => { const sl = slots[i]; m.position.set(sl.x, sl.y, sl.z); m.rotation.y = sl.r; m.userData = { ...sl }; });
+
+// ---------- pencil ----------
+const pencil = new THREE.Group();
+const paint = new THREE.MeshStandardMaterial({ color: '#E7B034', roughness: .45 });
+const body = new THREE.Mesh(new THREE.CylinderGeometry(.055, .055, 2.2, 6), paint);
+const wood = new THREE.Mesh(new THREE.CylinderGeometry(.055, .012, .26, 6), new THREE.MeshStandardMaterial({ color: '#E2C49A', roughness: .8 })); wood.position.y = -1.23;
+const lead = new THREE.Mesh(new THREE.ConeGeometry(.012, .06, 12), new THREE.MeshStandardMaterial({ color: '#333', roughness: .4, metalness: .3 })); lead.rotation.x = Math.PI; lead.position.y = -1.39;
+const fer = new THREE.Mesh(new THREE.CylinderGeometry(.058, .058, .16, 24), new THREE.MeshStandardMaterial({ color: '#C8C4BC', metalness: 1, roughness: .32 })); fer.position.y = 1.18;
+const eraser = new THREE.Mesh(new THREE.CylinderGeometry(.054, .054, .14, 24), new THREE.MeshStandardMaterial({ color: '#E58C8C', roughness: .9 })); eraser.position.y = 1.33;
+[body, wood, lead, fer, eraser].forEach(m => { m.castShadow = true; pencil.add(m); });
+pencil.rotation.z = Math.PI / 2; pencil.rotation.y = .28; pencil.position.set(.75, .055, 1.75); scene.add(pencil);
+
+// ---------- paper clip on the top page ----------
+const clipPts = [[0, 0], [0, .62], [.09, .7], [.18, .62], [.18, .08], [.11, .02], [.05, .08], [.05, .5]].map(([x, z]) => new THREE.Vector3(x, 0, -z));
+const clip = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(clipPts, false, 'catmullrom', .2), 120, .011, 10), new THREE.MeshStandardMaterial({ color: '#D9D6D0', metalness: 1, roughness: .25 }));
+clip.castShadow = true; scene.add(clip);
+
+// ---------- light: a desk lamp that follows the pointer ----------
+scene.add(new THREE.HemisphereLight('#FFFFFF', '#CDB99B', .45));
+const fill = new THREE.DirectionalLight('#DDE6F2', .35); fill.position.set(-6, 8, 4); scene.add(fill);
+const lamp = new THREE.SpotLight('#FFE2BC', 170, 30, .55, .75, 1.6);
+lamp.castShadow = true; lamp.shadow.mapSize.set(2048, 2048); lamp.shadow.bias = -.0004; lamp.shadow.radius = 6;
+scene.add(lamp); scene.add(lamp.target);
+const ptr = new THREE.Vector2(.35, -.1), aim = new THREE.Vector3(1.1, 0, 0), aimT = aim.clone();
+const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+let user = false, lastMove = 0;
+stage.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); ptr.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height * 2 - 1)); user = true; lastMove = performance.now(); });
+
+// click a page: the top sheet slides to the bottom of the pile
+let flip = null;
+cv.addEventListener('click', e => {
+  const r = cv.getBoundingClientRect(); ray.setFromCamera(new THREE.Vector2((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height * 2 - 1)), camera);
+  if (!flip && ray.intersectObjects(pages).length) flip = { m: pages[order[0]], t0: performance.now() };
+});
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  const narrow = w < 900; camera.position.set(narrow ? 1.2 : -.2, 7.0, narrow ? 7.6 : 5.4); camera.lookAt(narrow ? 1.2 : -.35, 0, narrow ? .9 : .45);
+}
+resize(); addEventListener('resize', resize);
+document.getElementById('loading').remove();
+
+function frame(t) {
+  if (!user || t - lastMove > 5000) ptr.set(.35 + Math.sin(t / 4200) * .3, -.05 + Math.sin(t / 3100) * .25);
+  ray.setFromCamera(ptr, camera); ray.ray.intersectPlane(plane, aimT); aim.lerp(aimT, .07);
+  lamp.position.set(aim.x - 1.6, 5.2, aim.z + 2.2); lamp.target.position.copy(aim);
+  if (flip) {
+    const u = Math.min(1, (t - flip.t0) / 900), m = flip.m, e = u < .5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2;
+    m.position.x = m.userData.x + Math.sin(Math.PI * e) * 2.4; m.position.y = .06 + Math.sin(Math.PI * e) * .5; m.rotation.y = m.userData.r + Math.sin(Math.PI * e) * .5;
+    if (u >= 1) {
+      order.push(order.shift());
+      order.forEach((pi, k) => { const sl = slots[k]; Object.assign(pages[pi].userData, sl); pages[pi].position.set(sl.x, sl.y, sl.z); pages[pi].rotation.y = sl.r; });
+      flip = null;
+    }
+  }
+  // keep the clip on whichever page is on top
+  const top = pages[order[0]]; clip.position.set(top.position.x - .55, top.position.y + .03, top.position.z - 1.0); clip.rotation.y = top.rotation.y;
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
