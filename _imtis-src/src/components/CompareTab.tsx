@@ -238,7 +238,8 @@ function buildSpec(f: Form): Spec | null {
         if (!table || !(sd > 0)) return null;
         [groups, times] = [table.length, table[0].length];
         const fs = twoWayF(table, sd);
-        fx = f.rmEff === "between" ? fs.rows : f.rmEff === "inter" ? fs.inter : fs.cols;
+        // One group has only a time effect, whatever an old link says.
+        fx = groups === 1 ? fs.cols : f.rmEff === "between" ? fs.rows : f.rmEff === "inter" ? fs.inter : fs.cols;
       }
       const effect: RmEffect = groups === 1 ? "within" : (f.rmEff as RmEffect);
       if (!(groups >= 1 && times >= 2) || !(fx > 0) || !(rho > -1 / (times - 1) && rho < 1)) return null;
