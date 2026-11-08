@@ -26,7 +26,7 @@ site's contact form is Lithuanian only.
 | Tab | Features | Code |
 |-----|----------|------|
 | Imtis apklausoms | Cochran with finite population correction, Paniotto/Yamane, share or mean, design effect on both formulas, expected share from a pilot (Wilson limit nearest 50 %), several key estimates with optional Bonferroni, margin of a finished survey, invitations from a response rate (and a warning when even a census can't reach the target), margin from answers already collected, proportional or per-group allocation, worst-case nonresponse bounds | `engine/survey.ts` |
-| Imtis palyginimams | Two means, paired, two proportions (also from an odds ratio, for case-control), A/B test with duration, one-way ANOVA, correlation. Solves n, power or smallest detectable effect. Dropout, allocation ratio, Bonferroni, rank test inflation, SD recovered from a CI, quartiles, two SDs or a pilot | `engine/compare.ts` |
+| Imtis palyginimams | Two means, paired, two proportions (also from an odds ratio, for case-control), A/B test with duration, one-way ANOVA and ANCOVA, two-way ANOVA (main effects, interaction, with covariates), repeated measures and mixed ANOVA (time, group, group × time; ρ and ε), χ² contingency tables, McNemar (exact), correlation, linear regression (R² from zero, R² increase), logistic regression (binary or normal predictor, Demidenko with variance correction). Effects from a table of expected means or percentages, or Cohen's f / w directly. Solves n, power or smallest detectable effect. Dropout, allocation ratio, Bonferroni, rank test inflation, SD recovered from a CI, quartiles, two SDs or a pilot | `engine/compare.ts` |
 | Imtis bioekvivalentiškumo tyrimams | Exact TOST power (Owen's Q) for all 12 PowerTOST designs, n or power, 80–125 and NTI limits, EMA minimum of 12, dosed subjects, tolerance as in `pa.ABE`, upper CV limit, EMA ABEL simulated in a Web Worker | `engine/be.ts`, `engine/abel.ts` |
 
 Every result carries a one-sentence statement with an author–year citation (LT/EN, copyable,
@@ -51,6 +51,22 @@ Rscript --vanilla _imtis-src/scripts/reference.R
 - 60 ABEL scenarios: power within 0.4 points, n within one sequence block. Both sides
   are simulations (100,000 runs here, as in `sampleN.scABEL`), so n can legitimately
   differ by a block near the target.
+- Designs pwr does not cover use G*Power's formulas, written out in base R in
+  `reference.R` (same n and power on 300+ cases), and each formula is also checked
+  against a simulation of the real test at the n it gives:
+  - Repeated measures (λ = f²·N·m·ε/(1−ρ), between λ = f²·N·m/(1+(m−1)ρ)): split-plot
+    ANOVA by hand under compound symmetry, within 1 point. ε < 1 is G*Power's
+    correction and is checked against the formula only.
+  - Two-way ANOVA and ANCOVA (λ = f²·N, df2 = N − cells − covariates): `lm`, within
+    1 point. ANCOVA divides f by √(1 − R²) of the covariates (Borm et al. 2007).
+  - χ²: `pwr.chisq.test`. Regression R² from zero: `pwr.f2.test`.
+  - McNemar: exact binomial test on the discordant pairs, power summed over their
+    number; matches an independent R enumeration to 1e-9 and simulated `binom.test`.
+    Power saw-tooths in n, so the reported n is the first that reaches the target.
+  - Logistic regression: Demidenko (2007) Wald test with the variance correction,
+    H0 variance at the overall event rate. Against simulated `glm` Wald tests the
+    formula is up to 2.5 points optimistic (77.5 % instead of 80 %) in some cases.
+- The G*Power settings shown for these designs have not been run in G*Power itself.
 
 ## Development
 
@@ -83,7 +99,8 @@ GA4 (production only), via `src/analytics.ts`. Never send the numbers people typ
 
 ## Known limits / next steps
 
-- No repeated measures, cluster randomised or multicentre trials, survival, regression,
-  FDA RSABE, two-stage or adaptive designs. The page says so and points to a project.
+- No mixed models, cluster randomised or multicentre trials, survival, unequal group
+  sizes beyond two groups, FDA RSABE, two-stage or adaptive designs. The contact panel
+  offers these as a project.
 - Proportions use the normal approximation; a notice suggests Fisher's test at small n.
 - Not yet linked from the site navigation.

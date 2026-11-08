@@ -3,7 +3,7 @@
 // reproducible because inputs go unreported, so every input is spelled out here.
 
 import { DESIGNS, type BeInput } from "./engine/be";
-import type { Spec, Test } from "./engine/compare";
+import { chisqDf, factorialDf, mcnemarCells, regF2, type Spec, type Test } from "./engine/compare";
 import type { Estimate } from "./engine/survey";
 import { enInt, enNum, enPct, ltInt, ltPct, ltShort, ltPlural, rNum } from "./format";
 
@@ -29,7 +29,49 @@ const REF = {
     "Schuirmann DJ. A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. J Pharmacokinet Biopharm. 1987;15(6):657–680.",
   powertost: "Labes D, Schütz H, Lang B. PowerTOST: Power and Sample Size for (Bio)Equivalence Studies. R package.",
   ema: "European Medicines Agency. Guideline on the Investigation of Bioequivalence. CPMP/EWP/QWP/1401/98 Rev. 1/Corr**. London: EMA; 2010.",
+  gpower:
+    "Faul F, Erdfelder E, Lang AG, Buchner A. G*Power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences. Behav Res Methods. 2007;39(2):175–191.",
+  gpower31:
+    "Faul F, Erdfelder E, Buchner A, Lang AG. Statistical power analyses using G*Power 3.1: Tests for correlation and regression analyses. Behav Res Methods. 2009;41(4):1149–1160.",
+  borm: "Borm GF, Fransen J, Lemmens WA. A simple sample size formula for analysis of covariance in randomized clinical trials. J Clin Epidemiol. 2007;60(12):1234–1238.",
+  demidenko: "Demidenko E. Sample size determination for logistic regression revisited. Stat Med. 2007;26(18):3385–3397.",
 };
+
+function compareRefs(spec: Spec): string[] {
+  switch (spec.kind) {
+    case "props":
+      return [REF.fleiss];
+    case "anova":
+    case "factorial":
+      return spec.covariates ? [REF.cohen, REF.borm, REF.gpower] : spec.kind === "factorial" ? [REF.cohen, REF.gpower] : [REF.cohen];
+    case "rm":
+    case "mcnemar":
+      return [REF.gpower];
+    case "reg":
+      return [REF.cohen, REF.gpower31];
+    case "logit":
+      return [REF.demidenko, REF.gpower31];
+    default:
+      return [REF.cohen];
+  }
+}
+
+function compareCite(spec: Spec): { lt: string; en: string } {
+  switch (spec.kind) {
+    case "props":
+      return { lt: "Fleiss ir kt., 2003", en: "Fleiss et al., 2003" };
+    case "anova":
+    case "factorial":
+      return spec.covariates ? { lt: "Cohen, 1988; Borm ir kt., 2007", en: "Cohen, 1988; Borm et al., 2007" } : { lt: "Cohen, 1988", en: "Cohen, 1988" };
+    case "rm":
+    case "mcnemar":
+      return { lt: "Faul ir kt., 2007", en: "Faul et al., 2007" };
+    case "logit":
+      return { lt: "Demidenko, 2007", en: "Demidenko, 2007" };
+    default:
+      return { lt: "Cohen, 1988", en: "Cohen, 1988" };
+  }
+}
 
 // ---- Surveys ----
 
@@ -322,6 +364,10 @@ export interface CompareFacts {
   abTest: boolean;
   /** Odds ratio, when the effect was entered that way. */
   or: number | null;
+  /** ANCOVA: correlation of the covariates with the outcome. */
+  ancovaR?: number | null;
+  /** The table the effect came from: means with their SD, or percentages (sd null). */
+  table?: { means: number[][]; sd: number | null } | null;
 }
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
@@ -355,10 +401,73 @@ function describeLt(f: CompareFacts): string {
     case "props":
       return `Imties dydis apskaičiuotas dviejų proporcijų palyginimui ${a}, normaliuoju artiniu pagal Fleiss. Siekiant ${ltPct(f.target, 0)} galios aptikti ${f.abTest ? "konversijos" : "dalių"} skirtumą nuo ${ltPct(spec.p1, 2)} iki ${ltPct(spec.p2, 2)}${f.or ? ` (šansų santykis ${ltShort(f.or)})` : ""}`;
     case "anova":
-      return `Imties dydis apskaičiuotas vienfaktorei dispersinei analizei su ${spec.groups} grupėmis (${alphaLt(f)}). Siekiant ${ltPct(f.target, 0)} galios, kai efekto dydis Cohen f = ${ltShort(spec.f, 3)}`;
+      return spec.covariates
+        ? `Imties dydis apskaičiuotas kovariacinei analizei (ANCOVA) su ${spec.groups} grupėmis${covLt(f)} (${alphaLt(f)}).${ancovaLt(f)} Siekiant ${ltPct(f.target, 0)} galios, kai pakoreguotas efekto dydis Cohen f = ${ltShort(spec.f, 3)}`
+        : `Imties dydis apskaičiuotas vienfaktorei dispersinei analizei su ${spec.groups} grupėmis (${alphaLt(f)}). Siekiant ${ltPct(f.target, 0)} galios, kai efekto dydis Cohen f = ${ltShort(spec.f, 3)}`;
     case "corr":
       return `Imties dydis apskaičiuotas Pirsono koreliacijai ${a}. Siekiant ${ltPct(f.target, 0)} galios aptikti koreliaciją r = ${ltShort(spec.r, 3)}`;
+    case "factorial": {
+      const what = spec.effect === "A" ? "pirmo veiksnio pagrindinį efektą" : spec.effect === "B" ? "antro veiksnio pagrindinį efektą" : "veiksnių sąveiką";
+      return `Imties dydis apskaičiuotas dvifaktorei dispersinei analizei (${spec.a} × ${spec.b} grupės${covLt(f)}), tikrinant ${what} (${alphaLt(f)}).${ancovaLt(f)}${tableLt(f)} Siekiant ${ltPct(f.target, 0)} galios, kai Cohen f = ${ltShort(spec.f, 3)}`;
+    }
+    case "rm": {
+      const what = spec.effect === "within" ? "laiko efektą" : spec.effect === "between" ? "grupių skirtumą" : "grupės ir laiko sąveiką";
+      const layout = spec.groups > 1 ? `${spec.groups} grupės × ${spec.times} matavimai` : `${spec.times} matavimai`;
+      const eps = spec.eps < 1 && spec.effect !== "between" ? `, sferiškumo pataisa ε = ${ltShort(spec.eps, 3)}` : "";
+      return `Imties dydis apskaičiuotas pakartotinių matavimų dispersinei analizei (${layout}), tikrinant ${what} (${alphaLt(f)}; koreliacija tarp matavimų ρ = ${ltShort(spec.rho, 3)}${eps}).${tableLt(f)} Siekiant ${ltPct(f.target, 0)} galios, kai Cohen f = ${ltShort(spec.f, 3)}`;
+    }
+    case "reg":
+      return spec.tested === spec.predictors && spec.r2Base === 0
+        ? `Imties dydis apskaičiuotas tiesinės regresijos modeliui su ${spec.predictors} ${ltPlural(spec.predictors, ["prognozuojančiu kintamuoju", "prognozuojančiais kintamaisiais", "prognozuojančių kintamųjų"])}, tikrinant, ar R² skiriasi nuo nulio (${alphaLt(f)}). Siekiant ${ltPct(f.target, 0)} galios, kai R² = ${ltPct(spec.r2Gain)} (f² = ${ltShort(regF2(spec), 3)})`
+        : `Imties dydis apskaičiuotas tiesinei regresijai, tikrinant, ar ${spec.tested} ${ltPlural(spec.tested, ["naujas kintamasis padidina", "nauji kintamieji padidina", "naujų kintamųjų padidina"])} R² (iš viso ${spec.predictors} ${ltPlural(spec.predictors, ["kintamasis", "kintamieji", "kintamųjų"])}, R² be naujų ${ltPct(spec.r2Base)}; ${alphaLt(f)}). Siekiant ${ltPct(f.target, 0)} galios aptikti ΔR² = ${ltPct(spec.r2Gain)} (f² = ${ltShort(regF2(spec), 3)})`;
+    case "logit": {
+      const x =
+        spec.x === "binary"
+          ? `šansų santykį OR = ${ltShort(spec.or, 3)} (įvykio dalis be veiksnio ${ltPct(spec.p0)}, veiksnį turi ${ltPct(spec.share, 0)} tiriamųjų)`
+          : `šansų santykį OR = ${ltShort(spec.or, 3)} vienam standartiniam nuokrypiui (įvykio dalis esant vidutinei reikšmei ${ltPct(spec.p0)})`;
+      const r2 = spec.r2 > 0 ? `, kai kiti modelio kintamieji paaiškina R² = ${ltPct(spec.r2, 0)} veiksnio sklaidos` : "";
+      return `Imties dydis apskaičiuotas logistinei regresijai, Wald testui pagal Demidenko (2007) su dispersijos pataisa ${a}. Siekiant ${ltPct(f.target, 0)} galios aptikti ${x}${r2}`;
+    }
+    case "chisq":
+      return `Imties dydis apskaičiuotas χ² nepriklausomumo testui (${spec.rows} × ${spec.cols} lentelė, df = ${chisqDf(spec)}, ${alphaLt(f)}).${tableLt(f)} Siekiant ${ltPct(f.target, 0)} galios, kai efekto dydis Cohen w = ${ltShort(spec.w, 3)}`;
+    case "mcnemar": {
+      const c = mcnemarCells(spec);
+      return `Imties dydis apskaičiuotas McNemar testui, tiksliuoju binominiu testu nesutampančioms poroms ${a}. Siekiant ${ltPct(f.target, 0)} galios aptikti „taip“ dalies pokytį nuo ${ltPct(spec.p1)} iki ${ltPct(spec.p2)}, kai atsakymą pakeičia ${ltPct(spec.disc)} tiriamųjų (taip → ne ${ltPct(c.yesNo)}, ne → taip ${ltPct(c.noYes)})`;
+    }
   }
+}
+
+const tableText = (t: number[][], num: (v: number, d?: number) => string) => t.map((row) => row.map((x) => num(x, 3)).join("; ")).join(" | ");
+
+function tableLt(f: CompareFacts): string {
+  if (!f.table) return "";
+  return f.table.sd === null
+    ? ` Efekto dydis apskaičiuotas iš laukiamo pasiskirstymo procentais (${tableText(f.table.means, ltShort)}; grupės vienodo dydžio).`
+    : ` Efekto dydis apskaičiuotas iš laukiamų vidurkių (${tableText(f.table.means, ltShort)}) ir standartinio nuokrypio ${ltShort(f.table.sd, 3)}.`;
+}
+function tableEn(f: CompareFacts): string {
+  if (!f.table) return "";
+  return f.table.sd === null
+    ? ` The effect size comes from the expected percentages (${tableText(f.table.means, enNum)}; equal groups).`
+    : ` The effect size comes from the expected means (${tableText(f.table.means, enNum)}) and a standard deviation of ${enNum(f.table.sd, 3)}.`;
+}
+
+const covCount = (spec: Spec) => (spec.kind === "anova" || spec.kind === "factorial" ? (spec.covariates ?? 0) : 0);
+const covLt = (f: CompareFacts) => {
+  const c = covCount(f.spec);
+  return c > 0 ? `, ${c} ${ltPlural(c, ["kovariantė", "kovariantės", "kovariančių"])}` : "";
+};
+const covEn = (f: CompareFacts) => {
+  const c = covCount(f.spec);
+  return c > 0 ? `, ${c} covariate${c > 1 ? "s" : ""}` : "";
+};
+function ancovaLt(f: CompareFacts): string {
+  if (!covCount(f.spec) || !f.ancovaR) return "";
+  return ` Kovariantėms koreliuojant su rezultatu R = ${ltShort(f.ancovaR, 3)}, efekto dydis padalytas iš √(1 − R²) = ${ltShort(Math.sqrt(1 - f.ancovaR ** 2), 3)} (Borm ir kt., 2007).`;
+}
+function ancovaEn(f: CompareFacts): string {
+  if (!covCount(f.spec) || !f.ancovaR) return "";
+  return ` With the covariates correlating R = ${enNum(f.ancovaR, 3)} with the outcome, the effect size was divided by √(1 − R²) = ${enNum(Math.sqrt(1 - f.ancovaR ** 2), 3)} (Borm et al., 2007).`;
 }
 
 function describeEn(f: CompareFacts): string {
@@ -372,9 +481,39 @@ function describeEn(f: CompareFacts): string {
     case "props":
       return `The sample size was calculated for comparing two proportions ${a} using the normal approximation of Fleiss. To detect a change from ${enPct(spec.p1, 2)} to ${enPct(spec.p2, 2)}${f.or ? ` (odds ratio ${enNum(f.or)})` : ""} with ${enPct(f.target, 0)} power`;
     case "anova":
-      return `The sample size was calculated for a one-way ANOVA with ${spec.groups} groups (${alphaEn(f)}). To reach ${enPct(f.target, 0)} power for an effect size of Cohen's f = ${enNum(spec.f, 3)}`;
+      return spec.covariates
+        ? `The sample size was calculated for an analysis of covariance (ANCOVA) with ${spec.groups} groups${covEn(f)} (${alphaEn(f)}).${ancovaEn(f)} To reach ${enPct(f.target, 0)} power for an adjusted effect size of Cohen's f = ${enNum(spec.f, 3)}`
+        : `The sample size was calculated for a one-way ANOVA with ${spec.groups} groups (${alphaEn(f)}). To reach ${enPct(f.target, 0)} power for an effect size of Cohen's f = ${enNum(spec.f, 3)}`;
     case "corr":
       return `The sample size was calculated for a Pearson correlation ${a}. To detect r = ${enNum(spec.r, 3)} with ${enPct(f.target, 0)} power`;
+    case "factorial": {
+      const what = spec.effect === "A" ? "the main effect of the first factor" : spec.effect === "B" ? "the main effect of the second factor" : "the interaction";
+      return `The sample size was calculated for a two-way ANOVA (${spec.a} × ${spec.b} groups${covEn(f)}), testing ${what} (${alphaEn(f)}).${ancovaEn(f)}${tableEn(f)} To reach ${enPct(f.target, 0)} power for Cohen's f = ${enNum(spec.f, 3)}`;
+    }
+    case "rm": {
+      const what = spec.effect === "within" ? "the effect of time" : spec.effect === "between" ? "the difference between groups" : "the group × time interaction";
+      const layout = spec.groups > 1 ? `${spec.groups} groups × ${spec.times} measurements` : `${spec.times} measurements`;
+      const eps = spec.eps < 1 && spec.effect !== "between" ? `, nonsphericity correction ε = ${enNum(spec.eps, 3)}` : "";
+      return `The sample size was calculated for a repeated measures ANOVA (${layout}), testing ${what} (${alphaEn(f)}; correlation between measurements ρ = ${enNum(spec.rho, 3)}${eps}).${tableEn(f)} To reach ${enPct(f.target, 0)} power for Cohen's f = ${enNum(spec.f, 3)}`;
+    }
+    case "reg":
+      return spec.tested === spec.predictors && spec.r2Base === 0
+        ? `The sample size was calculated for a linear regression with ${spec.predictors} predictor${spec.predictors > 1 ? "s" : ""}, testing whether R² differs from zero (${alphaEn(f)}). To reach ${enPct(f.target, 0)} power for R² = ${enPct(spec.r2Gain)} (f² = ${enNum(regF2(spec), 3)})`
+        : `The sample size was calculated for a linear regression, testing whether ${spec.tested} added predictor${spec.tested > 1 ? "s increase" : " increases"} R² (${spec.predictors} predictors in total, R² ${enPct(spec.r2Base)} without the added ones; ${alphaEn(f)}). To detect ΔR² = ${enPct(spec.r2Gain)} (f² = ${enNum(regF2(spec), 3)}) with ${enPct(f.target, 0)} power`;
+    case "logit": {
+      const x =
+        spec.x === "binary"
+          ? `an odds ratio of ${enNum(spec.or, 3)} (event rate ${enPct(spec.p0)} without the factor, ${enPct(spec.share, 0)} of participants with it)`
+          : `an odds ratio of ${enNum(spec.or, 3)} per standard deviation (event rate ${enPct(spec.p0)} at the mean)`;
+      const r2 = spec.r2 > 0 ? `, the other predictors explaining R² = ${enPct(spec.r2, 0)} of the factor's variance` : "";
+      return `The sample size was calculated for a logistic regression Wald test following Demidenko (2007) with the variance correction ${a}. To detect ${x} with ${enPct(f.target, 0)} power${r2}`;
+    }
+    case "chisq":
+      return `The sample size was calculated for a χ² test of independence (${spec.rows} × ${spec.cols} table, df = ${chisqDf(spec)}, ${alphaEn(f)}).${tableEn(f)} To reach ${enPct(f.target, 0)} power for an effect size of Cohen's w = ${enNum(spec.w, 3)}`;
+    case "mcnemar": {
+      const c = mcnemarCells(spec);
+      return `The sample size was calculated for McNemar's test, as an exact binomial test on the discordant pairs ${a}. To detect a change in the share answering yes from ${enPct(spec.p1)} to ${enPct(spec.p2)} with ${enPct(f.target, 0)} power, assuming ${enPct(spec.disc)} of participants change their answer (yes → no ${enPct(c.yesNo)}, no → yes ${enPct(c.noYes)})`;
+    }
   }
 }
 
@@ -423,13 +562,145 @@ function rCode(f: CompareFacts): { r: string; gpower?: string } {
       };
     }
     case "anova":
+      if (spec.covariates) {
+        return {
+          r: fSearch(
+            `k <- ${spec.groups}; covariates <- ${spec.covariates}; f <- ${rNum(spec.f)}  # f adjusted for the covariates`,
+            "N <- k * n",
+            "k - 1",
+            "N - k - covariates",
+            "f^2 * N",
+            f,
+            "per group",
+          ),
+          gpower: `F tests → ANCOVA: Fixed effects, main effects and interactions → A priori; f = ${rNum(spec.f)}; α = ${a}; Power = ${rNum(f.target)}; Numerator df = ${spec.groups - 1}; Number of groups = ${spec.groups}; Number of covariates = ${spec.covariates}.`,
+        };
+      }
       return {
         r: `library(pwr)\npwr.anova.test(k = ${spec.groups}, f = ${rNum(spec.f)}, power = ${rNum(f.target)}, sig.level = ${a})${note}`,
         gpower: `F tests → ANOVA: Fixed effects, omnibus, one-way → A priori; f = ${rNum(spec.f)}; α = ${a}; Power = ${rNum(f.target)}; Number of groups = ${spec.groups}.`,
       };
     case "corr":
       return { r: `library(pwr)\npwr.r.test(r = ${rNum(spec.r)}, power = ${rNum(f.target)}, sig.level = ${a}, alternative = "${alt}")${note}` };
+    case "factorial": {
+      const cells = spec.a * spec.b;
+      const cov = spec.covariates ?? 0;
+      const df1 = factorialDf(spec);
+      return {
+        r: fSearch(`cells <- ${cells}; covariates <- ${cov}; f <- ${rNum(spec.f)}`, "N <- cells * n", String(df1), "N - cells - covariates", "f^2 * N", f, "per cell"),
+        gpower: cov
+          ? `F tests → ANCOVA: Fixed effects, main effects and interactions → A priori; f = ${rNum(spec.f)}; α = ${a}; Power = ${rNum(f.target)}; Numerator df = ${df1}; Number of groups = ${cells}; Number of covariates = ${cov}.`
+          : `F tests → ANOVA: Fixed effects, special, main effects and interactions → A priori; f = ${rNum(spec.f)}; α = ${a}; Power = ${rNum(f.target)}; Numerator df = ${df1}; Number of groups = ${cells}.`,
+      };
+    }
+    case "rm": {
+      const head = `k <- ${spec.groups}; m <- ${spec.times}; f <- ${rNum(spec.f)}; rho <- ${rNum(spec.rho)}; eps <- ${rNum(spec.eps)}`;
+      const r =
+        spec.effect === "between"
+          ? fSearch(head, "N <- k * n", "k - 1", "N - k", "f^2 * N * m / (1 + (m - 1) * rho)", f, spec.groups > 1 ? "per group" : "")
+          : fSearch(
+              head,
+              "N <- k * n",
+              spec.effect === "within" ? "(m - 1) * eps" : "(k - 1) * (m - 1) * eps",
+              "(N - k) * (m - 1) * eps",
+              "f^2 * N * m * eps / (1 - rho)",
+              f,
+              spec.groups > 1 ? "per group" : "",
+            );
+      const name = spec.effect === "within" ? "Repeated measures, within factors" : spec.effect === "between" ? "Repeated measures, between factors" : "Repeated measures, within-between interaction";
+      const eps = spec.effect === "between" ? "" : `; Nonsphericity correction ε = ${rNum(spec.eps)}`;
+      return {
+        r,
+        gpower: `F tests → ANOVA: ${name} → A priori; f = ${rNum(spec.f)}; α = ${a}; Power = ${rNum(f.target)}; Number of groups = ${spec.groups}; Number of measurements = ${spec.times}; Corr among rep measures = ${rNum(spec.rho)}${eps}. Options: effect size as in G*Power 3.0 (the default).`,
+      };
+    }
+    case "reg": {
+      const f2 = rNum(regF2(spec));
+      if (spec.tested === spec.predictors && spec.r2Base === 0) {
+        return {
+          r: `library(pwr)\nres <- pwr.f2.test(u = ${spec.predictors}, f2 = ${f2}, power = ${rNum(f.target)}, sig.level = ${a})\nceiling(res$v) + ${spec.predictors} + 1  # N = ${groups[0]}`,
+          gpower: `F tests → Linear multiple regression: Fixed model, R² deviation from zero → A priori; f² = ${f2}; α = ${a}; Power = ${rNum(f.target)}; Number of predictors = ${spec.predictors}.`,
+        };
+      }
+      return {
+        r: fSearch(`p <- ${spec.predictors}; q <- ${spec.tested}; f2 <- ${f2}`, "N <- n", "q", "N - p - 1", "f2 * N", f, ""),
+        gpower: `F tests → Linear multiple regression: Fixed model, R² increase → A priori; f² = ${f2}; α = ${a}; Power = ${rNum(f.target)}; Number of tested predictors = ${spec.tested}; Total number of predictors = ${spec.predictors}.`,
+      };
+    }
+    case "logit": {
+      const xLines =
+        spec.x === "binary"
+          ? [
+              `B <- ${rNum(spec.share)}  # share with the factor`,
+              "i00 <- (1 - B) * w(0) + B * w(1); i01 <- i11 <- B * w(1); vx <- B * (1 - B)",
+              "pbar <- (1 - B) * p0 + B * plogis(b0 + b1)",
+            ]
+          : [
+              "E <- function(g) integrate(function(z) g(z) * dnorm(z), -Inf, Inf)$value",
+              "i00 <- E(w); i01 <- E(function(z) z * w(z)); i11 <- E(function(z) z^2 * w(z)); vx <- 1",
+              "pbar <- E(function(z) plogis(b0 + b1 * z))",
+            ];
+      const xDist = spec.x === "binary" ? `X distribution = Binomial; X parm π = ${rNum(spec.share)}` : "X distribution = Normal; X parm μ = 0; X parm σ = 1";
+      return {
+        r: [
+          `# Demidenko (2007), Wald test with the variance correction`,
+          `p0 <- ${rNum(spec.p0)}; OR <- ${rNum(spec.or)}; r2 <- ${rNum(spec.r2)}; alpha <- ${a}`,
+          "b0 <- qlogis(p0); b1 <- log(OR)",
+          "w <- function(z) { p <- plogis(b0 + b1 * z); p * (1 - p) }",
+          ...xLines,
+          "v1 <- i00 / (i00 * i11 - i01^2); v0 <- 1 / (pbar * (1 - pbar) * vx)",
+          `power <- function(n) {`,
+          `  z <- qnorm(1 - alpha / ${test.sides}); s <- abs(b1) * sqrt(n * (1 - r2))`,
+          `  pnorm((s - z * sqrt(v0)) / sqrt(v1))${test.sides === 2 ? " + pnorm((-s - z * sqrt(v0)) / sqrt(v1))" : ""}`,
+          "}",
+          `n <- 10; while (power(n) < ${rNum(f.target)}) n <- n + 1`,
+          `n  # ${groups[0]}`,
+        ].join("\n"),
+        gpower: `z tests → Logistic regression → A priori; Tails = ${tails}; Odds ratio = ${rNum(spec.or)}; Pr(Y=1|X=1) H0 = ${rNum(spec.p0)}; α = ${a}; Power = ${rNum(f.target)}; R² other X = ${rNum(spec.r2)}; ${xDist}. Options: Demidenko (2007) with variance correction.`,
+      };
+    }
+    case "chisq":
+      return {
+        r: `library(pwr)\nceiling(pwr.chisq.test(w = ${rNum(spec.w)}, df = ${chisqDf(spec)}, power = ${rNum(f.target)}, sig.level = ${a})$N)  # ${groups[0]}`,
+        gpower: `χ² tests → Goodness-of-fit tests: Contingency tables → A priori; w = ${rNum(spec.w)}; α = ${a}; Power = ${rNum(f.target)}; Df = ${chisqDf(spec)}.`,
+      };
+    case "mcnemar": {
+      const c = mcnemarCells(spec);
+      const big = Math.max(c.yesNo, c.noYes);
+      const small = Math.min(c.yesNo, c.noYes);
+      return {
+        r: [
+          "# Exact binomial test on the discordant pairs, power summed over their number",
+          `disc <- ${rNum(spec.disc)}; pi1 <- ${rNum(big / spec.disc)}; a <- ${a} / ${test.sides}`,
+          "power <- function(n) {",
+          "  d <- 1:n",
+          "  c <- qbinom(a, d, 0.5) - 1",
+          "  c <- ifelse(pbinom(c + 1, d, 0.5) <= a, c + 1, c)  # largest c with P(X <= c) <= a",
+          `  reject <- ifelse(c < 0, 0, 1 - pbinom(d - c - 1, d, pi1)${test.sides === 2 ? " + pbinom(c, d, pi1)" : ""})`,
+          "  sum(dbinom(d, n, disc) * reject)",
+          "}",
+          `n <- 2; while (power(n) < ${rNum(f.target)}) n <- n + 1`,
+          `n  # ${groups[0]}`,
+        ].join("\n"),
+        gpower: `Exact → Proportions: Inequality, two dependent groups (McNemar) → A priori; Tails = ${tails}; Odds ratio = ${rNum(big / small)}; α = ${a}; Power = ${rNum(f.target)}; Prop discordant pairs = ${rNum(spec.disc)}.`,
+      };
+    }
   }
+}
+
+/** R that walks n upwards until a G*Power-style F test reaches the target power. */
+function fSearch(head: string, total: string, df1: string, df2: string, ncp: string, f: CompareFacts, per: string): string {
+  return [
+    head,
+    `alpha <- ${rNum(f.test.alpha)}`,
+    "power <- function(n) {",
+    `  ${total}; df1 <- ${df1}; df2 <- ${df2}`,
+    "  if (df2 <= 0) return(0)",
+    `  1 - pf(qf(1 - alpha, df1, df2), df1, df2, ncp = ${ncp})`,
+    "}",
+    `n <- 2; while (power(n) < ${rNum(f.target)}) n <- n + 1`,
+    `n  # ${f.groups[0]}${per ? ` ${per}` : ""}`,
+  ].join("\n");
 }
 
 export function compareReport(f: CompareFacts): Report {
@@ -446,7 +717,7 @@ function compareParagraph(f: CompareFacts): Paragraph {
       ? ` Atsižvelgiant į ${ltPct(f.dropout, 0)} numatomą nubyrėjimą, planuojama įtraukti ${ltInt(total)} ${ltPlural(total, ["tiriamąjį", "tiriamuosius", "tiriamųjų"])}.`
       : "";
   const dropEn = f.dropout > 0 ? ` Allowing for ${enPct(f.dropout, 0)} dropout, ${enInt(total)} participants will be enrolled.` : "";
-  const refs = f.spec.kind === "props" ? [REF.fleiss] : [REF.cohen];
+  const refs = compareRefs(f.spec);
   return {
     lt: `${describeLt(f)}${needLt(f)}${rankLt}${dropLt} [Įrašykite, iš kur paimtas efekto dydis: šaltinis, pilotinis tyrimas ar mažiausias prasmingas skirtumas.]`,
     en: `${describeEn(f)}${needEn(f)}${rankEn}${dropEn} [State the source of the assumed effect: a published study, a pilot, or the smallest meaningful difference.]`,
@@ -617,15 +888,63 @@ function compareStatement(f: CompareFacts): Statement {
       );
       break;
     case "anova":
-      lt.push(`vienfaktorė ANOVA, ${spec.groups} grupės`, `Cohen f = ${ltShort(spec.f, 3)}`);
-      en.push(`one-way ANOVA, ${spec.groups} groups`, `Cohen's f = ${enNum(spec.f, 3)}`);
+      lt.push(`${spec.covariates ? "ANCOVA" : "vienfaktorė ANOVA"}, ${spec.groups} grupės${covLt(f)}`, `Cohen f = ${ltShort(spec.f, 3)}`);
+      en.push(`${spec.covariates ? "ANCOVA" : "one-way ANOVA"}, ${spec.groups} groups${covEn(f)}`, `Cohen's f = ${enNum(spec.f, 3)}`);
       break;
     case "corr":
       lt.push("Pirsono koreliacija", `r = ${ltShort(spec.r, 3)}`);
       en.push("Pearson correlation", `r = ${enNum(spec.r, 3)}`);
       break;
+    case "factorial": {
+      const effLt = spec.effect === "A" ? "pirmo veiksnio efektas" : spec.effect === "B" ? "antro veiksnio efektas" : "sąveika";
+      const effEn = spec.effect === "A" ? "main effect of the first factor" : spec.effect === "B" ? "main effect of the second factor" : "interaction";
+      lt.push(`dvifaktorė ${spec.covariates ? "ANCOVA" : "ANOVA"} ${spec.a} × ${spec.b}${covLt(f)}, ${effLt}`, `Cohen f = ${ltShort(spec.f, 3)}`);
+      en.push(`two-way ${spec.covariates ? "ANCOVA" : "ANOVA"} ${spec.a} × ${spec.b}${covEn(f)}, ${effEn}`, `Cohen's f = ${enNum(spec.f, 3)}`);
+      break;
+    }
+    case "rm": {
+      const effLt = spec.effect === "within" ? "laiko efektas" : spec.effect === "between" ? "grupių skirtumas" : "grupės × laiko sąveika";
+      const effEn = spec.effect === "within" ? "effect of time" : spec.effect === "between" ? "group difference" : "group × time interaction";
+      const layoutLt = spec.groups > 1 ? `${spec.groups} grupės × ${spec.times} matavimai` : `${spec.times} matavimai`;
+      const layoutEn = spec.groups > 1 ? `${spec.groups} groups × ${spec.times} measurements` : `${spec.times} measurements`;
+      const eps = spec.eps < 1 && spec.effect !== "between";
+      lt.push(`pakartotinių matavimų ANOVA, ${layoutLt}, ${effLt}`, `Cohen f = ${ltShort(spec.f, 3)}`, `ρ = ${ltShort(spec.rho, 3)}`, ...(eps ? [`ε = ${ltShort(spec.eps, 3)}`] : []));
+      en.push(`repeated measures ANOVA, ${layoutEn}, ${effEn}`, `Cohen's f = ${enNum(spec.f, 3)}`, `ρ = ${enNum(spec.rho, 3)}`, ...(eps ? [`ε = ${enNum(spec.eps, 3)}`] : []));
+      break;
+    }
+    case "reg":
+      if (spec.tested === spec.predictors && spec.r2Base === 0) {
+        lt.push(`tiesinė regresija, ${spec.predictors} ${ltPlural(spec.predictors, ["kintamasis", "kintamieji", "kintamųjų"])}`, `R² = ${ltPct(spec.r2Gain)}`, `f² = ${ltShort(regF2(spec), 3)}`);
+        en.push(`linear regression, ${spec.predictors} predictor${spec.predictors > 1 ? "s" : ""}`, `R² = ${enPct(spec.r2Gain)}`, `f² = ${enNum(regF2(spec), 3)}`);
+      } else {
+        lt.push(`tiesinė regresija, ${spec.tested} nauji iš ${spec.predictors} kintamųjų`, `R² be jų ${ltPct(spec.r2Base)}`, `ΔR² = ${ltPct(spec.r2Gain)}`, `f² = ${ltShort(regF2(spec), 3)}`);
+        en.push(`linear regression, ${spec.tested} added of ${spec.predictors} predictors`, `R² without them ${enPct(spec.r2Base)}`, `ΔR² = ${enPct(spec.r2Gain)}`, `f² = ${enNum(regF2(spec), 3)}`);
+      }
+      break;
+    case "logit":
+      lt.push(
+        `logistinė regresija, ${spec.x === "binary" ? `dvireikšmis veiksnys (${ltPct(spec.share, 0)} turi)` : "skaitinis veiksnys, OR 1 SD"}`,
+        `OR = ${ltShort(spec.or, 3)}`,
+        `įvykio dalis ${ltPct(spec.p0)}${spec.x === "binary" ? " be veiksnio" : " ties vidurkiu"}`,
+        ...(spec.r2 > 0 ? [`R² su kitais kintamaisiais ${ltPct(spec.r2, 0)}`] : []),
+      );
+      en.push(
+        `logistic regression, ${spec.x === "binary" ? `binary factor (${enPct(spec.share, 0)} exposed)` : "numeric factor, OR per SD"}`,
+        `OR = ${enNum(spec.or, 3)}`,
+        `event rate ${enPct(spec.p0)}${spec.x === "binary" ? " without the factor" : " at the mean"}`,
+        ...(spec.r2 > 0 ? [`R² with other predictors ${enPct(spec.r2, 0)}`] : []),
+      );
+      break;
+    case "chisq":
+      lt.push(`χ² testas, ${spec.rows} × ${spec.cols} lentelė`, `Cohen w = ${ltShort(spec.w, 3)}`);
+      en.push(`χ² test, ${spec.rows} × ${spec.cols} table`, `Cohen's w = ${enNum(spec.w, 3)}`);
+      break;
+    case "mcnemar":
+      lt.push(`McNemar testas, „taip“ ${ltPct(spec.p1)} ir ${ltPct(spec.p2)}`, `pakeičia ${ltPct(spec.disc)}`);
+      en.push(`McNemar's test, yes ${enPct(spec.p1)} vs ${enPct(spec.p2)}`, `${enPct(spec.disc)} change their answer`);
+      break;
   }
-  if (spec.kind !== "anova") {
+  if (!["anova", "factorial", "rm", "reg", "chisq"].includes(spec.kind)) {
     lt.push(sidesLt(test));
     en.push(sidesEn(test));
   }
@@ -647,11 +966,8 @@ function compareStatement(f: CompareFacts): Statement {
       ? ltPlural(total, ["pora", "poros", "porų"])
       : ltPlural(total, ["tiriamasis", "tiriamieji", "tiriamųjų"]);
   const unitEn = f.abTest ? "visitors" : spec.kind === "paired" ? "pairs" : "participants";
-  const props = spec.kind === "props";
-  return sentence(
-    { n: `${ltInt(total)} ${unitLt}`, params: lt, cite: props ? "Fleiss ir kt., 2003" : "Cohen, 1988" },
-    { n: `${enInt(total)} ${unitEn}`, params: en, cite: props ? "Fleiss et al., 2003" : "Cohen, 1988" },
-  );
+  const cite = compareCite(spec);
+  return sentence({ n: `${ltInt(total)} ${unitLt}`, params: lt, cite: cite.lt }, { n: `${enInt(total)} ${unitEn}`, params: en, cite: cite.en });
 }
 
 function beStatement(f: BeFacts): Statement {

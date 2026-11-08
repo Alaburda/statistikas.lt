@@ -56,7 +56,7 @@ const CTA_POINTS: Record<string, string[]> = L(
     ],
     grupes: [
       "efekto dydžio pagrindimas iš literatūros ar pilotinio tyrimo",
-      "kartotiniai matavimai, klasterizuoti ir daugiacentriai tyrimai",
+      "mišrūs modeliai, klasterizuoti ir daugiacentriai tyrimai, išgyvenamumas",
       "imties skyrius protokolui, paraiškai ar etikos komitetui",
     ],
     be: [
@@ -73,7 +73,7 @@ const CTA_POINTS: Record<string, string[]> = L(
     ],
     grupes: [
       "justifying the effect size from the literature or a pilot",
-      "repeated measures, cluster randomised and multicentre trials",
+      "mixed models, cluster randomised and multicentre trials, survival",
       "the sample size section of a protocol, grant or ethics application",
     ],
     be: [

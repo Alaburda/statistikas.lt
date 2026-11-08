@@ -324,6 +324,30 @@ export function pnf(f: number, df1: number, df2: number, ncp: number): number {
   return Math.min(ans, 1);
 }
 
+/**
+ * Non-central chi-square CDF as a Poisson mixture of central chi-squares, summed
+ * outwards from the largest weight until the weights stop mattering.
+ */
+export function pnchisq(x: number, df: number, ncp: number): number {
+  if (x <= 0) return 0;
+  if (ncp === 0) return pgamma(x / 2, df / 2);
+  const c = ncp / 2;
+  const mode = Math.floor(c);
+  const weight = (j: number) => Math.exp(-c + j * Math.log(c) - logGamma(j + 1));
+  let sum = 0;
+  for (let j = mode; j < mode + 100000; j++) {
+    const w = weight(j);
+    sum += w * pgamma(x / 2, df / 2 + j);
+    if (w < 1e-17) break;
+  }
+  for (let j = mode - 1; j >= 0; j--) {
+    const w = weight(j);
+    sum += w * pgamma(x / 2, df / 2 + j);
+    if (w < 1e-17) break;
+  }
+  return Math.min(sum, 1);
+}
+
 /** Gauss–Legendre nodes and weights on [-1, 1], from Newton on the Legendre polynomial. */
 function gaussLegendre(n: number): { x: number[]; w: number[] } {
   const x: number[] = [];

@@ -1,4 +1,4 @@
-import { useId, type ReactNode } from "react";
+import { Fragment, useId, type ReactNode } from "react";
 import { PCT } from "../i18n";
 
 /** Text input for numbers: type="number" rejects the decimal comma on many phones. */
@@ -88,25 +88,34 @@ export function SliderField({
   );
 }
 
+/** Free text; with `rows`, a small table typed one row per line. */
 export function TextField({
   label,
   hint,
   value,
   onChange,
+  rows,
+  error,
 }: {
   label: string;
   hint?: ReactNode;
   value: string;
   onChange: (v: string) => void;
+  rows?: number;
+  error?: string | null;
 }) {
   const id = useId();
   return (
-    <div className="field">
+    <div className={`field ${error ? "has-error" : ""}`}>
       <label htmlFor={id}>{label}</label>
       <div className="input-wrap">
-        <input id={id} type="text" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value)} />
+        {rows ? (
+          <textarea id={id} rows={rows} autoComplete="off" spellCheck={false} value={value} aria-invalid={!!error} onChange={(e) => onChange(e.target.value)} />
+        ) : (
+          <input id={id} type="text" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value)} />
+        )}
       </div>
-      {hint && <p className="hint">{hint}</p>}
+      {error ? <p className="field-error">{error}</p> : hint ? <p className="hint">{hint}</p> : null}
     </div>
   );
 }
@@ -120,7 +129,8 @@ export function Segmented<T extends string>({
 }: {
   label: string;
   hint?: ReactNode;
-  options: { value: T; label: string; icon?: ReactNode }[];
+  /** group: a heading shown above the first option of each run with the same group. */
+  options: { value: T; label: string; icon?: ReactNode; group?: string }[];
   value: T;
   onChange: (v: T) => void;
 }) {
@@ -131,18 +141,24 @@ export function Segmented<T extends string>({
         {label}
       </span>
       <div className={`segmented ${withIcons ? "with-icons" : ""}`} role="radiogroup" aria-label={label}>
-        {options.map((o) => (
-          <button
-            key={o.value}
-            type="button"
-            role="radio"
-            aria-checked={o.value === value}
-            className={o.value === value ? "on" : ""}
-            onClick={() => onChange(o.value)}
-          >
-            {o.icon}
-            <span>{o.label}</span>
-          </button>
+        {options.map((o, i) => (
+          <Fragment key={o.value}>
+            {o.group && o.group !== options[i - 1]?.group && (
+              <span className="seg-group" aria-hidden="true">
+                {o.group}
+              </span>
+            )}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={o.value === value}
+              className={o.value === value ? "on" : ""}
+              onClick={() => onChange(o.value)}
+            >
+              {o.icon}
+              <span>{o.label}</span>
+            </button>
+          </Fragment>
         ))}
       </div>
       {hint && <p className="hint">{hint}</p>}

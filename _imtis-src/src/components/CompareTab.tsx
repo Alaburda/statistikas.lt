@@ -2,7 +2,13 @@ import { useMemo } from "react";
 import {
   RANK_ARE,
   cohenF,
+  cohenW,
   effectOf,
+  effectPossible,
+  mcnemarValid,
+  minN,
+  twoWayF,
+  type RmEffect,
   p1FromOdds,
   pooledSd,
   power,
@@ -57,9 +63,42 @@ const DEFAULTS = {
   h2: "",
   h3: "",
   h4: "",
+  // ANCOVA: covariates and how strongly they predict the outcome.
+  cov: "0",
+  covR: "0.5",
+  // Factorial and repeated measures: a table of means, or Cohen's f with the layout.
+  eff: "means",
+  fac: "10; 12; 14\n11; 14; 18",
+  facEff: "A",
+  rmt: "10; 11,5; 12,5",
+  rmEff: "within",
+  rho: "0.5",
+  eps: "1",
+  fval: "0.25",
+  levA: "2",
+  levB: "3",
+  // Regression.
+  regTest: "all",
+  preds: "4",
+  tested: "1",
+  r2: "15",
+  r2Base: "20",
+  r2Gain: "5",
+  // Logistic regression.
+  lx: "binary",
+  lp0: "20",
+  lor: "2",
+  lshare: "50",
+  lr2: "0",
+  // Chi-square.
+  ctab: "30; 50; 20\n20; 50; 30",
+  // McNemar.
+  mp1: "40",
+  mp2: "25",
+  mdisc: "",
 };
 
-type Design = "means" | "paired" | "props" | "ab" | "anova" | "corr";
+type Design = "means" | "paired" | "props" | "ab" | "anova" | "factorial" | "rm" | "corr" | "reg" | "logit" | "chisq" | "mcnemar";
 type Form = typeof DEFAULTS;
 
 type Unit = { lt: [string, string, string]; en: [string, string] };
@@ -79,18 +118,54 @@ const DESIGN_NOTES: Record<Design, string> = L(
     paired: "Tie patys žmonės matuojami du kartus (prieš ir po) arba sudarytos poros; vertinamas pokytis.",
     props: "Dvi grupės, rezultatas taip / ne (pvz., pasveiko ar ne); lyginamos dalys. Tinka ir atvejo–kontrolės tyrimui.",
     ab: "Dvi svetainės ar laiško versijos, lankytojai paskirstomi atsitiktinai; lyginama konversija.",
-    anova: "Trys ar daugiau atskirų grupių; lyginami vidurkiai (vienfaktorė ANOVA).",
+    anova: "Trys ar daugiau atskirų grupių; lyginami vidurkiai (vienfaktorė ANOVA). Su kovariantėmis – ANCOVA.",
+    factorial: "Du veiksniai kartu, pvz., gydymas × lytis; tikrinamas vieno veiksnio arba jų sąveikos efektas (dvifaktorė ANOVA).",
+    rm: "Tie patys žmonės matuojami 3 ar daugiau kartų; gali būti ir kelios grupės (mišri ANOVA: grupė × laikas).",
     corr: "Viena grupė, du kiekybiniai matavimai kiekvienam; ar jie susiję (Pirsono r).",
+    reg: "Ar keli kintamieji kartu paaiškina rezultatą, arba ar nauji kintamieji prideda prie jau turimų (tiesinė regresija).",
+    logit: "Rezultatas taip / ne (pvz., susirgo ar ne); ar jį lemia veiksnys, atsižvelgiant į kitus (logistinė regresija).",
+    chisq: "Grupės ir atsakymas su 2 ar daugiau kategorijų (pvz., pasirinktas planas); ar pasiskirstymas skiriasi (χ² testas).",
+    mcnemar: "Tie patys žmonės atsako taip / ne du kartus (prieš ir po); ar „taip“ dalis pasikeitė (McNemar testas).",
   },
   {
     means: "Two separate groups (e.g. treatment and control), each person measured once; the means are compared.",
     paired: "The same people measured twice (before and after), or matched pairs; the change is assessed.",
     props: "Two groups with a yes/no outcome (e.g. recovered or not); the proportions are compared. Also for case–control studies.",
     ab: "Two versions of a page or an email, visitors split at random; the conversion rates are compared.",
-    anova: "Three or more separate groups; the means are compared (one-way ANOVA).",
+    anova: "Three or more separate groups; the means are compared (one-way ANOVA). With covariates, ANCOVA.",
+    factorial: "Two factors at once, e.g. treatment × sex; the effect of one factor or their interaction is tested (two-way ANOVA).",
+    rm: "The same people measured three or more times, possibly in several groups (mixed ANOVA: group × time).",
     corr: "One group, two numeric measurements per person; are they related (Pearson's r)?",
+    reg: "Do several variables together explain an outcome, or do new variables add to those already in the model (linear regression)?",
+    logit: "A yes/no outcome (e.g. fell ill or not); does a factor predict it, allowing for others (logistic regression)?",
+    chisq: "Groups and an answer with two or more categories (e.g. the plan chosen); does the distribution differ (χ² test)?",
+    mcnemar: "The same people answer yes/no twice (before and after); did the share saying yes change (McNemar's test)?",
   },
 );
+
+/** Rows on lines (or split by "/"), values by semicolons or spaces; null unless rectangular. */
+function parseTable(text: string): number[][] | null {
+  const rows = text
+    .split(/\r?\n|\//)
+    .map((line) => line.split(/[;\s]+/).filter(Boolean).map(parseNum))
+    .filter((row) => row.length > 0);
+  if (rows.length === 0 || rows.some((row) => row.length !== rows[0].length || row.some((x) => !Number.isFinite(x)))) return null;
+  return rows;
+}
+
+const int = (s: string) => {
+  const v = parseNum(s);
+  return Number.isInteger(v) ? v : NaN;
+};
+
+/** Cohen's f adjusted for covariates that explain r² of the outcome's variance (Borm et al. 2007). */
+function covariates(f: Form): { count: number; r: number } | null {
+  const count = int(f.cov);
+  if (!(count >= 0)) return null;
+  if (count === 0) return { count: 0, r: 0 };
+  const r = parseNum(f.covR);
+  return r >= 0 && r < 1 ? { count, r } : null;
+}
 
 function buildSpec(f: Form): Spec | null {
   const design = f.design as Design;
@@ -128,13 +203,91 @@ function buildSpec(f: Form): Spec | null {
     case "anova": {
       const means = f.means.split(/[;\s]+/).filter(Boolean).map(parseNum);
       const sd = parseNum(f.sd);
-      if (means.length < 2 || means.some(Number.isNaN) || !(sd > 0)) return null;
-      const effect = cohenF(means, sd);
-      return effect > 0 ? { kind: "anova", groups: means.length, f: effect } : null;
+      const cov = covariates(f);
+      if (means.length < 2 || means.some(Number.isNaN) || !(sd > 0) || !cov) return null;
+      const effect = cohenF(means, sd) / Math.sqrt(1 - cov.r * cov.r);
+      if (!(effect > 0)) return null;
+      return cov.count > 0 ? { kind: "anova", groups: means.length, f: effect, covariates: cov.count } : { kind: "anova", groups: means.length, f: effect };
+    }
+    case "factorial": {
+      const cov = covariates(f);
+      const effect = f.facEff as "A" | "B" | "AB";
+      let a: number, b: number, fx: number;
+      if (f.eff === "f") {
+        [a, b, fx] = [int(f.levA), int(f.levB), parseNum(f.fval)];
+      } else {
+        const table = parseTable(f.fac);
+        const sd = parseNum(f.sd);
+        if (!table || !(sd > 0)) return null;
+        [a, b] = [table.length, table[0].length];
+        const fs = twoWayF(table, sd);
+        fx = effect === "A" ? fs.rows : effect === "B" ? fs.cols : fs.inter;
+      }
+      if (!cov || !(a >= 2 && b >= 2) || !(fx > 0)) return null;
+      return { kind: "factorial", a, b, effect, f: fx / Math.sqrt(1 - cov.r * cov.r), covariates: cov.count };
+    }
+    case "rm": {
+      let groups: number, times: number, fx: number;
+      const rho = parseNum(f.rho);
+      const eps = parseNum(f.eps);
+      if (f.eff === "f") {
+        [groups, times, fx] = [int(f.levA), int(f.levB), parseNum(f.fval)];
+      } else {
+        const table = parseTable(f.rmt);
+        const sd = parseNum(f.sd);
+        if (!table || !(sd > 0)) return null;
+        [groups, times] = [table.length, table[0].length];
+        const fs = twoWayF(table, sd);
+        fx = f.rmEff === "between" ? fs.rows : f.rmEff === "inter" ? fs.inter : fs.cols;
+      }
+      const effect: RmEffect = groups === 1 ? "within" : (f.rmEff as RmEffect);
+      if (!(groups >= 1 && times >= 2) || !(fx > 0) || !(rho > -1 / (times - 1) && rho < 1)) return null;
+      if (!(eps >= 1 / (times - 1) - 1e-9 && eps <= 1)) return null;
+      return { kind: "rm", groups, times, effect, f: fx, rho, eps };
     }
     case "corr": {
       const r = parseNum(f.corr);
       return r !== 0 && Math.abs(r) < 1 ? { kind: "corr", r } : null;
+    }
+    case "reg": {
+      const predictors = int(f.preds);
+      if (!(predictors >= 1)) return null;
+      if (f.regTest === "all") {
+        const r2 = parseNum(f.r2) / 100;
+        return r2 > 0 && r2 < 1 ? { kind: "reg", predictors, tested: predictors, r2Base: 0, r2Gain: r2 } : null;
+      }
+      const tested = int(f.tested);
+      const base = parseNum(f.r2Base) / 100;
+      const gain = parseNum(f.r2Gain) / 100;
+      return tested >= 1 && tested <= predictors && base >= 0 && gain > 0 && base + gain < 1
+        ? { kind: "reg", predictors, tested, r2Base: base, r2Gain: gain }
+        : null;
+    }
+    case "logit": {
+      const p0 = parseNum(f.lp0) / 100;
+      const or = parseNum(f.lor);
+      const share = f.lx === "binary" ? parseNum(f.lshare) / 100 : 0.5;
+      const r2 = (parseNum(f.lr2) || 0) / 100;
+      return p0 > 0 && p0 < 1 && or > 0 && or !== 1 && share > 0 && share < 1 && r2 >= 0 && r2 < 1
+        ? { kind: "logit", x: f.lx === "normal" ? "normal" : "binary", p0, or, share, r2 }
+        : null;
+    }
+    case "chisq": {
+      if (f.eff === "f") {
+        const [rows, cols, w] = [int(f.levA), int(f.levB), parseNum(f.fval)];
+        return rows >= 2 && cols >= 2 && w > 0 ? { kind: "chisq", rows, cols, w } : null;
+      }
+      const table = parseTable(f.ctab);
+      if (!table || table.length < 2 || table[0].length < 2 || table.flat().some((x) => !(x > 0))) return null;
+      const w = cohenW(table);
+      return w > 0 ? { kind: "chisq", rows: table.length, cols: table[0].length, w } : null;
+    }
+    case "mcnemar": {
+      const p1 = parseNum(f.mp1) / 100;
+      const p2 = parseNum(f.mp2) / 100;
+      const disc = f.mdisc.trim() === "" ? p1 * (1 - p2) + p2 * (1 - p1) : parseNum(f.mdisc) / 100;
+      const spec: Spec = { kind: "mcnemar", p1, p2, disc };
+      return p1 > 0 && p1 < 1 && disc > 0 && mcnemarValid(spec) ? spec : null;
     }
   }
 }
@@ -152,15 +305,31 @@ function effectText(spec: Spec, e: number): string {
         : L(`nuo ${fmtPct(at.p1, 2)} iki ${fmtPct(at.p2, 2)}`, `from ${fmtPct(at.p1, 2)} to ${fmtPct(at.p2, 2)}`);
     }
     case "anova":
+    case "factorial":
+    case "rm":
       return `f = ${fmtNum(e, 3)}`;
     case "corr":
       return `r = ${fmtNum(e, 3)}`;
+    case "reg": {
+      const f2 = e / (1 - spec.r2Base - e);
+      return spec.r2Base > 0 || spec.tested < spec.predictors ? `ΔR² = ${fmtPct(e, 1)} (f² = ${fmtNum(f2, 3)})` : `R² = ${fmtPct(e, 1)} (f² = ${fmtNum(f2, 3)})`;
+    }
+    case "logit":
+      return `OR = ${fmtNum(Math.exp(spec.or >= 1 ? e : -e), 2)}`;
+    case "chisq":
+      return `w = ${fmtNum(e, 3)}`;
+    case "mcnemar": {
+      const p2 = spec.p2 <= spec.p1 ? spec.p1 - e : spec.p1 + e;
+      return L(`nuo ${fmtPct(spec.p1, 1)} iki ${fmtPct(p2, 1)}`, `from ${fmtPct(spec.p1, 1)} to ${fmtPct(p2, 1)}`);
+    }
   }
 }
 
-function sharesValid(spec: Extract<Spec, { kind: "props" }>, e: number): boolean {
-  const { p1, p2 } = propsAt(spec, e);
-  return p1 > 0 && p1 < 1 && p2 > 0 && p2 < 1;
+/** Where the per-group label applies: n is per group (or cell) rather than in total. */
+function perGroup(spec: Spec | null, design: Design): boolean {
+  if (design === "anova" || design === "factorial") return true;
+  if (design === "rm") return !spec || spec.kind !== "rm" || spec.groups > 1;
+  return design === "means" || design === "props" || design === "ab";
 }
 
 /** Finds an SD from what a paper actually reports, or a safer value from a pilot. */
@@ -293,11 +462,10 @@ export function CompareTab({ active }: { active: boolean }) {
 
   const scenarios = useMemo(() => {
     if (!usable || !spec || planned === null) return [];
-    const factors = spec.kind === "corr" || spec.kind === "props" ? [0.7, 0.85, 1, 1.15] : [0.6, 0.8, 1, 1.25, 1.5];
+    const factors = spec.kind === "corr" || spec.kind === "props" || spec.kind === "mcnemar" ? [0.7, 0.85, 1, 1.15] : [0.6, 0.8, 1, 1.25, 1.5];
     return factors.flatMap((k) => {
       const s = withEffect(spec, ownEffect * k);
-      if (spec.kind === "corr" && ownEffect * k >= 1) return [];
-      if (spec.kind === "props" && !sharesValid(spec, ownEffect * k)) return [];
+      if (!effectPossible(spec, ownEffect * k)) return [];
       const n = solveN(s, test, target);
       return [{ k, label: effectText(spec, ownEffect * k), n: n === null ? null : sizes(s, n).reduce((a, b) => a + b, 0), power: power(s, test, planned) }];
     });
@@ -311,15 +479,12 @@ export function CompareTab({ active }: { active: boolean }) {
       { k: 0.8, label: L("20 % mažesnis", "20% smaller"), color: "#C23B2A", dash: "7 5" },
       { k: 1.2, label: L("20 % didesnis", "20% larger"), color: "#6B675F", dash: "2 4" },
     ];
-    const maxN = Math.max(Math.ceil(planned * 2), 8);
-    const lo = spec.kind === "corr" ? 5 : 3;
+    const lo = spec.kind === "corr" ? 5 : Math.max(3, minN(spec));
+    const maxN = Math.max(Math.ceil(planned * 2), lo + 6);
     const count = 80;
     const xs = Array.from(new Set(Array.from({ length: count }, (_, i) => Math.round(lo + ((maxN - lo) * i) / (count - 1)))));
     const series: CurveSeries[] = lines
-      .filter((l) => {
-        if (spec.kind === "corr") return ownEffect * l.k < 1;
-        return spec.kind === "props" ? sharesValid(spec, ownEffect * l.k) : true;
-      })
+      .filter((l) => effectPossible(spec, ownEffect * l.k))
       .map((l) => {
         const s = withEffect(spec, ownEffect * l.k);
         return { label: l.label, color: l.color, dash: l.dash, values: xs.map((x) => power(s, test, x)) };
@@ -331,6 +496,21 @@ export function CompareTab({ active }: { active: boolean }) {
   const fall = scenarios.find((s) => s.k === 0.8 || s.k === 0.85);
   const days = isAb && calc?.groups ? Math.ceil(total / parseNum(form.daily)) : null;
   const smallForProps = spec?.kind === "props" && planned !== null && planned * Math.min(spec.p1, spec.p2) < 5;
+  const chisqTable = design === "chisq" && form.eff !== "f" ? parseTable(form.ctab) : null;
+  const smallForChisq =
+    spec?.kind === "chisq" && chisqTable && planned !== null
+      ? (planned / chisqTable.length) * Math.min(...chisqTable.map((row) => Math.min(...row) / row.reduce((a, b) => a + b, 0))) < 5
+      : false;
+  const facTable = design === "factorial" && form.eff !== "f" ? parseTable(form.fac) : null;
+  const rmTable = design === "rm" && form.eff !== "f" ? parseTable(form.rmt) : null;
+  const sdValue = parseNum(form.sd);
+  const tableF = (t: number[][] | null) => (t && sdValue > 0 ? twoWayF(t, sdValue) : null);
+  const facF = tableF(facTable);
+  const rmF = tableF(rmTable);
+  const rmGroups = spec?.kind === "rm" ? spec.groups : rmTable ? rmTable.length : int(form.levA);
+  const ancovaR = (design === "anova" || design === "factorial") && int(form.cov) > 0 ? parseNum(form.covR) : null;
+  const isPerGroup = perGroup(spec, design);
+  const fHint = L("Mažas 0,10, vidutinis 0,25, didelis 0,40 (Cohen, 1988).", "Small 0.10, medium 0.25, large 0.40 (Cohen, 1988).");
 
   const report =
     solve === "n" && spec && calc?.groups && calc.enrolled && calc.baseN
@@ -347,6 +527,8 @@ export function CompareTab({ active }: { active: boolean }) {
           enrolled: calc.enrolled,
           abTest: isAb,
           or: design === "props" && form.entry === "or" ? parseNum(form.or) : null,
+          ancovaR,
+          table: facTable && sdValue > 0 ? { means: facTable, sd: sdValue } : rmTable && sdValue > 0 ? { means: rmTable, sd: sdValue } : chisqTable ? { means: chisqTable, sd: null } : null,
         })
       : null;
 
@@ -357,15 +539,21 @@ export function CompareTab({ active }: { active: boolean }) {
           <Segmented
             label={L("Ką lyginate?", "What are you comparing?")}
             value={design}
-            onChange={(d) => set({ design: d, ratio: "1" })}
+            onChange={(d) => set({ design: d, ratio: "1", eff: "means", fval: d === "chisq" ? "0.3" : "0.25", levA: d === "rm" ? "1" : "2", levB: "3" })}
             hint={<span className="design-note">{DESIGN_NOTES[design]}</span>}
             options={[
-              { value: "means", label: L("Dvi grupės, vidurkiai", "Two groups, means"), icon: DESIGN_ICONS.means },
-              { value: "paired", label: L("Prieš ir po", "Before and after"), icon: DESIGN_ICONS.paired },
-              { value: "props", label: L("Dvi grupės, dalys", "Two groups, proportions"), icon: DESIGN_ICONS.props },
-              { value: "ab", label: L("A/B testas", "A/B test"), icon: DESIGN_ICONS.ab },
-              { value: "anova", label: L("3+ grupės", "3+ groups"), icon: DESIGN_ICONS.anova },
-              { value: "corr", label: L("Koreliacija", "Correlation"), icon: DESIGN_ICONS.corr },
+              { value: "means", label: L("Dvi grupės, vidurkiai", "Two groups, means"), icon: DESIGN_ICONS.means, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "props", label: L("Dvi grupės, dalys", "Two groups, proportions"), icon: DESIGN_ICONS.props, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "ab", label: L("A/B testas", "A/B test"), icon: DESIGN_ICONS.ab, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "anova", label: L("3+ grupės, ANCOVA", "3+ groups, ANCOVA"), icon: DESIGN_ICONS.anova, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "factorial", label: L("Du veiksniai", "Two factors"), icon: DESIGN_ICONS.factorial, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "chisq", label: L("Kategorijos (χ²)", "Categories (χ²)"), icon: DESIGN_ICONS.chisq, group: L("Skirtingos grupės", "Separate groups") },
+              { value: "paired", label: L("Prieš ir po", "Before and after"), icon: DESIGN_ICONS.paired, group: L("Tie patys žmonės kelis kartus", "The same people more than once") },
+              { value: "rm", label: L("3+ matavimai, mišri ANOVA", "3+ measurements, mixed ANOVA"), icon: DESIGN_ICONS.rm, group: L("Tie patys žmonės kelis kartus", "The same people more than once") },
+              { value: "mcnemar", label: L("Taip / ne prieš ir po", "Yes/no before and after"), icon: DESIGN_ICONS.mcnemar, group: L("Tie patys žmonės kelis kartus", "The same people more than once") },
+              { value: "corr", label: L("Koreliacija", "Correlation"), icon: DESIGN_ICONS.corr, group: L("Ryšiai ir modeliai", "Relationships and models") },
+              { value: "reg", label: L("Tiesinė regresija", "Linear regression"), icon: DESIGN_ICONS.reg, group: L("Ryšiai ir modeliai", "Relationships and models") },
+              { value: "logit", label: L("Logistinė regresija", "Logistic regression"), icon: DESIGN_ICONS.logit, group: L("Ryšiai ir modeliai", "Relationships and models") },
             ]}
           />
           <Segmented
@@ -381,7 +569,13 @@ export function CompareTab({ active }: { active: boolean }) {
           />
           {solve !== "n" && (
             <NumField
-              label={design === "paired" || design === "corr" ? L("Turima imtis", "Available sample") : L("Turima imtis vienoje grupėje", "Available sample per group")}
+              label={
+                !isPerGroup
+                  ? L("Turima imtis", "Available sample")
+                  : design === "factorial"
+                    ? L("Turima imtis vienoje grupėje (langelyje)", "Available sample per cell")
+                    : L("Turima imtis vienoje grupėje", "Available sample per group")
+              }
               value={form.n}
               onChange={(n) => set({ n })}
               decimal={false}
@@ -481,6 +675,284 @@ export function CompareTab({ active }: { active: boolean }) {
             <NumField label={L("Mažiausia svarbi koreliacija (r)", "Smallest important correlation (r)")} value={form.corr} onChange={(corr) => set({ corr })} />
           )}
 
+          {(design === "factorial" || design === "rm" || design === "chisq") && (
+            <Segmented
+              label={L("Efektą žinau kaip", "I know the effect as")}
+              value={form.eff as "means" | "f"}
+              onChange={(eff) => set({ eff })}
+              options={[
+                { value: "means", label: design === "chisq" ? L("Laukiamus procentus", "Expected percentages") : L("Laukiamus vidurkius", "Expected means") },
+                { value: "f", label: design === "chisq" ? "Cohen w" : "Cohen f" },
+              ]}
+            />
+          )}
+          {(design === "factorial" || design === "rm" || design === "chisq") && form.eff === "f" && (
+            <>
+              <NumField
+                label={
+                  design === "factorial"
+                    ? L("Pirmo veiksnio lygių", "Levels of the first factor")
+                    : design === "rm"
+                      ? L("Grupių (1 = viena grupė)", "Groups (1 = a single group)")
+                      : L("Grupių", "Groups")
+                }
+                value={form.levA}
+                onChange={(levA) => set({ levA })}
+                decimal={false}
+                error={int(form.levA) >= (design === "rm" ? 1 : 2) ? null : L(`Įveskite bent ${design === "rm" ? 1 : 2}.`, `Enter at least ${design === "rm" ? 1 : 2}.`)}
+              />
+              <NumField
+                label={
+                  design === "factorial" ? L("Antro veiksnio lygių", "Levels of the second factor") : design === "rm" ? L("Matavimų kiekvienam žmogui", "Measurements per person") : L("Atsakymo kategorijų", "Answer categories")
+                }
+                value={form.levB}
+                onChange={(levB) => set({ levB })}
+                decimal={false}
+                error={int(form.levB) >= 2 ? null : L("Įveskite bent 2.", "Enter at least 2.")}
+              />
+              <NumField
+                label={design === "chisq" ? "Cohen w" : "Cohen f"}
+                hint={design === "chisq" ? L("Mažas 0,1, vidutinis 0,3, didelis 0,5 (Cohen, 1988).", "Small 0.1, medium 0.3, large 0.5 (Cohen, 1988).") : fHint}
+                value={form.fval}
+                onChange={(fval) => set({ fval })}
+                error={parseNum(form.fval) > 0 ? null : L("Įveskite teigiamą skaičių.", "Enter a positive number.")}
+              />
+            </>
+          )}
+
+          {design === "factorial" && (
+            <>
+              {form.eff !== "f" && (
+                <>
+                  <TextField
+                    rows={3}
+                    label={L("Laukiami grupių vidurkiai", "Expected group means")}
+                    hint={
+                      facTable && facF
+                        ? L(
+                            `${facTable.length} × ${facTable[0].length}: f pirmam veiksniui ${fmtNum(facF.rows, 3)}, antram ${fmtNum(facF.cols, 3)}, sąveikai ${fmtNum(facF.inter, 3)}.`,
+                            `${facTable.length} × ${facTable[0].length}: f for the first factor ${fmtNum(facF.rows, 3)}, the second ${fmtNum(facF.cols, 3)}, the interaction ${fmtNum(facF.inter, 3)}.`,
+                          )
+                        : L("Eilutė – pirmo veiksnio lygis, stulpelis – antro; atskirkite kabliataškiu.", "One row per level of the first factor, one column per level of the second; separate with semicolons.")
+                    }
+                    error={facTable && facTable.length >= 2 && facTable[0].length >= 2 ? null : L("Reikia bent 2 eilučių ir 2 stulpelių, visose eilutėse po tiek pat skaičių.", "At least 2 rows and 2 columns, the same count in every row.")}
+                    value={form.fac}
+                    onChange={(fac) => set({ fac })}
+                  />
+                  <NumField label={L("Standartinis nuokrypis grupėje", "Standard deviation within a group")} value={form.sd} onChange={(sd) => set({ sd })} />
+                  <SdFinder form={form} set={set} />
+                </>
+              )}
+              <Segmented
+                label={L("Kurį efektą tikrinate?", "Which effect are you testing?")}
+                value={form.facEff as "A" | "B" | "AB"}
+                onChange={(facEff) => set({ facEff })}
+                hint={L("Sąveikai paprastai reikia daugiausia tiriamųjų.", "An interaction usually needs the most participants.")}
+                options={[
+                  { value: "A", label: L("Pirmą veiksnį", "First factor") },
+                  { value: "B", label: L("Antrą veiksnį", "Second factor") },
+                  { value: "AB", label: L("Sąveiką", "Interaction") },
+                ]}
+              />
+            </>
+          )}
+
+          {design === "rm" && (
+            <>
+              {form.eff !== "f" && (
+                <>
+                  <TextField
+                    rows={3}
+                    label={L("Laukiami vidurkiai kiekvienu matavimu", "Expected means at each measurement")}
+                    hint={
+                      rmTable && rmF
+                        ? rmTable.length === 1
+                          ? L(`${rmTable[0].length} matavimai, f laikui ${fmtNum(rmF.cols, 3)}.`, `${rmTable[0].length} measurements, f for time ${fmtNum(rmF.cols, 3)}.`)
+                          : L(
+                              `${rmTable.length} grupės × ${rmTable[0].length} matavimai: f laikui ${fmtNum(rmF.cols, 3)}, grupei ${fmtNum(rmF.rows, 3)}, sąveikai ${fmtNum(rmF.inter, 3)}.`,
+                              `${rmTable.length} groups × ${rmTable[0].length} measurements: f for time ${fmtNum(rmF.cols, 3)}, group ${fmtNum(rmF.rows, 3)}, interaction ${fmtNum(rmF.inter, 3)}.`,
+                            )
+                        : L(
+                            "Stulpelis – matavimas, eilutė – grupė (viena eilutė, jei grupė viena); atskirkite kabliataškiu.",
+                            "One column per measurement, one row per group (a single row for one group); separate with semicolons.",
+                          )
+                    }
+                    error={rmTable && rmTable[0].length >= 2 ? null : L("Reikia bent 2 matavimų, visose eilutėse po tiek pat skaičių.", "At least 2 measurements, the same count in every row.")}
+                    value={form.rmt}
+                    onChange={(rmt) => set({ rmt })}
+                  />
+                  <NumField label={L("Standartinis nuokrypis per matavimą", "Standard deviation at a measurement")} value={form.sd} onChange={(sd) => set({ sd })} />
+                </>
+              )}
+              <NumField
+                label={L("Koreliacija tarp matavimų", "Correlation between measurements")}
+                hint={L(
+                  "Kaip stipriai susiję to paties žmogaus matavimai; dažnai 0,5–0,7. Nežinant imkite 0,5.",
+                  "How closely one person's measurements agree; often 0.5–0.7. If unknown, use 0.5.",
+                )}
+                value={form.rho}
+                onChange={(rho) => set({ rho })}
+                error={parseNum(form.rho) > -1 && parseNum(form.rho) < 1 ? null : L("Tarp −1 ir 1.", "Between −1 and 1.")}
+              />
+              {rmGroups > 1 && (
+                <Segmented
+                  label={L("Kurį efektą tikrinate?", "Which effect are you testing?")}
+                  value={form.rmEff as RmEffect}
+                  onChange={(rmEff) => set({ rmEff })}
+                  hint={
+                    form.rmEff === "inter"
+                      ? L("Ar pokytis laike skiriasi tarp grupių: dažniausiai tai ir yra pagrindinis klausimas.", "Whether the change over time differs between groups: usually the main question.")
+                      : undefined
+                  }
+                  options={[
+                    { value: "within", label: L("Pokytį laike", "Change over time") },
+                    { value: "between", label: L("Grupių skirtumą", "Group difference") },
+                    { value: "inter", label: L("Grupė × laikas", "Group × time") },
+                  ]}
+                />
+              )}
+            </>
+          )}
+
+          {design === "reg" && (
+            <>
+              <Segmented
+                label={L("Ką tikrinate?", "What are you testing?")}
+                value={form.regTest as "all" | "add"}
+                onChange={(regTest) => set({ regTest })}
+                options={[
+                  { value: "all", label: L("Ar modelis ką nors paaiškina", "Whether the model explains anything") },
+                  { value: "add", label: L("Ar nauji kintamieji prideda", "Whether new variables add") },
+                ]}
+              />
+              <NumField
+                label={L("Prognozuojančių kintamųjų iš viso", "Predictors in total")}
+                value={form.preds}
+                onChange={(preds) => set({ preds })}
+                decimal={false}
+                error={int(form.preds) >= 1 ? null : L("Įveskite bent 1.", "Enter at least 1.")}
+              />
+              {form.regTest === "all" ? (
+                <NumField
+                  label={L("Kiek rezultato sklaidos paaiškins modelis (R²)", "Share of the outcome's variance the model explains (R²)")}
+                  hint={
+                    spec?.kind === "reg"
+                      ? L(`f² = ${fmtNum(spec.r2Gain / (1 - spec.r2Gain), 3)}. Mažas R² 2 %, vidutinis 13 %, didelis 26 % (Cohen, 1988).`, `f² = ${fmtNum(spec.r2Gain / (1 - spec.r2Gain), 3)}. Small R² 2%, medium 13%, large 26% (Cohen, 1988).`)
+                      : undefined
+                  }
+                  value={form.r2}
+                  onChange={(r2) => set({ r2 })}
+                  suffix="%"
+                />
+              ) : (
+                <>
+                  <NumField
+                    label={L("Iš jų naujų, tikrinamų", "Of these, new ones being tested")}
+                    value={form.tested}
+                    onChange={(tested) => set({ tested })}
+                    decimal={false}
+                    error={int(form.tested) >= 1 && int(form.tested) <= int(form.preds) ? null : L("Nuo 1 iki kintamųjų skaičiaus.", "From 1 to the number of predictors.")}
+                  />
+                  <NumField label={L("R² be naujų kintamųjų", "R² without the new variables")} value={form.r2Base} onChange={(r2Base) => set({ r2Base })} suffix="%" />
+                  <NumField
+                    label={L("Kiek prideda nauji (ΔR²)", "How much the new ones add (ΔR²)")}
+                    hint={spec?.kind === "reg" ? `f² = ${fmtNum(spec.r2Gain / (1 - spec.r2Base - spec.r2Gain), 3)}` : undefined}
+                    value={form.r2Gain}
+                    onChange={(r2Gain) => set({ r2Gain })}
+                    suffix="%"
+                  />
+                </>
+              )}
+            </>
+          )}
+
+          {design === "logit" && (
+            <>
+              <Segmented
+                label={L("Tiriamas veiksnys", "The factor tested")}
+                value={form.lx as "binary" | "normal"}
+                onChange={(lx) => set({ lx })}
+                options={[
+                  { value: "binary", label: L("Taip / ne (pvz., rūko)", "Yes/no (e.g. smokes)") },
+                  { value: "normal", label: L("Skaitinis (pvz., amžius)", "Numeric (e.g. age)") },
+                ]}
+              />
+              <NumField
+                label={form.lx === "normal" ? L("Įvykio dalis, kai veiksnys vidutinis", "Event rate at the average value") : L("Įvykio dalis tarp neturinčių veiksnio", "Event rate without the factor")}
+                value={form.lp0}
+                onChange={(lp0) => set({ lp0 })}
+                suffix="%"
+              />
+              <NumField
+                label={form.lx === "normal" ? L("Šansų santykis 1 SD padidėjimui", "Odds ratio per 1 SD increase") : L("Šansų santykis (OR)", "Odds ratio (OR)")}
+                hint={
+                  spec?.kind === "logit"
+                    ? form.lx === "normal"
+                      ? L(`Tai ${fmtPct(p1FromOdds(spec.p0, spec.or), 1)} esant 1 SD virš vidurkio.`, `That is ${fmtPct(p1FromOdds(spec.p0, spec.or), 1)} at 1 SD above the mean.`)
+                      : L(`Tai ${fmtPct(p1FromOdds(spec.p0, spec.or), 1)} tarp turinčių veiksnį.`, `That is ${fmtPct(p1FromOdds(spec.p0, spec.or), 1)} among those with the factor.`)
+                    : undefined
+                }
+                value={form.lor}
+                onChange={(lor) => set({ lor })}
+                error={parseNum(form.lor) > 0 && parseNum(form.lor) !== 1 ? null : L("Teigiamas, ne 1.", "Positive, not 1.")}
+              />
+              {form.lx === "binary" && (
+                <NumField label={L("Kuri tiriamųjų dalis turi veiksnį", "Share of participants with the factor")} value={form.lshare} onChange={(lshare) => set({ lshare })} suffix="%" />
+              )}
+            </>
+          )}
+
+          {design === "chisq" && form.eff !== "f" && (
+            <TextField
+              rows={3}
+              label={L("Laukiamas pasiskirstymas, %", "Expected distribution, %")}
+              hint={
+                spec?.kind === "chisq" && chisqTable
+                  ? L(
+                      `${chisqTable.length} grupės × ${chisqTable[0].length} kategorijos, w = ${fmtNum(spec.w, 3)}. Grupės laikomos vienodo dydžio.`,
+                      `${chisqTable.length} groups × ${chisqTable[0].length} categories, w = ${fmtNum(spec.w, 3)}. The groups are taken to be equal in size.`,
+                    )
+                  : L("Eilutė – grupė, stulpelis – atsakymo kategorija; atskirkite kabliataškiu.", "One row per group, one column per answer category; separate with semicolons.")
+              }
+              error={
+                chisqTable && chisqTable.length >= 2 && chisqTable[0].length >= 2 && chisqTable.flat().every((x) => x > 0)
+                  ? null
+                  : L("Reikia bent 2 eilučių ir 2 stulpelių teigiamų skaičių.", "At least 2 rows and 2 columns of positive numbers.")
+              }
+              value={form.ctab}
+              onChange={(ctab) => set({ ctab })}
+            />
+          )}
+
+          {design === "mcnemar" && (
+            <>
+              <NumField label={L("„Taip“ pirmą kartą", "“Yes” the first time")} value={form.mp1} onChange={(mp1) => set({ mp1 })} suffix="%" />
+              <NumField label={L("„Taip“ antrą kartą", "“Yes” the second time")} value={form.mp2} onChange={(mp2) => set({ mp2 })} suffix="%" />
+              <NumField
+                label={L("Kiek žmonių pakeis atsakymą", "Share of people who change their answer")}
+                hint={L(
+                  "Nežinant palikite tuščią: imama, lyg atsakymai būtų nepriklausomi, o tai atsargu.",
+                  "Leave empty if unknown: the answers are then treated as independent, which is cautious.",
+                )}
+                placeholder={(() => {
+                  const [a, b] = [parseNum(form.mp1) / 100, parseNum(form.mp2) / 100];
+                  return a > 0 && b > 0 ? fmtShort((a * (1 - b) + b * (1 - a)) * 100, 1) : "";
+                })()}
+                value={form.mdisc}
+                onChange={(mdisc) => set({ mdisc })}
+                suffix="%"
+                error={
+                  spec || !(parseNum(form.mp1) > 0 && parseNum(form.mp2) > 0)
+                    ? null
+                    : L(
+                        `Neįmanoma: pakeisti turi bent ${fmtShort(Math.abs(parseNum(form.mp1) - parseNum(form.mp2)), 1)} %, o „taip“ dalys turi skirtis.`,
+                        `Not possible: at least ${fmtShort(Math.abs(parseNum(form.mp1) - parseNum(form.mp2)), 1)}% must change, and the two shares must differ.`,
+                      )
+                }
+              />
+            </>
+          )}
+
           <Segmented
             label={L("Statistinė galia", "Statistical power")}
             hint={L("Tikimybė pamatyti efektą, jei jis tikrai yra.", "The chance of seeing the effect if it is really there.")}
@@ -504,7 +976,50 @@ export function CompareTab({ active }: { active: boolean }) {
 
           <More title={L("Daugiau nustatymų", "More settings")}>
             <NumField label={L("Reikšmingumo lygis α", "Significance level α")} value={form.alpha} onChange={(alpha) => set({ alpha })} />
-            {design !== "anova" && (
+            {(design === "anova" || design === "factorial") && (
+              <>
+                <NumField
+                  label={L("Kovariančių (ANCOVA)", "Covariates (ANCOVA)")}
+                  hint={L("Pvz., pradinis įvertis prieš gydymą. 0 = be kovariančių.", "E.g. the baseline score before treatment. 0 = none.")}
+                  value={form.cov}
+                  onChange={(cov) => set({ cov })}
+                  decimal={false}
+                />
+                {int(form.cov) > 0 && (
+                  <NumField
+                    label={L("Kovariančių ir rezultato koreliacija (R)", "Correlation of the covariates with the outcome (R)")}
+                    hint={L(
+                      "Pradinio ir galutinio įverčio koreliacija dažnai 0,5–0,7. Kuo ji didesnė, tuo mažiau reikia tiriamųjų.",
+                      "Baseline and follow-up scores often correlate 0.5–0.7. The higher it is, the fewer participants are needed.",
+                    )}
+                    value={form.covR}
+                    onChange={(covR) => set({ covR })}
+                    error={parseNum(form.covR) >= 0 && parseNum(form.covR) < 1 ? null : L("Nuo 0 iki 1.", "From 0 to 1.")}
+                  />
+                )}
+              </>
+            )}
+            {design === "rm" && (
+              <NumField
+                label={L("Sferiškumo pataisa ε", "Sphericity correction ε")}
+                hint={L(
+                  `1 = sferiškumas tenkinamas. Mažiausia ${spec?.kind === "rm" ? fmtShort(1 / (spec.times - 1), 2) : "1/(m − 1)"}; atsargiai galima imti 0,75.`,
+                  `1 = sphericity holds. The lowest is ${spec?.kind === "rm" ? fmtShort(1 / (spec.times - 1), 2) : "1/(m − 1)"}; 0.75 is a cautious choice.`,
+                )}
+                value={form.eps}
+                onChange={(eps) => set({ eps })}
+              />
+            )}
+            {design === "logit" && (
+              <NumField
+                label={L("Kiek veiksnį paaiškina kiti modelio kintamieji (R²)", "How much the other predictors explain the factor (R²)")}
+                hint={L("0 = kitų kintamųjų nėra arba jie nesusiję. Kuo labiau susiję, tuo daugiau reikia.", "0 = no other predictors, or unrelated ones. The more related, the more participants are needed.")}
+                value={form.lr2}
+                onChange={(lr2) => set({ lr2 })}
+                suffix="%"
+              />
+            )}
+            {!["anova", "factorial", "rm", "reg", "chisq"].includes(design) && (
               <Segmented
                 label={L("Testas", "Test")}
                 value={form.sides as "1" | "2"}
@@ -665,6 +1180,14 @@ export function CompareTab({ active }: { active: boolean }) {
               )}
             </>
           )}
+          {smallForChisq && (
+            <Notice title={L("Maži laukiami dažniai.", "Small expected counts.")}>
+              {L(
+                "Kai kuriame langelyje laukiama mažiau nei 5 atsakymų: χ² testas bus netikslus. Sujunkite retas kategorijas arba didinkite imtį.",
+                "Some cell expects fewer than 5 answers, where the χ² test is unreliable. Merge rare categories or enlarge the sample.",
+              )}
+            </Notice>
+          )}
           {smallForProps && (
             <Notice title={L("Maža imtis.", "Small sample.")}>
               {L(
@@ -684,7 +1207,15 @@ export function CompareTab({ active }: { active: boolean }) {
             series={curve.series}
             target={target}
             mark={planned}
-            xTitle={design === "paired" || design === "corr" ? L("Imtis", "Sample size") : L("Imtis 1 grupėje", "Sample size in group 1")}
+            xTitle={
+              !isPerGroup
+                ? L("Imtis", "Sample size")
+                : design === "means" || design === "props" || design === "ab"
+                  ? L("Imtis 1 grupėje", "Sample size in group 1")
+                  : design === "factorial"
+                    ? L("Imtis vienoje grupėje (langelyje)", "Sample size per cell")
+                    : L("Imtis vienoje grupėje", "Sample size per group")
+            }
             ariaLabel={L(
               `Statistinė galia pagal imties dydį trims efekto dydžiams. Su ${planned} galia ${fmtPct(calc?.achieved ?? 0, 0)}.`,
               `Statistical power by sample size for three effect sizes. With ${planned}, power is ${fmtPct(calc?.achieved ?? 0, 0)}.`,

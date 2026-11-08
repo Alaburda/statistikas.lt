@@ -2,8 +2,8 @@
 import { describe, expect, it } from "vitest";
 import { ABEL_CAP_CV, abelLimits, powerABEL, sampleNABEL } from "./abel";
 import { DESIGNS, cvUpper, powerTOST, sampleNTOST, tolerance, type BeInput, type DesignId } from "./be";
-import { power, sizes, solveN, type Spec, type Test } from "./compare";
-import { owensQ, pnct, pnf, qchisq, qt } from "./dist";
+import { cohenF, cohenW, power, sizes, solveN, twoWayF, type Spec, type Test } from "./compare";
+import { owensQ, pnchisq, pnct, pnf, qchisq, qt } from "./dist";
 import ref from "./reference.json";
 
 const close = (a: number, b: number, tol: number) => expect(Math.abs(a - b)).toBeLessThan(tol);
@@ -73,6 +73,102 @@ describe("comparing groups", () => {
   });
   it("correlation matches pwr.r.test", () => {
     for (const r of rows("corr")) check({ kind: "corr", r: r.r as number }, test2(r), r, 1e-8);
+  });
+});
+
+describe("models beyond pwr", () => {
+  const t05: Test = { alpha: 0.05, sides: 2 };
+  const check = (spec: Spec, test: Test, r: Row, tol = 1e-7) => {
+    expect(solveN(spec, test, r.power as number), JSON.stringify(r)).toBe(r.n);
+    close(power(spec, test, r.n as number), r.achieved as number, tol);
+  };
+
+  it("non-central chi-square matches pchisq", () => {
+    for (const r of rows("pnchisq")) close(pnchisq(r.x as number, r.df as number, r.ncp as number), r.p as number, 1e-10);
+  });
+  it("chi-square tests match pwr.chisq.test", () => {
+    // df = (rows - 1)(cols - 1) with two rows.
+    for (const r of rows("chisq")) check({ kind: "chisq", rows: 2, cols: (r.df as number) + 1, w: r.w as number }, { alpha: r.alpha as number, sides: 2 }, r);
+  });
+  it("regression R² from zero matches pwr.f2.test", () => {
+    for (const r of rows("reg")) {
+      const f2 = r.f2 as number;
+      const spec: Spec = { kind: "reg", predictors: r.u as number, tested: r.u as number, r2Base: 0, r2Gain: f2 / (1 + f2) };
+      check(spec, { alpha: r.alpha as number, sides: 2 }, r);
+    }
+  });
+  it("R² increase matches the G*Power formula", () => {
+    for (const r of rows("regGain")) {
+      const spec: Spec = { kind: "reg", predictors: r.p as number, tested: r.q as number, r2Base: r.base as number, r2Gain: r.gain as number };
+      check(spec, t05, r);
+    }
+  });
+  it("factorial ANOVA and ANCOVA match the G*Power formula", () => {
+    for (const r of rows("factorial")) {
+      const spec: Spec = { kind: "factorial", a: r.a as number, b: r.b as number, effect: r.effect as "A", f: r.f as number, covariates: r.cov as number };
+      check(spec, t05, r);
+    }
+    for (const r of rows("ancova")) check({ kind: "anova", groups: r.k as number, f: r.f as number, covariates: r.cov as number }, t05, r);
+  });
+  it("repeated measures match the G*Power formulas", () => {
+    for (const r of rows("rm")) {
+      const spec: Spec = {
+        kind: "rm",
+        groups: r.k as number,
+        times: r.m as number,
+        effect: r.effect as "within",
+        f: r.f as number,
+        rho: r.rho as number,
+        eps: r.eps as number,
+      };
+      check(spec, t05, r);
+    }
+  });
+  it("repeated measures formulas hold in a simulation of the split-plot ANOVA", () => {
+    for (const r of ref.rmSim) {
+      const f = twoWayF(r.means, r.sd);
+      const fx = r.effect === "within" ? f.cols : r.effect === "between" ? f.rows : f.inter;
+      close(fx, r.f, 1e-10);
+      const spec: Spec = { kind: "rm", groups: r.means.length, times: r.means[0].length, effect: r.effect as "within", f: fx, rho: r.rho, eps: 1 };
+      expect(solveN(spec, t05, 0.8)).toBe(r.n);
+      close(r.simPower, r.power, 0.015);
+    }
+  });
+  it("factorial and ANCOVA formulas hold in simulations with lm", () => {
+    for (const r of ref.factorialSim) {
+      const f = twoWayF(r.means, r.sd);
+      const fx = r.effect === "A" ? f.rows : r.effect === "B" ? f.cols : f.inter;
+      close(fx, r.f, 1e-10);
+      expect(solveN({ kind: "factorial", a: r.means.length, b: r.means[0].length, effect: r.effect as "A", f: fx }, t05, 0.8)).toBe(r.n);
+      close(r.simPower, r.power, 0.025);
+    }
+    for (const r of ref.ancovaSim) {
+      const f = cohenF(r.means, r.sd) / Math.sqrt(1 - r.r * r.r);
+      expect(solveN({ kind: "anova", groups: r.means.length, f, covariates: 1 }, t05, 0.8)).toBe(r.n);
+      // G*Power treats the covariate as fixed; with a random one the real test loses a little.
+      close(r.simPower, r.power, 0.03);
+    }
+  });
+  it("logistic regression matches Demidenko's formula and a simulation of the Wald test", () => {
+    for (const r of rows("logit")) {
+      const spec: Spec = { kind: "logit", x: r.x as "binary", p0: r.p0 as number, or: r.or as number, share: r.share as number, r2: r.r2 as number };
+      check(spec, t05, r, 1e-6);
+    }
+    for (const r of ref.logitSim) close(r.simPower, r.power, 0.035);
+  });
+  it("McNemar matches exact enumeration in R and simulated binom.test", () => {
+    for (const r of rows("mcnemar")) {
+      const spec: Spec = { kind: "mcnemar", p1: r.p1 as number, p2: r.p2 as number, disc: r.disc as number };
+      check(spec, { alpha: 0.05, sides: r.sides as 1 | 2 }, r, 1e-9);
+    }
+    for (const r of ref.mcnemarSim) {
+      close(power({ kind: "mcnemar", p1: r.p1, p2: r.p2, disc: r.disc }, t05, r.n), r.power, 1e-9);
+      close(r.simPower, r.power, 0.012);
+    }
+  });
+  it("Cohen's w of a table", () => {
+    // 2 × 2 with 30 % vs 50 %: w = |p1 - p2| / (2 sqrt(pbar (1 - pbar))).
+    close(cohenW([[30, 70], [50, 50]]), 0.2 / (2 * Math.sqrt(0.4 * 0.6)), 1e-12);
   });
 });
 

@@ -19,8 +19,8 @@ const TABS: { id: Tab; title: string; sub: string }[] = [
     id: "grupes",
     title: L("Imtis palyginimams", "Comparing groups"),
     sub: L(
-      "Kiek tiriamųjų reikia eksperimentui, atvejo–kontrolės tyrimui ar A/B testui?",
-      "How many participants for an experiment, a case–control study or an A/B test?",
+      "Kiek tiriamųjų reikia eksperimentui, ANOVA, regresijai ar A/B testui?",
+      "How many participants for an experiment, an ANOVA, a regression or an A/B test?",
     ),
   },
   {
