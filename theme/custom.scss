@@ -346,48 +346,31 @@ h2, .h2 {
 .s-hero {
   padding: 0;
   border-bottom: $grout solid $ink;
-  overflow: hidden;
 
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    // Fill the first screen exactly: viewport minus navbar (64px) and bottom grout
-    height: clamp(520px, calc(100vh - 64px - #{$grout}), 760px);
-    height: clamp(520px, calc(100svh - 64px - #{$grout}), 760px);
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-      height: auto;
-    }
-  }
-
-  // Copy aligns with the 1200px content column; the composition bleeds to the edge
-  .hero-copy {
+  // Fill the first screen (viewport minus the 64px navbar); the figure takes
+  // whatever height the copy leaves
+  @media (min-width: 901px) {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: clamp(1.5rem, 6vh, 4rem) 3rem clamp(1.5rem, 6vh, 4rem) max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+    min-height: clamp(560px, calc(100vh - 64px), 900px);
+    min-height: clamp(560px, calc(100svh - 64px), 900px);
+  }
 
-    // Vertical rhythm scales with screen height so the hero fits on laptops
-    .eyebrow {
-      margin-bottom: clamp(0.75rem, 2.5vh, 1.25rem);
-    }
-
-    @media (max-width: 900px) {
-      padding: 3.5rem 2rem 3rem;
-    }
-
-    @media (max-width: 576px) {
-      padding: 3rem 1rem 2.5rem;
-    }
+  // One column: the message first, the figure underneath it
+  .hero-copy {
+    width: 100%;
+    padding-top: clamp(2rem, 6vh, 4.5rem);
+    padding-bottom: clamp(1.5rem, 4vh, 3rem);
   }
 
   h1 {
-    font-size: clamp(2.5rem, min(4.9vw, 7.2vh), 4.4rem);
+    font-size: clamp(2.5rem, min(5.6vw, 9.5vh), 5rem);
     font-weight: 400;
-    line-height: 1.04;
-    letter-spacing: -0.022em;
-    margin: 0 0 clamp(1rem, 3.5vh, 1.75rem);
+    line-height: 1.03;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    max-width: 19ch;
+    margin: 0 0 clamp(1rem, 3vh, 1.75rem);
     color: $ink;
 
     em {
@@ -397,25 +380,59 @@ h2, .h2 {
   }
 
   .lede {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1.25rem;
+    line-height: 1.55;
     color: $ink-2;
-    max-width: 34rem;
-    margin-bottom: clamp(1.25rem, 4vh, 2.25rem);
+    max-width: 38rem;
+    margin-bottom: clamp(1.25rem, 3.5vh, 2rem);
+    text-wrap: pretty;
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 0.9rem 1.5rem;
   }
 
   .hero-note {
-    margin: 0.6rem 0 0;
-    font-family: $font-family-monospace;
-    font-size: 0.85rem;
+    margin: 0;
+    font-size: 0.98rem;
     color: $ink-2;
+  }
+
+  // Who is behind the site: a name, and a photo once there is one
+  .hero-by {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 46rem;
+    margin: clamp(1.5rem, 4.5vh, 2.75rem) 0 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid $line;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: $ink-2;
+
+    img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border: $rule solid $ink;
+      flex-shrink: 0;
+    }
+
+    a {
+      color: $ink;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid $ink;
+
+      &:hover {
+        color: $blue;
+        border-color: $blue;
+      }
+    }
   }
 }
 
@@ -438,49 +455,34 @@ h2, .h2 {
   .m-ink { background: $ink; }
 }
 
+// Homepage hero figure: one full-width strip under the copy. Four known
+// distributions, then the visitor's unknown one.
 .hero-figure {
-  border-left: $grout solid $ink;
-  grid-template-columns: 1.25fr 1fr 0.7fr;
-  grid-template-rows: minmax(0, 0.42fr) minmax(0, 1.6fr) minmax(0, 1.05fr) minmax(0, 0.95fr);
-
-  .m-cap {
-    grid-column: 1 / 3;
-    grid-row: 1;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    font-family: $font-family-monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: $ink-3;
-  }
-
-  .m-red { grid-column: 3; grid-row: 1; }
-  .h-normal { grid-column: 1 / 3; grid-row: 2; }
-  .h-uniform { grid-column: 3; grid-row: 2; }
-  .h-expo { grid-column: 1; grid-row: 3; }
-  .h-bimodal { grid-column: 2; grid-row: 3; }
-  .m-blue { grid-column: 3; grid-row: 3; }
-  .m-yellow { grid-column: 1; grid-row: 4; }
-  .m-yours { grid-column: 2 / 4; grid-row: 4; }
+  border-top: $grout solid $ink;
+  grid-template-columns: 1.5fr 1fr 0.8fr 1fr 1.5fr;
+  flex: 1 1 auto;
+  min-height: 180px;
 
   @media (max-width: 900px) {
-    border-left: 0;
-    border-top: $grout solid $ink;
-    height: 440px;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    height: 170px;
+
+    .h-uniform,
+    .m-yours { display: none; }
+    .fx { display: none; }
   }
 
+  // Phones: two known shapes on top, the visitor's own underneath
   @media (max-width: 576px) {
-    height: 360px;
-    grid-template-columns: 1.2fr 1fr 0.6fr;
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-rows: 120px 120px;
+    height: auto;
 
-    .m-cap span:last-child,
-    .fx,
-    .h-uniform figcaption,
-    .m-yours .fx { display: none; }
+    .h-bimodal { display: none; }
+    .m-yours {
+      display: block;
+      grid-column: 1 / -1;
+    }
   }
 }
 
@@ -640,7 +642,6 @@ h2, .h2 {
   > .cta-band { padding-top: 7rem; }
   > .page-hero { padding-top: 5.5rem; }
   > .about-hero { padding-top: 0; }
-  > .proof-strip { padding-top: 0; }
 
   @media (max-width: 768px) {
     > .band { padding-top: 4rem; }
@@ -689,72 +690,6 @@ h2, .h2 {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-  }
-}
-
-// ============================================
-// Proof strip under the homepage hero
-// ============================================
-.proof-strip {
-  border-bottom: $rule solid $ink;
-
-  .proof-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr) 1.4fr;
-
-    @media (max-width: 900px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  // The last cell links to the sample report: proof you can open
-  .proof.proof-link {
-    background: $yellow;
-    color: $ink;
-    text-decoration: none;
-    border-left: $rule solid $ink;
-    transition: background 0.15s ease;
-
-    &:hover { background: $ink; color: white; span { color: rgba(white, 0.85); } }
-
-    strong { font-size: 1.2rem; }
-
-    @media (max-width: 900px) {
-      grid-column: 1 / -1;
-      border-left: 0;
-      padding-left: 1.25rem !important;
-    }
-  }
-
-  .proof {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    padding: 1.6rem 1.5rem 1.5rem;
-    border-left: 1px solid $line;
-
-    &:first-child {
-      border-left: 0;
-      padding-left: 0;
-    }
-
-    @media (max-width: 900px) {
-      &:nth-child(odd) { border-left: 0; padding-left: 0; }
-      &:nth-child(n + 3) { border-top: 1px solid $line; }
-    }
-
-    strong {
-      font-size: 1.9rem;
-      font-weight: 500;
-      line-height: 1.05;
-      letter-spacing: -0.015em;
-    }
-
-    span {
-      font-family: $font-family-monospace;
-      font-size: 0.78rem;
-      color: $ink-2;
-    }
   }
 }
 
@@ -1033,7 +968,121 @@ h2, .h2 {
   }
 }
 
-// Demo video above the /analize cards on the homepage
+// ============================================
+// Home page sections: plain heading, sample report figures, free tools
+// ============================================
+.sec-head {
+  max-width: 44rem;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+  }
+
+  p {
+    color: $ink-2;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+// Two real figures from the sample report; column widths give them equal height
+.home-sample {
+  display: grid;
+  grid-template-columns: 1.68fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    background: white;
+    border: $rule solid $ink;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    color: $ink-2;
+  }
+}
+
+.home-sample-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin: 2.25rem 0 0;
+}
+
+// The two free tools sit directly under the demo video
+.tool-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $grout;
+  background: $ink;
+  border: $grout solid $ink;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: $paper;
+  padding: 2rem 2.25rem 2.25rem;
+
+  @media (max-width: 576px) {
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin: 0 0 0.6rem;
+  }
+
+  p {
+    color: $ink-2;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+  }
+
+  a {
+    margin-top: auto;
+  }
+}
+
+.tool-more {
+  max-width: 44rem;
+  margin: 1.75rem 0 0;
+  color: $ink-2;
+}
+
+// Demo video above the free tools on the homepage
 .demo-video {
   margin: 0;
   border: $grout solid $ink;

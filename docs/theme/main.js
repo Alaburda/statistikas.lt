@@ -3,7 +3,6 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  initReveal();
   initHeroFigure();
   initTopicFromUrl();
   initFormHandling();
@@ -37,32 +36,6 @@ function initInviewVideos() {
 function initFooterYear() {
   document.querySelectorAll('.footer-year').forEach((el) => {
     el.textContent = new Date().getFullYear();
-  });
-}
-
-// ============================================
-// Gentle reveal of blocks on scroll
-// ============================================
-function initReveal() {
-  const targets = document.querySelectorAll('.tier, .aud, .step, .service-block, .quarto-grid-item');
-  if (!('IntersectionObserver' in window) || targets.length === 0) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
-
-  targets.forEach((el) => {
-    // Only animate what starts below the fold, so nothing flashes on load
-    if (el.getBoundingClientRect().top < window.innerHeight) return;
-    const siblings = Array.from(el.parentElement.children);
-    el.classList.add('reveal');
-    el.style.transitionDelay = `${(siblings.indexOf(el) % 4) * 0.08}s`;
-    observer.observe(el);
   });
 }
 
